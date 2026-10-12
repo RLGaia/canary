@@ -417,3 +417,5 @@ canary-debug
 *.sql.gz
 docker/*.sql
 docker/*.tar
+/family/local.env
+/family/bin/
