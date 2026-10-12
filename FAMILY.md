@@ -70,9 +70,17 @@ checksums live at the top of `family\lib.ps1`.
    ```
    Logins look like an email (`rodrigo@family`); they don't need to be real.
    New characters start like real Tibia: no vocation, on the Dawnport tutorial island.
-7. **Game client 15.11**: download it from the release page above and follow its
-   notes (extract `Qt6WebEngineCore.rar` into `bin`, then run `bin\client.exe`).
-   It already points to `http://127.0.0.1/login.php`, which is where the login server listens.
+7. **Game client 15.11** (on each PC that plays):
+   - Download the tag's source archive:
+     <https://github.com/dudantas/tibia-client/archive/refs/tags/15.11.c9d1cf.zip>
+     (about 435 MB unpacked). This archive *is* the client. The release's attached
+     `client-11.zip` and `tibia-8.6-extended.zip` are other client versions; don't use them.
+   - Extract it outside this repository, e.g. `C:\Games\tibia-client-15.11`.
+   - Extract `bin\Qt6WebEngineCore.rar` into that same `bin` folder (Windows 11 Explorer
+     or 7-Zip can open `.rar`).
+   - Per the release notes, mark the `cache` folder's files as read-only.
+   - Run `bin\client.exe`. It already points to `http://127.0.0.1/login.php`, where the
+     login server listens.
 
 ## Daily use
 
