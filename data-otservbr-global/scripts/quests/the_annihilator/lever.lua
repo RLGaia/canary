@@ -25,17 +25,21 @@ local lever = Action()
 
 function lever.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if item.itemid == 2772 then
-		-- Checks if you have the 4 players and if they have the required level
+		-- FAMILY: 1 to 4 players may start the quest (upstream requires exactly 4).
+		local playersOnTiles = 0
 		for i = 1, #setting.playersPositions do
 			local creature = Tile(setting.playersPositions[i].fromPos):getTopCreature()
-			if not creature then
-				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Four players are required to start the quest.")
-				return true
+			if creature and creature:isPlayer() then
+				playersOnTiles = playersOnTiles + 1
+				if creature:getLevel() < setting.requiredLevel then
+					player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "All the players need to be level " .. setting.requiredLevel .. " or higher.")
+					return true
+				end
 			end
-			if creature and creature:getLevel() < setting.requiredLevel then
-				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "All the players need to be level " .. setting.requiredLevel .. " or higher.")
-				return true
-			end
+		end
+		if playersOnTiles == 0 then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Stand on one of the four tiles to start the quest.")
+			return true
 		end
 
 		-- Checks if there are still players inside the room, if so, return true
@@ -55,9 +59,7 @@ function lever.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			if creature and creature:isPlayer() then
 				creature:teleportTo(setting.playersPositions[i].toPos)
 				creature:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-			else
-				return false
-			end
+			end -- FAMILY: empty tiles are skipped instead of aborting
 		end
 		item:transform(2773)
 	elseif item.itemid == 2773 then

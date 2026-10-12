@@ -14,4 +14,37 @@ generateLuaApiDocs = false
 ownerName = "Gaia Family"
 location = "South America"
 
--- Phase 5 (duo tuning) settings will go here: rates, PvP, premium, etc.
+-- ===========================================================================
+-- Solo / duo balance (chosen 2026-10-12). The level curves for experience,
+-- skills and magic live in data/scripts/family/solo_balance.lua, together
+-- with the boss-lever and Tibia Coin rules.
+-- ===========================================================================
+
+-- Accounts are always premium: all areas, promotions, houses and travel.
+freePremium = true
+
+-- No player-vs-player combat: no skulls, no accidental PvP.
+worldType = "no-pvp"
+
+-- Experience, skills and magic follow the level curves in solo_balance.lua.
+rateUseStages = true
+
+-- Loot: 2x, rare items first so the corpse never drops them for lack of space.
+rateLoot = 2
+sortLootByChance = true
+
+-- Bosses ("moderate"): 50% health, 70% damage, normal defense.
+-- Applies to every monster with a Bosstiary class; normal monsters are unchanged.
+rateBossHealth = 0.5
+rateBossAttack = 0.7
+rateBossDefense = 1.0
+
+-- Boss cooldown: 4 hours instead of 20. solo_balance.lua also caps levers
+-- that set their own, longer cooldown.
+bossDefaultTimeToFightAgain = 4 * 60 * 60
+
+-- Conveniences
+autoLoot = true                 -- loot goes straight to your loot containers
+autoBank = true                 -- looted gold goes straight to the bank
+preyFreeThirdSlot = true        -- third Prey slot without Tibia Coins
+taskHuntingFreeThirdSlot = true -- third Hunting Task slot without Tibia Coins

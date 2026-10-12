@@ -112,6 +112,38 @@ For local play you can cancel. To play with Dad, allow `canary.exe` and
 
 Never forward router ports. Nothing needs to be exposed to the internet.
 
+## Game balance (solo / duo)
+
+Chosen on 2026-10-12. The server log confirms it on every start with two `[Family]` lines.
+
+| Area | Setting | Where |
+|---|---|---|
+| Premium | Every account is always premium | `family\config.family.lua` (`freePremium`) |
+| PvP | No PvP (`no-pvp`) | `family\config.family.lua` |
+| Experience | 10x up to level 50, 7x to 100, 5x to 200, 3x after | `data\scripts\family\solo_balance.lua` |
+| Skills | 10x up to skill 60, 7x to 80, 5x to 100, 3x after | same |
+| Magic level | 10x up to ML 30, 7x to 60, 5x to 90, 3x after | same |
+| Loot | 2x, rarest items first | `family\config.family.lua` |
+| Bosses | 50% health, 70% damage (Bosstiary bosses only) | `family\config.family.lua` |
+| Boss cooldown | 4 hours, also for levers that set their own longer cooldown | both files |
+| Boss levers | One player is always enough (all 60 standard levers) | `solo_balance.lua` |
+| Tibia Coins | Topped up to 10,000,000 on login whenever below 1,000,000 | `solo_balance.lua` |
+| Conveniences | Auto-loot, auto-bank, free third Prey and Hunting Task slots | `family\config.family.lua` |
+
+To change a number, edit the file in the table and restart the server.
+
+### Upstream files changed for solo play
+
+Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new Canary release.
+
+| File | Change |
+|---|---|
+| `data-otservbr-global/scripts/quests/the_annihilator/lever.lua` | 1 to 4 players can start the quest (upstream requires exactly 4) |
+
+Quests still to check when reached (party mechanics beyond the entry lever): Ferumbras' Ascension,
+Heart of Destruction, Cults of Tibia, Oramond (Glooth Fairy), Dark Trails, The Order of the Lion,
+The Dream Courts, Forgotten Knowledge, Grave Danger.
+
 ## Backups
 
 ```powershell
