@@ -83,13 +83,36 @@ FLUSH PRIVILEGES;
 # ---------------------------------------------------------------------------
 Write-Step 'Database schema'
 # ---------------------------------------------------------------------------
+function Reset-EmptyDatabase {
+	$null = Invoke-MariaDb -Cfg $cfg -NoDatabase -Sql "DROP DATABASE IF EXISTS ``$db``; CREATE DATABASE ``$db``;"
+}
+
 if (Test-DatabaseReady $cfg) {
 	Write-Ok 'schema already imported'
 } else {
-	$schema = (Join-Path $RepoRoot 'schema.sql').Replace('\', '/')
-	$null = Invoke-MariaDb -Cfg $cfg -Sql "source $schema"
-	if (-not (Test-DatabaseReady $cfg)) { Stop-Family 'Schema import did not complete.' }
-	Write-Ok 'schema.sql imported'
+	$tables = [int](Get-SqlScalar $cfg 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE();')
+	if ($tables -gt 0) {
+		# Leftover from an earlier, incomplete import. Only reset it when it holds
+		# no game accounts besides the built-in GOD account.
+		$hasAccounts = Get-SqlScalar $cfg "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = 'accounts';"
+		if ($hasAccounts -eq '1') {
+			$realAccounts = [int](Get-SqlScalar $cfg "SELECT COUNT(*) FROM accounts WHERE name <> 'god';")
+			if ($realAccounts -gt 0) {
+				Stop-Family "Database '$db' is incomplete but already has $realAccounts account(s). Not resetting it automatically; ask for help before continuing."
+			}
+		}
+		Write-Warn "found $tables table(s) from an incomplete import; recreating the empty database"
+		Reset-EmptyDatabase
+	}
+	try {
+		$null = Invoke-MariaDb -Cfg $cfg -SqlFile (Join-Path $RepoRoot 'schema.sql')
+	} catch {
+		$why = $_.Exception.Message
+		Reset-EmptyDatabase
+		Stop-Family "schema.sql import failed; the database was left empty so you can simply run setup again.`n$why"
+	}
+	if (-not (Test-DatabaseReady $cfg)) { Stop-Family 'schema.sql ran without errors, but the server_config table is missing.' }
+	Write-Ok ('schema.sql imported ({0} tables)' -f (Get-SqlScalar $cfg 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE();'))
 }
 
 # ---------------------------------------------------------------------------

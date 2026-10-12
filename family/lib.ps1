@@ -63,11 +63,16 @@ function Get-MariaDbTool([hashtable]$Cfg, [string]$Name) {
 	Stop-Family "$Name.exe not found. Install MariaDB 11.4 (see FAMILY.md) or set MARIADB_BIN in family\local.env."
 }
 
-# Runs SQL with the mariadb client. Returns output lines (tab separated, no headers).
+# Runs SQL with the mariadb client and returns the result rows (tab separated,
+# no headers). The SQL is sent on standard input, not on the command line:
+# in that mode the client stops at the first failing statement and exits with
+# an error code (with "source" or --execute it may report success anyway), and
+# warnings on stderr can never be mistaken for result rows.
 function Invoke-MariaDb {
 	param(
 		[hashtable]$Cfg,
 		[string]$Sql,
+		[string]$SqlFile,
 		[string]$User = $Cfg['DB_USER'],
 		[string]$Password = $Cfg['DB_PASSWORD'],
 		[switch]$NoDatabase
@@ -75,22 +80,39 @@ function Invoke-MariaDb {
 	$exe = Get-MariaDbTool $Cfg 'mariadb'
 	$cliArgs = @("--host=$($Cfg['DB_HOST'])", "--port=$($Cfg['DB_PORT'])", "--user=$User", '--batch', '--skip-column-names', '--default-character-set=utf8mb4')
 	if (-not $NoDatabase) { $cliArgs += "--database=$($Cfg['DB_NAME'])" }
-	$cliArgs += @('--execute', $Sql)
-	$old = $env:MYSQL_PWD
-	$oldPref = $ErrorActionPreference
-	$env:MYSQL_PWD = $Password
-	# Windows PowerShell 5.1 turns any stderr line from a native tool into a
-	# terminating error under 'Stop'; check the exit code instead.
-	$ErrorActionPreference = 'Continue'
+	if ($SqlFile) { $Sql = [System.IO.File]::ReadAllText($SqlFile) }
+
+	$psi = New-Object System.Diagnostics.ProcessStartInfo
+	$psi.FileName = $exe
+	$psi.Arguments = ($cliArgs | ForEach-Object { '"' + $_ + '"' }) -join ' '
+	$psi.UseShellExecute = $false
+	$psi.RedirectStandardInput = $true
+	$psi.RedirectStandardOutput = $true
+	$psi.RedirectStandardError = $true
+	$psi.CreateNoWindow = $true
+	$psi.EnvironmentVariables['MYSQL_PWD'] = $Password
+
+	$p = [System.Diagnostics.Process]::Start($psi)
+	$outTask = $p.StandardOutput.ReadToEndAsync()
+	$errTask = $p.StandardError.ReadToEndAsync()
+	# Write UTF-8 bytes directly (Windows PowerShell 5.1 would otherwise use the console code page).
+	$bytes = (New-Object System.Text.UTF8Encoding($false)).GetBytes($Sql + "`n")
 	try {
-		$out = & $exe @cliArgs 2>&1 | ForEach-Object { "$_" }
-		$code = $LASTEXITCODE
-	} finally {
-		$env:MYSQL_PWD = $old
-		$ErrorActionPreference = $oldPref
+		$p.StandardInput.BaseStream.Write($bytes, 0, $bytes.Length)
+		$p.StandardInput.BaseStream.Flush()
+	} catch { }  # the client may exit early on a connection error; reported below
+	$p.StandardInput.Close()
+	$p.WaitForExit()
+	$stdout = $outTask.Result
+	$stderr = $errTask.Result.Trim()
+	if ($p.ExitCode -ne 0) {
+		# Show MariaDB's ERROR line(s); the client also echoes the whole failed statement.
+		$errLines = @($stderr -split "`r?`n" | Where-Object { $_ -match '^ERROR' })
+		if ($errLines.Count -gt 0) { $stderr = $errLines -join "`n" }
+		if (-not $stderr) { $stderr = "exit code $($p.ExitCode)" }
+		throw "MariaDB said: $stderr"
 	}
-	if ($code -ne 0) { throw "MariaDB command failed: $($out | Out-String)" }
-	return $out
+	return @($stdout -split "`r?`n" | Where-Object { $_ -ne '' })
 }
 
 # Runs a query and returns the first value of the first row as a trimmed
