@@ -135,7 +135,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Rare creatures | Rare raid creatures and bosses (Midnight Panther, Draptor, Undead Cavebear, Yeti, The Old Widow, Tyrn..., plus the Thais rat plague) come back about 30 min after their last appearance, once the previous ones are dead, with one player online. Classic raids: at most 30 min between raids. Rare map spawns: at most 30 min | `data\scripts\family\rare_creatures.lua` and the files below |
 | Party quests | One player can do the quests in the table below | the files listed there |
 | Exclusive quests | Both Djinn factions; all three Secret Service agencies, one after another; every chest of a "choose one reward" room | `data\scripts\family\solo_quests.lua` |
-| City life | About 180 walking NPCs in 11 cities with quest tips, ship travel and 6 vendors (see "City life" below) | `data-otservbr-global\scripts\family\city_life.lua` |
+| City life | About 190 walking NPCs in 11 cities with quest tips, ship travel and 18 vendors (see "City life" below) | `data-otservbr-global\scripts\family\city_life.lua` |
 | Soul War reward | The final chest gives another random Soul item after each new Megalomania kill, or once every 20 h | `solo_quests.lua` |
 
 To change a number, edit the file in the table and restart the server.
@@ -180,9 +180,9 @@ The Dream Courts, Forgotten Knowledge, Grave Danger.
 
 ## City life (walking NPCs)
 
-Added 2026-10-13 to make the world feel inhabited. About 180 NPCs that look like
+Added 2026-10-13 to make the world feel inhabited. About 190 NPCs that look like
 players walk around 11 port cities, chat, give quest tips, and sometimes sail to
-another city. Six of them are vendors.
+another city. Eighteen of them are vendors.
 
 | What | Details |
 |---|---|
@@ -192,7 +192,7 @@ another city. Six of them are vendors.
 | Travel | About 8% of trips end at the harbour: the NPC vanishes and appears at another city's harbour 2–5 minutes later. Venore has no ship stop (its harbour is 43 sqm from the nearest street they can reach) |
 | Talking | Say `hi`, then `tip` (or `quest`), `news`, `job`, `name`, `bye`. They stand still while you talk |
 | Random lines | Every 45–150 s, only when a player is within sight |
-| Vendors | 2 food sellers, 2 potion and rune sellers, 2 creature products traders. Each sits in a random city for the day. Ask any walker for `news` to find them |
+| Vendors | 6 food sellers, 6 potion and rune sellers, 6 creature products traders (`vendorsPerKind`, raised from 2 on 2026-10-13). Each sits near the center of a random city for the day; cities are filled evenly, so every city has 1 or 2 vendors and never two of the same kind. Ask any walker for `news`: one line lists the vendors in that city, another names a vendor elsewhere |
 | Stock | New random stock each server start: 14 foods; all potions plus 16 runes; 30 creature products |
 | Prices | Food, potions and runes: the cheapest price any NPC in this datapack asks. Creature products: 1.5x the best price NPCs pay for them (so hunting still pays). Vendors only sell; they don't buy |
 | Status | GOD command `/citylife`: NPCs per city, how many are at sea, where the vendors are |

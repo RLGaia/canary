@@ -12,8 +12,10 @@ FamilyCityLife = {
 	walkersPerCity = 16,
 
 	-- Vendors per kind (food, potions/runes, creature products). Each one is
-	-- placed in a random city at server start and stays there that day.
-	vendorsPerKind = 2,
+	-- placed in a random city at server start and stays there that day; the
+	-- cities are filled evenly (6 per kind = 18 vendors, 1-2 in each of the 11
+	-- cities). 11 per kind puts one of each kind in every city.
+	vendorsPerKind = 6,
 
 	-- Chance (0-1) that a walker, after reaching a spot, sails to another city.
 	travelChance = 0.08,

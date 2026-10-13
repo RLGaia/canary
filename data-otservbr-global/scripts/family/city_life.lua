@@ -331,12 +331,27 @@ local function newsLine(walker)
 	if FamilyYasirCity then
 		options[#options + 1] = "Yasir, the oriental trader, docked his ship in " .. FamilyYasirCity .. " today. He buys rare creature products."
 	end
+	-- Vendors: one line about the vendors in this city, one about a random
+	-- vendor elsewhere (so Rashid and Yasir are still mentioned often).
+	local here, elsewhere = {}, {}
 	for _, kind in ipairs(cfg.vendorKinds) do
 		for _, vendor in ipairs(vendorsByKind[kind.key] or {}) do
 			if vendor.city then
-				options[#options + 1] = string.format("%s the %s is in %s today.", vendor.name, kind.title, vendor.city.name)
+				if walker.city and vendor.city.name == walker.city.name then
+					if vendor ~= walker then
+						here[#here + 1] = string.format("%s the %s", vendor.name, kind.title)
+					end
+				else
+					elsewhere[#elsewhere + 1] = string.format("%s the %s is in %s today.", vendor.name, kind.title, vendor.city.name)
+				end
 			end
 		end
+	end
+	if #here > 0 then
+		options[#options + 1] = "Here in " .. walker.city.name .. " today: " .. table.concat(here, ", ") .. "."
+	end
+	if #elsewhere > 0 then
+		options[#options + 1] = pick(elsewhere)
 	end
 	local cityLines = walker.city and cfg.cityChatter[walker.city.name]
 	if cityLines then
@@ -752,9 +767,11 @@ function cityLife.onStartup()
 		::continue::
 	end
 
-	-- Vendors: each in a random city (vendors of one kind in different
-	-- cities), around a spot near the center.
+	-- Vendors: each in a random city, around a spot near the center. Vendors
+	-- of one kind go to different cities, and the cities with the fewest
+	-- vendors so far are filled first, so every city gets its share.
 	local vendorCount = 0
+	local vendorsInCity = {}
 	for _, kind in ipairs(cfg.vendorKinds) do
 		vendorsByKind[kind.key] = {}
 		local cityOrder = {}
@@ -765,9 +782,21 @@ function cityLife.onStartup()
 			local j = math.random(i)
 			cityOrder[i], cityOrder[j] = cityOrder[j], cityOrder[i]
 		end
+		-- Stable after the shuffle: equal counts keep their random order.
+		for i = 2, #cityOrder do
+			local current, j = cityOrder[i], i - 1
+			while j >= 1 and (vendorsInCity[cityOrder[j]] or 0) > (vendorsInCity[current] or 0) do
+				cityOrder[j + 1] = cityOrder[j]
+				j = j - 1
+			end
+			cityOrder[j + 1] = current
+		end
 		for n = 1, cfg.vendorsPerKind do
 			local entry = nextName()
 			local cityState = #cityOrder > 0 and cityOrder[(n - 1) % #cityOrder + 1]
+			if cityState then
+				vendorsInCity[cityState] = (vendorsInCity[cityState] or 0) + 1
+			end
 			local state = cityState and cityState.areas[1]
 			if entry and state then
 				local vendor = newWalker(entry, kind)
