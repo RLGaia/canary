@@ -23,18 +23,20 @@ experienceStages = {
 	{ minlevel = 201, multiplier = 3 },
 }
 
+-- Skills and magic level: by the level of that skill (not the character
+-- level). Raised on 2026-10-13 from 10/7/5/3 to 12/9/7/4.
 skillsStages = {
-	{ minlevel = 10, maxlevel = 60, multiplier = 10 },
-	{ minlevel = 61, maxlevel = 80, multiplier = 7 },
-	{ minlevel = 81, maxlevel = 100, multiplier = 5 },
-	{ minlevel = 101, multiplier = 3 },
+	{ minlevel = 0, maxlevel = 60, multiplier = 12 },
+	{ minlevel = 61, maxlevel = 80, multiplier = 9 },
+	{ minlevel = 81, maxlevel = 100, multiplier = 7 },
+	{ minlevel = 101, multiplier = 4 },
 }
 
 magicLevelStages = {
-	{ minlevel = 0, maxlevel = 30, multiplier = 10 },
-	{ minlevel = 31, maxlevel = 60, multiplier = 7 },
-	{ minlevel = 61, maxlevel = 90, multiplier = 5 },
-	{ minlevel = 91, multiplier = 3 },
+	{ minlevel = 0, maxlevel = 30, multiplier = 12 },
+	{ minlevel = 31, maxlevel = 60, multiplier = 9 },
+	{ minlevel = 61, maxlevel = 90, multiplier = 7 },
+	{ minlevel = 91, multiplier = 4 },
 }
 
 -- ---------------------------------------------------------------------------
@@ -137,6 +139,17 @@ function familyReport.onStartup()
 		getRateFromTable(experienceStages, 101, 1),
 		getRateFromTable(experienceStages, 201, 1),
 		leversPatched
+	)
+	logger.info(
+		"[Family] skills x{}/x{}/x{}/x{} (skill 10/61/81/101); magic level x{}/x{}/x{}/x{} (ML 0/31/61/91)",
+		getRateFromTable(skillsStages, 10, 1),
+		getRateFromTable(skillsStages, 61, 1),
+		getRateFromTable(skillsStages, 81, 1),
+		getRateFromTable(skillsStages, 101, 1),
+		getRateFromTable(magicLevelStages, 0, 1),
+		getRateFromTable(magicLevelStages, 31, 1),
+		getRateFromTable(magicLevelStages, 61, 1),
+		getRateFromTable(magicLevelStages, 91, 1)
 	)
 	return true
 end

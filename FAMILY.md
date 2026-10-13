@@ -121,8 +121,8 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Premium | Every account is always premium | `family\config.family.lua` (`freePremium`) |
 | PvP | No PvP (`no-pvp`) | `family\config.family.lua` |
 | Experience | 10x up to level 50, 7x to 100, 5x to 200, 3x after | `data\scripts\family\solo_balance.lua` |
-| Skills | 10x up to skill 60, 7x to 80, 5x to 100, 3x after | same |
-| Magic level | 10x up to ML 30, 7x to 60, 5x to 90, 3x after | same |
+| Skills | 12x up to skill 60, 9x to 80, 7x to 100, 4x after (by the level of that skill; raised from 10/7/5/3 on 2026-10-13). In game, `!serverinfo` shows your current rates | same |
+| Magic level | 12x up to ML 30, 9x to 60, 7x to 90, 4x after (raised from 10/7/5/3 on 2026-10-13) | same |
 | Loot | 2x, rarest items first | `family\config.family.lua` |
 | Bosses | 50% health, 70% damage (Bosstiary bosses only) | `family\config.family.lua` |
 | Boss cooldown | 1 hour, also for levers that set their own longer cooldown | both files |
@@ -136,6 +136,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Party quests | One player can do the quests in the table below | the files listed there |
 | Exclusive quests | Both Djinn factions; all three Secret Service agencies, one after another; every chest of a "choose one reward" room | `data\scripts\family\solo_quests.lua` |
 | City life | About 190 walking NPCs in 11 cities with quest tips, ship travel and 18 vendors (see "City life" below) | `data-otservbr-global\scripts\family\city_life.lua` |
+| Daily reward | The streak never expires: missing days costs no joker tokens and keeps the streak bonuses. A new reward day starts at 06:00 even if the server was off then (upstream, the day only advanced while the server ran at 06:00) | `data\scripts\family\daily_reward.lua` (`Family.dailyRewardNeverExpires`) |
 | Soul War reward | The final chest gives another random Soul item after each new Megalomania kill, or once every 20 h | `solo_quests.lua` |
 | Grizzly Adams tasks | Killing in the Name Of without level ranges: every hunting task at any level (crocodiles to destroyers), points never capped by level, rank promotions, the full boss list and the special tasks open at any level. Still as upstream: 3 tasks at a time, each task 3 times, Demons only for Elite Hunters, the points needed per rank | `solo_quests.lua` (`Family.noTaskLevelCap`) |
 
