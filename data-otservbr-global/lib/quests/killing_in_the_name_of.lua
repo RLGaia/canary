@@ -934,7 +934,8 @@ function Player.getTasks(self)
 	for k, v in pairs(tasks.GrizzlyAdams) do
 		if self:getStorageValue(QUESTSTORAGE_BASE + k) < 1 and self:getStorageValue(REPEATSTORAGE_BASE + k) < repeatTimes then
 			able[k] = true
-			if self:getLevel() < v.level[1] or self:getLevel() > v.level[2] then
+			-- FAMILY: no level range when Family.noTaskLevelCap is set.
+			if not (Family and Family.noTaskLevelCap) and (self:getLevel() < v.level[1] or self:getLevel() > v.level[2]) then
 				able[k] = false
 			end
 			if v.storage and self:getStorageValue(v.storage[1]) < v.storage[2] then
@@ -989,7 +990,8 @@ function Player.canStartTask(self, name, table)
 	if self:getStorageValue(REPEATSTORAGE_BASE + id) >= repeatTimes or v.norepeatable and self:getStorageValue(REPEATSTORAGE_BASE + id) > 0 then
 		return false
 	end
-	if v.level and self:getLevel() >= v.level[1] and self:getLevel() <= v.level[2] then
+	-- FAMILY: no level range when Family.noTaskLevelCap is set.
+	if v.level and (Family and Family.noTaskLevelCap or self:getLevel() >= v.level[1] and self:getLevel() <= v.level[2]) then
 		if v.premium then
 			if self:isPremium() then
 				if v.rank then

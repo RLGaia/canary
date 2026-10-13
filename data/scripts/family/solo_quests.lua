@@ -12,11 +12,17 @@
 --     (Annihilator, Pits of Inferno, Barbarian Arena, Thieves Guild, Wrath of
 --     the Emperor, The Inquisition, The Demon Oak).
 --   * Soul War: the final reward chest can be opened again (see below).
+--   * Killing in the Name of (Grizzly Adams): no level ranges. Every hunting
+--     task, rank promotion, boss and special task is open at any level, and
+--     points are never capped by level.
 
 Family = Family or {}
 
 -- Set to false to restore the upstream "pick one side / one reward" rules.
 Family.unlockExclusiveQuests = true
+
+-- Set to false to restore the upstream level ranges of Grizzly Adams' tasks.
+Family.noTaskLevelCap = true
 
 -- ---------------------------------------------------------------------------
 -- Chests from startup/tables/chest.lua whose group shares one storage

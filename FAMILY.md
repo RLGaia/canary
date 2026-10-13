@@ -137,6 +137,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Exclusive quests | Both Djinn factions; all three Secret Service agencies, one after another; every chest of a "choose one reward" room | `data\scripts\family\solo_quests.lua` |
 | City life | About 190 walking NPCs in 11 cities with quest tips, ship travel and 18 vendors (see "City life" below) | `data-otservbr-global\scripts\family\city_life.lua` |
 | Soul War reward | The final chest gives another random Soul item after each new Megalomania kill, or once every 20 h | `solo_quests.lua` |
+| Grizzly Adams tasks | Killing in the Name Of without level ranges: every hunting task at any level (crocodiles to destroyers), points never capped by level, rank promotions, the full boss list and the special tasks open at any level. Still as upstream: 3 tasks at a time, each task 3 times, Demons only for Elite Hunters, the points needed per rank | `solo_quests.lua` (`Family.noTaskLevelCap`) |
 
 To change a number, edit the file in the table and restart the server.
 
@@ -164,6 +165,8 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data-otservbr-global/scripts/world_changes/oriental_trader.lua` | Yasir (oriental trader) comes every day instead of 33% of days, in Ankrahmun, Carlin or Liberty Bay; city NPCs tell where (`news`) |
 | `data-otservbr-global/scripts/raids/monsters/undead_cavebear.lua` | Own raid name (upstream reused the Draptor raid's name, so one of them never happened) |
 | `data-otservbr-global/npc/` Secret Service NPCs: `chester_kahs`, `emma`, `uncle` | After finishing one agency, the next can be joined |
+| `data-otservbr-global/lib/quests/killing_in_the_name_of.lua` | Task level ranges ignored when `Family.noTaskLevelCap` is set |
+| `data-otservbr-global/npc/grizzly_adams.lua` | No level ranges: full task list, no points cap, promotions, all bosses and special tasks at any level (same switch) |
 
 If a Canary update conflicts in `raids.xml` or `otservbr-monster.xml`, take the upstream file and
 apply the same caps again (margin above 30 becomes 30; spawntime above 3600 becomes 3600).

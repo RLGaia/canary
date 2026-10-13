@@ -104,6 +104,15 @@ npcType.onCheckItem = function(npc, player, clientId, subType) end
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 
+-- FAMILY: with Family.noTaskLevelCap, level ranges don't apply (tasks, points,
+-- promotions, bosses, special tasks). See data/scripts/family/solo_quests.lua.
+local function noLevelCap()
+	return Family and Family.noTaskLevelCap
+end
+local function levelAtLeast(player, level)
+	return noLevelCap() or player:getLevel() >= level
+end
+
 npcType.onThink = function(npc, interval)
 	npcHandler:onThink(npc, interval)
 end
@@ -135,11 +144,11 @@ local function greetCallback(npc, creature)
 	if player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.QuestLogEntry) ~= 0 then
 		npcHandler:setMessage(MESSAGE_GREET, "Hi there, do you want to to {join} the 'Paw and Fur - Hunting Elite'?")
 	elseif
-		player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) < 0 and player:getStorageValue(POINTSSTORAGE) >= 10 and player:getLevel() >= 6 -- to Huntsman Rank
-		or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 0 and player:getStorageValue(POINTSSTORAGE) >= 20 and player:getLevel() >= 6 -- to Ranger Rank
-		or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 2 and player:getStorageValue(POINTSSTORAGE) >= 40 and player:getLevel() >= 50 -- to Big Game Hunter Rank
-		or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 4 and player:getStorageValue(POINTSSTORAGE) >= 70 and player:getLevel() >= 80 -- to Trophy Hunter Rank
-		or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 6 and player:getStorageValue(POINTSSTORAGE) >= 100 and player:getLevel() >= 130
+		player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) < 0 and player:getStorageValue(POINTSSTORAGE) >= 10 and levelAtLeast(player, 6) -- to Huntsman Rank
+		or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 0 and player:getStorageValue(POINTSSTORAGE) >= 20 and levelAtLeast(player, 6) -- to Ranger Rank
+		or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 2 and player:getStorageValue(POINTSSTORAGE) >= 40 and levelAtLeast(player, 50) -- to Big Game Hunter Rank
+		or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 4 and player:getStorageValue(POINTSSTORAGE) >= 70 and levelAtLeast(player, 80) -- to Trophy Hunter Rank
+		or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 6 and player:getStorageValue(POINTSSTORAGE) >= 100 and levelAtLeast(player, 130)
 	then -- to Elite Hunter Rank
 		npcHandler:setMessage(MESSAGE_GREET, "Good to see you again |PLAYERNAME|. You gained " .. player:getStorageValue(POINTSSTORAGE) .. " points for our society. Ask me for {promotion} to advance your rank!")
 	else
@@ -429,11 +438,11 @@ local function creatureSayCallback(npc, creature, type, message)
 			return true
 		end
 		if
-			player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) < 0 and player:getStorageValue(POINTSSTORAGE) >= 10 and player:getLevel() >= 6 -- to Huntsman Rank
-			or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 0 and player:getStorageValue(POINTSSTORAGE) >= 20 and player:getLevel() >= 6 -- to Ranger Rank
-			or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 2 and player:getStorageValue(POINTSSTORAGE) >= 40 and player:getLevel() >= 50 -- to Big Game Hunter Rank
-			or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 4 and player:getStorageValue(POINTSSTORAGE) >= 70 and player:getLevel() >= 80 -- to Trophy Hunter Rank
-			or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 6 and player:getStorageValue(POINTSSTORAGE) >= 100 and player:getLevel() >= 130
+			player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) < 0 and player:getStorageValue(POINTSSTORAGE) >= 10 and levelAtLeast(player, 6) -- to Huntsman Rank
+			or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 0 and player:getStorageValue(POINTSSTORAGE) >= 20 and levelAtLeast(player, 6) -- to Ranger Rank
+			or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 2 and player:getStorageValue(POINTSSTORAGE) >= 40 and levelAtLeast(player, 50) -- to Big Game Hunter Rank
+			or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 4 and player:getStorageValue(POINTSSTORAGE) >= 70 and levelAtLeast(player, 80) -- to Trophy Hunter Rank
+			or player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 6 and player:getStorageValue(POINTSSTORAGE) >= 100 and levelAtLeast(player, 130)
 		then -- to Elite Hunter Rank
 			npcHandler:say("You are ready to advance one rank in our society |PLAYERNAME|. Ask me for a {promotion} first.", npc, creature)
 			return true
@@ -482,7 +491,7 @@ local function creatureSayCallback(npc, creature, type, message)
 							end
 
 							local pointsToReceive = reward.value[1] * ratePoints
-							if player:getStorageValue(POINTSSTORAGE) >= 40 and player:getLevel() < 50 or player:getStorageValue(POINTSSTORAGE) >= 70 and player:getLevel() < 80 or player:getStorageValue(POINTSSTORAGE) >= 100 and player:getLevel() < 130 then
+							if not noLevelCap() and (player:getStorageValue(POINTSSTORAGE) >= 40 and player:getLevel() < 50 or player:getStorageValue(POINTSSTORAGE) >= 70 and player:getLevel() < 80 or player:getStorageValue(POINTSSTORAGE) >= 100 and player:getLevel() < 130) then -- FAMILY: no points cap
 								messageAltPoints = true
 							elseif player:getLevel() >= 130 and player:getStorageValue(POINTSSTORAGE) <= 20 then
 								player:setStorageValue(POINTSSTORAGE, getPlayerTasksPoints(creature) + pointsToReceive + 3)
@@ -562,7 +571,15 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 10)
 			return true
 		end
-		if player:getLevel() < 50 then
+		if noLevelCap() then -- FAMILY: every task, whatever the level
+			npcHandler:say({
+				"Alright, what would you like to hunt? Pick any task you like, old chap. For starters: {crocodiles}, {badgers}, {tarantulas}, {carniphilas}, {stone golems}, {mammoths}, {gnarlhounds}, ...",
+				"{terramites}, {apes}, {thornback tortoises} or {gargoyles}. A bit harder: {ice golems}, {quara scouts}, {mutated rats}, {ancient scarabs}, {wyverns}, {lancer beetles}, ...",
+				"{wailing widows}, {killer caimans}, {bonebeasts}, {crystal spiders} or {mutated tigers}. Tougher: {underwater quara}, {giant spiders}, {werewolves}, {nightmares}, ...",
+				"{hellspawns}, {high class lizards}, {stampors}, {brimstone bugs} or {mutated bats}. The hardest: {hydras}, {serpent spawns}, {medusae}, {behemoths}, {sea serpents}, ...",
+				"{hellhounds}, {ghastly dragons}, {undead dragons}, {draken} or {destroyers}" .. (player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 7 and ", or maybe {demons}." or "."),
+			}, npc, creature)
+		elseif player:getLevel() < 50 then
 			if player:getStorageValue(POINTSSTORAGE) >= 40 then
 				npcHandler:say({
 					"You may not advance in your rank anymore until you've levelled up. But you can accept tasks without getting Paw & Fur points, just for an experience reward and the possibility to fight a boss from the range lower than level 50. ...",
@@ -623,7 +640,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		end
 		local messageElse = "You already achieved the maximum rank for your level range. If you accept this task, you won't gain points for our society. Hunt " .. tasks.GrizzlyAdams[task].killsRequired .. " " .. tasks.GrizzlyAdams[task].raceName .. " and you'll be rewarded with experience and the possibility to choose a {boss}. Are you in, old chap?"
 		if table.contains(tier[1].allName, message:lower()) then
-			if player:getStorageValue(POINTSSTORAGE) >= 40 and player:getLevel() < 50 then
+			if not noLevelCap() and player:getStorageValue(POINTSSTORAGE) >= 40 and player:getLevel() < 50 then -- FAMILY
 				npcHandler:say(messageElse, npc, creature)
 			elseif table.contains({ "carniphilas", "carniphila" }, message:lower()) then
 				local chanceX = math.random(2)
@@ -638,7 +655,7 @@ local function creatureSayCallback(npc, creature, type, message)
 				npcHandler:say(messageStartTaskAlt[message:lower()], npc, creature)
 			end
 		elseif table.contains(tier[2].allName, message:lower()) then
-			if player:getStorageValue(POINTSSTORAGE) >= 70 and player:getLevel() < 80 then
+			if not noLevelCap() and player:getStorageValue(POINTSSTORAGE) >= 70 and player:getLevel() < 80 then -- FAMILY
 				npcHandler:say(messageElse, npc, creature)
 			elseif table.contains(tier[2].withsName, message:lower()) then
 				npcHandler:say(messageStartTask[message:lower()], npc, creature)
@@ -646,7 +663,7 @@ local function creatureSayCallback(npc, creature, type, message)
 				npcHandler:say(messageStartTaskAlt[message:lower()], npc, creature)
 			end
 		elseif table.contains(tier[3].allName, message:lower()) then
-			if player:getStorageValue(POINTSSTORAGE) >= 100 and player:getLevel() < 130 then
+			if not noLevelCap() and player:getStorageValue(POINTSSTORAGE) >= 100 and player:getLevel() < 130 then -- FAMILY
 				npcHandler:say(messageElse, npc, creature)
 			elseif table.contains(tier[3].withsName, message:lower()) then
 				npcHandler:say(messageStartTask[message:lower()], npc, creature)
@@ -666,11 +683,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		end
 		choose[playerId] = task
 		npcHandler:setTopic(playerId, 1)
-	elseif table.contains(tier[1].allName, message:lower()) and player:getLevel() < 50 and npcHandler:getTopic(playerId) < 2 then
+	elseif table.contains(tier[1].allName, message:lower()) and (noLevelCap() or player:getLevel() < 50) and npcHandler:getTopic(playerId) < 2 then
 		checkY(npc, player, message)
-	elseif table.contains(tier[2].allName, message:lower()) and player:getLevel() < 80 and npcHandler:getTopic(playerId) < 2 then
+	elseif table.contains(tier[2].allName, message:lower()) and (noLevelCap() or player:getLevel() < 80) and npcHandler:getTopic(playerId) < 2 then
 		checkY(npc, player, message)
-	elseif table.contains(tier[3].allName, message:lower()) and player:getLevel() < 130 and npcHandler:getTopic(playerId) < 2 then
+	elseif table.contains(tier[3].allName, message:lower()) and (noLevelCap() or player:getLevel() < 130) and npcHandler:getTopic(playerId) < 2 then
 		checkY(npc, player, message)
 	elseif message:lower() == "yes" and npcHandler:getTopic(playerId) == 1 then
 		player:setStorageValue(QUESTSTORAGE_BASE + choose[playerId], 1)
@@ -739,31 +756,31 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("You haven't started any task yet.", npc, creature)
 		end
 	elseif table.contains({ "promotion", "promotions" }, message:lower()) then
-		if player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) < 0 and player:getStorageValue(POINTSSTORAGE) >= 10 and player:getLevel() >= 6 then -- to Huntsman Rank
+		if player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) < 0 and player:getStorageValue(POINTSSTORAGE) >= 10 and levelAtLeast(player, 6) then -- to Huntsman Rank
 			npcHandler:say({
 				"You gained 10 points! Let me promote you to the first rank: 'Huntsman'. Congratulations! ...",
 				"If you find any trophies - either monster heads or other parts of monsters that you don't need - feel free to ask me for a trade.",
 			}, npc, creature)
 			player:setStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank, 0)
-		elseif player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 0 and player:getStorageValue(POINTSSTORAGE) >= 20 and player:getLevel() >= 6 then -- to Ranger Rank
+		elseif player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 0 and player:getStorageValue(POINTSSTORAGE) >= 20 and levelAtLeast(player, 6) then -- to Ranger Rank
 			npcHandler:say({
 				"You gained 20 points. It's time for a promotion. You advance to the rank of a 'Ranger'. Congratulations! ...",
 				"Oh, I made a deal with Lorek. He ships Rangers from our society - and higher ranks of course - to Banuta, Chor or near the mountain pass to Darama. Just ask him for a passage.",
 			}, npc, creature)
 			player:setStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank, 2)
-		elseif player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 2 and player:getStorageValue(POINTSSTORAGE) >= 40 and player:getLevel() >= 50 then -- to Big Game Hunter Rank
+		elseif player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 2 and player:getStorageValue(POINTSSTORAGE) >= 40 and levelAtLeast(player, 50) then -- to Big Game Hunter Rank
 			npcHandler:say({
 				"Good show! You gained 40 points for the 'Paw and Fur - Hunting Elite'. You have earned the right to join the ranks of those known as 'Big game hunter'. Congratulations! ...",
 				"From now on I'll buy more trophies from you!",
 			}, npc, creature)
 			player:setStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank, 4)
-		elseif player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 4 and player:getStorageValue(POINTSSTORAGE) >= 70 and player:getLevel() >= 80 then -- to Trophy Hunter Rank
+		elseif player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 4 and player:getStorageValue(POINTSSTORAGE) >= 70 and levelAtLeast(player, 80) then -- to Trophy Hunter Rank
 			npcHandler:say({
 				"Spiffing! You gained 70 hunting points! From now on you can call yourself a 'Trophy hunter'. As a reward I have this special backpack for you and in addition, you can sell some more rare trophies to me. ...",
 				"Ask me for {special} tasks from time to time.",
 			}, npc, creature)
 			player:setStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank, 6)
-		elseif player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 6 and player:getStorageValue(POINTSSTORAGE) >= 100 and player:getLevel() >= 130 then -- to Elite Hunter Rank
+		elseif player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank) == 6 and player:getStorageValue(POINTSSTORAGE) >= 100 and levelAtLeast(player, 130) then -- to Elite Hunter Rank
 			npcHandler:say("Congratulations, |PLAYERNAME|! You have gained the highest rank: 'Elite hunter'. If you haven't done yet, ask me for the {special} task.", npc, creature)
 			player:setStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.PawAndFurRank, 7)
 		else
@@ -774,15 +791,15 @@ local function creatureSayCallback(npc, creature, type, message)
 			return true
 		end
 		if player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.BossPoints) > 0 then
-			if player:getLevel() < 50 then
+			if player:getLevel() < 50 and not noLevelCap() then -- FAMILY: all bosses at any level
 				npcHandler:say("You can choose between the {Snapper}, {Hide}, {Deathbine} and the {Bloodtusk}.", npc, creature)
 				npcHandler:setTopic(playerId, 4)
-			elseif player:getLevel() >= 50 and player:getLevel() < 80 then
+			elseif player:getLevel() >= 50 and player:getLevel() < 80 and not noLevelCap() then
 				npcHandler:say({
 					"You can choose between the {Snapper}, {Hide}, {Deathbine}, the {Bloodtusk}, {Shardhead}, {Fleshcrawler}, {Ribstride}, {Bloodweb} and {Esmeralda}",
 				}, npc, creature)
 				npcHandler:setTopic(playerId, 5)
-			elseif player:getLevel() >= 80 and player:getLevel() < 130 then
+			elseif player:getLevel() >= 80 and player:getLevel() < 130 and not noLevelCap() then
 				npcHandler:say({
 					"You can choose between the {Snapper}, {Hide}, {Deathbine}, the {Bloodtusk}, {Shardhead}, {Fleshcrawler}, {Ribstride}, {Bloodweb}, {Esmeralda}, ...",
 					"{Thul}, {Flameborn}, {Sulphur Scuttler}, the {Old Widow}, {Hemming}, {Tormentor}, {Fazzrah}, {Tromphonyte} and {Bruise Payne}.",
@@ -913,7 +930,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		npcHandler:say("Speak to me again when you are done hunting", npc, creature)
 		npcHandler:setTopic(playerId, 0)
 	elseif table.contains({ "special", "special task" }, message:lower()) then
-		if player:getPawAndFurPoints() >= 70 and player:getLevel() >= 80 then
+		if player:getPawAndFurPoints() >= 70 and levelAtLeast(player, 80) then -- FAMILY
 			if player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.MissionTiquandasRevenge) < 1 then
 				npcHandler:say({
 					"Have you heard about {Tiquanda's Revenge}? It is said that the jungle itself is alive and takes revenge for all the bad things people have done to it. ...",
