@@ -66,8 +66,8 @@ local function patchBossLevers()
 end
 
 -- ---------------------------------------------------------------------------
--- 3. Tibia Coin store: every account keeps a large coin balance, so all store
---    items are available. Topped up on login.
+-- 3. Tibia Coin store: every account keeps a large balance of both regular and
+--    transferable coins, so all store items are available. Topped up on login.
 -- ---------------------------------------------------------------------------
 local familyCoins = CreatureEvent("FamilyStoreCoins")
 
@@ -75,6 +75,13 @@ function familyCoins.onLogin(player)
 	local coins = player:getTibiaCoins()
 	if coins and coins < FAMILY_COIN_FLOOR then
 		player:addTibiaCoins(FAMILY_COIN_TARGET - coins)
+	end
+	-- Most store offers (premium time, consumables...) are "transferable coin"
+	-- offers, and client 15.11 only enables their Buy button when the
+	-- transferable balance covers the price, so keep that balance full too.
+	local transferable = player:getTransferableCoins()
+	if transferable and transferable < FAMILY_COIN_FLOOR then
+		player:addTransferableCoins(FAMILY_COIN_TARGET - transferable)
 	end
 	return true
 end

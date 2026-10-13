@@ -127,7 +127,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Bosses | 50% health, 70% damage (Bosstiary bosses only) | `family\config.family.lua` |
 | Boss cooldown | 1 hour, also for levers that set their own longer cooldown | both files |
 | Boss levers | One player is always enough (all 66 standard levers, Soul War included) | `solo_balance.lua` |
-| Tibia Coins | Topped up to 10,000,000 on login whenever below 1,000,000 | `solo_balance.lua` |
+| Tibia Coins | Regular and transferable coins each topped up to 10,000,000 on login whenever below 1,000,000 (most store offers need transferable coins) | `solo_balance.lua` |
 | Conveniences | Auto-loot, auto-bank, free third Prey and Hunting Task slots | `family\config.family.lua` |
 | Death | No experience, skill or item loss: you only wake up in the temple. Everyone always has full blessings | `family\config.family.lua`, `solo_balance.lua` |
 | Training | Exercise weapons never run out (buy one in the Store with the free coins); exercise and offline training 2x faster | both files |
