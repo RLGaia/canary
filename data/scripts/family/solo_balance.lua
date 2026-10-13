@@ -41,25 +41,28 @@ magicLevelStages = {
 
 -- ---------------------------------------------------------------------------
 -- 2. Boss levers: one player is always enough, and no lever keeps a cooldown
---    longer than FAMILY_BOSS_COOLDOWN. Wraps the BossLever constructor from
---    data/libs/functions/boss_lever.lua, which every standard boss lever uses.
+--    longer than FAMILY_BOSS_COOLDOWN. Every standard boss lever uses
+--    BossLever (data/libs/functions/boss_lever.lua) and registers itself as
+--    BossLever[<boss name>]. Some levers (Soul War) are created before this
+--    file loads, so the registered levers are adjusted at startup, before
+--    anyone can use them.
 -- ---------------------------------------------------------------------------
 local leversPatched = 0
-local leverMeta = BossLever and getmetatable(BossLever)
-if leverMeta and type(leverMeta.__call) == "function" then
-	local originalNew = leverMeta.__call
-	leverMeta.__call = function(self, config)
-		if type(config) == "table" then
-			config.minPlayers = 1
-			if config.timeToFightAgain and config.timeToFightAgain > FAMILY_BOSS_COOLDOWN then
-				config.timeToFightAgain = FAMILY_BOSS_COOLDOWN
+
+local function patchBossLevers()
+	if not BossLever then
+		logger.warn("[Family] BossLever not found; boss levers keep their original party size and cooldown")
+		return
+	end
+	for _, lever in pairs(BossLever) do
+		if type(lever) == "table" and lever.playerPositions and lever.timeToFightAgain then
+			lever.minPlayers = 1
+			if lever.timeToFightAgain > FAMILY_BOSS_COOLDOWN then
+				lever.timeToFightAgain = FAMILY_BOSS_COOLDOWN
 			end
 			leversPatched = leversPatched + 1
 		end
-		return originalNew(self, config)
 	end
-else
-	logger.warn("[Family] BossLever not found; boss levers keep their original party size and cooldown")
 end
 
 -- ---------------------------------------------------------------------------
@@ -115,6 +118,7 @@ familyDeathRules:register()
 local familyReport = GlobalEvent("FamilyBalanceReport")
 
 function familyReport.onStartup()
+	patchBossLevers()
 	local function float(key)
 		return string.format("%.2f", configManager.getFloat(key, false))
 	end
