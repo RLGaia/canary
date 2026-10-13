@@ -5,7 +5,7 @@
 -- Simple settings (premium, loot, boss multipliers...) are in
 -- family/config.family.lua; this file holds what config.lua cannot express.
 
-local FAMILY_BOSS_COOLDOWN = 4 * 60 * 60 -- seconds; matches bossDefaultTimeToFightAgain
+local FAMILY_BOSS_COOLDOWN = 60 * 60 -- seconds; matches bossDefaultTimeToFightAgain
 local FAMILY_COIN_FLOOR = 1000000 -- top up when the balance drops below this
 local FAMILY_COIN_TARGET = 10000000 -- ...back to this
 

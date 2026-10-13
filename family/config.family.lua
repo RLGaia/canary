@@ -39,9 +39,9 @@ rateBossHealth = 0.5
 rateBossAttack = 0.7
 rateBossDefense = 1.0
 
--- Boss cooldown: 4 hours instead of 20. solo_balance.lua also caps levers
+-- Boss cooldown: 1 hour instead of 20. solo_balance.lua also caps levers
 -- that set their own, longer cooldown.
-bossDefaultTimeToFightAgain = 4 * 60 * 60
+bossDefaultTimeToFightAgain = 60 * 60
 
 -- Conveniences
 autoLoot = true                 -- loot goes straight to your loot containers
