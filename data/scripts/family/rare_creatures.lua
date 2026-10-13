@@ -24,10 +24,9 @@ Family.rareCreatureMinutes = 30
 -- raids don't all start at the same minute (about 5 minutes extra on average).
 local START_CHANCE_PER_CHECK = 0.2
 
--- Raids that are not rare creatures and keep the upstream rules.
-local keepUpstream = {
-	["thais.rats"] = true,
-}
+-- Raids that keep the upstream rules (none for now; add a raid name such as
+-- ["thais.rats"] = true to exclude it).
+local keepUpstream = {}
 
 local function isFamilyRaid(raid)
 	return Family.rareCreatureMinutes and not keepUpstream[raid.name] and Raid.registry[raid.name] == raid

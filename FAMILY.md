@@ -132,7 +132,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Death | No experience, skill or item loss: you only wake up in the temple. Everyone always has full blessings | `family\config.family.lua`, `solo_balance.lua` |
 | Training | Exercise weapons never run out (buy one in the Store with the free coins); exercise and offline training 2x faster | both files |
 | Respawn | 2x faster (classic hunts: 90 s to 45 s) | `family\config.family.lua` |
-| Rare creatures | Rare raid creatures and bosses (Midnight Panther, Draptor, Undead Cavebear, Yeti, The Old Widow, Tyrn...) come back about 30 min after their last appearance, once the previous ones are dead, with one player online. Classic raids: at most 30 min between raids. Rare map spawns: at most 30 min | `data\scripts\family\rare_creatures.lua` and the files below |
+| Rare creatures | Rare raid creatures and bosses (Midnight Panther, Draptor, Undead Cavebear, Yeti, The Old Widow, Tyrn..., plus the Thais rat plague) come back about 30 min after their last appearance, once the previous ones are dead, with one player online. Classic raids: at most 30 min between raids. Rare map spawns: at most 30 min | `data\scripts\family\rare_creatures.lua` and the files below |
 | Party quests | One player can do the quests in the table below | the files listed there |
 | Exclusive quests | Both Djinn factions; all three Secret Service agencies, one after another; every chest of a "choose one reward" room | `data\scripts\family\solo_quests.lua` |
 | Soul War reward | The final chest gives another random Soul item after each new Megalomania kill, or once every 20 h | `solo_quests.lua` |
