@@ -6,8 +6,6 @@
 -- family/config.family.lua; this file holds what config.lua cannot express.
 
 local FAMILY_BOSS_COOLDOWN = 60 * 60 -- seconds; matches bossDefaultTimeToFightAgain
-local FAMILY_COIN_FLOOR = 1000000 -- top up when the balance drops below this
-local FAMILY_COIN_TARGET = 10000000 -- ...back to this
 
 Family = Family or {}
 -- Exercise weapons never lose charges (read by
@@ -66,27 +64,10 @@ local function patchBossLevers()
 end
 
 -- ---------------------------------------------------------------------------
--- 3. Tibia Coin store: every account keeps a large balance of both regular and
---    transferable coins, so all store items are available. Topped up on login.
+-- 3. Tibia Coins are no longer free (changed 2026-10-13): they are bought
+--    with gold from the Coin Brokers, see
+--    data-otservbr-global/scripts/family/coin_broker.lua.
 -- ---------------------------------------------------------------------------
-local familyCoins = CreatureEvent("FamilyStoreCoins")
-
-function familyCoins.onLogin(player)
-	local coins = player:getTibiaCoins()
-	if coins and coins < FAMILY_COIN_FLOOR then
-		player:addTibiaCoins(FAMILY_COIN_TARGET - coins)
-	end
-	-- Most store offers (premium time, consumables...) are "transferable coin"
-	-- offers, and client 15.11 only enables their Buy button when the
-	-- transferable balance covers the price, so keep that balance full too.
-	local transferable = player:getTransferableCoins()
-	if transferable and transferable < FAMILY_COIN_FLOOR then
-		player:addTransferableCoins(FAMILY_COIN_TARGET - transferable)
-	end
-	return true
-end
-
-familyCoins:register()
 
 -- ---------------------------------------------------------------------------
 -- 4. Death without penalty. config.family.lua sets deathLosePercent = 0 (no

@@ -262,6 +262,7 @@ FamilyCityLife.tips = {
 -- Tips shown when no quest tip fits (also mixed in now and then).
 FamilyCityLife.serverTips = {
 	"Exercise weapons from the Store never run out on this server, and training is twice as fast.",
+	"Every port city has a Coin Broker near the temple: Tibia Coins for gold, 5,000 gold each.",
 	"Dying here only sends you back to the temple. No experience or items lost!",
 	"Bosses can be fought again after one hour, and one player is enough for every boss lever.",
 	"Rare creatures and raids come back about every half hour.",
