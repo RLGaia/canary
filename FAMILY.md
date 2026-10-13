@@ -161,6 +161,7 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data-otservbr-global/scripts/quests/soul_war/soul_war_mechanics.lua` | Counts each Megalomania kill for the reward chest |
 | `data-otservbr-global/raids/raids.xml` | Every `margin` capped at 30 (minutes between two classic raids) |
 | `data-otservbr-global/world/otservbr-monster.xml` | Every `spawntime` above 3600 set to 3600 (75 rare spawns; with `rateSpawn = 2` that is 30 min) |
+| `data-otservbr-global/scripts/world_changes/oriental_trader.lua` | Yasir (oriental trader) comes every day instead of 33% of days, in Ankrahmun, Carlin or Liberty Bay; city NPCs tell where (`news`) |
 | `data-otservbr-global/scripts/raids/monsters/undead_cavebear.lua` | Own raid name (upstream reused the Draptor raid's name, so one of them never happened) |
 | `data-otservbr-global/npc/` Secret Service NPCs: `chester_kahs`, `emma`, `uncle` | After finishing one agency, the next can be joined |
 

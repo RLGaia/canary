@@ -1,6 +1,6 @@
 local config = {
 	enableSpawn = true,
-	spawnChance = 33,
+	spawnChance = 100, -- FAMILY: Yasir comes every day (upstream: 33% chance)
 	towns = {
 		[1] = {
 			removeItems = {
@@ -62,6 +62,7 @@ function orientalTrader.onStartup()
 		Game.loadMap(DATA_DIRECTORY .. "/world/world_changes/oriental_trader/" .. mapName .. ".otbm")
 
 		message = string.format("[World Change] Yasir has arrived in %s today!", randTown.mapName)
+		FamilyYasirCity = randTown.mapName -- FAMILY: city life NPCs tell players where he is
 		addEvent(spawnYasir, 60000, randTown.yasirPosition)
 
 		logger.info(message)

@@ -328,6 +328,9 @@ local function newsLine(walker)
 	local options = {
 		"Rashid is in " .. rashidToday() .. " today. He buys almost everything.",
 	}
+	if FamilyYasirCity then
+		options[#options + 1] = "Yasir, the oriental trader, docked his ship in " .. FamilyYasirCity .. " today. He buys rare creature products."
+	end
 	for _, kind in ipairs(cfg.vendorKinds) do
 		for _, vendor in ipairs(vendorsByKind[kind.key] or {}) do
 			if vendor.city then

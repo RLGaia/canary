@@ -268,6 +268,7 @@ FamilyCityLife.serverTips = {
 	"Offline training works even while the server is off. Log out on a training statue.",
 	"Auto-loot and auto-bank are on. Your gold goes straight to the bank.",
 	"Rashid buys almost any loot. Ask me for {news} to know where he is today.",
+	"Yasir, the oriental trader, visits every day: Ankrahmun, Carlin or Liberty Bay. Ask me for {news}.",
 }
 
 -- Rashid's route, from scripts/globalevents/spawn/rashid.lua (os.date wday 1 = Sunday).
