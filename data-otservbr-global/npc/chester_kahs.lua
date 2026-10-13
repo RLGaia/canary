@@ -188,7 +188,8 @@ local function creatureSayCallback(npc, creature, type, message)
 		npcHandler:say("Do you need the healing now?", npc, creature)
 		npcHandler:setTopic(playerId, 4)
 	elseif MsgContains(message, "join") then
-		if player:getStorageValue(Storage.Quest.U8_1.SecretService.Quest) < 1 then
+		-- FAMILY: after finishing one agency, the others can be joined too (data/scripts/family/solo_quests.lua)
+		if Family.secretServiceCanJoin(player, Storage.Quest.U8_1.SecretService.TBIMission01) then
 			npcHandler:say({
 				"Our bureau is an old and traditional branch of the Thaian government. It takes more than lip service to join our ranks ...",
 				"Absolute loyalty to the crown and the Thaian cause as well as courage face-to-face with the enemy is the least we expect from our members ...",
@@ -197,7 +198,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 5)
 		end
 	elseif MsgContains(message, "mission") then
-		if player:getStorageValue(Storage.Quest.U8_1.SecretService.Quest) == 1 and player:getStorageValue(Storage.Quest.U8_1.SecretService.AVINMission01) < 1 and player:getStorageValue(Storage.Quest.U8_1.SecretService.CGBMission01) < 1 then
+		-- FAMILY: a player who finished another agency before may start this one
+		local familyStart = Family.unlockExclusiveQuests and player:getStorageValue(Storage.Quest.U8_1.SecretService.TBIMission01) < 1
+		if player:getStorageValue(Storage.Quest.U8_1.SecretService.Quest) == 1 and (familyStart or (player:getStorageValue(Storage.Quest.U8_1.SecretService.AVINMission01) < 1 and player:getStorageValue(Storage.Quest.U8_1.SecretService.CGBMission01) < 1)) then
 			player:setStorageValue(Storage.Quest.U8_1.SecretService.Quest, 2)
 			player:setStorageValue(Storage.Quest.U8_1.SecretService.TBIMission01, 1)
 			npcHandler:say({

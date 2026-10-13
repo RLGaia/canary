@@ -155,6 +155,8 @@ function questReward.onUse(player, item, fromPosition, itemEx, toPosition)
 	if not setting then
 		return true
 	end
+	-- FAMILY: each chest of a "choose one" group can be opened once (data/scripts/family/solo_quests.lua)
+	local familyChoice = Family and Family.isChoiceChest(setting)
 
 	if setting.weight then
 		local message = "You have found a " .. getItemName(setting.container) .. "."
@@ -180,7 +182,11 @@ function questReward.onUse(player, item, fromPosition, itemEx, toPosition)
 			return true
 		end
 	else
-		if player:getStorageValue(setting.storage) >= 1 then
+		local alreadyTaken = player:getStorageValue(setting.storage) >= 1
+		if familyChoice then
+			alreadyTaken = Family.isChestTaken(player, item.uid)
+		end
+		if alreadyTaken then
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The " .. getItemName(setting.itemId) .. " is empty.")
 			return true
 		end
@@ -258,6 +264,9 @@ function questReward.onUse(player, item, fromPosition, itemEx, toPosition)
 		end
 	end
 
+	if familyChoice then
+		Family.markChestTaken(player, item.uid)
+	end
 	return true
 end
 

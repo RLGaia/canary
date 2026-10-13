@@ -133,7 +133,8 @@ local function creatureSayCallback(npc, creature, type, message)
 		npcHandler:say("As you wish.", npc, creature)
 		npcHandler:setTopic(playerId, 0)
 	elseif MsgContains(message, "join") then
-		if player:getStorageValue(Storage.Quest.U8_1.SecretService.Quest) < 1 then
+		-- FAMILY: after finishing one agency, the others can be joined too (data/scripts/family/solo_quests.lua)
+		if Family.secretServiceCanJoin(player, Storage.Quest.U8_1.SecretService.CGBMission01) then
 			if player:getSex() == PLAYERSEX_FEMALE then
 				npcHandler:say(
 					"The girls brigade is the foremost front on which we fight the numerous enemies of our city ... It's a constant race to stay ahead of our enemies. Absolute loyalty and the willingness to put ones life at stake are attributes that are vital for this brigade ... If you join, you dedicate your service to Carlin alone! Do you truly think that you are girl enough to join the brigade?",
@@ -148,7 +149,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("Don't try to fool me. We are perfectly aware to whom you are loyal.", npc, creature)
 		end
 	elseif MsgContains(message, "mission") then
-		if player:getStorageValue(Storage.Quest.U8_1.SecretService.Quest) == 1 and player:getStorageValue(Storage.Quest.U8_1.SecretService.TBIMission01) < 1 and player:getStorageValue(Storage.Quest.U8_1.SecretService.CGBMission01) < 1 then
+		-- FAMILY: a player who finished another agency before may start this one
+		local familyStart = Family.unlockExclusiveQuests and player:getStorageValue(Storage.Quest.U8_1.SecretService.CGBMission01) < 1
+		if player:getStorageValue(Storage.Quest.U8_1.SecretService.Quest) == 1 and (familyStart or (player:getStorageValue(Storage.Quest.U8_1.SecretService.TBIMission01) < 1 and player:getStorageValue(Storage.Quest.U8_1.SecretService.CGBMission01) < 1)) then
 			player:setStorageValue(Storage.Quest.U8_1.SecretService.Quest, 2)
 			player:setStorageValue(Storage.Quest.U8_1.SecretService.CGBMission01, 1)
 			npcHandler:say({

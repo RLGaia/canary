@@ -61,7 +61,9 @@ local function greetCallback(npc, creature, message)
 		return false
 	end
 
-	if player:getStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.Start) == 1 then
+	-- FAMILY: allies of the other Djinn faction are welcome too (data/scripts/family/solo_quests.lua)
+
+	if not Family.unlockExclusiveQuests and player:getStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.Start) == 1 then
 		npcHandler:say({
 			"Hahahaha! ...",
 			"|PLAYERNAME|, that almost sounded like the word of greeting. Humans - cute they are!",
@@ -129,7 +131,8 @@ local function creatureSayCallback(npc, creature, type, message)
 		end
 	elseif npcHandler:getTopic(playerId) == 1 then
 		if MsgContains(message, "yes") then
-			if player:getStorageValue(Storage.Quest.U7_4.DjinnWar.Faction.EfreetDoor) ~= 1 then
+			-- FAMILY: Efreet allies may also join the Marid
+			if Family.unlockExclusiveQuests or player:getStorageValue(Storage.Quest.U7_4.DjinnWar.Faction.EfreetDoor) ~= 1 then
 				npcHandler:say("Are you sure? You pledge loyalty to king Gabel, who is... you know. And you are willing to never ever set foot on Efreets' territory, unless you want to kill them? Yes?", npc, creature)
 				npcHandler:setTopic(playerId, 2)
 			else

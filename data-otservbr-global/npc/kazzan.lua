@@ -82,7 +82,8 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 
 	if MsgContains(message, "mission") and player:getStorageValue(Storage.Quest.U8_1.TibiaTales.ToAppeaseTheMightyQuest) < 1 then
-		if player:getStorageValue(Storage.Quest.U7_4.DjinnWar.Faction.MaridDoor) < 1 and player:getStorageValue(Storage.Quest.U7_4.DjinnWar.Faction.EfreetDoor) < 1 then
+		-- FAMILY: also offered to players who already joined a Djinn faction
+		if Family.unlockExclusiveQuests or (player:getStorageValue(Storage.Quest.U7_4.DjinnWar.Faction.MaridDoor) < 1 and player:getStorageValue(Storage.Quest.U7_4.DjinnWar.Faction.EfreetDoor) < 1) then
 			npcHandler:say("Do you know the location of the djinn fortresses in the mountains south of here?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		end

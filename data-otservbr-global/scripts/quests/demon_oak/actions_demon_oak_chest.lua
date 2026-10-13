@@ -8,7 +8,9 @@ local chests = {
 local demonOakChest = Action()
 function demonOakChest.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if chests[item.uid] then
-		if player:getStorageValue(Storage.Quest.U8_2.TheDemonOak.Done) ~= 2 then
+		-- FAMILY: after beating the Demon Oak every chest can be opened once (solo_quests.lua)
+		local done = player:getStorageValue(Storage.Quest.U8_2.TheDemonOak.Done)
+		if done < 2 or not Family.canOpenChoiceChest(player, item.uid, done ~= 2) then
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "It's empty.")
 			return true
 		end

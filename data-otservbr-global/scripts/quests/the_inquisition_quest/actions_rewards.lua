@@ -12,7 +12,9 @@ local rewards = {
 
 local inquisitionRewards = Action()
 function inquisitionRewards.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if player:getStorageValue(Storage.Quest.U8_2.TheInquisitionQuest.Reward) < 1 then
+	-- FAMILY: every reward chest can be opened once (data/scripts/family/solo_quests.lua)
+	local alreadyRewarded = player:getStorageValue(Storage.Quest.U8_2.TheInquisitionQuest.Reward) >= 1
+	if Family.canOpenChoiceChest(player, item.uid, alreadyRewarded) then
 		player:setStorageValue(Storage.Quest.U8_2.TheInquisitionQuest.Reward, 1)
 		player:setStorageValue(Storage.Quest.U8_2.TheInquisitionQuest.Questline, 25)
 		player:setStorageValue(Storage.Quest.U8_2.TheInquisitionQuest.Mission07, 5) -- The Inquisition Questlog- "Mission 7: The Shadow Nexus"

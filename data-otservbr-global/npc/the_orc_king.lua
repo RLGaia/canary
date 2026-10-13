@@ -75,7 +75,12 @@ local function creatureSayCallback(npc, creature, type, message)
 	-- Mission 3 - Orc Fortress
 	if MsgContains(message, "lamp") then
 		if efreet == 1 or marid == 1 then
-			if player:getStorageValue(Storage.Quest.U7_4.DjinnWar.RecievedLamp) ~= 1 then
+			-- FAMILY: one lamp per faction, so both Djinn wars can be finished (solo_quests.lua)
+			local needsLamp = player:getStorageValue(Storage.Quest.U7_4.DjinnWar.RecievedLamp) ~= 1
+			if Family.unlockExclusiveQuests then
+				needsLamp = (efreet == 1 and player:getStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.DoorToLamp) ~= 1) or (marid == 1 and player:getStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.DoorToLamp) ~= 1)
+			end
+			if needsLamp then
 				npcHandler:say({
 					"I can sense your evil intentions to imprison a djinn! You are longing for the lamp, which I still possess. ...",
 					"Who do you want to trap in this cursed lamp?",
@@ -94,7 +99,8 @@ local function creatureSayCallback(npc, creature, type, message)
 		-- Mission 3 - Orc Fortress
 	elseif npcHandler:getTopic(playerId) == 1 then
 		if MsgContains(message, "malor") then
-			if efreet == 1 then
+			-- FAMILY: if both missions are active, the faction still without a lamp gets this one
+			if efreet == 1 and not (Family.unlockExclusiveQuests and player:getStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.DoorToLamp) == 1) then
 				player:setStorageValue(Storage.Quest.U7_4.DjinnWar.EfreetFaction.DoorToLamp, 1)
 			elseif marid == 1 then
 				player:setStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.DoorToLamp, 1)

@@ -61,7 +61,9 @@ local function greetCallback(npc, creature, message)
 		return false
 	end
 
-	if player:getStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.Start) == 1 then
+	-- FAMILY: allies of the other Djinn faction are welcome too (data/scripts/family/solo_quests.lua)
+
+	if not Family.unlockExclusiveQuests and player:getStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.Start) == 1 then
 		npcHandler:say({
 			"Hahahaha! ...",
 			"|PLAYERNAME|, that almost sounded like the word of greeting. Humans - cute they are!",
@@ -133,7 +135,8 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("Of course. Then don't waste my time and shove off.", npc, creature)
 			npcHandler:setTopic(playerId, 0)
 		elseif MsgContains(message, "no") then
-			if player:getStorageValue(Storage.Quest.U7_4.DjinnWar.Faction.MaridDoor) == 1 then
+			-- FAMILY: Marid allies may also join the Efreet
+			if not Family.unlockExclusiveQuests and player:getStorageValue(Storage.Quest.U7_4.DjinnWar.Faction.MaridDoor) == 1 then
 				npcHandler:say("Who do you think you are? A Marid? Shove off you worm!", npc, creature)
 				npcHandler:setTopic(playerId, 0)
 			else

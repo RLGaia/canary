@@ -120,7 +120,8 @@ local function creatureSayCallback(npc, creature, type, message)
 		npcHandler:say("As you wish.", npc, creature)
 		npcHandler:setTopic(playerId, 0)
 	elseif MsgContains(message, "join") then
-		if player:getStorageValue(Storage.Quest.U8_1.SecretService.Quest) < 1 then
+		-- FAMILY: after finishing one agency, the others can be joined too (data/scripts/family/solo_quests.lua)
+		if Family.secretServiceCanJoin(player, Storage.Quest.U8_1.SecretService.AVINMission01) then
 			npcHandler:say({
 				"Well, well, well! As you might know, we are entrusted by the Venorean tradesmen to ensure the safety of their ventures ...",
 				"This task often puts our representatives in rather dangerous and challenging situations. On the other hand, you can expect a generous compensation for your efforts on our behalf...",
@@ -130,7 +131,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 1)
 		end
 	elseif MsgContains(message, "mission") then
-		if player:getStorageValue(Storage.Quest.U8_1.SecretService.Quest) == 1 and player:getStorageValue(Storage.Quest.U8_1.SecretService.TBIMission01) < 1 and player:getStorageValue(Storage.Quest.U8_1.SecretService.CGBMission01) < 1 then
+		-- FAMILY: a player who finished another agency before may start this one
+		local familyStart = Family.unlockExclusiveQuests and player:getStorageValue(Storage.Quest.U8_1.SecretService.AVINMission01) < 1
+		if player:getStorageValue(Storage.Quest.U8_1.SecretService.Quest) == 1 and (familyStart or (player:getStorageValue(Storage.Quest.U8_1.SecretService.TBIMission01) < 1 and player:getStorageValue(Storage.Quest.U8_1.SecretService.CGBMission01) < 1)) then
 			player:setStorageValue(Storage.Quest.U8_1.SecretService.Quest, 2)
 			player:setStorageValue(Storage.Quest.U8_1.SecretService.AVINMission01, 1)
 			player:addItem(402, 1)

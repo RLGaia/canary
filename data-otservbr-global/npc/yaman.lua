@@ -63,7 +63,9 @@ local function greetCallback(npc, creature, message)
 			return false
 		end
 
-		if player:getStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.Start) == 1 then
+		-- FAMILY: allies of the other Djinn faction are welcome too (data/scripts/family/solo_quests.lua)
+
+		if not Family.unlockExclusiveQuests and player:getStorageValue(Storage.Quest.U7_4.DjinnWar.MaridFaction.Start) == 1 then
 			npcHandler:say({
 				"Hahahaha! ...",
 				"|PLAYERNAME|, that almost sounded like the word of greeting. Humans - cute they are!",
