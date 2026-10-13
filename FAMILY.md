@@ -135,6 +135,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Rare creatures | Rare raid creatures and bosses (Midnight Panther, Draptor, Undead Cavebear, Yeti, The Old Widow, Tyrn..., plus the Thais rat plague) come back about 30 min after their last appearance, once the previous ones are dead, with one player online. Classic raids: at most 30 min between raids. Rare map spawns: at most 30 min | `data\scripts\family\rare_creatures.lua` and the files below |
 | Party quests | One player can do the quests in the table below | the files listed there |
 | Exclusive quests | Both Djinn factions; all three Secret Service agencies, one after another; every chest of a "choose one reward" room | `data\scripts\family\solo_quests.lua` |
+| City life | About 180 walking NPCs in 11 cities with quest tips, ship travel and 6 vendors (see "City life" below) | `data-otservbr-global\scripts\family\city_life.lua` |
 | Soul War reward | The final chest gives another random Soul item after each new Megalomania kill, or once every 20 h | `solo_quests.lua` |
 
 To change a number, edit the file in the table and restart the server.
@@ -175,6 +176,76 @@ Heart of Destruction final lever (needs 3 players).
 Quests still to check when reached (party mechanics beyond the entry lever): Ferumbras' Ascension,
 Heart of Destruction, Cults of Tibia, Oramond (Glooth Fairy), Dark Trails, The Order of the Lion,
 The Dream Courts, Forgotten Knowledge, Grave Danger.
+
+## City life (walking NPCs)
+
+Added 2026-10-13 to make the world feel inhabited. About 180 NPCs that look like
+players walk around 11 port cities, chat, give quest tips, and sometimes sail to
+another city. Six of them are vendors.
+
+| What | Details |
+|---|---|
+| Cities | Thais, Carlin, Venore, Ab'Dendriel, Edron, Darashia, Ankrahmun, Port Hope, Liberty Bay, Svargrond, Yalahar |
+| Walkers | 16 per city (176), unique names, random player outfits and colours |
+| Where they walk | Street level (floor 7) only. Never inside houses, never on stairs, holes or teleports. They pause at open spots, never in doorways |
+| Travel | About 8% of trips end at the harbour: the NPC vanishes and appears at another city's harbour 2–5 minutes later. Venore has no ship stop (its harbour is 43 sqm from the nearest street they can reach) |
+| Talking | Say `hi`, then `tip` (or `quest`), `news`, `job`, `name`, `bye`. They stand still while you talk |
+| Random lines | Every 45–150 s, only when a player is within sight |
+| Vendors | 2 food sellers, 2 potion and rune sellers, 2 creature products traders. Each sits in a random city for the day. Ask any walker for `news` to find them |
+| Stock | New random stock each server start: 14 foods; all potions plus 16 runes; 30 creature products |
+| Prices | Food, potions and runes: the cheapest price any NPC in this datapack asks. Creature products: 1.5x the best price NPCs pay for them (so hunting still pays). Vendors only sell; they don't buy |
+| Status | GOD command `/citylife`: NPCs per city, how many are at sea, where the vendors are |
+
+### Quest tips
+
+`tip` gives a quest that fits your level and that you haven't started yet (the
+three closest to your level are picked from), or now and then a server tip
+(training, death rules, bosses...). Locations come from the NPC positions in
+`world/otservbr-npc.xml` (direction from the city temple) and the keywords from
+the NPC scripts. Current tips:
+
+| From level | Quest | Who / where | Say |
+|---|---|---|---|
+| 8 | What a Foolish Quest | Bozo, Thais castle (north-west of the temple) | `join` |
+| 15 | The Postman Missions | Kevin, mountains south-west of Kazordoon, 1 floor up | `mission` |
+| 15 | The Thieves Guild | Dorian, basement north-west of the Thais temple | `join`, `mission` |
+| 20 | The Explorer Society | Angus, east of Port Hope | `join` |
+| 20 | Djinn factions | Melchior, desert north-west of Ankrahmun | `word of greeting` |
+| 20 | Barbarian Test | Sven, south-west of the Svargrond temple | `barbarian` |
+| 25 | Killing in the Name of (tasks) | Grizzly Adams, east of Port Hope, 1 floor up | `join`, `task` |
+| 30 | The Ice Islands | Iskan, north-east of Svargrond (after the Barbarian Test) | `mission` |
+| 30 | Svargrond Arena | Halvar, north-east of the Svargrond temple | `arena` |
+| 35 | To Appease the Mighty | Kazzan, palace north of the Darashia temple | `mission` |
+| 40 | The Secret Service | Chester Kahs (Thais), Emma (Carlin), Uncle (Venore) | `join` |
+| 40 | The Shattered Isles | Eleonore, north of the Liberty Bay temple, 2 floors up | `mission` |
+| 50 | The Ape City | Hairycles, far north-east of Port Hope | `mission` |
+| 50 | Hot Cuisine | Jean Pierre, south-west of Darashia, 1 floor up | `cook`, `apprentice` |
+| 60 | Sea of Light | Spectulus, top of the Edron academy | `mission` |
+| 60 | The Paradox Tower | Oldrak, tower south-west of Venore | `hugo`, `myth` |
+| 100 | The Annihilator | Deep under the north of Edron | (lever) |
+| 100 | The Inquisition | Henricus, basement south-west of the Thais temple | `mission` |
+| 120 | The Demon Oak | Oldrak | `demon oak` |
+| 250 | Soul War | Flickering Soul, deep underground south-east of Gray Beach | `task` |
+
+To add a tip, copy one entry in `FamilyCityLife.tips` and set `minLevel`, `text`
+and `started` (the quest's start storage, so the tip disappears once you begin it).
+
+### Files and tuning
+
+| File | Contents |
+|---|---|
+| `data-otservbr-global/scripts/lib/family_city_life_data.lua` | All settings and texts: on/off switch, walkers per city, travel chance and times, cities, names, outfits, chat lines, quest tips, vendor kinds and stock lists with prices |
+| `data-otservbr-global/scripts/family/city_life.lua` | The engine: street-area search, walking (A* inside the street area), travel, conversation, vendor shops, `/citylife` |
+
+Useful knobs in the data file: `enabled`, `walkersPerCity`, `vendorsPerKind`,
+`travelChance`, `travelMinutes`, `idleSeconds`, `chatterSeconds`, each city's
+`radius`, and each vendor kind's `randomCount`. Restart the server after a change.
+The server log lists, for every city, the street tiles found and whether ships
+work there, and where each vendor is that day.
+
+Known limits: they are NPCs (no fighting, trading items between players, parties,
+or VIP list). In a crowded narrow street they may briefly stand in your way; they
+step aside by picking another spot after a few seconds.
 
 ## Backups
 
