@@ -48,3 +48,23 @@ autoLoot = true                 -- loot goes straight to your loot containers
 autoBank = true                 -- looted gold goes straight to the bank
 preyFreeThirdSlot = true        -- third Prey slot without Tibia Coins
 taskHuntingFreeThirdSlot = true -- third Hunting Task slot without Tibia Coins
+
+-- ===========================================================================
+-- Batch 2 (2026-10-12): death, training and respawn
+-- ===========================================================================
+
+-- Death: no experience, skill or item loss. You only wake up in the temple.
+-- 0 = lose nothing (upstream -1 = the normal Tibia formula).
+deathLosePercent = 0
+-- Free full blessings below this level, so equipment never drops on death.
+-- solo_balance.lua also turns off item drops on death for characters
+-- without a vocation (Dawnport).
+adventurersBlessingLevel = 100000
+
+-- Training: exercise weapons and offline training (statues) work twice as
+-- fast. solo_balance.lua makes exercise weapons last forever.
+rateExerciseTrainingSpeed = 2.0
+rateOfflineTrainingSpeed = 2.0
+
+-- Respawn: monsters come back twice as fast (classic hunts: 90 s -> 45 s).
+rateSpawn = 2

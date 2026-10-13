@@ -9,6 +9,11 @@ local FAMILY_BOSS_COOLDOWN = 4 * 60 * 60 -- seconds; matches bossDefaultTimeToFi
 local FAMILY_COIN_FLOOR = 1000000 -- top up when the balance drops below this
 local FAMILY_COIN_TARGET = 10000000 -- ...back to this
 
+Family = Family or {}
+-- Exercise weapons never lose charges (read by
+-- data/scripts/actions/items/exercise_training_weapons.lua, FAMILY: edit).
+Family.infiniteTrainingWeapons = true
+
 -- ---------------------------------------------------------------------------
 -- 1. Level curves ("medium"). Used because config sets rateUseStages = true.
 --    These replace the upstream tables from data/stages.lua.
@@ -74,7 +79,37 @@ end
 familyCoins:register()
 
 -- ---------------------------------------------------------------------------
--- 4. Startup report: confirms in the server log that the family settings
+-- 4. Death without penalty. config.family.lua sets deathLosePercent = 0 (no
+--    experience or skill loss) and gives everyone full blessings, so nothing
+--    drops. Here, as a second guard, items never drop on death (also for
+--    characters without a vocation), and the login blessing message is
+--    replaced. Done at startup because several upstream scripts reload
+--    data/libs/systems/blessing.lua while scripts are loading.
+-- ---------------------------------------------------------------------------
+local familyDeathRules = GlobalEvent("FamilyDeathRules")
+
+function familyDeathRules.onStartup()
+	if not Blessings then
+		logger.warn("[Family] Blessings library not found; death item rules unchanged")
+		return true
+	end
+	Blessings.PlayerDeath = function(player, corpse, killer)
+		if not player:getSlotItem(CONST_SLOT_BACKPACK) then
+			player:addItem(ITEM_BAG, 1, false, CONST_SLOT_BACKPACK)
+		end
+		return true
+	end
+	Blessings.doAdventurerBlessing = function(player)
+		player:addMissingBless(true, true)
+		return true
+	end
+	return true
+end
+
+familyDeathRules:register()
+
+-- ---------------------------------------------------------------------------
+-- 5. Startup report: confirms in the server log that the family settings
 --    are active. Runs once, after every quest script has created its levers.
 -- ---------------------------------------------------------------------------
 local familyReport = GlobalEvent("FamilyBalanceReport")
@@ -94,6 +129,14 @@ function familyReport.onStartup()
 		configManager.getNumber(configKeys.BOSS_DEFAULT_TIME_TO_FIGHT_AGAIN) / 3600,
 		tostring(configManager.getBoolean(configKeys.AUTOLOOT)),
 		tostring(configManager.getBoolean(configKeys.AUTOBANK))
+	)
+	logger.info(
+		"[Family] death: lose {}% exp/skills, blessed below level {}; training x{} (weapons infinite={}); respawn x{}",
+		configManager.getNumber(configKeys.DEATH_LOSE_PERCENT),
+		configManager.getNumber(configKeys.ADVENTURERSBLESSING_LEVEL),
+		float(configKeys.RATE_EXERCISE_TRAINING_SPEED),
+		tostring(Family.infiniteTrainingWeapons),
+		configManager.getNumber(configKeys.RATE_SPAWN)
 	)
 	logger.info(
 		"[Family] experience x{}/x{}/x{}/x{} (levels 1/51/101/201); boss levers set to 1 player: {}",

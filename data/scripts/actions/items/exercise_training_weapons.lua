@@ -116,7 +116,10 @@ local function exerciseTrainingEvent(playerId, tilePosition, weaponId, dummyId)
 		player:addSkillTries(exerciseWeaponsTable[weaponId].skill, 7 * rate)
 	end
 
-	weapon:setAttribute(ITEM_ATTRIBUTE_CHARGES, (weaponCharges - 1))
+	-- FAMILY: training weapons never run out (data/scripts/family/solo_balance.lua)
+	if not (Family and Family.infiniteTrainingWeapons) then
+		weapon:setAttribute(ITEM_ATTRIBUTE_CHARGES, (weaponCharges - 1))
+	end
 	tilePosition:sendMagicEffect(CONST_ME_HITAREA)
 
 	if exerciseWeaponsTable[weaponId].effect then
