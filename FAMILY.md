@@ -255,7 +255,8 @@ Added 2026-10-13. Tibia Coins are earned with gold instead of being free.
 | What | Details |
 |---|---|
 | Where | One NPC near the temple of each city in the city life list (Thais, Carlin, Venore, Ab'Dendriel, Edron, Darashia, Ankrahmun, Port Hope, Liberty Bay, Svargrond, Yalahar), named "<City> Coin Broker" |
-| Talk | `hi`, `coins`, an amount (25, 50, 100, 250, 500, 1000 or any number up to 10,000), `yes` |
+| Talk | `hi`, `trade`: a trade window lists "Tibia coins"; pick any amount and Buy. Or `hi`, `coins`, an amount (any number from 1 to 10,000), `yes` |
+| Trade window | The coins go to the Store balance; no item is given. The client still wants one free backpack slot (or "Ignore capacity" ticked) before it allows the purchase |
 | Price | 5,000 gold per coin, taken from the backpack first, then the bank. Brokers never buy coins back |
 | Coins | Transferable coins: they pay for every Store offer and can be sent to the other player |
 | Reset | At the first start with this feature, every account's coins were set to 0, once (marked in the `server_config` table as `family_coin-reset-2026-10-13`) |

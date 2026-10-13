@@ -6,8 +6,8 @@
 -- coins work for every store offer and can be sent to the other player.
 -- Brokers only sell; they never buy coins back.
 --
--- Talk: hi -> coins -> an amount (25, 50, 100, 250, 500, 1000 or any number)
--- -> yes.
+-- Talk: hi -> trade (trade window, choose any amount), or
+--       hi -> coins -> an amount (25, 50, 100, 250, 500, 1000 or any number) -> yes.
 --
 -- At the first start with this file, every account's coin balance (regular
 -- and transferable) is set to FamilyCoinBroker.startCoins, once (marked in the
@@ -58,9 +58,32 @@ local function createBrokerType(cityName)
 		},
 	}
 
+	-- Trade window: the "Tibia coins" item is listed at the coin price. Buying
+	-- it never gives the item: onBuyItem below takes the gold and adds that
+	-- many transferable coins to the account instead.
+	npcConfig.shop = {
+		{ itemName = "tibia coins", clientId = ITEM_STORE_COIN, buy = cfg.goldPerCoin },
+	}
+
 	local keywordHandler = KeywordHandler:new()
 	local npcHandler = NpcHandler:new(keywordHandler)
 	local pending = {}
+
+	npcType.onBuyItem = function(npc, player, itemId, subType, amount, ignore, inBackpacks, totalCost)
+		if itemId ~= ITEM_STORE_COIN or amount < 1 then
+			return
+		end
+		local price = amount * cfg.goldPerCoin
+		if not player:removeMoneyBank(price) then
+			player:sendTextMessage(MESSAGE_FAILURE, string.format("You need %s gold for %s Tibia Coins.", formatGold(price), formatGold(amount)))
+			return
+		end
+		player:addTransferableCoins(amount)
+		player:sendTextMessage(MESSAGE_TRADE, string.format("Bought %s Tibia Coins for %s gold. They are in your Store balance.", formatGold(amount), formatGold(price)))
+		player:getPosition():sendMagicEffect(CONST_ME_GIFT_WRAPS)
+	end
+	npcType.onSellItem = function(npc, player, itemId, subtype, amount, ignore, name, totalCost) end
+	npcType.onCheckItem = function(npc, player, clientId, subType) end
 
 	npcType.onThink = function(npc, interval)
 		npcHandler:onThink(npc, interval)
@@ -127,23 +150,24 @@ local function createBrokerType(cityName)
 			end
 		end
 
-		if MsgContains(message, "coin") or MsgContains(message, "buy") or MsgContains(message, "trade") or MsgContains(message, "exchange") then
+		if MsgContains(message, "coin") or MsgContains(message, "buy") or MsgContains(message, "exchange") then
 			npcHandler:say(offerAmounts(), npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		elseif MsgContains(message, "price") or MsgContains(message, "rate") then
 			npcHandler:say(string.format("One coin costs %s gold. I only sell coins; I don't buy them back.", formatGold(cfg.goldPerCoin)), npc, creature)
 		elseif MsgContains(message, "job") then
-			npcHandler:say("I exchange gold for Tibia Coins, the currency of the Store. Ask me about {coins}.", npc, creature)
+			npcHandler:say("I exchange gold for Tibia Coins, the currency of the Store. Say {trade}, or ask me about {coins}.", npc, creature)
 		elseif MsgContains(message, "name") then
 			npcHandler:say("Names don't matter, gold does. Ask me about {coins}.", npc, creature)
 		end
 		return true
 	end)
 
-	npcHandler:setMessage(MESSAGE_GREET, "Welcome, |PLAYERNAME|! I sell Tibia Coins for gold. Ask me about {coins}.")
+	npcHandler:setMessage(MESSAGE_GREET, "Welcome, |PLAYERNAME|! I sell Tibia Coins for gold. Say {trade} to choose an amount, or ask me about {coins}.")
+	npcHandler:setMessage(MESSAGE_SENDTRADE, "Choose how many Tibia Coins you want. They go straight to your Store balance; you won't get an item.")
 	npcHandler:setMessage(MESSAGE_FAREWELL, "Spend them wisely, |PLAYERNAME|!")
 	npcHandler:setMessage(MESSAGE_WALKAWAY, "Come back when you need coins.")
-	npcHandler:addModule(FocusModule:new(), name, true, true, false)
+	npcHandler:addModule(FocusModule:new(), name, true, true, true)
 
 	npcType:register(npcConfig)
 end
