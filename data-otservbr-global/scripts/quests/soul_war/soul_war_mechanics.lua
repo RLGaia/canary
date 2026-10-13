@@ -1030,6 +1030,8 @@ function megalomaniaDeath.onDeath(creature, corpse, killer, mostDamageKiller, la
 	local killers = creature:getKillers(true)
 	for i, killerPlayer in ipairs(killers) do
 		local soulWarQuest = killerPlayer:soulWarQuestKV()
+		-- FAMILY: every victory lets the reward chest open again (data/scripts/family/solo_quests.lua)
+		Family.onMegalomaniaKilled(killerPlayer)
 		-- Checks if the boss has already been defeated
 		if not soulWarQuest:get("goshnar's-megalomania-killed") then
 			soulWarQuest:set("goshnar's-megalomania-killed", true)

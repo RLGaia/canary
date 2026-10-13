@@ -11,6 +11,7 @@
 --   * "Choose one reward" chests: every chest of the group can be opened once
 --     (Annihilator, Pits of Inferno, Barbarian Arena, Thieves Guild, Wrath of
 --     the Emperor, The Inquisition, The Demon Oak).
+--   * Soul War: the final reward chest can be opened again (see below).
 
 Family = Family or {}
 
@@ -93,6 +94,49 @@ function Family.secretServiceCanJoin(player, ownMission01)
 end
 
 -- ---------------------------------------------------------------------------
+-- Soul War: the final reward chest (a random Soul item) opens again after
+-- every new victory over Goshnar's Megalomania, and also once every
+-- SOUL_WAR_CHEST_HOURS even without a new victory. The reward room portal
+-- already stays open for anyone who defeated Megalomania once.
+-- Used by scripts/quests/soul_war/action-reward_soul_war.lua and
+-- soul_war_mechanics.lua (FAMILY: edits).
+-- ---------------------------------------------------------------------------
+Family.repeatSoulWarReward = true
+local SOUL_WAR_CHEST_HOURS = 20
+
+local function soulWarScope(player)
+	return player:kv():scoped("family-soul-war")
+end
+
+function Family.onMegalomaniaKilled(player)
+	local kv = soulWarScope(player)
+	kv:set("kills-since-chest", (kv:get("kills-since-chest") or 0) + 1)
+end
+
+-- Returns true when the chest may give another item, or false plus the
+-- seconds left until the daily opening.
+function Family.soulWarChestReady(player)
+	if not Family.repeatSoulWarReward then
+		return false, nil
+	end
+	local kv = soulWarScope(player)
+	if (kv:get("kills-since-chest") or 0) > 0 then
+		return true
+	end
+	local nextOpen = (kv:get("chest-opened-at") or 0) + SOUL_WAR_CHEST_HOURS * 3600
+	if os.time() >= nextOpen then
+		return true
+	end
+	return false, nextOpen - os.time()
+end
+
+function Family.soulWarChestOpened(player)
+	local kv = soulWarScope(player)
+	kv:set("kills-since-chest", 0)
+	kv:set("chest-opened-at", os.time())
+end
+
+-- ---------------------------------------------------------------------------
 -- Startup report
 -- ---------------------------------------------------------------------------
 local familyQuestsReport = GlobalEvent("FamilyQuestsReport")
@@ -111,7 +155,7 @@ function familyQuestsReport.onStartup()
 			end
 		end
 	end
-	logger.info("[Family] exclusive quests unlocked={} (choose-one chest groups: {}, chests: {})", tostring(Family.unlockExclusiveQuests), groups, chests)
+	logger.info("[Family] exclusive quests unlocked={} (choose-one chest groups: {}, chests: {}); Soul War chest repeats={} (every {} h or after each Megalomania kill)", tostring(Family.unlockExclusiveQuests), groups, chests, tostring(Family.repeatSoulWarReward), SOUL_WAR_CHEST_HOURS)
 	return true
 end
 

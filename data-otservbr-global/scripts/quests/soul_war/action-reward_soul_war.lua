@@ -8,9 +8,17 @@ function rewardSoulWar.onUse(creature, item, fromPosition, target, toPosition, i
 	end
 
 	local soulWarQuest = player:soulWarQuestKV()
+	-- FAMILY: the chest opens again after each new Megalomania kill or once a day (data/scripts/family/solo_quests.lua)
 	if soulWarQuest:get("final-reward") then
-		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have already received your reward.")
-		return true
+		local ready, secondsLeft = Family.soulWarChestReady(player)
+		if not ready then
+			local message = "You have already received your reward."
+			if secondsLeft then
+				message = string.format("%s Defeat Goshnar's Megalomania again, or come back in %d h %02d min.", message, math.floor(secondsLeft / 3600), math.floor((secondsLeft % 3600) / 60))
+			end
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, message)
+			return true
+		end
 	end
 
 	if not soulWarQuest:get("goshnar's-megalomania-killed") then
@@ -21,6 +29,7 @@ function rewardSoulWar.onUse(creature, item, fromPosition, target, toPosition, i
 	player:addItem(rewardItem.id, 1)
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have found a " .. rewardItem.name .. ".")
 	soulWarQuest:set("final-reward", true)
+	Family.soulWarChestOpened(player)
 	return true
 end
 
