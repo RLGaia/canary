@@ -52,15 +52,19 @@ end
 
 local theNewFrontierArena = Action()
 function theNewFrontierArena.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: one or two players (upstream: exactly two)
+	local fighters = {}
 	for a = 1, #config.playerPos do
 		local creature = Tile(config.playerPos[a]):getTopCreature()
-		if not creature then
-			return false
+		if creature and creature:isPlayer() then
+			if creature:getStorageValue(TheNewFrontier.Questline) >= 26 then
+				return player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You already finished this battle.")
+			end
+			fighters[#fighters + 1] = { player = creature, destination = config.teleportPositions[a] }
 		end
-
-		if creature:getStorageValue(TheNewFrontier.Questline) >= 26 then
-			return player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You already finished this battle.")
-		end
+	end
+	if #fighters == 0 then
+		return false
 	end
 
 	if Game.getStorageValue(TheNewFrontier.Mission09[1]) == 1 then
@@ -70,10 +74,10 @@ function theNewFrontierArena.onUse(player, item, fromPosition, target, toPositio
 	Game.setStorageValue(TheNewFrontier.Mission09[1], 1)
 	addEvent(clearArena, 30 * 60 * 1000)
 
-	for b = 1, #config.playerPos do
-		local creature = Tile(config.playerPos[b]):getTopCreature()
+	for b = 1, #fighters do
+		local creature = fighters[b].player
 		creature:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-		creature:teleportTo(config.teleportPositions[b])
+		creature:teleportTo(fighters[b].destination)
 		creature:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 	end
 

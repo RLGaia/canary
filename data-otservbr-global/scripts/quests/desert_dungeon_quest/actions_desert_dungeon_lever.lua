@@ -39,41 +39,47 @@ function othersDesert.onUse(player, item, fromPosition, target, toPosition, isHo
 
 	local position = player:getPosition()
 
-	local players = {}
+	-- FAMILY: 1 to 4 players of any vocation (upstream: exactly one of each
+	-- vocation). All four sacrifices are still required on the altars.
 	for i = 1, #config do
-		local creature = Tile(config[i].fromPosition):getTopCreature()
-		if not creature or not creature:isPlayer() then
-			player:sendCancelMessage("You need one player of each vocation for this quest.")
+		if not Tile(config[i].sacrificePosition):getItemById(config[i].sacrificeId) then
+			player:sendCancelMessage("A sacrifice is missing on one of the altars.")
 			position:sendMagicEffect(CONST_ME_POFF)
 			return true
 		end
-
-		local vocationId = creature:getVocation():getBaseId()
-		if vocationId ~= config[i].vocationId then
-			player:sendCancelMessage("You need one player of each vocation for this quest.")
-			position:sendMagicEffect(CONST_ME_POFF)
-			return true
-		end
-
-		local sacrificeItem = Tile(config[i].sacrificePosition):getItemById(config[i].sacrificeId)
-		if not sacrificeItem then
-			player:sendCancelMessage(creature:getName() .. " is missing " .. creature:getPossessivePronoun() .. " sacrifice on the altar.")
-			position:sendMagicEffect(CONST_ME_POFF)
-			return true
-		end
-
-		players[#players + 1] = creature
 	end
 
-	for i = 1, #players do
+	local travellers = {}
+	for i = 1, #config do
+		local creature = Tile(config[i].fromPosition):getTopCreature()
+		if creature and creature:isPlayer() then
+			travellers[#travellers + 1] = { player = creature, destination = config[i].toPosition }
+		end
+	end
+	if #travellers == 0 then
+		-- Nobody on the tiles: the player who pulled the lever goes alone.
+		local destination = config[1].toPosition
+		local vocationId = player:getVocation():getBaseId()
+		for i = 1, #config do
+			if config[i].vocationId == vocationId then
+				destination = config[i].toPosition
+			end
+		end
+		travellers[1] = { player = player, destination = destination }
+	end
+
+	for i = 1, #config do
 		local sacrificeItem = Tile(config[i].sacrificePosition):getItemById(config[i].sacrificeId)
 		if sacrificeItem then
 			sacrificeItem:remove()
 		end
+	end
 
-		players[i]:getPosition():sendMagicEffect(CONST_ME_POFF)
-		players[i]:teleportTo(config[i].toPosition)
-		config[i].toPosition:sendMagicEffect(CONST_ME_TELEPORT)
+	for i = 1, #travellers do
+		local traveller = travellers[i]
+		traveller.player:getPosition():sendMagicEffect(CONST_ME_POFF)
+		traveller.player:teleportTo(traveller.destination)
+		traveller.destination:sendMagicEffect(CONST_ME_TELEPORT)
 	end
 	return true
 end
