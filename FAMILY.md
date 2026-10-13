@@ -127,10 +127,10 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Bosses | 50% health, 70% damage (Bosstiary bosses only) | `family\config.family.lua` |
 | Boss cooldown | 1 hour, also for levers that set their own longer cooldown | both files |
 | Boss levers | One player is always enough (all 66 standard levers, Soul War included) | `solo_balance.lua` |
-| Tibia Coins | Regular and transferable coins each topped up to 10,000,000 on login whenever below 1,000,000 (most store offers need transferable coins) | `solo_balance.lua` |
+| Tibia Coins | Not free (since 2026-10-13): a Coin Broker near the temple of each port city sells transferable Tibia Coins for 5,000 gold each (buy only). All balances were reset to 0 once | `data-otservbr-global\scripts\family\coin_broker.lua` |
 | Conveniences | Auto-loot, auto-bank, free third Prey and Hunting Task slots | `family\config.family.lua` |
 | Death | No experience, skill or item loss: you only wake up in the temple. Everyone always has full blessings | `family\config.family.lua`, `solo_balance.lua` |
-| Training | Exercise weapons never run out (buy one in the Store with the free coins); exercise and offline training 2x faster | both files |
+| Training | Exercise weapons never run out (one from the Store costs 25 coins; NPCs also sell them for gold); exercise and offline training 2x faster | both files |
 | Respawn | 2x faster (classic hunts: 90 s to 45 s) | `family\config.family.lua` |
 | Rare creatures | Rare raid creatures and bosses (Midnight Panther, Draptor, Undead Cavebear, Yeti, The Old Widow, Tyrn..., plus the Thais rat plague) come back about 30 min after their last appearance, once the previous ones are dead, with one player online. Classic raids: at most 30 min between raids. Rare map spawns: at most 30 min | `data\scripts\family\rare_creatures.lua` and the files below |
 | Party quests | One player can do the quests in the table below | the files listed there |
@@ -247,6 +247,19 @@ work there, and where each vendor is that day.
 Known limits: they are NPCs (no fighting, trading items between players, parties,
 or VIP list). In a crowded narrow street they may briefly stand in your way; they
 step aside by picking another spot after a few seconds.
+
+## Coin Brokers
+
+Added 2026-10-13. Tibia Coins are earned with gold instead of being free.
+
+| What | Details |
+|---|---|
+| Where | One NPC near the temple of each city in the city life list (Thais, Carlin, Venore, Ab'Dendriel, Edron, Darashia, Ankrahmun, Port Hope, Liberty Bay, Svargrond, Yalahar), named "<City> Coin Broker" |
+| Talk | `hi`, `coins`, an amount (25, 50, 100, 250, 500, 1000 or any number up to 10,000), `yes` |
+| Price | 5,000 gold per coin, taken from the backpack first, then the bank. Brokers never buy coins back |
+| Coins | Transferable coins: they pay for every Store offer and can be sent to the other player |
+| Reset | At the first start with this feature, every account's coins were set to 0, once (marked in the `server_config` table as `family_coin-reset-2026-10-13`) |
+| Settings | `FamilyCoinBroker` at the top of `data-otservbr-global\scripts\family\coin_broker.lua`: `goldPerCoin`, `maxPerPurchase`, `startCoins`, `enabled` |
 
 ## Backups
 
