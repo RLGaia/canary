@@ -129,6 +129,11 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Boss levers | One player is always enough (all 60 standard levers) | `solo_balance.lua` |
 | Tibia Coins | Topped up to 10,000,000 on login whenever below 1,000,000 | `solo_balance.lua` |
 | Conveniences | Auto-loot, auto-bank, free third Prey and Hunting Task slots | `family\config.family.lua` |
+| Death | No experience, skill or item loss: you only wake up in the temple. Everyone always has full blessings | `family\config.family.lua`, `solo_balance.lua` |
+| Training | Exercise weapons never run out (buy one in the Store with the free coins); exercise and offline training 2x faster | both files |
+| Respawn | 2x faster (classic hunts: 90 s to 45 s) | `family\config.family.lua` |
+| Party quests | One player can do the quests in the table below | the files listed there |
+| Exclusive quests | Both Djinn factions; all three Secret Service agencies, one after another; every chest of a "choose one reward" room | `data\scripts\family\solo_quests.lua` |
 
 To change a number, edit the file in the table and restart the server.
 
@@ -139,6 +144,23 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | File | Change |
 |---|---|
 | `data-otservbr-global/scripts/quests/the_annihilator/lever.lua` | 1 to 4 players can start the quest (upstream requires exactly 4) |
+| `data-otservbr-global/scripts/quests/the_annihilator/door.lua` | The reward room stays open until every chest was opened |
+| `data-otservbr-global/scripts/quests/demon_helmet/movement-walls.lua` | One player on either tile opens the walls; they close 90 s after leaving the tile |
+| `data-otservbr-global/scripts/quests/desert_dungeon_quest/actions_desert_dungeon_lever.lua` | 1 to 4 players of any vocation (all four sacrifices still needed) |
+| `data-otservbr-global/scripts/quests/elemental_spheres/actions_lever.lua` | Lord of the Elements entrance: 1 to 4 players of any vocation, each with any rare item |
+| `data-otservbr-global/scripts/quests/the_new_frontier/action_arena.lua` | Mission 9 arena: one or two players |
+| `data/scripts/actions/items/exercise_training_weapons.lua` | Charges are not consumed |
+| `data-otservbr-global/scripts/actions/system/quest_reward_common.lua` | "Choose one" chest groups: each chest opens once |
+| `data-otservbr-global/scripts/quests/the_inquisition_quest/actions_rewards.lua` | Every reward chest opens once |
+| `data-otservbr-global/scripts/quests/demon_oak/actions_demon_oak_chest.lua` | Every reward chest opens once |
+| `data-otservbr-global/npc/` Djinn NPCs: `bo_ques`, `gabel`, `umar`, `fa_hradin`, `haroun`, `nah_bob`, `ubaid`, `baa_leal`, `malor`, `alesar`, `yaman`, `kazzan`, `the_orc_king` | The other faction's allies are accepted; the Orc King gives one lamp per faction |
+| `data-otservbr-global/npc/` Secret Service NPCs: `chester_kahs`, `emma`, `uncle` | After finishing one agency, the next can be joined |
+
+All exclusive-quest edits read `Family.unlockExclusiveQuests` (in `solo_quests.lua`); set it to
+`false` to bring back the upstream "pick one" rules without touching the other files.
+
+Not changed (yet): In Service of Yalahar (Palimuth or Azerus side), Paradox Tower reward,
+Heart of Destruction final lever (needs 3 players).
 
 Quests still to check when reached (party mechanics beyond the entry lever): Ferumbras' Ascension,
 Heart of Destruction, Cults of Tibia, Oramond (Glooth Fairy), Dark Trails, The Order of the Lion,
