@@ -125,13 +125,14 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Magic level | 10x up to ML 30, 7x to 60, 5x to 90, 3x after | same |
 | Loot | 2x, rarest items first | `family\config.family.lua` |
 | Bosses | 50% health, 70% damage (Bosstiary bosses only) | `family\config.family.lua` |
-| Boss cooldown | 4 hours, also for levers that set their own longer cooldown | both files |
+| Boss cooldown | 1 hour, also for levers that set their own longer cooldown | both files |
 | Boss levers | One player is always enough (all 66 standard levers, Soul War included) | `solo_balance.lua` |
 | Tibia Coins | Topped up to 10,000,000 on login whenever below 1,000,000 | `solo_balance.lua` |
 | Conveniences | Auto-loot, auto-bank, free third Prey and Hunting Task slots | `family\config.family.lua` |
 | Death | No experience, skill or item loss: you only wake up in the temple. Everyone always has full blessings | `family\config.family.lua`, `solo_balance.lua` |
 | Training | Exercise weapons never run out (buy one in the Store with the free coins); exercise and offline training 2x faster | both files |
 | Respawn | 2x faster (classic hunts: 90 s to 45 s) | `family\config.family.lua` |
+| Rare creatures | Rare raid creatures and bosses (Midnight Panther, Draptor, Undead Cavebear, Yeti, The Old Widow, Tyrn...) come back about 30 min after their last appearance, once the previous ones are dead, with one player online. Classic raids: at most 30 min between raids. Rare map spawns: at most 30 min | `data\scripts\family\rare_creatures.lua` and the files below |
 | Party quests | One player can do the quests in the table below | the files listed there |
 | Exclusive quests | Both Djinn factions; all three Secret Service agencies, one after another; every chest of a "choose one reward" room | `data\scripts\family\solo_quests.lua` |
 | Soul War reward | The final chest gives another random Soul item after each new Megalomania kill, or once every 20 h | `solo_quests.lua` |
@@ -157,7 +158,13 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data-otservbr-global/npc/` Djinn NPCs: `bo_ques`, `gabel`, `umar`, `fa_hradin`, `haroun`, `nah_bob`, `ubaid`, `baa_leal`, `malor`, `alesar`, `yaman`, `kazzan`, `the_orc_king` | The other faction's allies are accepted; the Orc King gives one lamp per faction |
 | `data-otservbr-global/scripts/quests/soul_war/action-reward_soul_war.lua` | Final reward chest repeats (see the balance table) |
 | `data-otservbr-global/scripts/quests/soul_war/soul_war_mechanics.lua` | Counts each Megalomania kill for the reward chest |
+| `data-otservbr-global/raids/raids.xml` | Every `margin` capped at 30 (minutes between two classic raids) |
+| `data-otservbr-global/world/otservbr-monster.xml` | Every `spawntime` above 3600 set to 3600 (75 rare spawns; with `rateSpawn = 2` that is 30 min) |
+| `data-otservbr-global/scripts/raids/monsters/undead_cavebear.lua` | Own raid name (upstream reused the Draptor raid's name, so one of them never happened) |
 | `data-otservbr-global/npc/` Secret Service NPCs: `chester_kahs`, `emma`, `uncle` | After finishing one agency, the next can be joined |
+
+If a Canary update conflicts in `raids.xml` or `otservbr-monster.xml`, take the upstream file and
+apply the same caps again (margin above 30 becomes 30; spawntime above 3600 becomes 3600).
 
 All exclusive-quest edits read `Family.unlockExclusiveQuests` (in `solo_quests.lua`); set it to
 `false` to bring back the upstream "pick one" rules without touching the other files.
