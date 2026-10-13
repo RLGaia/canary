@@ -126,7 +126,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Loot | 2x, rarest items first | `family\config.family.lua` |
 | Bosses | 50% health, 70% damage (Bosstiary bosses only) | `family\config.family.lua` |
 | Boss cooldown | 4 hours, also for levers that set their own longer cooldown | both files |
-| Boss levers | One player is always enough (all 60 standard levers) | `solo_balance.lua` |
+| Boss levers | One player is always enough (all 66 standard levers, Soul War included) | `solo_balance.lua` |
 | Tibia Coins | Topped up to 10,000,000 on login whenever below 1,000,000 | `solo_balance.lua` |
 | Conveniences | Auto-loot, auto-bank, free third Prey and Hunting Task slots | `family\config.family.lua` |
 | Death | No experience, skill or item loss: you only wake up in the temple. Everyone always has full blessings | `family\config.family.lua`, `solo_balance.lua` |
@@ -134,6 +134,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Respawn | 2x faster (classic hunts: 90 s to 45 s) | `family\config.family.lua` |
 | Party quests | One player can do the quests in the table below | the files listed there |
 | Exclusive quests | Both Djinn factions; all three Secret Service agencies, one after another; every chest of a "choose one reward" room | `data\scripts\family\solo_quests.lua` |
+| Soul War reward | The final chest gives another random Soul item after each new Megalomania kill, or once every 20 h | `solo_quests.lua` |
 
 To change a number, edit the file in the table and restart the server.
 
@@ -154,6 +155,8 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data-otservbr-global/scripts/quests/the_inquisition_quest/actions_rewards.lua` | Every reward chest opens once |
 | `data-otservbr-global/scripts/quests/demon_oak/actions_demon_oak_chest.lua` | Every reward chest opens once |
 | `data-otservbr-global/npc/` Djinn NPCs: `bo_ques`, `gabel`, `umar`, `fa_hradin`, `haroun`, `nah_bob`, `ubaid`, `baa_leal`, `malor`, `alesar`, `yaman`, `kazzan`, `the_orc_king` | The other faction's allies are accepted; the Orc King gives one lamp per faction |
+| `data-otservbr-global/scripts/quests/soul_war/action-reward_soul_war.lua` | Final reward chest repeats (see the balance table) |
+| `data-otservbr-global/scripts/quests/soul_war/soul_war_mechanics.lua` | Counts each Megalomania kill for the reward chest |
 | `data-otservbr-global/npc/` Secret Service NPCs: `chester_kahs`, `emma`, `uncle` | After finishing one agency, the next can be joined |
 
 All exclusive-quest edits read `Family.unlockExclusiveQuests` (in `solo_quests.lua`); set it to
