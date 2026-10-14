@@ -1,4 +1,4 @@
--- Gaia Family server: automatic save every 30 minutes (2026-10-13).
+-- Gaia Family server: automatic save every 15 minutes (2026-10-13; 30 until 2026-10-14).
 --
 -- Ours, not upstream. Upstream's interval save (save_interval.lua) only saves
 -- in the minute before globalServerSaveTime and expects "HH:MM", so with our
@@ -9,7 +9,7 @@
 -- version stays off. /save saves at once (open to every character).
 
 Family = Family or {}
-Family.autoSaveMinutes = 30
+Family.autoSaveMinutes = 15
 
 local autoSave = GlobalEvent("FamilyAutoSave")
 

@@ -93,7 +93,7 @@ houseBuyLevel = 0
 
 -- ===========================================================================
 -- Saving (2026-10-13): data/scripts/family/auto_save.lua saves the whole
--- server every 30 minutes, without cleaning the map. Every character can also
+-- server every 15 minutes, without cleaning the map. Every character can also
 -- type /save in game (FAMILY: edit in data/scripts/talkactions/god/save.lua).
 -- ===========================================================================
 -- Off: upstream's interval save (data/scripts/globalevents/save_interval.lua)
