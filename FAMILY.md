@@ -137,6 +137,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Exclusive quests | Both Djinn factions; all three Secret Service agencies, one after another; every chest of a "choose one reward" room | `data\scripts\family\solo_quests.lua` |
 | City life | About 190 walking NPCs in 11 cities with quest tips, ship travel and 18 vendors (see "City life" below) | `data-otservbr-global\scripts\family\city_life.lua` |
 | Houses | Bought at once in Cyclopedia > Houses > Bid, or with `!buyhouse` at the door. Price = the house's rent x 0.65, paid once; no rent, never lost, no level, no limit; guildhalls without a guild. `!house` in game shows a guide (see "Houses" below) | `family\config.family.lua`, `data\scripts\lib\family_houses.lua` |
+| Saving | The whole server saves every 30 minutes (`data\scripts\family\auto_save.lua`; the map is not cleaned, so items on the ground stay). Any character can type `/save` (or `/save 5` for 5 minutes from now). Upstream's interval save never ran with `globalServerSaveTime = "06:00:00"` (it expects HH:MM), so `toggleSaveInterval = false` | `family\config.family.lua`, `auto_save.lua` |
 | Daily reward | The streak never expires: missing days costs no joker tokens and keeps the streak bonuses. A new reward day starts at 06:00 even if the server was off then (upstream, the day only advanced while the server ran at 06:00) | `data\scripts\family\daily_reward.lua` (`Family.dailyRewardNeverExpires`) |
 | Soul War reward | The final chest gives another random Soul item after each new Megalomania kill, or once every 20 h | `solo_quests.lua` |
 | Grizzly Adams tasks | Killing in the Name Of without level ranges: every hunting task at any level (crocodiles to destroyers), points never capped by level, rank promotions, the full boss list and the special tasks open at any level. Still as upstream: 3 tasks at a time, each task 3 times, Demons only for Elite Hunters, the points needed per rank | `solo_quests.lua` (`Family.noTaskLevelCap`) |
@@ -169,6 +170,7 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data-otservbr-global/npc/` Secret Service NPCs: `chester_kahs`, `emma`, `uncle` | After finishing one agency, the next can be joined |
 | `data/scripts/talkactions/player/buy_house.lua` | Registered while Cyclopedia auctions are on, no one-house limit, no-rent message, fixed an undefined variable |
 | `data/scripts/talkactions/player/leave_house.lua`, `sell_house.lua` | Registered while Cyclopedia auctions are on |
+| `data/scripts/talkactions/god/save.lua` | `/save` available to every character (group normal) |
 | `data/modules/modules.xml` | Adds the Cyclopedia house packet module (byte 173) for instant purchases |
 | `data-otservbr-global/lib/quests/killing_in_the_name_of.lua` | Task level ranges ignored when `Family.noTaskLevelCap` is set |
 | `data-otservbr-global/npc/grizzly_adams.lua` | No level ranges: full task list, no points cap, promotions, all bosses and special tasks at any level (same switch) |

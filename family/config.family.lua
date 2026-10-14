@@ -90,3 +90,13 @@ houseRentPeriod = "never"
 houseLoseAfterInactivity = 0
 -- No minimum level for !buyhouse (Cyclopedia has none).
 houseBuyLevel = 0
+
+-- ===========================================================================
+-- Saving (2026-10-13): data/scripts/family/auto_save.lua saves the whole
+-- server every 30 minutes, without cleaning the map. Every character can also
+-- type /save in game (FAMILY: edit in data/scripts/talkactions/god/save.lua).
+-- ===========================================================================
+-- Off: upstream's interval save (data/scripts/globalevents/save_interval.lua)
+-- never ran with globalServerSaveTime = "06:00:00" (it expects "HH:MM"), and if
+-- fixed it would also clean the map (delete items on the ground).
+toggleSaveInterval = false
