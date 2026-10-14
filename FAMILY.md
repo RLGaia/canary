@@ -31,6 +31,7 @@ checksums live at the top of `family\lib.ps1`.
 | `new-account.ps1` | Creates an account and its first character (`-AddCharacter` adds more) |
 | `start-server.ps1` | Builds `config.lua`, starts the login server and Canary |
 | `backup-db.ps1` | Dumps the database to `%USERPROFILE%\OT-backups`, keeps the newest 30 |
+| `restore-db.ps1` | Restores the database from one of those backups (server stopped; backs up the current database first) |
 
 ## Golden rules
 
@@ -293,7 +294,22 @@ powershell -ExecutionPolicy Bypass -File family\backup-db.ps1
 ```
 
 Always back up before updating; database migrations only move forward.
-To restore (server stopped), see the comment at the top of `family\backup-db.ps1`.
+The database holds everything players own (accounts, characters, items, depots,
+houses and their furniture, bank, quests); the rest is in Git, so a backup file
+plus this repository rebuild the whole server. Keep copies off this PC (set
+`BACKUP_DIR` in `family\local.env` to a cloud-synced folder, or copy the files).
+
+To restore (server stopped):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File family\restore-db.ps1
+```
+
+It lists the newest backups and asks which one (or pass `-File <path>`), asks you
+to type `RESTORE`, backs up the current database first if it holds accounts, then
+restores. After reinstalling Windows: install the programs, clone the repository,
+recreate `family\local.env`, run `family\setup.ps1`, then `restore-db.ps1`
+(full steps in the manual).
 
 ## Updating to a new Canary release
 

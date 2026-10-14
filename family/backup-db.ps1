@@ -4,8 +4,8 @@
 # Usage (PowerShell, from the repository folder):
 #     powershell -ExecutionPolicy Bypass -File family\backup-db.ps1
 #
-# Restore (server stopped):
-#     mariadb.exe -u <DB_USER> -p <DB_NAME> -e "source C:/path/to/canary-YYYYMMDD-HHMMSS.sql"
+# Restore (server stopped): family\restore-db.ps1 (see the manual for a
+# restore after reinstalling Windows).
 
 . (Join-Path $PSScriptRoot 'lib.ps1')
 $cfg = Read-LocalEnv
