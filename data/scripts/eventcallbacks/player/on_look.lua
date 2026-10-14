@@ -51,6 +51,10 @@ local function handleCreatureDescription(inspectedThing, lookDistance)
 		local monsterMaster = inspectedThing:getMaster()
 		if monsterMaster and table.contains(FAMILIARSNAME, inspectedThing:getName():lower()) then
 			local summonTimeRemaining = monsterMaster:kv():get("familiar-summon-time") or 0
+			-- FAMILY: permanent familiars (data/scripts/family/familiar.lua) have no time left to show.
+			if Family and Family.permanentFamiliar then
+				return string.format("You see %s (Master: %s). It stays until its master says the spell again.", descriptionText, monsterMaster:getName())
+			end
 			descriptionText = string.format("%s (Master: %s). It will disappear in %s", descriptionText, monsterMaster:getName(), Game.getTimeInWords(summonTimeRemaining - os.time()))
 		end
 	end

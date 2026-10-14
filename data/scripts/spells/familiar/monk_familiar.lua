@@ -11,7 +11,7 @@ spell:name("Monk familiar")
 spell:words("utevo gran res tio")
 spell:castSound(SOUND_EFFECT_TYPE_SPELL_SUMMON_DRUID_FAMILIAR)
 spell:level(200)
-spell:mana(1500)
+spell:mana(FamilyFamiliarSpellMana(spellId, 1500)) -- FAMILY: charged in data/scripts/family/familiar.lua
 spell:cooldown(0) -- calculated in CreateFamiliarSpell
 spell:groupCooldown(2 * 1000)
 

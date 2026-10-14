@@ -11,7 +11,7 @@ spell:name("Knight familiar")
 spell:words("utevo gran res eq")
 spell:castSound(SOUND_EFFECT_TYPE_SPELL_SUMMON_KNIGHT_FAMILIAR)
 spell:level(200)
-spell:mana(1000)
+spell:mana(FamilyFamiliarSpellMana(spellId, 1000)) -- FAMILY: charged in data/scripts/family/familiar.lua
 spell:cooldown(0) -- calculated in CreateFamiliarSpell
 spell:groupCooldown(2 * 1000)
 

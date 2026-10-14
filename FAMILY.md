@@ -162,6 +162,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Newspaper | A newspaper seller near the temple of each of the 11 city-life cities sells today's *Gaia Times* for 1 gp (`hi`, `newspaper`, `yes`). Using it shows boosted creature and boss, Rashid, Yasir and vendor cities, world changes, rare creatures seen or possible today, raid regions, events and server notes; an older paper is marked OLD EDITION. New edition at 06:00 (see "Newspaper" below) | `data-otservbr-global\scripts\family\newspaper.lua` |
 | Daily reward | The streak never expires: missing days costs no joker tokens and keeps the streak bonuses. A new reward day starts at 06:00 even if the server was off then (upstream, the day only advanced while the server ran at 06:00) | `data\scripts\family\daily_reward.lua` (`Family.dailyRewardNeverExpires`) |
 | Soul War reward | The final chest gives another random Soul item after each new Megalomania kill, or once every 20 h | `solo_quests.lua` |
+| Familiars | Permanent (since 2026-10-14): the familiar spell (knight `utevo gran res eq`, paladin `utevo gran res sac`, druid `utevo gran res dru`, sorcerer `utevo gran res ven`, monk `utevo gran res tio`; level 200) calls the familiar until you say it again (free) or it dies; no 15-minute limit, no cooldown. Mana is charged only when it appears. It returns after logout or death until dismissed or killed. Familiars still cannot enter boss rooms | `data\scripts\family\familiar.lua`, switch in `data\scripts\lib\family_familiar.lua` |
 | Grizzly Adams tasks | Killing in the Name Of without level ranges: every hunting task at any level (crocodiles to destroyers), points never capped by level, rank promotions, the full boss list and the special tasks open at any level. Still as upstream: 3 tasks at a time, each task 3 times, Demons only for Elite Hunters, the points needed per rank | `solo_quests.lua` (`Family.noTaskLevelCap`) |
 
 To change a number, edit the file in the table and restart the server.
@@ -198,6 +199,8 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data/modules/modules.xml` | Adds the Cyclopedia house packet module (byte 173) for instant purchases |
 | `data-otservbr-global/lib/quests/killing_in_the_name_of.lua` | Task level ranges ignored when `Family.noTaskLevelCap` is set |
 | `data-otservbr-global/npc/grizzly_adams.lua` | No level ranges: full task list, no points cap, promotions, all bosses and special tasks at any level (same switch) |
+| `data/scripts/spells/familiar/*.lua` (5 files) | Spell mana read through `FamilyFamiliarSpellMana` (0 with permanent familiars; the cost is charged by `familiar.lua`) |
+| `data/scripts/eventcallbacks/player/on_look.lua` | Looking at a permanent familiar says it stays until dismissed (instead of a time left) |
 
 If a Canary update conflicts in `raids.xml` or `otservbr-monster.xml`, take the upstream file and
 apply the same caps again (margin above 30 becomes 30; spawntime above 3600 becomes 3600).
