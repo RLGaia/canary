@@ -14,7 +14,7 @@ $cfg = Read-LocalEnv
 if (-not (Test-DatabaseReady $cfg)) { Stop-Family 'The database is not set up yet. Run family\setup.ps1 first.' }
 
 # --- account -----------------------------------------------------------------
-$email = (Read-Host -Prompt 'Account login (email, e.g. rodrigo@family)').Trim().ToLowerInvariant()
+$email = (Read-Host -Prompt 'Account login (email, e.g. player1@server)').Trim().ToLowerInvariant()
 if ($email -notmatch '^[a-z0-9._%+-]+@[a-z0-9.-]+$' -or $email.Length -gt 255) {
 	Stop-Family 'Use an email-like login with letters, digits and @ (it does not need to be a real email).'
 }
@@ -39,7 +39,7 @@ if ($AddCharacter) {
 }
 
 # --- character ---------------------------------------------------------------
-$charName = (Read-Host -Prompt 'Character name (e.g. Rodrigo Gaia)').Trim() -replace '\s+', ' '
+$charName = (Read-Host -Prompt 'Character name (e.g. Ana Silva)').Trim() -replace '\s+', ' '
 if ($charName -cnotmatch '^[A-Z][a-z]+( [A-Z][a-z]+){0,2}$' -or $charName.Length -lt 3 -or $charName.Length -gt 25) {
 	Stop-Family 'Use 1-3 words, each starting with a capital letter followed by lowercase letters (3-25 characters).'
 }

@@ -21,7 +21,7 @@ function save.onSay(player, words, param)
 	return true
 end
 
--- FAMILY: every character may save (only Rodrigo and his father play here).
+-- FAMILY: every character may save (private server with a few trusted players).
 save:setDescription("- save the server now, or /save 5 to save in 5 minutes")
 save:separator(" ")
 save:groupType("normal")

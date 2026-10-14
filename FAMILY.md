@@ -1,6 +1,6 @@
 # Gaia Family Server
 
-Private Canary server for two players (Rodrigo and his father).
+Private Canary server for a small group of players.
 This fork follows [opentibiabr/canary](https://github.com/opentibiabr/canary);
 all family changes live on the `family` branch.
 
@@ -65,11 +65,11 @@ checksums live at the top of `family\lib.ps1`.
    ```powershell
    powershell -ExecutionPolicy Bypass -File family\setup.ps1
    ```
-6. **Accounts**, once for you and once for Dad:
+6. **Accounts**, once per player:
    ```powershell
    powershell -ExecutionPolicy Bypass -File family\new-account.ps1
    ```
-   Logins look like an email (`rodrigo@family`); they don't need to be real.
+   Logins look like an email (`player1@server`); they don't need to be real.
    New characters start like real Tibia: no vocation, on the Dawnport tutorial island.
 7. **Game client 15.11** (on each PC that plays):
    - Download the tag's source archive:
@@ -95,23 +95,43 @@ then log in with the client. To stop: log out, press **Ctrl+C** in the server
 window and wait for "Server stopped."
 
 The first time each program starts, Windows Firewall may ask for network access.
-For local play you can cancel. To play with Dad, allow `canary.exe` and
-`login-server.exe` (see below).
+Click **Cancel**: the port rule below is the only firewall rule the server needs.
 
 ## Playing together (Tailscale)
 
 1. Install Tailscale on both PCs and sign in to the same tailnet (free Personal plan).
 2. In `family\local.env`, set `SERVER_IP` to this PC's Tailscale IP (`100.x.y.z`).
-3. Restart the server.
-4. On **both** PCs, edit the client's `conf\config.ini`:
+3. Allow the game ports for Tailscale addresses only (PowerShell as administrator):
+   ```powershell
+   New-NetFirewallRule -DisplayName "Canary game server" -Direction Inbound -Protocol TCP -LocalPort 80,7171,7172 -RemoteAddress 100.64.0.0/10 -Action Allow
+   ```
+4. Restart the server.
+5. On **both** PCs, edit the client's `conf\config.ini`:
    ```ini
    loginWebService=http://100.x.y.z/login.php
    clientWebService=http://100.x.y.z/login.php
    ```
-5. If Dad cannot connect, allow `canary.exe` and `login-server.exe` in Windows Firewall
-   for the network Tailscale uses (ports 80, 7171, 7172).
 
 Never forward router ports. Nothing needs to be exposed to the internet.
+
+## Security
+
+The repository is public, so it holds no passwords, backups or client files;
+those stay in `family\local.env` (git-ignored) and the backup folder.
+
+- **Listen address.** `start-server.ps1` makes Canary (`bindOnlyGlobalAddress = true`)
+  and the login server (`LOGIN_IP`) listen only on `SERVER_IP`: 127.0.0.1 or the
+  Tailscale IP, never the home Wi-Fi. It stops with a message when that address is
+  not on the PC (for example Tailscale is disconnected).
+- **Firewall.** One inbound rule, ports 80/7171/7172 from `100.64.0.0/10` only. Remove
+  any per-program rules for `canary.exe` / `login-server.exe` that Windows created
+  from its firewall question (manual, section 11).
+- **MariaDB** listens on 127.0.0.1 only (`bind-address=127.0.0.1` in `my.ini`).
+- **Tailscale ACL.** Invited players reach only the game ports of the server PC;
+  the owner keeps full access (manual, section 11).
+- **Passwords.** Game passwords are unique (not reused elsewhere). The backup folder
+  on OneDrive holds the database (password hashes) and `local.env`, so the
+  Microsoft account uses two-step verification.
 
 ## Game balance (solo / duo)
 
