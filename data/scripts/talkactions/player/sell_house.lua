@@ -20,7 +20,9 @@ function sellHouse.onSay(player, words, param)
 	return true
 end
 
-if not configManager.getBoolean(configKeys.CYCLOPEDIA_HOUSE_AUCTION) then
+-- FAMILY: also available while Cyclopedia auctions are on.
+if FAMILY_HOUSE_COMMANDS or not configManager.getBoolean(configKeys.CYCLOPEDIA_HOUSE_AUCTION) then
+	sellHouse:setDescription("<name> - inside your house: pass it to a player next to you (a trade window opens)")
 	sellHouse:separator(" ")
 	sellHouse:groupType("normal")
 	sellHouse:register()

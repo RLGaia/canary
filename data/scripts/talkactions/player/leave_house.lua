@@ -42,7 +42,9 @@ function leaveHouse.onSay(player, words, param)
 	return true
 end
 
-if not configManager.getBoolean(configKeys.CYCLOPEDIA_HOUSE_AUCTION) then
+-- FAMILY: also available while Cyclopedia auctions are on.
+if FAMILY_HOUSE_COMMANDS or not configManager.getBoolean(configKeys.CYCLOPEDIA_HOUSE_AUCTION) then
+	leaveHouse:setDescription("- inside your house: give it up (free again at the next server start, no refund)")
 	leaveHouse:separator(" ")
 	leaveHouse:groupType("normal")
 	leaveHouse:register()

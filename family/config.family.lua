@@ -68,3 +68,25 @@ rateOfflineTrainingSpeed = 2.0
 
 -- Respawn: monsters come back twice as fast (classic hunts: 90 s -> 45 s).
 rateSpawn = 2
+
+-- ===========================================================================
+-- Houses (2026-10-13): bought in Cyclopedia -> Houses, or at once with
+-- !buyhouse while looking at the door. Type !house in game for a short guide.
+-- ===========================================================================
+
+-- Cyclopedia auctions end at the next server save time (0 days); the house is
+-- handed over when the server starts after that.
+toggleCyclopediaHouseAuction = true
+daysToCloseBid = 0
+-- Price: Cyclopedia charges the house's rent once, when you bid (the bid
+-- itself is refunded unless someone else bid too). houseRentRate scales every
+-- rent; 0.65 makes ordinary houses cost about 2,000 gold per square meter.
+houseRentRate = 0.65
+-- !buyhouse charges the same: 0 per square meter + 1x the (scaled) rent.
+housePriceEachSQM = 0
+housePriceRentMultiplier = 1.0
+-- No rent after buying, and a house is never lost for not logging in.
+houseRentPeriod = "never"
+houseLoseAfterInactivity = 0
+-- No minimum level for !buyhouse (Cyclopedia has none).
+houseBuyLevel = 0

@@ -35,7 +35,8 @@ function buyHouse.onSay(player, words, param)
 		return true
 	end
 
-	if player:getHouse() then
+	-- FAMILY: no limit on how many houses a character owns.
+	if not FAMILY_UNLIMITED_HOUSES and player:getHouse() then
 		player:sendCancelMessage("You are already the owner of a house.")
 		return true
 	end
@@ -50,13 +51,14 @@ function buyHouse.onSay(player, words, param)
 		player:sendCancelMessage("You do not have enough money.")
 		return true
 	end
-	metrics.addCounter("balance_decrease", remainsPrice, {
+	metrics.addCounter("balance_decrease", price, { -- FAMILY: upstream passed an undefined variable
 		player = player:getName(),
 		context = "house_purchase",
 	})
 
 	house:setHouseOwner(player:getGuid())
-	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have successfully bought this house, be sure to have the money for the rent in the bank.")
+	-- FAMILY: no rent on this server (houseRentPeriod = "never").
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You have successfully bought the house '%s' for %d gold. There is no rent: it is yours until you leave it. Type !house for help.", house:getName(), price))
 	local houseSpells = { "House Door List", "House Guest List", "House Kick", "House Subowner List" }
 	local learnedSpells = {}
 
@@ -70,7 +72,9 @@ function buyHouse.onSay(player, words, param)
 	return true
 end
 
-if not configManager.getBoolean(configKeys.CYCLOPEDIA_HOUSE_AUCTION) then
+-- FAMILY: also available while Cyclopedia auctions are on (instant purchase).
+if FAMILY_HOUSE_COMMANDS or not configManager.getBoolean(configKeys.CYCLOPEDIA_HOUSE_AUCTION) then
+	buyHouse:setDescription("- look at a house door and buy it at once (same price as in Cyclopedia)")
 	buyHouse:separator(" ")
 	buyHouse:groupType("normal")
 	buyHouse:register()

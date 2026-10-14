@@ -272,6 +272,8 @@ FamilyCityLife.serverTips = {
 	"Auto-loot and auto-bank are on. Your gold goes straight to the bank.",
 	"Rashid buys almost any loot. Ask me for {news} to know where he is today.",
 	"Yasir, the oriental trader, visits every day: Ankrahmun, Carlin or Liberty Bay. Ask me for {news}.",
+	"Houses are paid once here, no rent. Guildhalls too, no guild needed. Say !house to learn how.",
+	"Forgot a command? Say !house for the house commands, or !commands for all of them.",
 }
 
 -- Rashid's route, from scripts/globalevents/spawn/rashid.lua (os.date wday 1 = Sunday).
