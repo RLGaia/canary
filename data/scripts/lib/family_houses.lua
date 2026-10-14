@@ -14,3 +14,8 @@ FAMILY_HOUSE_COMMANDS = true
 
 -- !buyhouse works even if you already own a house. false = one per character.
 FAMILY_UNLIMITED_HOUSES = true
+
+-- Cyclopedia > Houses > Bid buys a free house at once (price = its rent, from
+-- the bank) instead of starting an auction. false = upstream auctions.
+-- See data/scripts/family/house_instant_buy.lua.
+FAMILY_INSTANT_CYCLOPEDIA_HOUSES = true

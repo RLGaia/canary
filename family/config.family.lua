@@ -70,16 +70,16 @@ rateOfflineTrainingSpeed = 2.0
 rateSpawn = 2
 
 -- ===========================================================================
--- Houses (2026-10-13): bought in Cyclopedia -> Houses, or at once with
--- !buyhouse while looking at the door. Type !house in game for a short guide.
+-- Houses (2026-10-13): Cyclopedia -> Houses -> Bid buys a free house at once
+-- (data/scripts/family/house_instant_buy.lua), or !buyhouse while looking at
+-- the door. Type !house in game for a short guide.
 -- ===========================================================================
 
--- Cyclopedia auctions end at the next server save time (0 days); the house is
--- handed over when the server starts after that.
+-- Fallback when an auction does start (instant purchase switched off): it ends
+-- at the next server save time and the house is handed over at the next start.
 toggleCyclopediaHouseAuction = true
 daysToCloseBid = 0
--- Price: Cyclopedia charges the house's rent once, when you bid (the bid
--- itself is refunded unless someone else bid too). houseRentRate scales every
+-- Price: the house's rent, paid once from the bank. houseRentRate scales every
 -- rent; 0.65 makes ordinary houses cost about 2,000 gold per square meter.
 houseRentRate = 0.65
 -- !buyhouse charges the same: 0 per square meter + 1x the (scaled) rent.

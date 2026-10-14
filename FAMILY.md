@@ -136,7 +136,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | Party quests | One player can do the quests in the table below | the files listed there |
 | Exclusive quests | Both Djinn factions; all three Secret Service agencies, one after another; every chest of a "choose one reward" room | `data\scripts\family\solo_quests.lua` |
 | City life | About 190 walking NPCs in 11 cities with quest tips, ship travel and 18 vendors (see "City life" below) | `data-otservbr-global\scripts\family\city_life.lua` |
-| Houses | Bought in Cyclopedia > Houses (auction ends at the next server save, the house is handed over at the next server start) or at once with `!buyhouse` at the door. Price = the house's rent x 0.65, paid once; no rent, never lost, no level, no limit; guildhalls without a guild. `!house` in game shows a guide (see "Houses" below) | `family\config.family.lua`, `data\scripts\lib\family_houses.lua` |
+| Houses | Bought at once in Cyclopedia > Houses > Bid, or with `!buyhouse` at the door. Price = the house's rent x 0.65, paid once; no rent, never lost, no level, no limit; guildhalls without a guild. `!house` in game shows a guide (see "Houses" below) | `family\config.family.lua`, `data\scripts\lib\family_houses.lua` |
 | Daily reward | The streak never expires: missing days costs no joker tokens and keeps the streak bonuses. A new reward day starts at 06:00 even if the server was off then (upstream, the day only advanced while the server ran at 06:00) | `data\scripts\family\daily_reward.lua` (`Family.dailyRewardNeverExpires`) |
 | Soul War reward | The final chest gives another random Soul item after each new Megalomania kill, or once every 20 h | `solo_quests.lua` |
 | Grizzly Adams tasks | Killing in the Name Of without level ranges: every hunting task at any level (crocodiles to destroyers), points never capped by level, rank promotions, the full boss list and the special tasks open at any level. Still as upstream: 3 tasks at a time, each task 3 times, Demons only for Elite Hunters, the points needed per rank | `solo_quests.lua` (`Family.noTaskLevelCap`) |
@@ -169,6 +169,7 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data-otservbr-global/npc/` Secret Service NPCs: `chester_kahs`, `emma`, `uncle` | After finishing one agency, the next can be joined |
 | `data/scripts/talkactions/player/buy_house.lua` | Registered while Cyclopedia auctions are on, no one-house limit, no-rent message, fixed an undefined variable |
 | `data/scripts/talkactions/player/leave_house.lua`, `sell_house.lua` | Registered while Cyclopedia auctions are on |
+| `data/modules/modules.xml` | Adds the Cyclopedia house packet module (byte 173) for instant purchases |
 | `data-otservbr-global/lib/quests/killing_in_the_name_of.lua` | Task level ranges ignored when `Family.noTaskLevelCap` is set |
 | `data-otservbr-global/npc/grizzly_adams.lua` | No level ranges: full task list, no points cap, promotions, all bosses and special tasks at any level (same switch) |
 
@@ -261,14 +262,13 @@ Added 2026-10-13. Houses and guildhalls are paid once and kept forever.
 
 | What | Details |
 |---|---|
-| Buy in Cyclopedia | Cyclopedia > Houses > town > house > Bid. Cyclopedia takes the house's rent once (the price) plus your bid; the bid comes back unless someone else bid on the same house (then the higher bid wins and pays the second bid + 1). The auction ends at the server save time (`daysToCloseBid = 0`; the engine counts 06:00 as UTC, 03:00 in Brasilia) and the house is handed over at the next server start after that |
+| Buy in Cyclopedia | Cyclopedia > Houses > town > house > Bid: the house is yours at once and the price is taken from the bank (any bid amount works; only the price is charged). How: a Lua module (`data\modules\scripts\family\cyclopedia_houses.lua`, in `data\modules\modules.xml`) sees the bid packet before the server, buys the house (`data\scripts\family\house_instant_buy.lua`) and turns the packet into a town-list request, so the list refreshes instead of an auction starting. Not enough money, a house with an owner or no vocation: the normal server answer. With `FAMILY_INSTANT_CYCLOPEDIA_HOUSES = false` the upstream auction comes back (ends at the server save, `daysToCloseBid = 0`, handed over at the next server start) |
 | Buy at once | Face the house door and say `!buyhouse`; same price as Cyclopedia |
 | Price | The house's rent from the map x `houseRentRate` 0.65, once: 16k to 520k for houses (median about 65k, about 2,000 gold per sqm), 162k to 3.25M for guildhalls (median 325k) |
 | Rules | No rent (`houseRentPeriod = "never"`), never lost for inactivity, no level, no limit on houses per character, guildhalls without a guild (the server only blocks guild members who are not leaders; not checked in the client) |
 | Commands | `!house` (guide), `!buyhouse`, `!leavehouse` (free at the next server start, no refund), `!sellhouse Name` (trade window; refused if that player already owns a house, engine rule) |
 | House spells | `aleta sio` guests, `aleta som` subowners, `aleta grav` door list, `alana sio "Name` kick |
-| Don't mix | Don't use `!buyhouse` on a house that has a Cyclopedia bid |
-| Files | Settings in `family\config.family.lua` (Houses block); switches `FAMILY_HOUSE_COMMANDS` and `FAMILY_UNLIMITED_HOUSES` in `data\scripts\lib\family_houses.lua`; guide in `data\scripts\family\house_help.lua` |
+| Files | Settings in `family\config.family.lua` (Houses block); switches `FAMILY_HOUSE_COMMANDS`, `FAMILY_UNLIMITED_HOUSES` and `FAMILY_INSTANT_CYCLOPEDIA_HOUSES` in `data\scripts\lib\family_houses.lua`; instant purchase in `data\scripts\family\house_instant_buy.lua`; guide in `data\scripts\family\house_help.lua` |
 
 ## Coin Brokers
 
