@@ -120,7 +120,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 |---|---|---|
 | Premium | Every account is always premium | `family\config.family.lua` (`freePremium`) |
 | PvP | No PvP (`no-pvp`) | `family\config.family.lua` |
-| Experience | 10x up to level 50, 7x to 100, 5x to 200, 3x after | `data\scripts\family\solo_balance.lua` |
+| Experience | 10x up to level 50, 8x to 100, 6x to 200, 4x after (raised from 10/7/5/3 on 2026-10-14) | `data\scripts\family\solo_balance.lua` |
 | Skills | 12x up to skill 60, 9x to 80, 7x to 100, 4x after (by the level of that skill; raised from 10/7/5/3 on 2026-10-13). In game, `!serverinfo` shows your current rates | same |
 | Magic level | 12x up to ML 30, 9x to 60, 7x to 90, 4x after (raised from 10/7/5/3 on 2026-10-13) | same |
 | Loot | 2x, rarest items first | `family\config.family.lua` |

@@ -16,11 +16,13 @@ Family.infiniteTrainingWeapons = true
 -- 1. Level curves ("medium"). Used because config sets rateUseStages = true.
 --    These replace the upstream tables from data/stages.lua.
 -- ---------------------------------------------------------------------------
+-- Experience: by character level. Raised on 2026-10-14 from 10/7/5/3 to
+-- 10/8/6/4 (levels 1-50 unchanged).
 experienceStages = {
 	{ minlevel = 1, maxlevel = 50, multiplier = 10 },
-	{ minlevel = 51, maxlevel = 100, multiplier = 7 },
-	{ minlevel = 101, maxlevel = 200, multiplier = 5 },
-	{ minlevel = 201, multiplier = 3 },
+	{ minlevel = 51, maxlevel = 100, multiplier = 8 },
+	{ minlevel = 101, maxlevel = 200, multiplier = 6 },
+	{ minlevel = 201, multiplier = 4 },
 }
 
 -- Skills and magic level: by the level of that skill (not the character
