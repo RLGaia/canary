@@ -16,17 +16,27 @@ Family.infiniteTrainingWeapons = true
 -- 1. Level curves ("medium"). Used because config sets rateUseStages = true.
 --    These replace the upstream tables from data/stages.lua.
 -- ---------------------------------------------------------------------------
--- Experience: by character level. Raised on 2026-10-14 from 10/7/5/3 to
--- 10/8/6/4 (levels 1-50 unchanged).
+-- Experience: by character level. Since 2026-10-14 (second change that day):
+-- Rubinot's curve up to level 400, then a gentler taper so levels 400-800
+-- take about 80 hours of hunting (Rubinot: about 120), and 5x from 801 on
+-- (Rubinot keeps falling to 1.2x). Before: 10/8/6/4 (levels 1/51/101/201).
 experienceStages = {
-	{ minlevel = 1, maxlevel = 50, multiplier = 10 },
-	{ minlevel = 51, maxlevel = 100, multiplier = 8 },
-	{ minlevel = 101, maxlevel = 200, multiplier = 6 },
-	{ minlevel = 201, multiplier = 4 },
+	{ minlevel = 1, maxlevel = 8, multiplier = 50 },
+	{ minlevel = 9, maxlevel = 50, multiplier = 80 },
+	{ minlevel = 51, maxlevel = 100, multiplier = 60 },
+	{ minlevel = 101, maxlevel = 150, multiplier = 40 },
+	{ minlevel = 151, maxlevel = 200, multiplier = 30 },
+	{ minlevel = 201, maxlevel = 300, multiplier = 15 },
+	{ minlevel = 301, maxlevel = 500, multiplier = 12 },
+	{ minlevel = 501, maxlevel = 600, multiplier = 11 },
+	{ minlevel = 601, maxlevel = 700, multiplier = 10 },
+	{ minlevel = 701, maxlevel = 800, multiplier = 8 },
+	{ minlevel = 801, multiplier = 5 },
 }
 
 -- Skills and magic level: by the level of that skill (not the character
--- level). Raised on 2026-10-13 from 10/7/5/3 to 12/9/7/4.
+-- level). Raised on 2026-10-13 from 10/7/5/3 to 12/9/7/4. The last stage
+-- never drops below 4x (Rubinot falls to 2x after 120).
 skillsStages = {
 	{ minlevel = 0, maxlevel = 60, multiplier = 12 },
 	{ minlevel = 61, maxlevel = 80, multiplier = 9 },
@@ -109,6 +119,16 @@ familyDeathRules:register()
 -- ---------------------------------------------------------------------------
 local familyReport = GlobalEvent("FamilyBalanceReport")
 
+-- "1-8 x50, 9-50 x80, ..., 801+ x5"
+local function describeStages(stages)
+	local parts = {}
+	for _, stage in ipairs(stages) do
+		local range = stage.maxlevel and string.format("%d-%d", stage.minlevel, stage.maxlevel) or string.format("%d+", stage.minlevel)
+		parts[#parts + 1] = string.format("%s x%s", range, tostring(stage.multiplier))
+	end
+	return table.concat(parts, ", ")
+end
+
 function familyReport.onStartup()
 	patchBossLevers()
 	local function float(key)
@@ -134,25 +154,8 @@ function familyReport.onStartup()
 		tostring(Family.infiniteTrainingWeapons),
 		configManager.getNumber(configKeys.RATE_SPAWN)
 	)
-	logger.info(
-		"[Family] experience x{}/x{}/x{}/x{} (levels 1/51/101/201); boss levers set to 1 player: {}",
-		getRateFromTable(experienceStages, 1, 1),
-		getRateFromTable(experienceStages, 51, 1),
-		getRateFromTable(experienceStages, 101, 1),
-		getRateFromTable(experienceStages, 201, 1),
-		leversPatched
-	)
-	logger.info(
-		"[Family] skills x{}/x{}/x{}/x{} (skill 10/61/81/101); magic level x{}/x{}/x{}/x{} (ML 0/31/61/91)",
-		getRateFromTable(skillsStages, 10, 1),
-		getRateFromTable(skillsStages, 61, 1),
-		getRateFromTable(skillsStages, 81, 1),
-		getRateFromTable(skillsStages, 101, 1),
-		getRateFromTable(magicLevelStages, 0, 1),
-		getRateFromTable(magicLevelStages, 31, 1),
-		getRateFromTable(magicLevelStages, 61, 1),
-		getRateFromTable(magicLevelStages, 91, 1)
-	)
+	logger.info("[Family] experience {}; boss levers set to 1 player: {}", describeStages(experienceStages), leversPatched)
+	logger.info("[Family] skills {}; magic level {}", describeStages(skillsStages), describeStages(magicLevelStages))
 	return true
 end
 

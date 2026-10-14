@@ -29,8 +29,10 @@ worldType = "no-pvp"
 -- Experience, skills and magic follow the level curves in solo_balance.lua.
 rateUseStages = true
 
--- Loot: 2x, rare items first so the corpse never drops them for lack of space.
-rateLoot = 2
+-- Loot: 3x (2x until 2026-10-14): every item's drop chance is tripled, up to
+-- 100%; a stack (gold coins too) drops more often, not bigger. Rare items
+-- first so the corpse never drops them for lack of space.
+rateLoot = 3
 sortLootByChance = true
 
 -- Bosses ("moderate"): 50% health, 70% damage, normal defense.
