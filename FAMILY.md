@@ -139,6 +139,7 @@ Chosen on 2026-10-12. The server log confirms it on every start with two `[Famil
 | City life | About 190 walking NPCs in 11 cities with quest tips, ship travel and 18 vendors (see "City life" below) | `data-otservbr-global\scripts\family\city_life.lua` |
 | Houses | Bought at once in Cyclopedia > Houses > Bid, or with `!buyhouse` at the door. Price = the house's rent x 0.65, paid once; no rent, never lost, no level, no limit; guildhalls without a guild. `!house` in game shows a guide (see "Houses" below) | `family\config.family.lua`, `data\scripts\lib\family_houses.lua` |
 | Saving | The whole server saves every 15 minutes (`data\scripts\family\auto_save.lua`; the map is not cleaned, so items on the ground stay). Any character can type `/save` (or `/save 5` for 5 minutes from now). Upstream's interval save never ran with `globalServerSaveTime = "06:00:00"` (it expects HH:MM), so `toggleSaveInterval = false` | `family\config.family.lua`, `auto_save.lua` |
+| Newspaper | A newspaper seller near the temple of each of the 11 city-life cities sells today's *Gaia Times* for 1 gp (`hi`, `newspaper`, `yes`). Using it shows boosted creature and boss, Rashid, Yasir and vendor cities, world changes, rare creatures seen or possible today, raid regions, events and server notes; an older paper is marked OLD EDITION. New edition at 06:00 (see "Newspaper" below) | `data-otservbr-global\scripts\family\newspaper.lua` |
 | Daily reward | The streak never expires: missing days costs no joker tokens and keeps the streak bonuses. A new reward day starts at 06:00 even if the server was off then (upstream, the day only advanced while the server ran at 06:00) | `data\scripts\family\daily_reward.lua` (`Family.dailyRewardNeverExpires`) |
 | Soul War reward | The final chest gives another random Soul item after each new Megalomania kill, or once every 20 h | `solo_quests.lua` |
 | Grizzly Adams tasks | Killing in the Name Of without level ranges: every hunting task at any level (crocodiles to destroyers), points never capped by level, rank promotions, the full boss list and the special tasks open at any level. Still as upstream: 3 tasks at a time, each task 3 times, Demons only for Elite Hunters, the points needed per rank | `solo_quests.lua` (`Family.noTaskLevelCap`) |
@@ -171,6 +172,8 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data-otservbr-global/npc/` Secret Service NPCs: `chester_kahs`, `emma`, `uncle` | After finishing one agency, the next can be joined |
 | `data/scripts/talkactions/player/buy_house.lua` | Registered while Cyclopedia auctions are on, no one-house limit, no-rent message, fixed an undefined variable |
 | `data/scripts/talkactions/player/leave_house.lua`, `sell_house.lua` | Registered while Cyclopedia auctions are on |
+| `data/scripts/actions/items/dolls.lua` | Using a golden newspaper that is a daily newspaper opens the edition (other golden newspapers keep their doll sounds) |
+| `data-otservbr-global/scripts/world_changes/their_masters_voice.lua` | Sets `FamilyTheirMastersVoiceActive` when the world change triggers, for the newspaper |
 | `data/scripts/talkactions/god/save.lua` | `/save` available to every character (group normal) |
 | `data/modules/modules.xml` | Adds the Cyclopedia house packet module (byte 173) for instant purchases |
 | `data-otservbr-global/lib/quests/killing_in_the_name_of.lua` | Task level ranges ignored when `Family.noTaskLevelCap` is set |
@@ -272,6 +275,19 @@ Added 2026-10-13. Houses and guildhalls are paid once and kept forever.
 | Commands | `!house` (guide), `!buyhouse`, `!leavehouse` (free at the next server start, no refund), `!sellhouse Name` (trade window; refused if that player already owns a house, engine rule) |
 | House spells | `aleta sio` guests, `aleta som` subowners, `aleta grav` door list, `alana sio "Name` kick |
 | Files | Settings in `family\config.family.lua` (Houses block); switches `FAMILY_HOUSE_COMMANDS`, `FAMILY_UNLIMITED_HOUSES` and `FAMILY_INSTANT_CYCLOPEDIA_HOUSES` in `data\scripts\lib\family_houses.lua`; instant purchase in `data\scripts\family\house_instant_buy.lua`; guide in `data\scripts\family\house_help.lua` |
+
+## Newspaper
+
+Added 2026-10-14. One "<City> Newspaper Seller" walks near the temple of each city in
+`FamilyCityLife.cities` (the same 11 cities as the Coin Brokers).
+
+| What | Details |
+|---|---|
+| Buy | `hi`, `newspaper`, `yes`: 1 gold coin (backpack first, then bank). Needs room in the backpack |
+| Item | A golden newspaper renamed "newspaper", 1 oz; look shows the edition's date; use it to read |
+| Edition | Written when bought and never changes. A new day starts at 06:00 (server save); an older paper opens with "OLD EDITION (date)" |
+| Contents | Boosted creature and boss; Rashid's city (from where the Rashid NPC stands), Yasir's city, travelling vendor cities; world changes (Fury Gate city, Nightmare Isle, Grimvale full moon on the 13th, Their Master's Voice); Lua raids seen today (time, still roaming) or possible today; regions of classic XML raids; active event rates; server notes |
+| Settings | `FamilyNewspaper` at the top of `data-otservbr-global\scripts\family\newspaper.lua`: `title`, `price`, `itemId`, `weight`, `dayStartHour`, `enabled`. Raid display names: `raidNames` in the same file |
 
 ## Coin Brokers
 

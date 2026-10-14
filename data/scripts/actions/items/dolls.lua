@@ -105,6 +105,11 @@ local dollsTable = {
 local dolls = Action()
 
 function dolls.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: the daily newspaper is a renamed golden newspaper
+	-- (data-otservbr-global/scripts/family/newspaper.lua).
+	if Family and Family.readNewspaper and Family.readNewspaper(player, item) then
+		return true
+	end
 	local sounds = dollsTable[item.itemid]
 	if not sounds then
 		return false

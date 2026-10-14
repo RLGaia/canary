@@ -2,6 +2,8 @@ local theirMastersVoiceEvent = GlobalEvent("TheirMastersVoice")
 
 function theirMastersVoiceEvent.onStartup()
 	if math.random(100) <= 20 then
+		-- FAMILY: remembered for the daily newspaper (scripts/family/newspaper.lua).
+		FamilyTheirMastersVoiceActive = true
 		for x = 33306, 33369 do
 			for y = 31847, 31919 do
 				local position = Position(x, y, 9)
