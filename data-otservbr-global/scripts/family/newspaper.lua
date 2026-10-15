@@ -5,7 +5,7 @@
 -- (hi -> newspaper -> yes). The newspaper is a "golden newspaper" item renamed
 -- "newspaper"; using it opens the edition. Its text is written when it is
 -- bought and never changes, so a paper from an earlier day shows that day's
--- news under an "old edition" warning. A new day starts at 06:00, the server
+-- news, with its date at the top. A new day starts at 06:00, the server
 -- save time (like the daily reward).
 --
 -- What an edition holds: boosted creature and boss; where Rashid, Yasir and
@@ -332,8 +332,14 @@ function Family.newspaperText(key)
 	return table.concat(out, "\n")
 end
 
+-- Leftover of an earlier version, which put this notice in front of older
+-- papers every time they were read (the client stores the shown text in the
+-- item, so it piled up). Removed from papers when they are read.
+local OLD_NOTICE = "OLD EDITION %([^\n]*%)%.\nToday's news is sold by any newspaper seller%.\n\n"
+
 -- The text shown when a newspaper item is used, or nil when the item is not
--- one of ours.
+-- one of ours. The edition's date is in its first lines, so older papers
+-- need no extra notice.
 local function displayText(item)
 	if not item or item:getId() ~= cfg.itemId then
 		return nil
@@ -343,10 +349,7 @@ local function displayText(item)
 		return nil
 	end
 	local text = item:getAttribute(ITEM_ATTRIBUTE_TEXT) or ""
-	if key ~= dayKey() then
-		text = "OLD EDITION (" .. longDate(key) .. ").\nToday's news is sold by any newspaper seller.\n\n" .. text
-	end
-	return text
+	return (text:gsub(OLD_NOTICE, ""))
 end
 
 -- Shows a bought newspaper. Returns true when the item is one of ours.
