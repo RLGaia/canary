@@ -79,6 +79,9 @@ $loginEnv = @{
 	MYSQL_USER = $cfg['DB_USER']; MYSQL_PASS = $cfg['DB_PASSWORD']
 	LOGIN_IP = $cfg['SERVER_IP']; LOGIN_HTTP_PORT = $cfg['LOGIN_HTTP_PORT']; LOGIN_GRPC_PORT = '9090'
 	SERVER_IP = $cfg['SERVER_IP']; SERVER_NAME = $cfg['SERVER_NAME']; SERVER_PORT = '7172'; SERVER_LOCATION = 'BRA'
+	# The login server reads config.lua here (world type for the character list,
+	# serverName check) and data\json\eventscheduler\events.json for the login screen.
+	SERVER_PATH = $RepoRoot
 }
 # The child process inherits these; they are removed from this session right after.
 foreach ($k in $loginEnv.Keys) { Set-Item -Path "Env:$k" -Value $loginEnv[$k] }

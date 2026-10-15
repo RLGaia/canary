@@ -10,9 +10,14 @@ $ErrorActionPreference = 'Stop'
 $Script:CanaryVersion      = 'v3.6.1'
 $Script:CanaryZipUrl       = 'https://github.com/opentibiabr/canary/releases/download/v3.6.1/canary-windows-cmake-release.zip'
 $Script:CanaryZipSha256    = '7A7A7985D2042C834488A8769991109074484A79FAF11F131436DBCDADFA34E8'
-$Script:LoginServerVersion = 'v1.1.3'
-$Script:LoginServerZipUrl  = 'https://github.com/opentibiabr/login-server/releases/download/v1.1.3/login-server-v1.1.3-windows-amd64.zip'
-$Script:LoginServerSha256  = 'C4D727EC933E84B1A92308FC4B21380912FC9554BB20219D18C29A6D9ECD2A5B'
+# Login server: our fork's build (upstream main of May 2026 + world PvP type),
+# because no official release answers the login screen's boosted creature and
+# event schedule requests yet. Official v1.1.3 was:
+#   https://github.com/opentibiabr/login-server/releases/download/v1.1.3/login-server-v1.1.3-windows-amd64.zip
+#   C4D727EC933E84B1A92308FC4B21380912FC9554BB20219D18C29A6D9ECD2A5B
+$Script:LoginServerVersion = 'family-1'
+$Script:LoginServerZipUrl  = 'https://github.com/RLGaia/login-server/releases/download/family-1/login-server-family-1-windows-amd64.zip'
+$Script:LoginServerSha256  = 'C717940CF9535C9A20C4BB0E46C1C7E6C82ACE7C3977F8209F111346B2B5644E'
 $Script:ClientVersion      = '15.11.c9d1cf'
 
 $Script:FamilyDir  = $PSScriptRoot

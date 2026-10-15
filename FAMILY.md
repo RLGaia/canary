@@ -14,7 +14,7 @@ The server runs **natively on Windows**: no Docker, no WSL, no virtualization
 | Canary server | v3.6.1 (`canary.exe`) | release zip, downloaded and checksum-verified by `family\setup.ps1` |
 | Game data (quests, NPCs, monsters) | v3.6.1 | this repository, branch `family` (starts at tag `v3.6.1`) |
 | Map | `otservbr.otbm` from release v3.6.1 | downloaded by Canary on its first start |
-| Login server | v1.1.3 (`login-server.exe`) | release zip, downloaded and checksum-verified by `family\setup.ps1` |
+| Login server | `family-1` (`login-server.exe`): our fork's build of upstream `main` (May 2026) plus the world PvP type. Unlike v1.1.3 it fills the login screen's Boosted (creature and boss) and Event Schedule panels, and the character list shows "Optional PvP" | release zip from <https://github.com/RLGaia/login-server/releases/tag/family-1>, downloaded and checksum-verified by `family\setup.ps1`; `start-server.ps1` passes `SERVER_PATH` (this folder) so it can read `config.lua` and `data\json\eventscheduler\events.json`. Back to v1.1.3: the URL and checksum are kept in a comment in `family\lib.ps1` |
 | Database | MariaDB 11.4 for Windows | <https://mariadb.org/download/> |
 | Game client | 15.11 (`15.11.c9d1cf`) | <https://github.com/dudantas/tibia-client/releases/tag/15.11.c9d1cf> |
 
