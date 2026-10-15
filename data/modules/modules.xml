@@ -23,6 +23,8 @@
 
 	<!-- FAMILY: Cyclopedia house bids buy the house at once (data/scripts/family/house_instant_buy.lua) -->
 	<module type="recvbyte" byte="173" script="family/cyclopedia_houses.lua" />
+	<!-- FAMILY: logout while the battle icon is shown (data/scripts/family/logout_in_fight.lua) -->
+	<module type="recvbyte" byte="20" script="family/logout_in_fight.lua" />
 
 	<!-- Hireling Outfit Helper -->
 	<module type="recvbyte" byte="211" script="hirelings/hireling_module.lua" />
