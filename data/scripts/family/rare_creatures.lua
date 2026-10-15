@@ -6,8 +6,12 @@
 --    and creatures such as Midnight Panther, Draptor, Undead Cavebear, Yeti,
 --    The Old Widow, Tyrn, White Pale... Upstream they need 2-3 active players
 --    (so they never started here) and have about a 2% chance per day. Here
---    each one may start again RARE_CREATURE_MINUTES after its last start,
---    once the creatures of its previous run are dead, with one player online.
+--    they take turns: one raid starts at a time, at least
+--    Family.rareRaidGapMinutes after the previous one (any raid), picked at
+--    random among those ready. A raid is ready with one player online,
+--    Family.rareCreatureMinutes after its own last start, once the creatures
+--    of its previous run are dead. (Until 2026-10-14 there was no shared gap,
+--    so at every server start nearly all 19 began within about 10 minutes.)
 -- 2. Classic XML raids (data-otservbr-global/raids/raids.xml): one raid at a
 --    time; the "margin" there (minutes between raids) is capped at 30 (FAMILY:
 --    edit in that file).
@@ -20,9 +24,17 @@ Family = Family or {}
 -- Minutes between two runs of the same Lua raid. Set to false for upstream rules.
 Family.rareCreatureMinutes = 30
 
--- After the wait, each 1-minute check starts the raid with this chance, so the
--- raids don't all start at the same minute (about 5 minutes extra on average).
-local START_CHANCE_PER_CHECK = 0.2
+-- Minutes between two rare raid starts, whichever raids they are (shared by
+-- all of them; chosen by Rodrigo on 2026-10-14).
+Family.rareRaidGapMinutes = 15
+
+-- Once the shared gap has passed, each 1-minute check starts a raid with this
+-- chance, so starts don't fall on an exact clock (about 1 minute extra on
+-- average).
+local START_CHANCE_PER_CHECK = 0.5
+
+-- The last start is kept across restarts, so a restart doesn't skip the gap.
+local queueKv = kv.scoped("family-rare-raids")
 
 -- Raids that keep the upstream rules (none for now; add a raid name such as
 -- ["thais.rats"] = true to exclude it).
@@ -95,7 +107,44 @@ function Raid:canStart()
 	if self:getActivePlayerCount() < 1 then
 		return false
 	end
-	return math.random() < START_CHANCE_PER_CHECK
+	-- Ready: join this minute's draw instead of starting at once. The draw
+	-- below picks one of the ready raids after the check loop has run.
+	Family.queueRareRaid(self)
+	return false
+end
+
+local candidates = {}
+local drawScheduled = false
+
+local function draw()
+	drawScheduled = false
+	local ready = candidates
+	candidates = {}
+	if #ready == 0 then
+		return
+	end
+	local last = queueKv:get("last-start") or 0
+	if os.time() - last < Family.rareRaidGapMinutes * 60 then
+		return
+	end
+	if math.random() >= START_CHANCE_PER_CHECK then
+		return
+	end
+	local raid = ready[math.random(#ready)]
+	queueKv:set("last-start", os.time())
+	raid:tryStart(true)
+end
+
+function Family.queueRareRaid(raid)
+	local last = queueKv:get("last-start") or 0
+	if os.time() - last < Family.rareRaidGapMinutes * 60 then
+		return
+	end
+	candidates[#candidates + 1] = raid
+	if not drawScheduled then
+		drawScheduled = true
+		addEvent(draw, 0)
+	end
 end
 
 local rareCreaturesReport = GlobalEvent("FamilyRareCreaturesReport")
@@ -107,7 +156,7 @@ function rareCreaturesReport.onStartup()
 			count = count + 1
 		end
 	end
-	logger.info("[Family] rare creature raids: {} (every {} min after the last one, once its creatures are dead)", count, tostring(Family.rareCreatureMinutes))
+	logger.info("[Family] rare creature raids: {}, one at a time, at least {} min apart (each again {} min after its last run, once its creatures are dead)", count, tostring(Family.rareRaidGapMinutes), tostring(Family.rareCreatureMinutes))
 	return true
 end
 
