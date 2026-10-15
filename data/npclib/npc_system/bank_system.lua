@@ -99,6 +99,18 @@ function Npc:parseBank(message, npc, creature, npcHandler)
 		count[playerId] = player:getMoney()
 		npcHandler:say(string.format("Would you really like to deposit %d gold?", count[playerId]), npc, creature)
 		npcHandler:setTopic(playerId, 2)
+		-- FAMILY: "withdraw all" (or "all" when asked how much to withdraw) takes the
+		-- whole balance; upstream ignored both without an answer.
+	elseif (MsgContains(message, "withdraw") or npcHandler:getTopic(playerId) == 6) and MsgContains(message, "all") then
+		count[playerId] = player:getBankBalance()
+		if count[playerId] <= 0 then
+			npcHandler:say("There is no gold on your account.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+			return true
+		end
+		npcHandler:say(string.format("Are you sure you wish to withdraw %d gold from your bank account?", count[playerId]), npc, creature)
+		npcHandler:setTopic(playerId, 7)
+		return true
 	elseif MsgContains(message, "deposit") then
 		if string.match(message, "%d+") then
 			count[playerId] = getMoneyCount(message)
@@ -169,6 +181,11 @@ function Npc:parseBank(message, npc, creature, npcHandler)
 			return true
 		end
 	elseif npcHandler:getTopic(playerId) == 6 then
+		-- FAMILY: an answer without a number asks again instead of "not enough gold".
+		if not string.match(message, "%d+") then
+			npcHandler:say("Please tell me a number of gold coins, or say {all} to withdraw everything.", npc, creature)
+			return true
+		end
 		count[playerId] = getMoneyCount(message)
 		if isValidMoney(count[playerId]) then
 			npcHandler:say(string.format("Are you sure you wish to withdraw %d gold from your bank account?", count[playerId]), npc, creature)
@@ -271,6 +288,11 @@ function Npc:parseBank(message, npc, creature, npcHandler)
 		npcHandler:say("Please tell me the amount of gold you would like to transfer.", npc, creature)
 		npcHandler:setTopic(playerId, 11)
 	elseif npcHandler:getTopic(playerId) == 11 then
+		-- FAMILY: the amount comes first; a name here used to answer "not enough gold".
+		if not string.match(message, "%d+") then
+			npcHandler:say("First tell me how much gold to transfer, for example {300}. Then I will ask who should receive it.", npc, creature)
+			return true
+		end
 		count[playerId] = getMoneyCount(message)
 		if not Bank.hasBalance(player, count[playerId]) then
 			npcHandler:say("There is not enough gold on your account.", npc, creature)
