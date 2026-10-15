@@ -29,6 +29,7 @@ checksums live at the top of `family\lib.ps1`.
 | `config.family.lua` | Our changes to Canary's settings (committed). Never edit `config.lua` itself |
 | `setup.ps1` | One-time setup, safe to re-run: downloads programs, creates the database, imports the schema, replaces the public GOD password |
 | `new-account.ps1` | Creates an account and its first character (`-AddCharacter` adds more) |
+| `edit-account.ps1` | Changes an account's login or password (also `@god`), or a character's name or sex; free, server stopped, backs up first |
 | `start-server.ps1` | Builds `config.lua`, starts the login server and Canary |
 | `backup-db.ps1` | Dumps the database to `%USERPROFILE%\OT-backups`, keeps the newest 30 |
 | `restore-db.ps1` | Restores the database from one of those backups (server stopped; backs up the current database first) |
@@ -71,6 +72,8 @@ checksums live at the top of `family\lib.ps1`.
    ```
    Logins look like an email (`player1@server`); they don't need to be real.
    New characters start like real Tibia: no vocation, on the Dawnport tutorial island.
+   To change a login, a password, a character name or sex later (server stopped):
+   `powershell -ExecutionPolicy Bypass -File family\edit-account.ps1`.
 7. **Game client 15.11** (on each PC that plays):
    - Download the tag's source archive:
      <https://github.com/dudantas/tibia-client/archive/refs/tags/15.11.c9d1cf.zip>
