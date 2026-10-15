@@ -47,7 +47,8 @@ bossDefaultTimeToFightAgain = 60 * 60
 
 -- Conveniences
 autoLoot = true                 -- loot goes straight to your loot containers
-autoBank = true                 -- looted gold goes straight to the bank
+autoBank = false                -- looted gold goes to the backpack (true until 2026-10-14); 100 coins change up by
+                                -- themselves (data/scripts/family/coin_change.lua)
 preyFreeThirdSlot = true        -- third Prey slot without Tibia Coins
 taskHuntingFreeThirdSlot = true -- third Hunting Task slot without Tibia Coins
 
