@@ -201,6 +201,7 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data-otservbr-global/npc/grizzly_adams.lua` | No level ranges: full task list, no points cap, promotions, all bosses and special tasks at any level (same switch) |
 | `data/scripts/spells/familiar/*.lua` (5 files) | Spell mana read through `FamilyFamiliarSpellMana` (0 with permanent familiars; the cost is charged by `familiar.lua`) |
 | `data/scripts/eventcallbacks/player/on_look.lua` | Looking at a permanent familiar says it stays until dismissed (instead of a time left) |
+| `data/scripts/systems/custom_monster_loot.lua` | Upstream example loot disabled: every monster dropped 1-10 christmas tokens (their NPC is not on the map) and dragons platinum coins |
 
 If a Canary update conflicts in `raids.xml` or `otservbr-monster.xml`, take the upstream file and
 apply the same caps again (margin above 30 becomes 30; spawntime above 3600 becomes 3600).

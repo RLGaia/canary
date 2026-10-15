@@ -1,13 +1,18 @@
+-- FAMILY: upstream ships the two tables below filled with examples, which made
+-- every monster drop 1-10 christmas tokens (useless here: Ruprecht, the NPC
+-- who takes them, is not on the map) and dragons drop platinum coins. Both
+-- examples are disabled; add real entries here to give monsters extra loot.
+
 -- Drops custom loot for all monsters
 local allLootConfig = {
-	{ id = 6526, chance = 100000, minCount = 1, maxCount = 10 }, -- Example of loot (100% chance)
+	-- { id = 6526, chance = 100000, minCount = 1, maxCount = 10 }, -- Example of loot (100% chance)
 }
 
 -- Custom loot for specific monsters (this has the same usage options as normal monster loot)
 local customLootConfig = {
-	["Dragon"] = { items = {
-		{ name = "platinum coin", chance = 1000, maxCount = 1 },
-	} },
+	-- ["Dragon"] = { items = {
+	-- 	{ name = "platinum coin", chance = 1000, maxCount = 1 },
+	-- } },
 }
 
 local customMonsterLoot = GlobalEvent("CreateCustomMonsterLoot")
