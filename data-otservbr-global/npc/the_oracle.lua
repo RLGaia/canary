@@ -81,6 +81,13 @@ local function greetCallback(npc, creature)
 	local playerId = creature:getId()
 	local player = Player(creature)
 	local level = player:getLevel()
+	-- FAMILY: characters with a vocation (visiting from the mainland) are offered
+	-- the way home; see data-otservbr-global/scripts/family/rookgaard_travel.lua.
+	if Family and Family.rookgaardTravel and player:getVocation():getId() > VOCATION.ID.NONE then
+		local _, townName = Family.mainlandTemple(player)
+		npcHandler:setMessage(MESSAGE_GREET, player:getName() .. ", DO YOU WISH TO RETURN TO " .. string.upper(townName) .. "?")
+		return true
+	end
 	if level < 8 then
 		npcHandler:say("CHILD! COME BACK WHEN YOU HAVE GROWN UP!", npc, creature)
 		npcHandler:resetNpc(creature)
@@ -106,6 +113,22 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	if not npcHandler:checkInteraction(npc, creature) then
 		return false
+	end
+
+	-- FAMILY: a character with a vocation goes back to its mainland temple.
+	if Family and Family.rookgaardTravel and player:getVocation():getId() > VOCATION.ID.NONE then
+		if MsgContains(message, "yes") then
+			local temple = Family.mainlandTemple(player)
+			npcHandler:say("SO BE IT!", npc, creature)
+			player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+			player:teleportTo(temple)
+			temple:sendMagicEffect(CONST_ME_TELEPORT)
+			npcHandler:removeInteraction(npc, creature)
+		elseif MsgContains(message, "no") then
+			npcHandler:say("THEN STAY, IF YOU MUST.", npc, creature)
+			npcHandler:removeInteraction(npc, creature)
+		end
+		return true
 	end
 
 	if npcHandler:getTopic(playerId) == 0 then

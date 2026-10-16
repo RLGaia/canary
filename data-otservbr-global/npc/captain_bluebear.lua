@@ -85,6 +85,11 @@ addTravelKeyword("yalahar", 200, Position(32816, 31272, 6), nil, function(player
 end)
 addTravelKeyword("oramond", 150, Position(33479, 31985, 7))
 addTravelKeyword("krailos", 230, Position(33492, 31712, 6))
+-- FAMILY: Rookgaard for mainland characters (switch and fare in
+-- data-otservbr-global/scripts/family/rookgaard_travel.lua; the Oracle sends them back).
+addTravelKeyword("rookgaard", 100, Position(32097, 32219, 7), nil, function(player)
+	return not (Family and Family.rookgaardTravel)
+end)
 
 -- Kick
 keywordHandler:addKeyword({ "kick" }, StdModule.kick, { npcHandler = npcHandler, destination = { Position(32320, 32219, 6), Position(32321, 32210, 6) } })
@@ -99,13 +104,13 @@ keywordHandler:addKeyword({ "company" }, StdModule.say, { npcHandler = npcHandle
 keywordHandler:addKeyword({ "tibia" }, StdModule.say, { npcHandler = npcHandler, text = "The Royal Tibia Line connects all seaside towns of Tibia." })
 keywordHandler:addKeyword({ "good" }, StdModule.say, { npcHandler = npcHandler, text = "We can transport everything you want." })
 keywordHandler:addKeyword({ "passenger" }, StdModule.say, { npcHandler = npcHandler, text = "We would like to welcome you on board." })
-keywordHandler:addKeyword({ "trip" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond} or {Edron}?" })
-keywordHandler:addKeyword({ "route" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond} or {Edron}?" })
-keywordHandler:addKeyword({ "passage" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond} or {Edron}?" })
-keywordHandler:addKeyword({ "town" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond} or {Edron}?" })
-keywordHandler:addKeyword({ "destination" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond} or {Edron}?" })
-keywordHandler:addKeyword({ "sail" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond} or {Edron}?" })
-keywordHandler:addKeyword({ "go" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond} or {Edron}?" })
+keywordHandler:addKeyword({ "trip" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond}, {Edron} or {Rookgaard}?" }) -- FAMILY: Rookgaard added
+keywordHandler:addKeyword({ "route" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond}, {Edron} or {Rookgaard}?" })
+keywordHandler:addKeyword({ "passage" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond}, {Edron} or {Rookgaard}?" })
+keywordHandler:addKeyword({ "town" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond}, {Edron} or {Rookgaard}?" })
+keywordHandler:addKeyword({ "destination" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond}, {Edron} or {Rookgaard}?" })
+keywordHandler:addKeyword({ "sail" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond}, {Edron} or {Rookgaard}?" })
+keywordHandler:addKeyword({ "go" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Ab'Dendriel}, {Venore}, {Port Hope}, {Liberty Bay}, {Svargrond}, {Yalahar}, {Roshamuul}, {Oramond}, {Edron} or {Rookgaard}?" })
 keywordHandler:addKeyword({ "ice" }, StdModule.say, { npcHandler = npcHandler, text = "I'm sorry, but we don't serve the routes to the Ice Islands." })
 keywordHandler:addKeyword({ "senja" }, StdModule.say, { npcHandler = npcHandler, text = "I'm sorry, but we don't serve the routes to the Ice Islands." })
 keywordHandler:addKeyword({ "folda" }, StdModule.say, { npcHandler = npcHandler, text = "I'm sorry, but we don't serve the routes to the Ice Islands." })
