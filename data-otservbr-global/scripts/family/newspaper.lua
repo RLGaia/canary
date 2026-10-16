@@ -220,6 +220,11 @@ end
 
 local function eventNews()
 	local lines = {}
+	if FamilyWinter and FamilyWinter.newsLines then
+		for _, text in ipairs(FamilyWinter.newsLines()) do
+			lines[#lines + 1] = text
+		end
+	end
 	if not EventsScheduler then
 		return lines
 	end

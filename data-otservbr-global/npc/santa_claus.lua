@@ -81,16 +81,16 @@ local veryRareItems = {
 }
 
 local function getReward()
-	local rewardTable = {}
+	-- FAMILY: upstream checked 90 first, so 10% of presents found an empty
+	-- table and failed. Now: 60% normal, 25% semi-rare, 12% rare, 3% very rare.
+	local rewardTable = normalItems
 	local random = math.random(100)
-	if random <= 90 then
-		rewardTable = normalItems
-	elseif random <= 70 then
-		rewardTable = semiRareItems
-	elseif random <= 30 then
-		rewardTable = rareItems
-	elseif random <= 10 then
+	if random > 97 then
 		rewardTable = veryRareItems
+	elseif random > 85 then
+		rewardTable = rareItems
+	elseif random > 60 then
+		rewardTable = semiRareItems
 	end
 
 	local rewardItem = rewardTable[math.random(#rewardTable)]
@@ -102,16 +102,24 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	if MsgContains(message, "present") then
 		local player = Player(creature)
-		if player:getStorageValue(840293) == 1 then
-			npcHandler:say("You can't get other present.", npc, creature)
+		-- FAMILY: one present per character per year (upstream: once ever).
+		-- See data-otservbr-global/scripts/family/winter_event.lua.
+		local year = tonumber(os.date("%Y"))
+		if player:getStorageValue(840293) == year then
+			npcHandler:say("You already got your present this year. Come back next Christmas!", npc, creature)
 			return false
 		end
 
 		local reward = getReward()
-		local cont = Container(Player(creature):addItem(6510):getUniqueId())
-		local count = 1
+		local present = player:addItem(6510)
+		if not present then
+			npcHandler:say("Ho ho! You have no room for a present. Make some space and come back.", npc, creature)
+			return false
+		end
+		local cont = Container(present:getUniqueId())
 
 		for i = 1, #reward do
+			local count = 1
 			if reward[i] == 2992 or reward[i] == 3599 then
 				count = 10
 			end
@@ -119,13 +127,14 @@ local function creatureSayCallback(npc, creature, type, message)
 			cont:addItem(reward[i], count)
 		end
 
-		player:setStorageValue(840293, 1)
+		player:setStorageValue(840293, year)
 		npcHandler:say("Merry Christmas!", npc, creature)
 	end
 
 	return true
 end
 
+npcHandler:setMessage(MESSAGE_GREET, "Ho ho ho, |PLAYERNAME|! Have you been good this year? Then ask me for your {present}!") -- FAMILY
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)

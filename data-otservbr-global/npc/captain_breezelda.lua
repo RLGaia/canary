@@ -61,6 +61,16 @@ addTravelKeyword("thais", 110, Position(32310, 32210, 6))
 addTravelKeyword("carlin", 180, Position(32387, 31820, 6))
 addTravelKeyword("venore", 150, Position(32954, 32022, 6))
 
+-- FAMILY: Percht Island during the winter event (December); see
+-- data-otservbr-global/scripts/family/winter_event.lua. Frosty sails back.
+local function perchtOpen(player)
+	return FamilyWinter and FamilyWinter.isActive() and FamilyWinter.perchtIsland
+end
+local perchtKeyword = keywordHandler:addKeyword({ "percht" }, StdModule.say, { npcHandler = npcHandler, text = "Do you seek a passage to the Percht Island for |TRAVELCOST|? Mind the Perchts, they bite.", cost = 100, discount = "postman" }, perchtOpen)
+perchtKeyword:addChildKeyword({ "yes" }, StdModule.travel, { npcHandler = npcHandler, premium = false, cost = 100, discount = "postman", destination = Position(33889, 31017, 6) })
+perchtKeyword:addChildKeyword({ "no" }, StdModule.say, { npcHandler = npcHandler, text = "We would like to serve you some time.", reset = true })
+keywordHandler:addKeyword({ "percht" }, StdModule.say, { npcHandler = npcHandler, text = "The way to the Percht Island is frozen over. I only sail there in December." })
+
 keywordHandler:addKeyword({ "sail" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Venore} or {Thais}?" })
 keywordHandler:addKeyword({ "passage" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go? To {Carlin}, {Venore} or {Thais}?" })
 keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "I am the captain of this ship." })

@@ -43,10 +43,13 @@ npcType.onThink = function(npc, interval)
 	npcHandler:onThink(npc, interval)
 end
 
+-- FAMILY: the Percht Queen fight (which gives the percht skull) is not
+-- implemented here, so each sleigh costs 10 percht horns and 10 broken bells,
+-- dropped by Perchts and Schiachs on this island (winter event, December).
 local sleightInfo = {
-	["bright percht sleigh"] = { cost = 0, items = { { 30192, 1 } }, mount = 133, storageID = Storage.Percht1 },
-	["cold percht sleigh"] = { cost = 0, items = { { 30192, 1 } }, mount = 132, storageID = Storage.Percht2 },
-	["dark percht sleigh"] = { cost = 0, items = { { 30192, 1 } }, mount = 134, storageID = Storage.Percht3 },
+	["bright percht sleigh"] = { cost = 0, items = { { 30186, 10 }, { 30185, 10 } }, mount = 133, storageID = Storage.Percht1 },
+	["cold percht sleigh"] = { cost = 0, items = { { 30186, 10 }, { 30185, 10 } }, mount = 132, storageID = Storage.Percht2 },
+	["dark percht sleigh"] = { cost = 0, items = { { 30186, 10 }, { 30185, 10 } }, mount = 134, storageID = Storage.Percht3 },
 }
 
 local monsterName = { "bright percht sleigh", "cold percht sleigh", "dark percht sleigh" }
@@ -87,7 +90,7 @@ local function creatureSayCallback(npc, creature, type, message)
 	elseif message:lower() == "percht" then
 		npcHandler:say("Nasty creatures especially their queen that sits frozzen on her throne beneath this island.", npc, creature)
 	elseif MsgContains(message, "yes") then
-		if talkState[playerId] >= Storage.Percht1 and talkState[playerId] <= Storage.Percht3 then
+		if (talkState[playerId] or 0) >= Storage.Percht1 and (talkState[playerId] or 0) <= Storage.Percht3 then -- FAMILY: no error on a plain "yes"
 			local items_number = 0
 			if table.maxn(sleightInfo[rtnt[playerId]].items) > 0 then
 				for i = 1, table.maxn(sleightInfo[rtnt[playerId]].items) do
@@ -142,10 +145,15 @@ local function creatureSayCallback(npc, creature, type, message)
 end
 
 keywordHandler:addKeyword({ "carrot" }, StdModule.say, { npcHandler = npcHandler, text = "What about 'no' do you not understand, hrm? You are more annoying than any {percht} around here! Not to mention those bothersome {bunnies} who try to graw away my nose!" })
-keywordHandler:addKeyword({ "percht skull" }, StdModule.say, { npcHandler = npcHandler, text = "Well why didn't you say that rightaway, if you give me such a skull I can give you one of my {sleighs}." })
+keywordHandler:addKeyword({ "percht skull" }, StdModule.say, { npcHandler = npcHandler, text = "No skulls needed. Bring me 10 percht horns and 10 broken bells from the Perchts and Schiachs and I can give you one of my {sleighs}." }) -- FAMILY
+
+-- FAMILY: the way back to Svargrond, free and always open (winter event).
+local backKeyword = keywordHandler:addKeyword({ "svargrond" }, StdModule.say, { npcHandler = npcHandler, text = "Do you want a ride back to Svargrond? It is free, my sleigh knows the way." })
+backKeyword:addChildKeyword({ "yes" }, StdModule.travel, { npcHandler = npcHandler, premium = false, cost = 0, destination = Position(32341, 31108, 6) })
+backKeyword:addChildKeyword({ "no" }, StdModule.say, { npcHandler = npcHandler, text = "Suit yourself.", reset = true })
 keywordHandler:addKeyword({ "bunnies" }, StdModule.say, { npcHandler = npcHandler, text = "Always trying to eat my nose!" })
 
-npcHandler:setMessage(MESSAGE_GREET, "No, you can't have my nose! If you're in need of a {carrot}, go to the market or just dig up one! Or did you come to bring me a {percht skull}?")
+npcHandler:setMessage(MESSAGE_GREET, "No, you can't have my nose! If you're in need of a {carrot}, go to the market or just dig up one! Do you want one of my {sleighs}, or a ride back to {Svargrond}?") -- FAMILY
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)

@@ -1,7 +1,9 @@
 -- FAMILY: upstream ships the two tables below filled with examples, which made
--- every monster drop 1-10 christmas tokens (useless here: Ruprecht, the NPC
--- who takes them, is not on the map) and dragons drop platinum coins. Both
--- examples are disabled; add real entries here to give monsters extra loot.
+-- every monster drop 1-10 christmas tokens all year and dragons drop platinum
+-- coins. Both examples are disabled; add real entries here to give monsters
+-- extra loot. Christmas tokens now drop in December only, from the winter
+-- event (data-otservbr-global/scripts/family/winter_event.lua); Ruprecht on
+-- Vega trades them.
 
 -- Drops custom loot for all monsters
 local allLootConfig = {
