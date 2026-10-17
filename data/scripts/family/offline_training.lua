@@ -7,9 +7,11 @@
 --     (it is measured from the logout time to the next login);
 --   - the offline training time is never used up: it is back at 12:00 after
 --     every login.
--- Training still only happens when you log out on a training statue, and you
--- must stay away for at least 10 minutes. rateOfflineTrainingSpeed in
--- family/config.family.lua (2x) still applies.
+--   - no 10-minute minimum: every full minute away counts (since 2026-10-17).
+-- Training still only happens when you log out on a training statue (a bed
+-- only restores health, mana and soul, as upstream). The skill stages of
+-- solo_balance.lua apply as for normal training, times rateOfflineTrainingSpeed
+-- in family/config.family.lua (2x).
 --
 -- The change itself is marked FAMILY: in
 -- data/scripts/creaturescripts/player/offline_training.lua.

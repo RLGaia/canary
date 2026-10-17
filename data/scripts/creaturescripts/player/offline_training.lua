@@ -1,6 +1,7 @@
 -- FAMILY: with Family.offlineTrainingUnlimited (data/scripts/family/offline_training.lua)
 -- the whole time away counts (up to 21 days, also days with the server off)
--- instead of at most 12 hours, and the offline training time is never used up.
+-- instead of at most 12 hours, the offline training time is never used up, and
+-- there is no 10-minute minimum (training starts after 1 minute away).
 local offlineTraining = CreatureEvent("OfflineTraining")
 
 function offlineTraining.onLogin(player)
@@ -14,7 +15,7 @@ function offlineTraining.onLogin(player)
 
 	player:setOfflineTrainingSkill(SKILL_NONE)
 
-	if offlineTime < 600 then
+	if offlineTime < 600 and not (Family and Family.offlineTrainingUnlimited) then -- FAMILY: no 10-minute minimum
 		player:sendTextMessage(MESSAGE_OFFLINE_TRAINING, "You must be logged out for more than 10 minutes to start offline training.")
 		return true
 	end
