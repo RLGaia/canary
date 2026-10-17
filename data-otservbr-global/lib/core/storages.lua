@@ -2647,7 +2647,12 @@ Storage = {
 				Addon2 = 46099,
 			},
 			DiscovererOutfits = {},
-			MeasuringTibia = {},
+			-- FAMILY: Measuring Tibia quest log (data/scripts/family/map_discovery.lua)
+			MeasuringTibia = {
+				Questline = 46280,
+				SpeckOfLand = 46281,
+				WideWorld = 46282,
+			},
 		},
 		U12_00 = { -- update 12.00 - Reserved Storages 46301 - 46600
 			TheDreamCourts = {
