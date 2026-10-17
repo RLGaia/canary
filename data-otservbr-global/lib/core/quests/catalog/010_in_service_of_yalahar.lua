@@ -21,7 +21,23 @@ local quest = {
 					Palimuth, near the entrance of the city centre of Yalahar, is looking for helpers.",
 			},
 		},
-		[2] = {
+		[2] = { -- FAMILY: Searoutes Around Yalahar (upstream had no quest log entry)
+			name = "Searoutes Around Yalahar",
+			storageId = Storage.Quest.U8_4.InServiceOfYalahar.SearoutesAroundYalahar.TownsCounter,
+			missionId = 11002,
+			startValue = 0,
+			endValue = 5,
+			ignoreendvalue = true,
+			states = {
+				[0] = "Karith, the captain beside Captain Cookie in Yalahar, will only open sea routes to Yalahar if it is worth it. Bring him something special from five different cities: bug milk (Brasith, Ab'Dendriel), embalming fluid (Mehkesh, Ankrahmun), evergreen flowers (Florentine, Carlin), sand wasp honey (Omur, Darashia), rum (Lyonel, Liberty Bay), a tusk (dropped by elephants near Port Hope), royal satin (Gamon, Thais) or Venorean spice (Rodney or Livielle, Venore). Say the city's name to him to hand it over. You delivered none yet.",
+				[1] = "You delivered 1 of 5 special goods to Karith in Yalahar. The ship captain of that city now sails to Yalahar.",
+				[2] = "You delivered 2 of 5 special goods to Karith in Yalahar. The ship captains of those cities now sail to Yalahar.",
+				[3] = "You delivered 3 of 5 special goods to Karith in Yalahar. The ship captains of those cities now sail to Yalahar.",
+				[4] = "You delivered 4 of 5 special goods to Karith in Yalahar. The ship captains of those cities now sail to Yalahar.",
+				[5] = "Karith is convinced: the ship captains of all port cities now sail to Yalahar, and Karith sails from Yalahar to them.",
+			},
+		},
+		[3] = {
 			name = "Mission 01: Something Rotten",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission01,
 			missionId = 1071,
@@ -37,7 +53,7 @@ local quest = {
 				[6] = "You cleaned all pipes from the garbage! Go back to Palimuth and ask for mission.",
 			},
 		},
-		[3] = {
+		[4] = {
 			name = "Mission 02: Watching the Watchmen",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission02,
 			missionId = 1072,
@@ -55,7 +71,7 @@ local quest = {
 				[8] = "You reported to 7 of 7 guards! Go back to Palimuth and ask for mission.",
 			},
 		},
-		[4] = {
+		[5] = {
 			name = "Mission 03: Death to the Deathbringer",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission03,
 			missionId = 1073,
@@ -72,7 +88,7 @@ local quest = {
 				[6] = "Ask Azerus the Yalahari for a mission.",
 			},
 		},
-		[5] = {
+		[6] = {
 			name = "Mission 04: Good to be Kingpin",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission04,
 			missionId = 1074,
@@ -89,7 +105,7 @@ local quest = {
 				[6] = "Ask Azerus for a mission.",
 			},
 		},
-		[6] = {
+		[7] = {
 			name = "Mission 05: Food or Fight",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission05,
 			missionId = 1075,
@@ -110,7 +126,7 @@ local quest = {
 				[8] = "Ask Azerus for a mission.",
 			},
 		},
-		[7] = {
+		[8] = {
 			name = "Mission 06: Frightening Fuel",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission06,
 			missionId = 1076,
@@ -129,7 +145,7 @@ local quest = {
 				[5] = "Ask Azerus for a mission.",
 			},
 		},
-		[8] = {
+		[9] = {
 			name = "Mission 07: A Fishy Mission",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission07,
 			missionId = 1077,
@@ -146,7 +162,7 @@ local quest = {
 				[5] = "Ask Azerus for a mission.",
 			},
 		},
-		[9] = {
+		[10] = {
 			name = "Mission 08: Dangerous Machinations",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission08,
 			missionId = 1078,
@@ -161,7 +177,7 @@ local quest = {
 				[4] = "Ask Azerus for a mission.",
 			},
 		},
-		[10] = {
+		[11] = {
 			name = "Mission 09: Decision",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission09,
 			missionId = 1079,
@@ -174,7 +190,7 @@ local quest = {
 				[2] = "you already decided!",
 			},
 		},
-		[11] = {
+		[12] = {
 			name = "Mission 10: The Final Battle",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission10,
 			missionId = 1080,
