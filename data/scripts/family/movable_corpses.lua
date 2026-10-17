@@ -13,10 +13,9 @@
 -- protection is kept: for the first 10 seconds only the killer (and his party)
 -- can open it, as upstream.
 --
--- Five small corpses (rotworm, spider, dog, rabbit, bear) are not marked as
--- corpses any more in their movable look, so, as upstream after 10 seconds,
--- "loot all" on a tile and nearby quick loot skip them; opening them, auto
--- loot and quick looting that one corpse work.
+-- Five small corpses (rotworm, spider, dog, rabbit, bear) stay locked for
+-- their 10 seconds as upstream: their next look is not a corpse for the client,
+-- so it would lose the loot sparkle, auto loot and quick loot.
 --
 -- Not changed: boss reward corpses (the reward chest system), corpses used by
 -- quests (they carry an action or unique id), player corpses.
@@ -44,7 +43,7 @@ function Family.movableCorpseId(itemId)
 	if itemType and itemType:getId() ~= 0 and itemType:isContainer() and not itemType:isMovable() then
 		local decayId = itemType:getDecayId()
 		local nextType = decayId and decayId > 0 and ItemType(decayId)
-		if nextType and nextType:getId() ~= 0 and nextType:isContainer() and nextType:isMovable() then
+		if nextType and nextType:getId() ~= 0 and nextType:isContainer() and nextType:isMovable() and nextType:isCorpse() then
 			result = decayId
 		end
 	end
