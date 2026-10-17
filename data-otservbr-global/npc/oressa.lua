@@ -344,17 +344,20 @@ local function creatureSayCallback(npc, creature, type, message)
 			"If you want to be a tough melee fighter who can resist much longer than anyone else, \z
 				you should consider choosing the knight vocation.",
 		}
-	elseif MsgContains(message, "monk") and npcHandler:getTopic(playerId) == 0 then
-		npcHandler:say("If you are interested in becoming a monk, please speak to Ambassador Manop.", npc, creature)
-		npcHandler:setTopic(playerId, 0)
+
+		-- FAMILY: upstream merged the monk answer into this branch, so "knight"
+		-- got no answer at all; the knight question is back here.
 		if player:getLevel() >= 8 then
-			table.insert(message, "DO YOU WISH TO BECOME A VALIANT KNIGHT? Answer with a proud {YES} if that is your choice!")
+			table.insert(message, "So tell me: DO YOU WISH TO BECOME A VALIANT KNIGHT? Answer with a proud {YES} if that is your choice!")
 			npcHandler:setTopic(playerId, 5)
 		else
 			npcHandler:setTopic(playerId, 0)
 		end
 
 		npcHandler:say(message, npc, creature, 10)
+	elseif MsgContains(message, "monk") and npcHandler:getTopic(playerId) == 0 then
+		npcHandler:say("If you are interested in becoming a monk, please speak to Ambassador Manop.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
 	elseif (npcHandler:getTopic(playerId) >= 5) and (npcHandler:getTopic(playerId) <= 8) then
 		if MsgContains(message, "yes") then
 			for index, value in pairs(topicTable) do
