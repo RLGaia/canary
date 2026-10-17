@@ -3,8 +3,9 @@
 -- Upstream, logging out on a training statue trains at most 12 hours, and
 -- those hours come out of the "offline training time" (shown as 12:00 in the
 -- client), which then needs as long again to refill. Here:
---   - the whole time away counts, up to 21 days, also while the server was off
---     (it is measured from the logout time to the next login);
+--   - the whole time away counts, up to Family.offlineTrainingMaxDays (365;
+--     upstream 21), also while the server was off (it is measured from the
+--     logout time to the next login);
 --   - the offline training time is never used up: it is back at 12:00 after
 --     every login.
 --   - no 10-minute minimum: every full minute away counts (since 2026-10-17).
@@ -27,6 +28,7 @@
 
 Family = Family or {}
 Family.offlineTrainingUnlimited = true
+Family.offlineTrainingMaxDays = 365
 Family.bedFullRest = true
 
 local FULL = 12 * 3600 * 1000
@@ -63,7 +65,7 @@ login:register()
 local report = GlobalEvent("FamilyOfflineTrainingReport")
 
 function report.onStartup()
-	logger.info("[Family] offline training: whole time away counts (up to 21 days) and the 12:00 never runs out: {} (speed x{}); full rest in house beds: {}", tostring(Family.offlineTrainingUnlimited), configManager.getFloat(configKeys.RATE_OFFLINE_TRAINING_SPEED), tostring(Family.bedFullRest))
+	logger.info("[Family] offline training: whole time away counts (up to {} days) and the 12:00 never runs out: {} (speed x{}); full rest in house beds: {}", Family.offlineTrainingMaxDays, tostring(Family.offlineTrainingUnlimited), configManager.getFloat(configKeys.RATE_OFFLINE_TRAINING_SPEED), tostring(Family.bedFullRest))
 	return true
 end
 

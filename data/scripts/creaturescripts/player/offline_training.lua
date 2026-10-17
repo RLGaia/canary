@@ -1,15 +1,20 @@
 -- FAMILY: with Family.offlineTrainingUnlimited (data/scripts/family/offline_training.lua)
--- the whole time away counts (up to 21 days, also days with the server off)
+-- the whole time away counts (up to Family.offlineTrainingMaxDays, 365, also
+-- days with the server off; upstream stops at 21 days)
 -- instead of at most 12 hours, the offline training time is never used up, and
 -- there is no 10-minute minimum (training starts after 1 minute away).
 local offlineTraining = CreatureEvent("OfflineTraining")
 
 function offlineTraining.onLogin(player)
 	local lastLogout = player:getLastLogout()
-	local offlineTime = lastLogout ~= 0 and math.min(os.time() - lastLogout, 86400 * 21) or 0
+	-- FAMILY: upstream caps at 21 days because the time is added below in
+	-- milliseconds to a 32-bit counter (overflows after ~24.8 days). Here the
+	-- cap is higher and that addition is limited to the counter's 12 hours.
+	local maxDays = (Family and Family.offlineTrainingUnlimited and Family.offlineTrainingMaxDays) or 21
+	local offlineTime = lastLogout ~= 0 and math.min(os.time() - lastLogout, 86400 * maxDays) or 0
 	local offlineTrainingSkill = player:getOfflineTrainingSkill()
 	if offlineTrainingSkill == SKILL_NONE then
-		player:addOfflineTrainingTime(offlineTime * 1000)
+		player:addOfflineTrainingTime(math.min(offlineTime, 43200) * 1000)
 		return true
 	end
 
