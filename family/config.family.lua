@@ -103,3 +103,12 @@ houseBuyLevel = 0
 -- never ran with globalServerSaveTime = "06:00:00" (it expects "HH:MM"), and if
 -- fixed it would also clean the map (delete items on the ground).
 toggleSaveInterval = false
+
+-- ===========================================================================
+-- Party (2026-10-17): shared experience works at any level difference.
+-- ===========================================================================
+-- Upstream the lowest member must be at least 2/3 of the highest level
+-- (multiplier 1.5: minimum = highest / 1.5). With 10000 the minimum is 1, so
+-- every level shares. The other rules stay: members within 30 squares of the
+-- leader (and one floor) and active in the fight in the last 2 minutes.
+partyShareRangeMultiplier = 10000
