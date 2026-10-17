@@ -7,10 +7,11 @@ Run them again only when the map or the game client changes.
 You need the client's `assets` folder (the one with `map-*.dat` and the `subarea-*.bmp.lzma`
 files), Python 3 and a server you can start for a minute (a test copy is best).
 
-1. Export the subarea shapes and the NPC positions:
+1. Get `extra/points-of-interest/markers.json` from https://github.com/tibiamaps/tibia-map-data
+   (MIT licence), then export the subarea shapes, the NPC positions and the real spots:
 
    ```
-   python3 tools/family/map_discovery/export_masks.py <client>/assets masks.lua data-otservbr-global/world/otservbr-npc.xml
+   python3 tools/family/map_discovery/export_masks.py <client>/assets masks.lua data-otservbr-global/world/otservbr-npc.xml markers.json
    ```
 
 2. Copy `poi_generator.lua` to `data/scripts/`, start the server from its folder and wait
@@ -29,13 +30,17 @@ files), Python 3 and a server you can start for a minute (a test copy is best).
 
 - Areas and subareas: ids and names from the client's `map-*.dat` (protobuf `tibia.protobuf.map.Map`:
   `areas`, `npcs`, `resource_files`). Only subareas with a shape file (`subarea-*.bmp.lzma`,
-  surface only) can be selected in the client, so only those are used.
+  drawn on the surface map) can be selected in the client, so only those are used.
+- A subarea is its shape on every floor (the shapes never overlap; real Tibia points of
+  interest are found from floor 0 to 15 inside them).
 - Points of interest: `poi_generator.lua` walks the map from every temple and NPC (stairs,
   ladders, rope spots, sewer grates, ordinary doors and teleports are followed; houses and
-  doors with an action or unique id are not), then picks up to 16 evenly spread reachable
-  tiles inside each subarea, on the ground floor when possible, else the highest reachable
-  floor, else underground. Stray pieces of a subarea shape (under 15% of its biggest piece)
-  are ignored.
+  doors with an action or unique id are not). The real spots players mapped in Tibia
+  (TibiaMaps.io flag markers) are kept when that tile, or one within 2 squares on the same
+  floor, can be walked to on our map (about 85% of them). Up to 16 evenly spread reachable
+  tiles on any floor are generated too, and `build_data.py` adds them only while a subarea
+  has fewer than 16 real spots. Stray pieces of a subarea shape (under 15% of its biggest
+  piece) get no generated points.
 
 ## Client protocol (15.11), as found in the client
 

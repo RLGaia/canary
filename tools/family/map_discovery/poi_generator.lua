@@ -2,9 +2,9 @@
 -- Ours, not upstream. Not loaded by the server: copy it to data/scripts/ for one start
 -- of a test server (see README.md), then delete it.
 --
--- Reads masks.lua (export_masks.py) and writes poi_candidates.lua: for every subarea up
--- to 16 evenly spread tiles that can be walked to from a temple or an NPC, on the
--- ground floor when possible.
+-- Reads masks.lua (export_masks.py) and writes poi_candidates.lua: for every subarea the
+-- real point of interest spots that can be walked to on our map ("real"), and up to 16
+-- evenly spread reachable tiles on any floor below or above its shape ("poi").
 
 local MASKS = "masks.lua" -- paths relative to the server folder; change if needed
 local OUTPUT = "poi_candidates.lua"
@@ -142,36 +142,32 @@ local function generate()
 	math.randomseed(20261017)
 	for _, id in ipairs(ids) do
 		local s = M.subareas[id]
+		-- real spots (TibiaMaps.io markers), moved to the nearest usable tile within 2
+		local real, taken = {}, {}
+		for _, p in ipairs((M.real or {})[id] or {}) do
+			local best
+			for r = 0, 2 do
+				for dx = -r, r do
+					for dy = -r, r do
+						if not best and math.max(math.abs(dx), math.abs(dy)) == r and usable(p[1] + dx, p[2] + dy, p[3]) then
+							best = { p[1] + dx, p[2] + dy, p[3] }
+						end
+					end
+				end
+			end
+			if best and not taken[key(best[1], best[2], best[3])] then
+				taken[key(best[1], best[2], best[3])] = true
+				real[#real + 1] = best
+			end
+		end
+		-- every usable tile of the subarea, on every floor
 		local tiles, total = {}, 0
 		for _, sp in ipairs(s.spans) do
 			for x = sp[2], sp[3] do
 				total = total + 1
-				local found = usable(x, sp[1], 7) and 7 or nil
-				if not found then
-					for z = 6, 0, -1 do
-						if seen[key(x, sp[1], z)] then
-							if usable(x, sp[1], z) then
-								found = z
-							end
-							break
-						end
-					end
-				end
-				if found then
-					tiles[#tiles + 1] = { x, sp[1], found }
-				end
-			end
-		end
-		if #tiles == 0 then -- nothing on the surface: underground below it
-			for _, sp in ipairs(s.spans) do
-				for x = sp[2], sp[3] do
-					for z = 8, 15 do
-						if seen[key(x, sp[1], z)] then
-							if usable(x, sp[1], z) then
-								tiles[#tiles + 1] = { x, sp[1], z }
-							end
-							break
-						end
+				for z = 0, 15 do
+					if usable(x, sp[1], z) then
+						tiles[#tiles + 1] = { x, sp[1], z }
 					end
 				end
 			end
@@ -209,7 +205,11 @@ local function generate()
 		for _, p in ipairs(picks) do
 			parts[#parts + 1] = string.format("{%d,%d,%d}", p[1], p[2], p[3])
 		end
-		out:write(string.format("[%d]={name=%q,area=%d,tiles=%d,reach=%d,poi={%s}},\n", id, s.name, s.area, total, #tiles, table.concat(parts, ",")))
+		local realParts = {}
+		for _, p in ipairs(real) do
+			realParts[#realParts + 1] = string.format("{%d,%d,%d}", p[1], p[2], p[3])
+		end
+		out:write(string.format("[%d]={name=%q,area=%d,tiles=%d,reach=%d,real={%s},poi={%s}},\n", id, s.name, s.area, total, #tiles, table.concat(realParts, ","), table.concat(parts, ",")))
 	end
 	out:write("}\n")
 	out:close()

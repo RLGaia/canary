@@ -20,8 +20,12 @@
 --      npc/charos.lua). The titles Dedicated Entrepreneur and Globetrotter come
 --      at 10 and 20 areas.
 --
--- Only the subareas the client can draw on the map can be selected (189, all on
--- the surface); areas count as complete when those are discovered. The data
+-- A subarea is the shape the client draws on the map, on every floor above and
+-- below it, so points can be in mountains, buildings or caves (only the 189
+-- subareas with a shape can be selected; the client has no shape for a few old
+-- underground ones). Points are the real Tibia spots players have mapped
+-- (TibiaMaps.io), when they can be walked to on our map, plus generated ones
+-- where those are few. Areas count as complete when their subareas are. The data
 -- (areas, subareas, candidate points) is in data/scripts/lib/
 -- family_map_discovery_data.lua. Donations for an improved respawn rate are not
 -- implemented (respawn is already doubled everywhere).
