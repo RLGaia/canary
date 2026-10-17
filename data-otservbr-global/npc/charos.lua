@@ -65,23 +65,19 @@ local config = {
 	},
 }
 
-local function greetCallback(npc, creature)
-	local player = Player(creature)
-	local playerId = player:getId()
+-- FAMILY: as in Tibia since the Measuring Tibia quest, Charos talks about
+-- discovering the world and gives the Discoverer outfit (data/scripts/family/
+-- map_discovery.lua). His old city attunement is still there if asked for
+-- ("attune"), with the upstream limit of 7.
+local TOPIC_ATTUNE_YES, TOPIC_ATTUNE_CITY, TOPIC_OUTFIT_YES, TOPIC_OUTFIT_TIER = 1, 2, 10, 11
 
-	if player:getStorageValue(Storage.Quest.U9_80.AdventurersGuild.CharosTrav) > 6 then
-		-- FAMILY: still greets, for the Measuring Tibia quest (map discovery)
-		npcHandler:setMessage(MESSAGE_GREET, "Hello young friend! You have traveled a lot, I cannot attune you anymore. \z
-			But I keep track of how much of the world adventurers have {discovered}, and I have an {outfit} for the most travelled ones.")
-	else
-		npcHandler:setMessage(
-			MESSAGE_GREET,
-			"Hello young friend! I can attune you to a city of your choice. \z
-		If you step to the teleporter here you will not appear in the city you came from as usual, \z
-		but the city of your choice. Is it what you wish? I can also tell you about {discovering} the world." -- FAMILY: discovering
-		)
-	end
+local function greetCallback(npc, creature)
+	npcHandler:setMessage(MESSAGE_GREET, "Hello young friend! I no longer offer travelling services, but I can tell you about {discovering} the world of Tibia and about the Discoverer {outfit}.")
 	return true
+end
+
+local function attunementsLeft(player)
+	return 7 - math.max(player:getStorageValue(Storage.Quest.U9_80.AdventurersGuild.CharosTrav), 0)
 end
 
 local function creatureSayCallback(npc, creature, type, message)
@@ -92,48 +88,72 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	-- FAMILY: Measuring Tibia (data/scripts/family/map_discovery.lua)
-	if FamilyDiscovery and (MsgContains(message, "discover") or MsgContains(message, "measuring")) then
-		local areas = FamilyDiscovery.completedAreas(player)
-		npcHandler:say(string.format("The Adventurers' Guild measures the world! Open your Cyclopedia, choose the map, \z
-			select a subarea and press 'Start Discovering'. Find the points of interest there and the subarea is discovered. \z
-			So far you have fully discovered %d of %d areas. Ask me for an {outfit} when you have discovered 10, 15 or 20 of them.", areas, FamilyDiscovery.countedTotal), npc, creature)
-		npcHandler:setTopic(playerId, 0)
-		return true
-	end
-	if FamilyDiscovery and (MsgContains(message, "outfit") or MsgContains(message, "addon")) then
-		local given, areas = FamilyDiscovery.giveOutfitRewards(player)
-		if #given > 0 then
-			npcHandler:say(string.format("You have fully discovered %d areas - impressive! Here is %s. Wear it with pride!", areas, table.concat(given, " and ")), npc, creature)
-		elseif areas >= 20 then
-			npcHandler:say("You already have the complete Discoverer outfit. There is nothing left for me to give you!", npc, creature)
-		else
-			local nextAt = areas < 10 and 10 or areas < 15 and 15 or 20
-			npcHandler:say(string.format("You have fully discovered %d areas. Come back when you have discovered %d and I will have something for you.", areas, nextAt), npc, creature)
-		end
-		npcHandler:setTopic(playerId, 0)
-		return true
-	end
+	local topic = npcHandler:getTopic(playerId)
+	local D = FamilyDiscovery
 
-	if npcHandler:getTopic(playerId) == 0 then
-		if player:getStorageValue(Storage.Quest.U9_80.AdventurersGuild.CharosTrav) > 6 then -- FAMILY: no attunements left
-			return true
+	local lower = message:lower()
+	if D and (lower:find("discover", 1, true) or lower:find("measuring", 1, true)) then
+		npcHandler:say(string.format("The Adventurers' Guild wants to chart every corner of Tibia, and we need brave travellers to help! \z
+			Points of interest are hidden all over the world: walk around a part of the map and they appear on your map when you come near them. \z
+			Find seven of them and that part is discovered. Your Cyclopedia map shows your progress. \z
+			So far you have fully discovered %d of %d areas. Fully discovered areas show you their creatures, warn you of raids and let you walk faster there.", D.completedAreas(player), D.countedTotal), npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif D and (lower:find("outfit", 1, true) or lower:find("addon", 1, true)) then
+		npcHandler:say("Do you want to wear the outfit of a true discoverer?", npc, creature)
+		npcHandler:setTopic(playerId, TOPIC_OUTFIT_YES)
+	elseif topic == TOPIC_OUTFIT_YES and MsgContains(message, "yes") then
+		npcHandler:say("For the outfit you need to fully discover ten areas of Tibia, for the first addon you have to discover fifteen and for the second addon twenty. \z
+			How many areas have you discovered completely: {ten}, {fifteen} or {twenty}?", npc, creature)
+		npcHandler:setTopic(playerId, TOPIC_OUTFIT_TIER)
+	elseif topic == TOPIC_OUTFIT_TIER and (MsgContains(message, "ten") or MsgContains(message, "fifteen") or MsgContains(message, "twenty") or MsgContains(message, "10") or MsgContains(message, "15") or MsgContains(message, "20")) then
+		local tier, needed, prize
+		if MsgContains(message, "fifteen") or MsgContains(message, "15") then
+			tier, needed, prize = "addon1", 15, "the first addon of the Discoverer outfit"
+		elseif MsgContains(message, "twenty") or MsgContains(message, "20") then
+			tier, needed, prize = "addon2", 20, "the second addon of the Discoverer outfit"
+		else
+			tier, needed, prize = "outfit", 10, "the Discoverer outfit"
 		end
-		if MsgContains(message, "yes") then
-			npcHandler:say("Fine. You have " .. -player:getStorageValue(Storage.Quest.U9_80.AdventurersGuild.CharosTrav) + 7 .. " \z
-			attunements left. What is the new city of your choice? Thais, Carlin, Ab'Dendriel, Kazordoon, Venore, \z
+		local result, areas = D.giveOutfitTier(player, tier)
+		if result == "given" then
+			npcHandler:say(string.format("Splendid! You have fully discovered %d areas. Here is %s. Wear it with pride!", areas, prize), npc, creature)
+		elseif result == "have" then
+			npcHandler:say(string.format("You already have %s.", prize), npc, creature)
+		elseif result == "missing" then
+			npcHandler:say("You have to get the previous part of the outfit first.", npc, creature)
+		else
+			npcHandler:say(string.format("You have fully discovered only %d areas so far. Come back when you have discovered %d of them.", areas, needed), npc, creature)
+		end
+		npcHandler:setTopic(playerId, 0)
+	elseif topic == TOPIC_OUTFIT_YES or topic == TOPIC_OUTFIT_TIER then
+		npcHandler:say("Come back whenever you have discovered more of the world.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif lower:find("attune", 1, true) or MsgContains(message, "city") then
+		if attunementsLeft(player) <= 0 then
+			npcHandler:say("Sorry, you have traveled a lot. I cannot attune you anymore.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		else
+			npcHandler:say("I can attune you to a city of your choice. If you step to the teleporter here you will not appear in the city you came from as usual, \z
+				but in the city of your choice. Is it what you wish?", npc, creature)
+			npcHandler:setTopic(playerId, TOPIC_ATTUNE_YES)
+		end
+	elseif topic == TOPIC_ATTUNE_YES and MsgContains(message, "yes") then
+		npcHandler:say("Fine. You have " .. attunementsLeft(player) .. " attunements left. What is the new city of your choice? Thais, Carlin, Ab'Dendriel, Kazordoon, Venore, \z
 			Ankrahmun, Edron, Darashia, Liberty Bay or Port Hope?", npc, creature)
-			npcHandler:setTopic(playerId, 1)
-		end
-	elseif npcHandler:getTopic(playerId) == 1 then
+		npcHandler:setTopic(playerId, TOPIC_ATTUNE_CITY)
+	elseif topic == TOPIC_ATTUNE_YES then
+		npcHandler:say("As you wish.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif topic == TOPIC_ATTUNE_CITY then
 		local cityTable = config.towns[message:lower()]
 		if cityTable then
-			player:setStorageValue(Storage.Quest.U9_80.AdventurersGuild.CharosTrav, player:getStorageValue(Storage.Quest.U9_80.AdventurersGuild.CharosTrav) + 1)
+			player:setStorageValue(Storage.Quest.U9_80.AdventurersGuild.CharosTrav, math.max(player:getStorageValue(Storage.Quest.U9_80.AdventurersGuild.CharosTrav), 0) + 1)
 			player:setStorageValue(Storage.Quest.U9_80.AdventurersGuild.Stone, cityTable)
 			npcHandler:say("Goodbye traveler!", npc, creature)
 		else
 			npcHandler:say("Sorry, I don't know about this place.", npc, creature)
 		end
+		npcHandler:setTopic(playerId, 0)
 	end
 	return true
 end

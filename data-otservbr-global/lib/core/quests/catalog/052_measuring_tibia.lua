@@ -23,12 +23,12 @@ local quest = {
 			missionId = 11101,
 			startValue = 1,
 			endValue = 2,
-			states = {
-				[1] = "Open the Cyclopedia, choose the map, select a subarea and press \"Start Discovering\". \z
-					Points of interest appear on your map when you come near them: find 7 of them to discover the subarea. \z
-					Starting another subarea resets the points of the one in progress.",
-				[2] = "You discovered your first subarea. Every subarea you discover stays discovered.",
-			},
+			description = function(player)
+				if FamilyDiscovery then
+					return FamilyDiscovery.speckText(player)
+				end
+				return "Discover the subareas of Tibia: find 7 points of interest in each of them."
+			end,
 		},
 		[2] = {
 			name = "The Wide World",

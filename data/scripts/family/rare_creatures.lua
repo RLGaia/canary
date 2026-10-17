@@ -12,6 +12,9 @@
 --    Family.rareCreatureMinutes after its own last start, once the creatures
 --    of its previous run are dead. (Until 2026-10-14 there was no shared gap,
 --    so at every server start nearly all 19 began within about 10 minutes.)
+--    When the map discovery is on, a raid is announced
+--    FamilyDiscovery.raidWarningMinutes (60) before it starts, to characters
+--    who fully discovered its area (data/scripts/family/map_discovery.lua).
 -- 2. Classic XML raids (data-otservbr-global/raids/raids.xml): one raid at a
 --    time; the "margin" there (minutes between raids) is capped at 30 (FAMILY:
 --    edit in that file).
@@ -107,6 +110,9 @@ function Raid:canStart()
 	if self:getActivePlayerCount() < 1 then
 		return false
 	end
+	if self.familyScheduled then
+		return false -- announced, starting soon
+	end
 	-- Ready: join this minute's draw instead of starting at once. The draw
 	-- below picks one of the ready raids after the check loop has run.
 	Family.queueRareRaid(self)
@@ -132,8 +138,49 @@ local function draw()
 	end
 	local raid = ready[math.random(#ready)]
 	queueKv:set("last-start", os.time())
-	raid:tryStart(true)
+	local warning = FamilyDiscovery and FamilyDiscovery.enabled and FamilyDiscovery.raidWarnings and FamilyDiscovery.raidWarningMinutes or 0
+	if warning <= 0 then
+		raid:tryStart(true)
+		return
+	end
+	-- Announced first (map discovery: warnings for fully discovered areas),
+	-- started Family.raidWarningMinutes later.
+	raid.familyScheduled = true
+	FamilyDiscovery.raidAnnounced(raid.name, Family.raidPosition(raid), warning)
+	addEvent(function()
+		raid.familyScheduled = nil
+		raid:tryStart(true)
+		FamilyDiscovery.raidStarted(raid.name)
+	end, warning * 60 * 1000)
 end
+
+-- A position of a raid (the middle of its zone), for the map discovery.
+function Family.raidPosition(raid)
+	local zone = raid.zone and Zone(raid.zone)
+	local positions = zone and zone:getPositions() or {}
+	if #positions == 0 then
+		return nil
+	end
+	return positions[math.ceil(#positions / 2)]
+end
+
+-- Raid markers go away when the raid's creatures are all dead.
+local raidEndCheck = GlobalEvent("FamilyRareRaidEndCheck")
+
+function raidEndCheck.onThink(interval)
+	if FamilyDiscovery and FamilyDiscovery.raids then
+		for name, info in pairs(FamilyDiscovery.raids) do
+			local raid = Raid.registry[name]
+			if info.phase == "active" and os.time() - (info.startedAt or 0) >= 120 and (not raid or not creaturesStillAlive(raid)) then
+				FamilyDiscovery.raidEnded(name)
+			end
+		end
+	end
+	return true
+end
+
+raidEndCheck:interval(60 * 1000)
+raidEndCheck:register()
 
 function Family.queueRareRaid(raid)
 	local last = queueKv:get("last-start") or 0

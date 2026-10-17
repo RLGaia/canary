@@ -21,7 +21,7 @@ files), Python 3 and a server you can start for a minute (a test copy is best).
 3. Build the data file:
 
    ```
-   python3 tools/family/map_discovery/build_data.py <client>/assets poi_candidates.lua data/scripts/lib/family_map_discovery_data.lua
+   python3 tools/family/map_discovery/build_data.py <client>/assets poi_candidates.lua data/scripts/lib/family_map_discovery_data.lua .
    ```
 
 4. Delete `masks.lua` and `poi_candidates.lua`.
@@ -42,6 +42,12 @@ files), Python 3 and a server you can start for a minute (a test copy is best).
   has fewer than 16 real spots. Stray pieces of a subarea shape (under 15% of its biggest
   piece) get no generated points.
 
+- Where each subarea is (`grid`): 4 x 4 square blocks, each given to the subarea that owns
+  most of it, as rows of runs. Used to know which subarea a character is in (any floor).
+- Creatures (`creatures`): per subarea, the monsters of `otservbr-monster.xml` spawning inside
+  its shape (0 = common; 1 = rare, 5 or fewer spawns on the whole map) and the monsters of the
+  raids (`data-otservbr-global/raids` and `scripts/raids`) that appear there (2).
+
 ## Client protocol (15.11), as found in the client
 
 - Client to server `0xDB` (CYCLOPEDIA MAP ACTION): byte action. `0` = reset/start discovering
@@ -52,9 +58,11 @@ files), Python 3 and a server you can start for a minute (a test copy is best).
     2 = passages shown, 3 = complete), byte percent (0-100; more than 100 = not explorable);
     then u16 count of discovered subarea ids (u16 each); then u16 count of subarea ids that
     can be started (u16 each; enables "Start Discovering").
-  - `2` active raid: position, byte. `3`/`4` imminent raid: u16 id, byte.
+  - `2` active raid: position, byte 0 = add / 1 = remove. `3`/`4` raid soon in an area /
+    subarea: u16 id, byte (we send 1 to show, 0 to clear).
   - `5` points of interest: u16 subarea id, byte points needed, byte count, each position and
     byte type (0 = not reached, 1 = reached). The client counts the reached ones.
-  - `6` passage: position, byte count, u16 each. `7` subarea monsters: byte count, each u16
-    subarea, byte count, each u16 race, bool, byte. `8` monster: u16 race, bool.
+  - `6` passage: position, byte count, u16 each. `7` subarea creatures: byte count, each u16
+    subarea, byte count, each u16 race id, bool known in the Bestiary (false = silhouette),
+    byte occurrence (0 common, 1 rare, 2 raids/events). `8`: u16, bool.
   - `9` donations: u64, byte count, each u16 area, bool, u64. `10` current area: u16.
