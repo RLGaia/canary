@@ -5,7 +5,7 @@
 -- Simple settings (premium, loot, boss multipliers...) are in
 -- family/config.family.lua; this file holds what config.lua cannot express.
 
-local FAMILY_BOSS_COOLDOWN = 60 * 60 -- seconds; matches bossDefaultTimeToFightAgain
+local FAMILY_BOSS_COOLDOWN = 0 -- seconds; matches bossDefaultTimeToFightAgain (no cooldown since 2026-10-17; 1 hour before)
 
 Family = Family or {}
 -- Exercise weapons never lose charges (read by

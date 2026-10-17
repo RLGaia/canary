@@ -41,9 +41,10 @@ rateBossHealth = 0.5
 rateBossAttack = 0.7
 rateBossDefense = 1.0
 
--- Boss cooldown: 1 hour instead of 20. solo_balance.lua also caps levers
--- that set their own, longer cooldown.
-bossDefaultTimeToFightAgain = 60 * 60
+-- Boss cooldown: none (since 2026-10-17; 1 hour before, upstream 20 hours).
+-- solo_balance.lua also caps levers that set their own, longer cooldown, and
+-- data-otservbr-global/scripts/family/boss_cooldown.lua removes the rest.
+bossDefaultTimeToFightAgain = 0
 
 -- Conveniences
 autoLoot = true                 -- loot goes straight to your loot containers
