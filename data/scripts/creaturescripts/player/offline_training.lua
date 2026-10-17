@@ -1,3 +1,6 @@
+-- FAMILY: with Family.offlineTrainingUnlimited (data/scripts/family/offline_training.lua)
+-- the whole time away counts (up to 21 days, also days with the server off)
+-- instead of at most 12 hours, and the offline training time is never used up.
 local offlineTraining = CreatureEvent("OfflineTraining")
 
 function offlineTraining.onLogin(player)
@@ -16,39 +19,38 @@ function offlineTraining.onLogin(player)
 		return true
 	end
 
-	local trainingTime = math.max(0, math.min(offlineTime, math.min(43200, player:getOfflineTrainingTime() / 1000)))
-	player:removeOfflineTrainingTime(trainingTime * 1000)
+	local trainingTime
+	if Family and Family.offlineTrainingUnlimited then -- FAMILY
+		trainingTime = offlineTime
+		player:addOfflineTrainingTime(12 * 3600 * 1000) -- stays full (12:00)
+	else
+		trainingTime = math.max(0, math.min(offlineTime, math.min(43200, player:getOfflineTrainingTime() / 1000)))
+		player:removeOfflineTrainingTime(trainingTime * 1000)
 
-	local remainder = offlineTime - trainingTime
-	if remainder > 0 then
-		player:addOfflineTrainingTime(remainder * 1000)
+		local remainder = offlineTime - trainingTime
+		if remainder > 0 then
+			player:addOfflineTrainingTime(remainder * 1000)
+		end
 	end
 
 	if trainingTime < 60 then
 		return true
 	end
 
-	local text = "During your absence you trained for"
-	local hours = math.floor(trainingTime / 3600)
-	if hours > 1 then
-		text = string.format("%s %d hours", text, hours)
-	elseif hours == 1 then
-		text = string.format("%s 1 hour", text)
-	end
-
-	local minutes = math.floor((trainingTime % 3600) / 60)
-	if minutes ~= 0 then
-		if hours ~= 0 then
-			text = string.format("%s and", text)
-		end
-
-		if minutes > 1 then
-			text = string.format("%s %d minutes", text, minutes)
-		else
-			text = string.format("%s 1 minute", text)
+	-- FAMILY: days, hours and minutes (more than a day is possible here).
+	local parts = {}
+	local function addPart(value, unit)
+		if value > 0 then
+			parts[#parts + 1] = string.format("%d %s%s", value, unit, value > 1 and "s" or "")
 		end
 	end
-
+	addPart(math.floor(trainingTime / 86400), "day")
+	addPart(math.floor((trainingTime % 86400) / 3600), "hour")
+	addPart(math.floor((trainingTime % 3600) / 60), "minute")
+	local text = "During your absence you trained for " .. parts[#parts]
+	if #parts > 1 then
+		text = "During your absence you trained for " .. table.concat(parts, ", ", 1, #parts - 1) .. " and " .. parts[#parts]
+	end
 	text = string.format("%s.", text)
 	player:sendTextMessage(MESSAGE_OFFLINE_TRAINING, text)
 
