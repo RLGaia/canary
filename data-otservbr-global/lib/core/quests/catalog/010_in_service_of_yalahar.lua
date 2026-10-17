@@ -1,9 +1,27 @@
 local quest = {
 	name = "In Service of Yalahar",
-	startStorageId = Storage.Quest.U8_4.InServiceOfYalahar.Questline,
-	startStorageValue = 5,
+	-- FAMILY: shown from "The Way to Yalahar" (Wyrdin's first errand) on, as in
+	-- real Tibia; upstream the quest line only appeared with Palimuth's first
+	-- mission (Questline 5) and the errand was not in the quest log at all.
+	startStorageId = Storage.Quest.U8_4.InServiceOfYalahar.TheWayToYalahar,
+	startStorageValue = 1,
 	missions = {
-		[1] = {
+		[1] = { -- FAMILY
+			name = "The Way to Yalahar",
+			storageId = Storage.Quest.U8_4.InServiceOfYalahar.TheWayToYalahar,
+			missionId = 11001,
+			startValue = 1,
+			endValue = 3,
+			states = {
+				[1] = "Wyrdin in the Edron academy asked you to fetch research notes from Timothy, the Explorer Society's representative in Yalahar. \z
+					Captain Max of the Explorer Society sails there from Liberty Bay.",
+				[2] = "Timothy gave you his research notes. Bring them to Wyrdin in Edron. \z
+					Timothy also asked you to help his friend Palimuth, near the entrance of the city centre of Yalahar.",
+				[3] = "You brought Timothy's research notes to Wyrdin. \z
+					Palimuth, near the entrance of the city centre of Yalahar, is looking for helpers.",
+			},
+		},
+		[2] = {
 			name = "Mission 01: Something Rotten",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission01,
 			missionId = 1071,
@@ -19,7 +37,7 @@ local quest = {
 				[6] = "You cleaned all pipes from the garbage! Go back to Palimuth and ask for mission.",
 			},
 		},
-		[2] = {
+		[3] = {
 			name = "Mission 02: Watching the Watchmen",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission02,
 			missionId = 1072,
@@ -37,7 +55,7 @@ local quest = {
 				[8] = "You reported to 7 of 7 guards! Go back to Palimuth and ask for mission.",
 			},
 		},
-		[3] = {
+		[4] = {
 			name = "Mission 03: Death to the Deathbringer",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission03,
 			missionId = 1073,
@@ -54,7 +72,7 @@ local quest = {
 				[6] = "Ask Azerus the Yalahari for a mission.",
 			},
 		},
-		[4] = {
+		[5] = {
 			name = "Mission 04: Good to be Kingpin",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission04,
 			missionId = 1074,
@@ -71,7 +89,7 @@ local quest = {
 				[6] = "Ask Azerus for a mission.",
 			},
 		},
-		[5] = {
+		[6] = {
 			name = "Mission 05: Food or Fight",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission05,
 			missionId = 1075,
@@ -92,7 +110,7 @@ local quest = {
 				[8] = "Ask Azerus for a mission.",
 			},
 		},
-		[6] = {
+		[7] = {
 			name = "Mission 06: Frightening Fuel",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission06,
 			missionId = 1076,
@@ -111,7 +129,7 @@ local quest = {
 				[5] = "Ask Azerus for a mission.",
 			},
 		},
-		[7] = {
+		[8] = {
 			name = "Mission 07: A Fishy Mission",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission07,
 			missionId = 1077,
@@ -128,7 +146,7 @@ local quest = {
 				[5] = "Ask Azerus for a mission.",
 			},
 		},
-		[8] = {
+		[9] = {
 			name = "Mission 08: Dangerous Machinations",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission08,
 			missionId = 1078,
@@ -143,7 +161,7 @@ local quest = {
 				[4] = "Ask Azerus for a mission.",
 			},
 		},
-		[9] = {
+		[10] = {
 			name = "Mission 09: Decision",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission09,
 			missionId = 1079,
@@ -156,7 +174,7 @@ local quest = {
 				[2] = "you already decided!",
 			},
 		},
-		[10] = {
+		[11] = {
 			name = "Mission 10: The Final Battle",
 			storageId = Storage.Quest.U8_4.InServiceOfYalahar.Mission10,
 			missionId = 1080,
