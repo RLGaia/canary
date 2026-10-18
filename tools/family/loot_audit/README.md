@@ -22,4 +22,12 @@ highest quantity. Names are matched with plurals and accents removed; a name
 used by several items uses the one other creatures drop, else the first one
 that can be picked up.
 
+Left out on purpose: items TibiaWiki marks with an asterisk (the item's own
+page does not list the creature, "Loot Divergente"; the Stone Skin Amulet on
+most undeads is one), drops listed without a rarity (several boss pages), and
+pages whose list looked wrong when read (copied from another creature). Those
+creatures are noted in the scratch skip list and can be read again later.
+For bosses with a reward chest the quantities of stackable items are not
+taken (one of each), since the pages mix totals and single drops.
+
 Progress is in `wiki_loot.json` (creatures read so far).
