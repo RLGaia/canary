@@ -94,8 +94,8 @@ local function creatureSayCallback(npc, creature, type, message)
 	local lower = message:lower()
 	if D and (lower:find("discover", 1, true) or lower:find("measuring", 1, true)) then
 		npcHandler:say(string.format("The Adventurers' Guild wants to chart every corner of Tibia, and we need brave travellers to help! \z
-			Points of interest are hidden all over the world: walk around a part of the map and they appear on your map when you come near them. \z
-			Find seven of them and that part is discovered. Your Cyclopedia map shows your progress. \z
+			Choose a part of the world in your Cyclopedia map and press 'Start Discovering': points of interest are hidden there, and a pink vortex shows each one when you come near it. \z
+			Find seven of them and that part is discovered. You can discover one part at a time; your Cyclopedia map shows your progress. \z
 			So far you have fully discovered %d of %d areas. Fully discovered areas show you their creatures, warn you of raids and let you walk faster there.", D.completedAreas(player), D.countedTotal), npc, creature)
 		npcHandler:setTopic(playerId, 0)
 	elseif D and (lower:find("outfit", 1, true) or lower:find("addon", 1, true)) then

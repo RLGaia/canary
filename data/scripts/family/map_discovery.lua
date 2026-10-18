@@ -3,15 +3,15 @@
 -- Canary never answers the client's Cyclopedia map discovery, so the
 -- "Start Discovering" button stayed disabled. This brings it to life, as in
 -- Tibia (including the 2026 changes to the discovery system):
---   1. Every subarea is active by itself: when you walk into a subarea you have
---      not discovered, FamilyDiscovery.pointsGenerated points of interest are
---      placed there (FamilyDiscovery.automatic; without it you press "Start
---      Discovering" in Cyclopedia > Map first). Each subarea keeps its own
---      progress. A point appears on the map when you come near it (within the
---      screen; FamilyDiscovery.revealAll shows them all at once) and is found
---      when you walk next to it. The map shows the points of the subarea you are
---      in. "Start Discovering" / "Reset points of interest" in the Cyclopedia
---      places new points in the selected subarea.
+--   1. Select a subarea in Cyclopedia > Map and press "Start Discovering":
+--      FamilyDiscovery.pointsGenerated points of interest are placed there. As in
+--      Tibia, one subarea is discovered at a time: starting another one drops
+--      the points of the previous one (FamilyDiscovery.oneAtATime), and "Reset
+--      points of interest" places new ones. A point shows in the game as Tibia's
+--      pink vortex and on the map when you come near it (within the screen;
+--      FamilyDiscovery.revealAll shows them all on the map at once), and is
+--      found when you walk next to it (a treasure map flashes). With
+--      FamilyDiscovery.automatic a subarea starts by itself when you walk into it.
 --   2. Find FamilyDiscovery.pointsNeeded (7) and the subarea is discovered for
 --      good.
 --   3. An area's percentage is its discovered subareas. At 30% the client shows
@@ -50,7 +50,9 @@ FamilyDiscovery = FamilyDiscovery or {}
 local D = FamilyDiscovery
 
 D.enabled = true
-D.automatic = true -- subareas start by themselves when you walk into them
+D.automatic = false -- true = subareas start by themselves when you walk into them
+D.oneAtATime = true -- starting a subarea drops the one being discovered (as in Tibia)
+D.vortex = true -- the points of interest show as a pink vortex when you come near
 D.pointsGenerated = 10 -- points placed in a subarea
 D.pointsNeeded = 7 -- points to find (fewer when a subarea has fewer places)
 D.revealAll = false -- true = all points show on the map at once
@@ -69,6 +71,11 @@ local DISCOVERER_MALE = 1094
 local DISCOVERER_FEMALE = 1095
 local TITLE_HALF = 73 -- Dedicated Entrepreneur
 local TITLE_ALL = 74 -- Globetrotter
+
+-- Effects the client names EFFECT_VIEWPOINT_CLOSE / _DISCOVER / _REACHED_MAP.
+local EFFECT_POINT_CLOSE = 193 -- pink vortex on a point of interest near you
+local EFFECT_POINT_FOUND = 194 -- treasure map when you reach it
+local EFFECT_SUBAREA_DONE = 195 -- pink beam when the subarea is discovered
 
 local OPCODE_MAP_DATA = 0xDD
 local MAP_DATA_AREAS = 1
@@ -174,6 +181,35 @@ local function stateOf(player)
 		kv:set("active", 0)
 		kv:set("progress", idsText(state.subs))
 		kv:set("sub-" .. old, string.format("%d|%s", state.subs[old].needed, pointsText(state.subs[old].points)))
+	end
+	-- Until 2026-10-17 subareas started by themselves when walked into. Once per
+	-- character: drop those where no point was found yet and, one at a time,
+	-- keep only the one with most points found.
+	if not D.automatic and kv:get("manual") ~= 1 then
+		local function found(sub)
+			local n = 0
+			for _, p in ipairs(sub.points) do
+				if p.state == 2 then
+					n = n + 1
+				end
+			end
+			return n
+		end
+		local best, bestFound = nil, 0
+		for sid, sub in pairs(state.subs) do
+			local n = found(sub)
+			if n > bestFound or (n == bestFound and best and sid < best) then
+				best, bestFound = sid, n
+			end
+		end
+		for sid, sub in pairs(state.subs) do
+			if found(sub) == 0 or (D.oneAtATime and sid ~= best) then
+				state.subs[sid] = nil
+				kv:remove("sub-" .. sid)
+			end
+		end
+		kv:set("progress", idsText(state.subs))
+		kv:set("manual", 1)
 	end
 	cache[id] = state
 	return state
@@ -547,7 +583,7 @@ function D.speckText(player)
 	if others > 0 then
 		lines[#lines + 1] = string.format("%d more subareas are partly discovered.", others)
 	end
-	lines[#lines + 1] = string.format("You have discovered %d subareas so far. %s", D.discoveredSubareas(player), D.automatic and "Walk into a subarea and points of interest appear on your map when you come near them: find 7 to discover it." or "Select a subarea in the Cyclopedia map and press \"Start Discovering\", then find 7 points of interest there.")
+	lines[#lines + 1] = string.format("You have discovered %d subareas so far. %s", D.discoveredSubareas(player), D.automatic and "Walk into a subarea and points of interest appear on your map when you come near them: find 7 to discover it." or "Select a subarea in the Cyclopedia map and press \"Start Discovering\", then find 7 points of interest there (a pink vortex marks them when you come near).")
 	return table.concat(lines, " ")
 end
 
@@ -590,10 +626,20 @@ function D.start(player, sid)
 		return false
 	end
 	local reset = state.subs[sid] ~= nil
+	if D.oneAtATime then
+		for other in pairs(state.subs) do
+			if other ~= sid then
+				state.subs[other] = nil
+				saveSub(player, state, other)
+				local otherInfo = data.subareas[other]
+				say(player, string.format("You stopped discovering %s; its points of interest are gone.", otherInfo and otherInfo.name or "the previous subarea"))
+			end
+		end
+	end
 	placePoints(player, state, sid)
 	D.check(player)
 	D.sendPoints(player, sid)
-	say(player, string.format("%s %s. Find %d points of interest there: they appear on your map when you come near them.", reset and "New points of interest were placed in" or "You started discovering", info.name, state.subs[sid] and state.subs[sid].needed or 0))
+	say(player, string.format("%s %s. Find %d points of interest there: a pink vortex marks each one when you come near it.", reset and "New points of interest were placed in" or "You started discovering", info.name, state.subs[sid] and state.subs[sid].needed or 0))
 	return true
 end
 
@@ -623,6 +669,7 @@ local function finish(player, state, sid)
 	saveSub(player, state, sid)
 	local after = areaId and D.areaProgress(state.done, areaId) or 0
 	say(player, string.format("You have discovered %s!", info and info.name or "this subarea"))
+	player:getPosition():sendMagicEffect(EFFECT_SUBAREA_DONE, player)
 	local area = areaId and data.areas[areaId]
 	if area and before < 100 and after == 100 then
 		say(player, string.format("You have fully discovered %s! Its creatures now show on your map, you are warned of raids there and you walk faster there.", area.name))
@@ -666,7 +713,7 @@ local function checkPoints(player, state, sid, pos)
 				p.state = 2
 				changed = true
 				justReached = true
-				Position(p.x, p.y, p.z):sendMagicEffect(CONST_ME_TREASURE_MAP)
+				Position(p.x, p.y, p.z):sendMagicEffect(EFFECT_POINT_FOUND, player)
 			elseif p.state == 0 and dx <= D.revealRangeX and dy <= D.revealRangeY then
 				p.state = 1
 				changed = true
@@ -715,6 +762,17 @@ function D.check(player)
 	end
 	for _, id in ipairs(ids) do
 		checkPoints(player, state, id, pos)
+	end
+	-- the pink vortex on the points near you, seen only by you (about 1 s long,
+	-- so sending it every check keeps it going)
+	if D.vortex then
+		for _, sub in pairs(state.subs) do
+			for _, p in ipairs(sub.points) do
+				if p.state < 2 and p.z == pos.z and math.abs(p.x - pos.x) <= D.revealRangeX and math.abs(p.y - pos.y) <= D.revealRangeY then
+					Position(p.x, p.y, p.z):sendMagicEffect(EFFECT_POINT_CLOSE, player)
+				end
+			end
+		end
 	end
 end
 
