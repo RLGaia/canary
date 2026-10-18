@@ -1,0 +1,5124 @@
+{
+ "Askarak Demon": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-235",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-3",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "0-4",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Health Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Strong Mana Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Brown Mushroom",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Assassin Star",
+    "qty": "0-5",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Piggy Bank",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Energy Ring",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Mastermind Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Springsprout Rod",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Terra Legs",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Magic Sulphur",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Askarak_Demon"
+ },
+ "Askarak Lord": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-188",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-2",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Mana Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Brown Mushroom",
+    "qty": "0-5",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Energy Ring",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magic Sulphur",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Mastermind Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Springsprout Rod",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Dreaded Cleaver",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Terra Mantle",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Askarak_Lord"
+ },
+ "Askarak Prince": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-186",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-5",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Brown Mushroom",
+    "qty": "0-4",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Mana Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Stealth Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mastermind Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Demonic Finger",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magic Sulphur",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Springsprout Rod",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Terra Mantle",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Giant Sword",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Askarak_Prince"
+ },
+ "Brinebrute Inferniarch": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Spirit Potion",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Brinebrute Claw",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Blue Crystal Shard",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Green Crystal Shard",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Violet Crystal Shard",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Sapphire",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Blue Crystal Splinter",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Green Crystal Splinter",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Brown Crystal Splinter",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Red Gem",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Ultimate Health Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Demonic Core Essence",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Demonic Matter",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Bloodstained Scythe",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Giant Sword",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Green Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Might Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ring of Healing",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Stone Skin Amulet",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mummified Demon Finger",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Gold Ring",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demonrage Sword",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Demon Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Crusader Helmet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Brinebrute_Inferniarch"
+ },
+ "Broodrider Inferniarch": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Blue Crystal Splinter",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Drill Bolt",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Power Bolt",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Onyx Chip",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Demonic Core Essence",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Broodrider Saddle",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mummified Demon Finger",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demonic Matter",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magma Legs",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Arbalest",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Broodrider_Inferniarch"
+ },
+ "Dark Torturer": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Ham",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Mana Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Great Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Saw",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Steel Boots",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Orichalcum Pearl",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Cat's Paw",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Death Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Assassin Star",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Jewelled Backpack",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Butcher's Axe",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Gold Ingot",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Golden Legs",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Vile Axe",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Dark_Torturer"
+ },
+ "Dawnfire Asura": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-100",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-9",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Mana Potion",
+    "qty": "0-2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "0-3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Golden Lotus Brooch",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Peacock Feather Fan",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "0-2",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "0-2",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "0-2",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Wand of Inferno",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mysterious Fetish",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mystic Turban",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Piece of Cloth",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Topaz",
+    "qty": "0-2",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Magma Coat",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Ruby Necklace",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Red Gem",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Focus Cape",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Blue Gem",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Death Ring",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Spellbook of Mind Control",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Oriental Shoes",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Dawnfire_Asura"
+ },
+ "Demon": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-100",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-6",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Mana Potion",
+    "qty": "0-3",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Spirit Potion",
+    "qty": "0-3",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Assassin Star",
+    "qty": "0-10",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demon Horn",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Fire Mushroom",
+    "qty": "0-6",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Topaz",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Ultimate Health Potion",
+    "qty": "0-3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Devil Helmet",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Fire Axe",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Giant Sword",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Gold Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Golden Sickle",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ice Rapier",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Orb",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Purple Tome",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ring of Healing",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Stealth Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Talon",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Might Ring",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demon Shield",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Mastermind Shield",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Platinum Amulet",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demon Trophy",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Demonrage Sword",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Golden Legs",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Magic Plate Armor",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Demon"
+ },
+ "Demon Outcast": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-100",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-6",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Mana Potion",
+    "qty": "0-2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Sapphire",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Fire Mushroom",
+    "qty": "0-6",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Assassin Star",
+    "qty": "0-10",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Ultimate Health Potion",
+    "qty": "0-3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Topaz",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Stealth Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ring of Healing",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Giant Sword",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Might Ring",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Platinum Amulet",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Ice Rapier",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Devil Helmet",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Crusader Helmet",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Crown Shield",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demon Dust",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Cluster of Solace",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Crown Armor",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Demon Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Demonrage Sword",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Demon_Outcast"
+ },
+ "Destroyer": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-341",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Meat",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "0-2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Crowbar",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Dark Armor",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Burst Arrow",
+    "qty": "0-12",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Metal Spike",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-2",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Giant Sword",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Plate Armor",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Pick",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Great Health Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Steel Boots",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Dreaded Cleaver",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Chaos Mace",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Skull Helmet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Death Ring",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Crystal Necklace",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Mind Stone",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Destroyer"
+ },
+ "Diabolic Imp": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-200",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "0-2",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Pitchfork",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Blank Rune",
+    "qty": "0-2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Scimitar",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Guardian Shield",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Cleaver",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-7",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "0-3",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Double Axe",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Stealth Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Magma Monocle",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Necrotic Rod",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magma Coat",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Death Ring",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Diabolic_Imp"
+ },
+ "Dragolisk": {
+  "date": "2026-10-18",
+  "exp": "4650",
+  "hp": "6180",
+  "loot": [
+   {
+    "item": "Platinum Coin",
+    "qty": "0-?",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Giant Shimmering Pearl",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Red Gem",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Nimmersatt's Seal",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Dragolisk Eye",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Dragolisk Poison Gland",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Green Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ultimate Health Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Dragon's Tail",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ultimate Mana Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Dragon Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Dragolisk"
+ },
+ "Dragon": {
+  "date": "2026-10-18",
+  "exp": "700",
+  "hp": "1000",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-110",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dragon Ham",
+    "qty": "0-3",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Crossbow",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Steel Shield",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Burst Arrow",
+    "qty": "0-12",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Dragon's Tail",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Longsword",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Broadsword",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Steel Helmet",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Plate Legs",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Strong Health Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Wand of Inferno",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Double Axe",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Serpent Sword",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Dragon Hammer",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Green Dragon Leather",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Green Dragon Scale",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Dragon Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Dragon Trophy",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Dragonbone Staff",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Life Crystal",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Silver Raid Token",
+    "qty": "-",
+    "rarity": "Durante Invasões"
+   },
+   {
+    "item": "Bunch of Winterberries",
+    "qty": "-",
+    "rarity": "Durante Eventos"
+   },
+   {
+    "item": "Envelope from the Wizards",
+    "qty": "-",
+    "rarity": "Durante Eventos"
+   },
+   {
+    "item": "Fireworks Rocket",
+    "qty": "-",
+    "rarity": "Durante Eventos"
+   },
+   {
+    "item": "Party Hat",
+    "qty": "-",
+    "rarity": "Durante Eventos"
+   },
+   {
+    "item": "Party Trumpet",
+    "qty": "-",
+    "rarity": "Durante Eventos"
+   },
+   {
+    "item": "Snowball",
+    "qty": "-",
+    "rarity": "Durante Eventos"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Dragon"
+ },
+ "Dragon Hatchling": {
+  "date": "2026-10-18",
+  "exp": "185",
+  "hp": "380",
+  "loot": [
+   {
+    "item": "Gold Coins",
+    "qty": "0-55",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dragon Ham",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dragon's Tail",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Health Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Dragon_Hatchling"
+ },
+ "Dragon Lord": {
+  "date": "2026-10-18",
+  "exp": "2100",
+  "hp": "1900",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-250",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dragon Ham",
+    "qty": "0-5",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Gemmed Book",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Power Bolt",
+    "qty": "0-7",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Green Mushroom",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Royal Spear",
+    "qty": "0-3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Golden Mug",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Sapphire",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Energy Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Dragon Scale",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Strong Health Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Life Crystal",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Red Dragon Leather",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Strange Helmet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Fire Sword",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Dragon Scale Mail",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Tower Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Dragon Lord Trophy",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Royal Helmet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Dragon Slayer",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Dragon_Lord"
+ },
+ "Dragon Lord Hatchling": {
+  "date": "2026-10-18",
+  "exp": "645",
+  "hp": "750",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-165",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dragon Ham",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Mana Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Green Mushroom",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magma Boots",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Dragon_Lord_Hatchling"
+ },
+ "Draken Abomination": {
+  "date": "2026-10-18",
+  "exp": "4500",
+  "hp": "6250",
+  "loot": [
+   {
+    "item": "Gold Coins",
+    "qty": "0-183",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coins",
+    "qty": "0-8",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Meats",
+    "qty": "0-4",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Mana Potions",
+    "qty": "0-3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Terra Hood",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Ultimate Health Potions",
+    "qty": "0-3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Eye of Corruption",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Tail of Corruption",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Scale of Corruption",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Great Spirit Potions",
+    "qty": "0-3",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Topazes",
+    "qty": "0-4",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Draken Boots",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Wand of Voodoo",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Armor",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Helmet",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Legs",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Snake God's Wristguard",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Bamboo Leaves",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Shield of Corruption",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Draken_Abomination"
+ },
+ "Draken Elite": {
+  "date": "2026-10-18",
+  "exp": "4750",
+  "hp": "5550",
+  "loot": [
+   {
+    "item": "Gold Coins",
+    "qty": "0-190",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coins",
+    "qty": "0-8",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Meat",
+    "qty": "0-?",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Broken Slicer",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Mana Potions",
+    "qty": "0-3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Ultimate Health Potions",
+    "qty": "0-3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Draken Sulphur",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Draken Wristbands",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Broken Draken Mail",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Diamonds",
+    "qty": "0-3",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Magic Sulphur",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Draken Boots",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Assassin Dagger",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Armor",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Legs",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Sword",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Twiceslicer",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Helmet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Elite Draken Mail",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Cobra Crown",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Snake God's Wristguard",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Blade of Corruption",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Draken_Elite"
+ },
+ "Draken Spellweaver": {
+  "date": "2026-10-18",
+  "exp": "3100",
+  "hp": "5000",
+  "loot": [
+   {
+    "item": "Gold Coins",
+    "qty": "0-200",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coins",
+    "qty": "0-5",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Meat",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Small Rubies",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Weaver's Wandtip",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Great Mana Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Wand of Inferno",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Focus Cape",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Zaoan Shoes",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Luminous Orb",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Draken Sulphur",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Green Gem",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Legs",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Spellweaver's Robe",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Robe",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Ring of the Sky",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Harness",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Bamboo Leaves",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Draken Trophy",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Draken_Spellweaver"
+ },
+ "Draken Warmaster": {
+  "date": "2026-10-18",
+  "exp": "2400",
+  "hp": "4150",
+  "loot": [
+   {
+    "item": "Gold Coins",
+    "qty": "0-200",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coins",
+    "qty": "0-5",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Meat",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Bone Shoulderplate",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Warmaster's Wristguards",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Zaoan Halberd",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Great Health Potions",
+    "qty": "0-3",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Rubies",
+    "qty": "0-5",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Tower Shield",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ultimate Health Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Zaoan Shoes",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Zaoan Armor",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Legs",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Drakinata",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Ring of the Sky",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Draken_Warmaster"
+ },
+ "Duskbringer": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Midnight Shard",
+    "qty": "-",
+    "rarity": "Incomum"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Duskbringer"
+ },
+ "Elder Wyrm": {
+  "date": "2026-10-18",
+  "exp": "2500",
+  "hp": "2700",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-165",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-3",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dragon Ham",
+    "qty": "0-2",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Strong Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Mana Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Crossbow",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Wyrm Scale",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "0-5",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Wand of Draconia",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Legs of Wisdom",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Lightning Pendant",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Lightning Legs",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Power Bolt",
+    "qty": "0-10",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Wand of Starstorm",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Lightning Boots",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Lightning Robe",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Dragonbone Staff",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Shadow Sceptre",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Composite Hornbow",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Shockwave Amulet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Elder_Wyrm"
+ },
+ "Fire Devil": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Blank Rune",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Pitchfork",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Torch",
+    "qty": "0-2",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Double Axe",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Scimitar",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Necrotic Rod",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Cleaver",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Guardian Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Fire_Devil"
+ },
+ "Floating Savant": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Red Gem",
+    "qty": "0-3",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Red Piece of Cloth",
+    "qty": "0-3",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Enchanted Ruby",
+    "qty": "0-13",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Red Crystal Fragment",
+    "qty": "0-11",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Book of Necromantic Rituals",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Pick",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Black Skull",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Sample of Monster Blood",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Floating_Savant"
+ },
+ "Frost Dragon": {
+  "date": "2026-10-18",
+  "exp": "2100",
+  "hp": "1800",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-350",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dragon Ham",
+    "qty": "0-5",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Gemmed Book",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Power Bolt",
+    "qty": "0-6",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Green Mushroom",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Golden Mug",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Sapphire",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Energy Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ice Cube",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Life Crystal",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Shard",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Ice Rapier",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Strange Helmet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Dragon Scale Mail",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Royal Helmet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Tower Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Dragon Slayer",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Frost_Dragon"
+ },
+ "Frost Dragon Hatchling": {
+  "date": "2026-10-18",
+  "exp": "745",
+  "hp": "800",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-55",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dragon Ham",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Frosty Heart",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Health Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Spellbook of Enlightenment",
+    "qty": "-",
+    "rarity": "Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Frost_Dragon_Hatchling"
+ },
+ "Frost Flower Asura": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "White Pearl",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Sapphire",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Assassin Star",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Golden Lotus Brooch",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Peacock Feather Fan",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Silver Brooch",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Black Pearl",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Yellow Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Silver Necklace",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Hailstorm Rod",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Tribal Mask",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Northwind Rod",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Topaz",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Crystal Ring",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Blue Robe",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Assassin Dagger",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Oriental Shoes",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Blue Gem",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Skullcracker Armor",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Gold Ingot",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Spellbook of Mind Control",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Frost_Flower_Asura"
+ },
+ "Fury": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-226",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "0-3",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Jalapeño Pepper",
+    "qty": "0-4",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "0-3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Terra Rod",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Slightly Rusted Legs",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-3",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Orichalcum Pearl",
+    "qty": "0-4",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Piece of Cloth",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Noble Axe",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Crystal Ring",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Steel Boots",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Assassin Dagger",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Golden Legs",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Death Ring",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Assassin Star",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Fury"
+ },
+ "Ghastly Dragon": {
+  "date": "2026-10-18",
+  "exp": "4600",
+  "hp": "7800",
+  "loot": [
+   {
+    "item": "Great Mana Potion",
+    "qty": "1-?",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Gold Coin",
+    "qty": "0-266",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "0-5",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-2",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dark Armor",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Plate Legs",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Spirit Potion",
+    "qty": "1-?",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Ultimate Health Potion",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Terra Boots",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Slightly Rusted Armor",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Twin Hooks",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Zaoan Halberd",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Ghastly Dragon Head",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Undead Heart",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Terra Legs",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Drakinata",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Shiny Stone",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Armor",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Shoes",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Zaoan Legs",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Spellweaver's Robe",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Jade Hat",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Guardian Boots",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Zaoan Helmet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Zaoan Sword",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Ghastly_Dragon"
+ },
+ "Gorger Inferniarch": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Small Sapphire",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Demonic Core Essence",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Gorger Antlers",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Club Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Spiked Squelcher",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mummified Demon Finger",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demonic Matter",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Time Ring",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Gold Nugget",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Gorger_Inferniarch"
+ },
+ "Gozzler": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-70",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Brown Flask",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Sabre",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Plate Shield",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Battle Axe",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Morning Star",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Clerical Mace",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Dwarven Ring",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Serpent Sword",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Small Sapphire",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Gozzler"
+ },
+ "Grimeleech": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Great Mana Potion",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Gold Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Great Spirit Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Underworld Rod",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Some Grimeleech Wings",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Yellow Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Fire Mushroom",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Green Mushroom",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Wand of Voodoo",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Topaz",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Magma Legs",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Blue Gem",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Devil Helmet",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demon Shield",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Nightmare Blade",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Rift Lance",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magic Plate Armor",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Steel Boots",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Vile Axe",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Abyss Hammer",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Rift Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Rift Bow",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Rift Crossbow",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Grimeleech"
+ },
+ "Hellfire Fighter": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "231",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Burnt Scroll",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Blank Rune",
+    "qty": "2",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Wand of Inferno",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Fiery Heart",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Emerald Bangle",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Fire Sword",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Piece of Hellfire Armor",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Magma Legs",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magma Coat",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Coal",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demonbone Amulet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Fire Axe",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Hellfire_Fighter"
+ },
+ "Hellflayer": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Mana Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Great Spirit Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Ultimate Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Topaz",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Gold Ingot",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Pair of Hellflayer Horns",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Giant Shimmering Pearl",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Violet Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Magma Boots",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magma Legs",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Green Gem",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Titan Axe",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Rift Lance",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demonbone Amulet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Heavy Mace",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Magic Plate Armor",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Mastermind Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Skull Helmet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Spellbook of Mind Control",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Rift Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Rift Bow",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Rift Crossbow",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Golden Armor",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Hellflayer"
+ },
+ "Hellhound": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Great Mana Potion",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Ham",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Assassin Star",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Black Pearl",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Wand of Inferno",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Fire Sword",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Knight Axe",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Yellow Piece of Cloth",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Hardened Bone",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Great Spirit Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Ultimate Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Fiery Heart",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Hellhound Slobber",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Blazing Bone",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Magma Amulet",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Magma Boots",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Magma Legs",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Green Piece of Cloth",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Piece of Cloth",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Amber Staff",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Topaz",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Gold Ingot",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Magma Coat",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magma Monocle",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Yellow Gem",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Green Gem",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Big Bone",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Giant Sword",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Ruthless Axe",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Onyx Flail",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Explorer Brooch",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Hellhound"
+ },
+ "Hellhunter Inferniarch": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Assassin Star",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Onyx Arrow",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Sniper Arrow",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Cyan Crystal Fragment",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Dark Helmet",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Death Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Demonic Core Essence",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mummified Demon Finger",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demonic Matter",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Hellhunter Eye",
+    "qty": "-",
+    "rarity": "Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Hellhunter_Inferniarch"
+ },
+ "Hellspawn": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Great Health Potion",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Gold Coin",
+    "qty": "236",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Morning Star",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Battle Shield",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Red Mushroom",
+    "qty": "2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Assassin Star",
+    "qty": "2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Ultimate Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Hellspawn Tail",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Topaz",
+    "qty": "3",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Warrior Helmet",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Knight Legs",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Rusted Armor",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Berserk Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Spiked Squelcher",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Onyx Flail",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Slightly Rusted Armor",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Dracoyle Statue",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Black Skull",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Hellspawn"
+ },
+ "Herald of Gloom": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Midnight Shard",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Herald_of_Gloom"
+ },
+ "Hydra": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "0-250",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "0-3",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Ham",
+    "qty": "0-4",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Hydra Head",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Sapphire",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ring of Healing",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Cucumber",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Life Crystal",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Stone Skin Amulet",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Warrior Helmet",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Knight Armor",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Hydra Egg",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Strong Mana Potion",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Boots of Haste",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Royal Helmet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Medusa Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Hydra"
+ },
+ "Juggernaut": {
+  "date": "2026-10-18",
+  "exp": "11200",
+  "hp": "18000",
+  "loot": [
+   {
+    "item": "Gold Coins",
+    "qty": "0-194",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coins",
+    "qty": "0-15",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Hams",
+    "qty": "0-8",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Mana Potions",
+    "qty": "0-3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Great Health Potions",
+    "qty": "0-3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Assassin Stars",
+    "qty": "0-10",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Flask of Demonic Bloods",
+    "qty": "0-4",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Gold Ingots",
+    "qty": "0-2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Onyx Arrows",
+    "qty": "0-15",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Diamonds",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Rubies",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Emeralds",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Amethysts",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Topazes",
+    "qty": "0-5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Giant Shimmering Pearl",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Red Gem",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Green Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "War Axe",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Knight Armor",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Titan Axe",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Spiked Squelcher",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Golden Armor",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Violet Gem",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demonbone Amulet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Closed Trap",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Heavy Mace",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Mastermind Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Juggernaut"
+ },
+ "Mega Dragon": {
+  "date": "2026-10-18",
+  "exp": "7180",
+  "hp": "7920",
+  "loot": [
+   {
+    "item": "Platinum Coin",
+    "qty": "0-?",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dragon Blood",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Nimmersatt's Seal",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Molten Dragon Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Violet Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Blue Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ultimate Health Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ultimate Mana Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Prismatic Quartz",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Rainbow Quartzes",
+    "qty": "0-?",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mega Dragon Heart",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Dragon Slayer",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Mega_Dragon"
+ },
+ "Midnight Asura": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "99",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "6",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Health Potion",
+    "qty": "2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "White Pearl",
+    "qty": "2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Sapphire",
+    "qty": "2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Assassin Star",
+    "qty": "5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Golden Lotus Brooch",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Peacock Feather Fan",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Silver Brooch",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Black Pearl",
+    "qty": "2",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "2",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "2",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Silver Amulet",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Necrotic Rod",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Tribal Mask",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Topaz",
+    "qty": "2",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Yellow Gem",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Blue Robe",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Underworld Rod",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Crystal Ring",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Blue Gem",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Assassin Dagger",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Skullcracker Armor",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Spellbook of Mind Control",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Gold Ingot",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Oriental Shoes",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Midnight_Asura"
+ },
+ "Nightfiend": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "148",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "3",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Mana Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Blood Preservation",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Tooth File",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Vampire Teeth",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Emerald Bangle",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ring of Healing",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Gem",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Vampire Shield",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Nightfiend"
+ },
+ "Plaguesmith": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "265",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Mouldy Cheese",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dirty Cape",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Great Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Piece of Iron",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Two Handed Sword",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Morning Star",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Battle Hammer",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Knight Legs",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Steel Shield",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Onyx Arrow",
+    "qty": "4",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Slightly Rusted Armor",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Silver Brooch",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "3",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Axe Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Club Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "War Hammer",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Hammer of Wrath",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Steel Boots",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Piece of Royal Steel",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Piece of Hell Steel",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Piece of Draconian Steel",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "War Horn",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Emerald Bangle",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Plaguesmith"
+ },
+ "Shaburak Demon": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Royal Spear",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Health Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Strong Mana Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Brown Mushroom",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Piggy Bank",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Energy Ring",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Wand of Inferno",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Bullseye Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magma Legs",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Magic Sulphur",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Shaburak_Demon"
+ },
+ "Shaburak Lord": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "178",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "2",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Health Potion",
+    "qty": "5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Mana Potion",
+    "qty": "5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Energy Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Brown Mushroom",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Magic Sulphur",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Wand of Inferno",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Bullseye Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magma Coat",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Steel Boots",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Shaburak_Lord"
+ },
+ "Shaburak Prince": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Gold Coin",
+    "qty": "173",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Platinum Coin",
+    "qty": "4",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "5",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Mana Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Brown Mushroom",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Stealth Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Bullseye Potion",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magma Coat",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Wand of Inferno",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Magic Sulphur",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Butcher's Axe",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Demonic Finger",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Steel Boots",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Shaburak_Prince"
+ },
+ "Shadow Hound": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Midnight Shard",
+    "qty": "-",
+    "rarity": "Incomum"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Shadow_Hound"
+ },
+ "Sineater Inferniarch": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Mana Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Demonic Core Essence",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Sineater Wing",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ruby Necklace",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Wand of Defiance",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mummified Demon Finger",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demonic Matter",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Wooden Spellbook",
+    "qty": "-",
+    "rarity": "Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Sineater_Inferniarch"
+ },
+ "Spellreaper Inferniarch": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Fire Mushroom",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Black Pearl",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Demonic Core Essence",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Prismatic Quartz",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Wand of Inferno",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mummified Demon Finger",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Demonic Matter",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Spellreaper Staff Totem",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Spellbook of Mind Control",
+    "qty": "-",
+    "rarity": "Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Spellreaper_Inferniarch"
+ },
+ "True Dawnfire Asura": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Great Mana Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Sapphire",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Topaz",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Golden Lotus Brooch",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Peacock Feather Fan",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Crystal Coin",
+    "qty": "1",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Magma Coat",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ruby Necklace",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Blue Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Wand of Inferno",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mysterious Fetish",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Mystic Turban",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Red Piece of Cloth",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Focus Cape",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Spellbook of Mind Control",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Oriental Shoes",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Royal Star",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Death Ring",
+    "qty": "-",
+    "rarity": "Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/True_Dawnfire_Asura"
+ },
+ "True Frost Flower Asura": {
+  "date": "2026-10-18",
+  "loot": [
+   {
+    "item": "Platinum Coin",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Crystal Coin",
+    "qty": "1",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Great Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Amethyst",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Silver Brooch",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "White Pearl",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Black Pearl",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Emerald",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Enchanted Sapphire",
+    "qty": "2",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Ruby",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Sapphire",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Small Topaz",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Soul Orb",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Demonic Essence",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Flask of Demonic Blood",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Assassin Star",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Golden Lotus Brooch",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Peacock Feather Fan",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Crystal Ring",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Yellow Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Blue Gem",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Silver Amulet",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Hailstorm Rod",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Tribal Mask",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Blue Robe",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Spellbook of Mind Control",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Northwind Rod",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Gold Ingot",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Royal Star",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Assassin Dagger",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Skullcracker Armor",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Oriental Shoes",
+    "qty": "-",
+    "rarity": "Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/True_Frost_Flower_Asura"
+ },
+ "Wardragon": {
+  "date": "2026-10-18",
+  "exp": "5340",
+  "hp": "6960",
+  "loot": [
+   {
+    "item": "Platinum Coins",
+    "qty": "0-?",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Gold Ingot",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Dragon Tongue",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Nimmersatt's Seal",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Wardragon Claw",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Wardragon Tooth",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Black Pearl",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ultimate Health Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Onyx Chips",
+    "qty": "0-?",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Ultimate Mana Potion",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Dragonbone Staff",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "White Gem",
+    "qty": "-",
+    "rarity": "Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Wardragon"
+ },
+ "Wyrm": {
+  "date": "2026-10-18",
+  "exp": "1550",
+  "hp": "1825",
+  "loot": [
+   {
+    "item": "Gold Coins",
+    "qty": "0-230",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Dragon Ham",
+    "qty": "-",
+    "rarity": "Comum"
+   },
+   {
+    "item": "Strong Health Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Strong Mana Potion",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Crossbow",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Burst Arrows",
+    "qty": "0-10",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Wyrm Scale",
+    "qty": "-",
+    "rarity": "Incomum"
+   },
+   {
+    "item": "Focus Cape",
+    "qty": "-",
+    "rarity": "Semi-Raro"
+   },
+   {
+    "item": "Lightning Pendant",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Small Diamond",
+    "qty": "0-5",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Wand of Draconia",
+    "qty": "-",
+    "rarity": "Raro"
+   },
+   {
+    "item": "Hibiscus Dress",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Wand of Starstorm",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Shockwave Amulet",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Dragonbone Staff",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   },
+   {
+    "item": "Composite Hornbow",
+    "qty": "-",
+    "rarity": "Muito Raro"
+   }
+  ],
+  "status": "ok",
+  "url": "https://www.tibiawiki.com.br/wiki/Wyrm"
+ }
+}
