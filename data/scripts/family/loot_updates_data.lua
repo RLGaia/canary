@@ -4,8 +4,28 @@ return {
 	["Askarak Demon"] = {
 		{ name = "platinum coin", chance = 33000, maxCount = 3 },
 	},
+	["Breach Brood"] = {
+		{ name = "lightning legs", chance = 200 },
+		{ name = "blue gem", chance = 200 },
+		{ id = 23529, chance = 200 }, -- ring of blue plasma
+		{ id = 23531, chance = 200 }, -- ring of green plasma
+		{ id = 23533, chance = 200 }, -- ring of red plasma
+		{ id = 23543, chance = 200 }, -- collar of green plasma
+		{ id = 50150, chance = 200 }, -- ring of orange plasma
+		{ id = 50152, chance = 200 }, -- collar of orange plasma
+	},
 	["Brinebrute Inferniarch"] = {
 		{ name = "green gem", chance = 2800 },
+	},
+	["Candy Floss Elemental"] = {
+		{ name = "might ring", chance = 2800 },
+	},
+	["Cliff Strider"] = {
+		{ name = "might ring", chance = 2800 },
+	},
+	["Dark Faun"] = {
+		{ name = "fairy wings", chance = 10000 },
+		{ id = 5792, chance = 200 }, -- die
 	},
 	["Dawnfire Asura"] = {
 		{ id = 3039, chance = 900 }, -- red gem
@@ -24,9 +44,39 @@ return {
 	["Dragon"] = {
 		{ id = 44158, chance = 200 }, -- dragon trophy
 	},
+	["Dread Intruder"] = {
+		{ id = 23531, chance = 200 }, -- ring of green plasma
+		{ id = 50150, chance = 200 }, -- ring of orange plasma
+		{ id = 50152, chance = 200 }, -- collar of orange plasma
+		{ id = 23544, chance = 200 }, -- collar of red plasma
+	},
+	["Dryad"] = {
+		{ name = "white mushroom", chance = 33000, maxCount = 2 },
+		{ name = "seeds", chance = 10000, maxCount = 3 },
+		{ name = "orange mushroom", chance = 900, maxCount = 2 },
+		{ name = "coconut shoes", chance = 900 },
+		{ name = "flower dress", chance = 900 },
+		{ name = "flower wreath", chance = 900 },
+		{ name = "leaf legs", chance = 900 },
+		{ name = "carrot on a stick", chance = 200 },
+		{ name = "small amethyst", chance = 200 },
+	},
+	["Earth Elemental"] = {
+		{ name = "might ring", chance = 2800 },
+	},
+	["Energy Elemental"] = {
+		{ name = "might ring", chance = 2800 },
+	},
+	["Feral Werecrocodile"] = {
+		{ id = 50150, chance = 900 }, -- ring of orange plasma
+	},
 	["Floating Savant"] = {
 		{ name = "book of necromantic rituals", chance = 10000 },
 		{ id = 9056, chance = 200 }, -- black skull
+	},
+	["Foam Stalker"] = {
+		{ id = 50152, chance = 900 }, -- collar of orange plasma
+		{ name = "might ring", chance = 200 },
 	},
 	["Frost Flower Asura"] = {
 		{ name = "silver necklace", chance = 2800 },
@@ -44,19 +94,149 @@ return {
 		{ name = "magic plate armor", chance = 200 },
 		{ name = "rift shield", chance = 200 },
 	},
+	["High Voltage Elemental"] = {
+		{ id = 3051, chance = 2800 }, -- energy ring
+		{ name = "lightning pendant", chance = 900 },
+		{ name = "might ring", chance = 900 },
+		{ name = "wand of cosmic energy", chance = 900 },
+		{ name = "spellbook of warding", chance = 900 },
+		{ name = "shockwave amulet", chance = 200 },
+		{ name = "lightning robe", chance = 200 },
+		{ name = "lightning legs", chance = 200 },
+		{ name = "lightning headband", chance = 200 },
+	},
+	["Honey Elemental"] = {
+		{ name = "might ring", chance = 2800 },
+	},
+	["Instable Sparkion"] = {
+		{ name = "cyan crystal fragment", chance = 10000 },
+		{ name = "small sapphire", chance = 2800 },
+		{ name = "wand of cosmic energy", chance = 900 },
+	},
+	["Ironblight"] = {
+		{ name = "crystal mace", chance = 900 },
+		{ name = "might ring", chance = 900 },
+	},
 	["Juggernaut"] = {
 		{ name = "small diamond", chance = 10000, maxCount = 5 },
 		{ name = "small amethyst", chance = 10000, maxCount = 5 },
 		{ name = "small topaz", chance = 10000, maxCount = 5 },
 		{ id = 281, chance = 10000 }, -- giant shimmering pearl
 	},
+	["Knowledge Elemental"] = {
+		{ name = "lightning pendant", chance = 2800 },
+		{ id = 3007, chance = 2800 }, -- crystal ring
+		{ name = "silver amulet", chance = 2800 },
+		{ name = "obsidian lance", chance = 2800 },
+		{ name = "wand of defiance", chance = 2800 },
+		{ name = "might ring", chance = 900 },
+		{ name = "spellweaver's robe", chance = 200 },
+	},
+	["Lava Lurker"] = {
+		{ name = "might ring", chance = 200 },
+	},
+	["Massive Earth Elemental"] = {
+		{ name = "small diamond", chance = 2800, maxCount = 2 },
+		{ name = "might ring", chance = 2800 },
+	},
+	["Massive Energy Elemental"] = {
+		{ name = "flash arrow", chance = 10000, maxCount = 15 },
+		{ name = "might ring", chance = 2800 },
+	},
+	["Massive Fire Elemental"] = {
+		{ name = "platinum coin", chance = 10000 },
+		{ name = "might ring", chance = 2800 },
+	},
+	["Massive Water Elemental"] = {
+		{ name = "might ring", chance = 2800 },
+	},
 	["Mega Dragon"] = {
 		{ name = "dragon blood", chance = 33000 },
 		{ name = "ultimate health potion", chance = 2800 },
 		{ name = "ultimate mana potion", chance = 2800 },
 	},
+	["Mitmah Scout"] = {
+		{ name = "ceremonial brush", chance = 900 },
+	},
+	["Mitmah Seer"] = {
+		{ name = "ceremonial brush", chance = 900 },
+	},
+	["Ogre Brute"] = {
+		{ name = "small stone", chance = 2800, maxCount = 5 },
+		{ id = 3093, chance = 2800 }, -- club ring
+		{ name = "ancient stone", chance = 200 },
+		{ name = "butcher's axe", chance = 200 },
+	},
+	["Ogre Rowdy"] = {
+		{ name = "small emerald", chance = 10000 },
+		{ id = 281, chance = 2800 }, -- giant shimmering pearl
+		{ name = "blue gem", chance = 2800 },
+		{ name = "blue crystal shard", chance = 2800 },
+		{ name = "violet crystal shard", chance = 2800 },
+		{ name = "onyx chip", chance = 2800 },
+		{ name = "opal", chance = 2800 },
+		{ name = "prismatic quartz", chance = 2800 },
+	},
+	["Ogre Ruffian"] = {
+		{ name = "small sapphire", chance = 10000 },
+		{ name = "small emerald", chance = 10000 },
+		{ name = "small enchanted emerald", chance = 2800 },
+		{ name = "yellow gem", chance = 2800 },
+		{ id = 3039, chance = 2800 }, -- red gem
+		{ name = "blue gem", chance = 2800 },
+		{ name = "green crystal fragment", chance = 2800 },
+		{ name = "cyan crystal fragment", chance = 2800 },
+		{ name = "onyx chip", chance = 2800 },
+		{ name = "ogre klubba", chance = 900 },
+	},
+	["Ogre Sage"] = {
+		{ name = "terra amulet", chance = 10000 },
+		{ name = "violet crystal shard", chance = 10000 },
+		{ name = "green crystal fragment", chance = 10000 },
+		{ name = "violet gem", chance = 2800 },
+		{ name = "yellow gem", chance = 2800 },
+		{ name = "ogre scepta", chance = 900 },
+	},
+	["Ogre Savage"] = {
+		{ name = "ogre choppa", chance = 900 },
+		{ name = "dreaded cleaver", chance = 200 },
+	},
+	["Ogre Shaman"] = {
+		{ name = "onyx chip", chance = 2800, maxCount = 2 },
+	},
+	["Omnivora"] = {
+		{ id = 6299, chance = 200 }, -- death ring
+	},
+	["Orclops Doomhauler"] = {
+		{ name = "dreaded cleaver", chance = 200 },
+	},
 	["Plaguesmith"] = {
 		{ name = "war horn", chance = 200 },
+	},
+	["Pooka"] = {
+		{ name = "cookie", chance = 2800, maxCount = 5 },
+	},
+	["Reality Reaver"] = {
+		{ name = "wand of starstorm", chance = 900 },
+		{ name = "focus cape", chance = 200 },
+		{ id = 50150, chance = 200 }, -- ring of orange plasma
+		{ id = 23533, chance = 200 }, -- ring of red plasma
+		{ id = 23542, chance = 200 }, -- collar of blue plasma
+		{ id = 50152, chance = 200 }, -- collar of orange plasma
+	},
+	["Rootthing Nutshell"] = {
+		{ name = "terra hood", chance = 2800 },
+	},
+	["Sparkion"] = {
+		{ id = 50150, chance = 200 }, -- ring of orange plasma
+		{ id = 50152, chance = 200 }, -- collar of orange plasma
+	},
+	["Spit Nettle"] = {
+		{ name = "grave flower", chance = 900 },
+		{ name = "seeds", chance = 900 },
+	},
+	["Sulphur Spouter"] = {
+		{ name = "might ring", chance = 2800 },
 	},
 	["True Dawnfire Asura"] = {
 		{ name = "small sapphire", chance = 10000 },
@@ -64,8 +244,34 @@ return {
 	["True Frost Flower Asura"] = {
 		{ name = "small amethyst", chance = 10000 },
 	},
+	["Twisted Pooka"] = {
+		{ name = "stone herb", chance = 10000 },
+		{ name = "cookie", chance = 2800, maxCount = 5 },
+	},
 	["Wardragon"] = {
 		{ name = "ultimate health potion", chance = 2800 },
 		{ name = "ultimate mana potion", chance = 2800 },
+	},
+	["Water Elemental"] = {
+		{ name = "might ring", chance = 2800 },
+	},
+	["Werebadger"] = {
+		{ name = "small enchanted amethyst", chance = 2800, maxCount = 2 },
+		{ name = "great mana potion", chance = 2800 },
+	},
+	["Werebear"] = {
+		{ name = "small enchanted sapphire", chance = 2800, maxCount = 2 },
+	},
+	["Werehyaena Shaman"] = {
+		{ name = "black shield", chance = 2800 },
+	},
+	["Werelion"] = {
+		{ name = "dark armor", chance = 33000 },
+	},
+	["Werelioness"] = {
+		{ name = "leather helmet", chance = 10000 },
+	},
+	["White Weretiger"] = {
+		{ id = 50150, chance = 900 }, -- ring of orange plasma
 	},
 }

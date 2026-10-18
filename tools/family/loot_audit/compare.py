@@ -102,6 +102,8 @@ def candidates(wname):
     if w.endswith("ves"):
         yield w[:-3] + "f"
         yield w[:-3] + "fe"
+    yield w + "s"
+    yield w + "es"
 
 def resolve(wname):
     """our item name for a wiki item name, or None"""
