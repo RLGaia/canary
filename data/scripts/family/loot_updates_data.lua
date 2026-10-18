@@ -4,6 +4,10 @@ return {
 	["Askarak Demon"] = {
 		{ name = "platinum coin", chance = 33000, maxCount = 3 },
 	},
+	["Biting Book"] = {
+		{ name = "meat", chance = 2800 },
+		{ name = "ruby necklace", chance = 2800 },
+	},
 	["Breach Brood"] = {
 		{ name = "lightning legs", chance = 200 },
 		{ name = "blue gem", chance = 200 },
@@ -23,12 +27,21 @@ return {
 	["Cliff Strider"] = {
 		{ name = "might ring", chance = 2800 },
 	},
+	["Crape Man"] = {
+		{ name = "magma coat", chance = 2800 },
+	},
 	["Dark Faun"] = {
 		{ name = "fairy wings", chance = 10000 },
 		{ id = 5792, chance = 200 }, -- die
 	},
 	["Dawnfire Asura"] = {
 		{ id = 3039, chance = 900 }, -- red gem
+	},
+	["Deepling Brawler"] = {
+		{ name = "small emerald", chance = 900 },
+	},
+	["Deepsea Blood Crab"] = {
+		{ name = "orichalcum pearl", chance = 900 },
 	},
 	["Demon Outcast"] = {
 		{ name = "crown armor", chance = 200 },
@@ -67,6 +80,9 @@ return {
 	["Energy Elemental"] = {
 		{ name = "might ring", chance = 2800 },
 	},
+	["Enraged Crystal Golem"] = {
+		{ name = "crystalline arrow", chance = 2800, maxCount = 5 },
+	},
 	["Feral Werecrocodile"] = {
 		{ id = 50150, chance = 900 }, -- ring of orange plasma
 	},
@@ -85,6 +101,19 @@ return {
 		{ name = "small amethyst", chance = 10000, maxCount = 3 },
 		{ name = "slightly rusted legs", chance = 10000 },
 		{ name = "assassin star", chance = 200 },
+	},
+	["Glooth Blob"] = {
+		{ name = "small amethyst", chance = 2800, maxCount = 2 },
+	},
+	["Glooth Golem"] = {
+		{ name = "glooth spear", chance = 2800 },
+		{ name = "green gem", chance = 200 },
+	},
+	["Golden Servant Replica"] = {
+		{ name = "heavily rusted armor", chance = 200 },
+	},
+	["Harpy"] = {
+		{ name = "crystalline sword", chance = 200 },
 	},
 	["Hellfire Fighter"] = {
 		{ name = "platinum coin", chance = 900 },
@@ -108,10 +137,19 @@ return {
 	["Honey Elemental"] = {
 		{ name = "might ring", chance = 2800 },
 	},
+	["Ink Blob"] = {
+		{ name = "swamplair armor", chance = 200 },
+	},
 	["Instable Sparkion"] = {
 		{ name = "cyan crystal fragment", chance = 10000 },
 		{ name = "small sapphire", chance = 2800 },
 		{ name = "wand of cosmic energy", chance = 900 },
+	},
+	["Iron Servant"] = {
+		{ name = "health potion", chance = 2800 },
+	},
+	["Iron Servant Replica"] = {
+		{ name = "heavily rusted armor", chance = 900 },
 	},
 	["Ironblight"] = {
 		{ name = "crystal mace", chance = 900 },
@@ -135,6 +173,12 @@ return {
 	["Lava Lurker"] = {
 		{ name = "might ring", chance = 200 },
 	},
+	["Lizard Chosen"] = {
+		{ id = 50152, chance = 900 }, -- collar of orange plasma
+	},
+	["Lizard Snakecharmer"] = {
+		{ id = 3998, chance = 33000 }, -- dead snake
+	},
 	["Massive Earth Elemental"] = {
 		{ name = "small diamond", chance = 2800, maxCount = 2 },
 		{ name = "might ring", chance = 2800 },
@@ -155,11 +199,18 @@ return {
 		{ name = "ultimate health potion", chance = 2800 },
 		{ name = "ultimate mana potion", chance = 2800 },
 	},
+	["Metal Gargoyle"] = {
+		{ name = "iron ore", chance = 200 },
+	},
 	["Mitmah Scout"] = {
 		{ name = "ceremonial brush", chance = 900 },
 	},
 	["Mitmah Seer"] = {
 		{ name = "ceremonial brush", chance = 900 },
+	},
+	["Naga Archer"] = {
+		{ name = "bullseye potion", chance = 200 },
+		{ name = "gemmed figurine", chance = 200 },
 	},
 	["Ogre Brute"] = {
 		{ name = "small stone", chance = 2800, maxCount = 5 },
@@ -216,6 +267,21 @@ return {
 	["Pooka"] = {
 		{ name = "cookie", chance = 2800, maxCount = 5 },
 	},
+	["Quara Looter"] = {
+		{ id = 50150, chance = 2800 }, -- ring of orange plasma
+	},
+	["Quara Plunderer"] = {
+		{ name = "spellbook of mind control", chance = 900 },
+		{ name = "quara eye", chance = 900 },
+		{ name = "demon shield", chance = 200 },
+		{ name = "demonrage sword", chance = 200 },
+		{ name = "preserved light blue seed", chance = 200 },
+		{ name = "preserved violet seed", chance = 200 },
+		{ name = "preserved purple seed", chance = 200 },
+	},
+	["Quara Raider"] = {
+		{ name = "preserved violet seed", chance = 200 },
+	},
 	["Reality Reaver"] = {
 		{ name = "wand of starstorm", chance = 900 },
 		{ name = "focus cape", chance = 200 },
@@ -224,8 +290,14 @@ return {
 		{ id = 23542, chance = 200 }, -- collar of blue plasma
 		{ id = 50152, chance = 200 }, -- collar of orange plasma
 	},
+	["Renegade Quara Constrictor"] = {
+		{ name = "blue crystal shard", chance = 900 },
+	},
 	["Rootthing Nutshell"] = {
 		{ name = "terra hood", chance = 2800 },
+	},
+	["Sea Serpent"] = {
+		{ name = "leviathan's amulet", chance = 200 },
 	},
 	["Sparkion"] = {
 		{ id = 50150, chance = 200 }, -- ring of orange plasma
@@ -234,6 +306,9 @@ return {
 	["Spit Nettle"] = {
 		{ name = "grave flower", chance = 900 },
 		{ name = "seeds", chance = 900 },
+	},
+	["Stonerefiner"] = {
+		{ name = "rat cheese", chance = 10000, maxCount = 2 },
 	},
 	["Sulphur Spouter"] = {
 		{ name = "might ring", chance = 2800 },
@@ -247,6 +322,14 @@ return {
 	["Twisted Pooka"] = {
 		{ name = "stone herb", chance = 10000 },
 		{ name = "cookie", chance = 2800, maxCount = 5 },
+	},
+	["Two-Headed Turtle"] = {
+		{ name = "glacier mask", chance = 2800 },
+		{ id = 5899, chance = 200 }, -- turtle shell
+	},
+	["Walker"] = {
+		{ name = "small amethyst", chance = 2800, maxCount = 2 },
+		{ name = "crystal mace", chance = 900 },
 	},
 	["Wardragon"] = {
 		{ name = "ultimate health potion", chance = 2800 },
