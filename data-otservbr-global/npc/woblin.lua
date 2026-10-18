@@ -133,10 +133,12 @@ keywordHandler:addKeyword({ "troll" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "Me not like trolls. Big furry stinky trolls!",
 })
-keywordHandler:addKeyword({ "dwarf", "dwarves" }, StdModule.say, {
+-- FAMILY: "dwarf" and "dwarves" were one keyword (both words needed); now each works
+keywordHandler:addKeyword({ "dwarf" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "Mean short people, make Woblin's clan do slave work for them.",
 })
+keywordHandler:addAliasKeyword({ "dwarves" })
 keywordHandler:addKeyword({ "cyclops" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "Ugly stomping giants, always busy hammering stone.",
@@ -149,10 +151,12 @@ keywordHandler:addKeyword({ "help" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "Fish good. Fish quiet and tasty. Woblin try to catch fishes, but... hm you could earn yourself {reward}!",
 })
-keywordHandler:addKeyword({ "trade", "offer" }, StdModule.say, {
+-- FAMILY: "trade" and "offer" were one keyword (both words needed); now each works
+keywordHandler:addKeyword({ "trade" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "Me not trade! Goods my precious now! By old goblin law all that one has in his pockets for two days is family heirloom! Me no part with my goods ... hm unless you provide Woblin with some {reward}!",
 })
+keywordHandler:addAliasKeyword({ "offer" })
 keywordHandler:addKeyword({ "key" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "Lost what? Key?",

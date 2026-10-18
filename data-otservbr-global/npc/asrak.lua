@@ -105,7 +105,9 @@ keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, o
 keywordHandler:addKeyword({ "gladiators" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Those wannabe fighters are weak and most of them are unable to comprehend a higher concept like the Mooh'Tah." })
 keywordHandler:addKeyword({ "help" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I teach worthy warriors the way of the knight." })
 keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I'm known as Asrak the Ironhoof." })
-keywordHandler:addKeyword({ "king", "tibianus" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I pledge no allegiance to any king, be it human or minotaurean." })
+-- FAMILY: "king" and "tibianus" were one keyword (both words needed); now each works
+keywordHandler:addKeyword({ "king" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I pledge no allegiance to any king, be it human or minotaurean." })
+keywordHandler:addAliasKeyword({ "tibianus" })
 keywordHandler:addKeyword({ "army" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Your human army might be big but without skills. They are nothing than sheep to be slaughtered." })
 keywordHandler:addKeyword({ "general" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "The human generals are like their warriors. They lack the focus to be true warriors." })
 keywordHandler:addKeyword({ "dungeon" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "The dungeons of your desires and fears are not only the solely ones you have to fear but also the only ones you have to conquer." })
@@ -119,7 +121,9 @@ keywordHandler:addKeyword({ "minotaur" }, StdModule.say, { npcHandler = npcHandl
 keywordHandler:addKeyword({ "mooh'tah" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "The Mooh'Tah teaches control. It provides you with weapon, armor, and shield. It teaches you harmony and focus." })
 keywordHandler:addKeyword({ "rage" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Rage is the legacy of Blog, the beast. It is our primary goal to overcome this rage. The Mooh'Tah is our only hope of salvation and perfection." })
 keywordHandler:addKeyword({ "harmony" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "There is harmony in everything that is done correctly. If you feel the harmony of an action, you can sing its song." })
-keywordHandler:addKeyword({ "song", "sing" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Each harmonic action has it own song. If you can sing it, you are in harmony with that action. This is where the minotaurean battle songs come from." })
+-- FAMILY: "song" and "sing" were one keyword (both words needed); now each works
+keywordHandler:addKeyword({ "song" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Each harmonic action has it own song. If you can sing it, you are in harmony with that action. This is where the minotaurean battle songs come from." })
+keywordHandler:addAliasKeyword({ "sing" })
 keywordHandler:addKeyword({ "battlesongs" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Each Mooh'Tah master focuses his skills on the harmony of battle. He is one with the song that he's singing with his voice or at least his heart." })
 keywordHandler:addKeyword({ "weapon" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Make your will your weapon, and your enemies will perish." })
 keywordHandler:addKeyword({ "armor" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Courage is the only armor that shields you against rage and fear, the greatest dangers you are facing." })

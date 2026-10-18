@@ -165,7 +165,8 @@ end)
 -- Basic keywords
 keywordHandler:addKeyword({ "hint" }, StdModule.rookgaardHints, { npcHandler = npcHandler })
 keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "My name is Tom the tanner." })
-keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "I'm the local {tanner}. I buy fresh animal {corpses}, tan them, and convert them into fine leather clothes which I then sell to {merchants}." })
+-- FAMILY: this is his job answer, upstream filed it under "name" a second time
+keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "I'm the local {tanner}. I buy fresh animal {corpses}, tan them, and convert them into fine leather clothes which I then sell to {merchants}." })
 keywordHandler:addKeyword({ "merchant" }, StdModule.say, { npcHandler = npcHandler, text = "{Dixi} and {Lee'Delle} sell my leather clothes in their shops." })
 keywordHandler:addKeyword({ "tanner" }, StdModule.say, { npcHandler = npcHandler, text = "That's my job. It can be dirty at times but it provides enough income for my living." })
 keywordHandler:addKeyword({ "information" }, StdModule.say, { npcHandler = npcHandler, text = "Do I look like a tourist information centre? Go ask someone else." })

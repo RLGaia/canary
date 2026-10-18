@@ -127,6 +127,7 @@ local node27 = keywordHandler:addKeyword({ "wound cleansing" }, StdModule.say, {
 node27:addChildKeyword({ "yes" }, StdModule.learnSpell, { npcHandler = npcHandler, premium = false, spellName = "wound cleansing", vocation = { 4, 8 }, price = 0, level = 8 })
 
 keywordHandler:addKeyword({ "spells" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I can teach you {healing}, {support} and {attack} spells. I can also tell you which spells are available at your {level}." })
+keywordHandler:addAliasKeyword({ "spell" }) -- FAMILY: "spell" did not match "spells"
 keywordHandler:addKeyword({ "healing" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Healing spells: {Bruise Bane}, {Cure Bleeding}, {Cure Poison}, {Fair Wound Cleansing}, {Intense Recovery}, {Intense Wound Cleansing}, {Recovery}, {Wound Cleansing}." })
 keywordHandler:addKeyword({ "support" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Support spells: {Charge}, {Find Fiend}, {Find Person}, {Great Light}, {Haste}, {Levitate}, {Light}, {Magic Rope}, {Summon Knight Familiar}." })
 keywordHandler:addKeyword({ "attack" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Attack spells: {Annihilation}, {Berserk}, {Brutal Strike}, {Chivalrous Challenge}, {Fierce Berserk}, {Front Sweep}, {Groundshaker}, {Inflict Wound}, {Lesser Front Sweep}, {Whirlwind Throw}." })
@@ -158,7 +159,9 @@ nodeLevels:addChildKeyword({ "8" }, StdModule.say, { npcHandler = npcHandler, on
 nodeLevels:addChildKeyword({ "1" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "For level 1 I have {Bruise Bane} for free and {Lesser Front Sweep} for free." })
 
 keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I am Magister Puffels, any problem with that?" })
-keywordHandler:addKeyword({ "job", "disturbing" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I have to teach the spells of least importance to some fools. Well, let's face it - to knights." })
+-- FAMILY: "job" and "disturbing" were one keyword (both words needed); now each works
+keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I have to teach the spells of least importance to some fools. Well, let's face it - to knights." })
+keywordHandler:addAliasKeyword({ "disturbing" })
 keywordHandler:addKeyword({ "spells" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Guess what, smartypants. I'm the wrong teacher for you. Go see Ursula or Zoltan if you want to broaden your horizon." })
 keywordHandler:addKeyword({ "ferumbras" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "The day will come even he makes a fatal casting mistake... I know what I am talking about." })
 keywordHandler:addKeyword({ "excalibug" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I have no use for such stuff." })
@@ -166,10 +169,15 @@ keywordHandler:addKeyword({ "edron" }, StdModule.say, { npcHandler = npcHandler,
 keywordHandler:addKeyword({ "army" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Fine army that is. Half of them have already deserted." })
 keywordHandler:addKeyword({ "news" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I heard in Thais the new brand of cheese was... uhm..." })
 keywordHandler:addKeyword({ "thais" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I was there once, almost died. The fools there mistook me for an ordinary rat, can you believe that!?" })
-keywordHandler:addKeyword({ "king", "tibianus" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I give nothing for kings, queens... or other people at all." })
+-- FAMILY: "king" and "tibianus" were one keyword (both words needed); now each works
+keywordHandler:addKeyword({ "king" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I give nothing for kings, queens... or other people at all." })
+keywordHandler:addAliasKeyword({ "tibianus" })
 keywordHandler:addKeyword({ "carlin" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I don't care about some remote cities." })
 keywordHandler:addKeyword({ "tibia" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Bah, the whole Tibia can &#&$*# my #$&*!" })
-keywordHandler:addKeyword({ "hugo" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Hugo? I heard it was an accident that created this beast." })
+keywordHandler:addKeyword({ "hugo" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Hugo? I heard it was an accident that created this {beast}." })
+-- FAMILY: Tibia's answers (TibiaWiki) that were missing
+keywordHandler:addKeyword({ "beast" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I don't know more about it." })
+keywordHandler:addKeyword({ "time" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Where might I hide a watch, you fool?" })
 
 npcHandler:setMessage(MESSAGE_GREET, "Yeah, another fool {disturbing} me, what a joy.")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Whatever.")
