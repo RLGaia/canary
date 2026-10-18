@@ -10,7 +10,8 @@
 --      points of interest" places new ones. A point shows in the game as Tibia's
 --      pink vortex and on the map when you come near it (within the screen;
 --      FamilyDiscovery.revealAll shows them all on the map at once), and is
---      found when you walk next to it (a treasure map flashes). With
+--      found as soon as you are within FamilyDiscovery.reachRange squares: the
+--      vortex bursts away (and a treasure map shows when the subarea is done). With
 --      FamilyDiscovery.automatic a subarea starts by itself when you walk into it.
 --   2. Find FamilyDiscovery.pointsNeeded (7) and the subarea is discovered for
 --      good.
@@ -74,8 +75,9 @@ local TITLE_ALL = 74 -- Globetrotter
 
 -- Effects the client names EFFECT_VIEWPOINT_CLOSE / _DISCOVER / _REACHED_MAP.
 local EFFECT_POINT_CLOSE = 193 -- pink vortex on a point of interest near you
-local EFFECT_POINT_FOUND = 194 -- treasure map when you reach it
-local EFFECT_SUBAREA_DONE = 195 -- pink beam when the subarea is discovered
+local EFFECT_POINT_FOUND = 195 -- the vortex bursts away when you reach it
+local EFFECT_SUBAREA_DONE = 194 -- treasure map when the subarea is discovered
+local VORTEX_REPEAT_MS = 900 -- the vortex animation lasts about 1.1 s
 
 local OPCODE_MAP_DATA = 0xDD
 local MAP_DATA_AREAS = 1
@@ -783,7 +785,7 @@ local function checkPoints(player, state, sid, pos)
 	end
 end
 
--- Called about once a second while the character is online.
+-- Called about once a second while the character is online, and on every step.
 function D.check(player)
 	local state = stateOf(player)
 	local pos = player:getPosition()
@@ -823,12 +825,15 @@ function D.check(player)
 	for _, id in ipairs(ids) do
 		checkPoints(player, state, id, pos)
 	end
-	-- the pink vortex on the points near you, seen only by you (about 1 s long,
-	-- so sending it every check keeps it going)
+	-- the pink vortex on the points near you, seen only by you; sent again
+	-- when the last one is about to end (checks come every second and on every
+	-- step)
 	if D.vortex then
+		local now = systemTime()
 		for _, sub in pairs(state.subs) do
 			for _, p in ipairs(sub.points) do
-				if p.state < 2 and p.z == pos.z and math.abs(p.x - pos.x) <= D.revealRangeX and math.abs(p.y - pos.y) <= D.revealRangeY then
+				if p.state < 2 and p.z == pos.z and math.abs(p.x - pos.x) <= D.revealRangeX and math.abs(p.y - pos.y) <= D.revealRangeY and now - (p.vortexAt or 0) >= VORTEX_REPEAT_MS then
+					p.vortexAt = now
 					Position(p.x, p.y, p.z):sendMagicEffect(EFFECT_POINT_CLOSE, player)
 				end
 			end
@@ -948,6 +953,18 @@ function think.playerOnThink(player, interval)
 end
 
 think:register()
+
+-- Every step, so a point is found the moment you come near it (the think
+-- above runs only once a second, several squares later when walking fast).
+local walk = EventCallback("FamilyMapDiscoveryWalk")
+
+function walk.playerOnWalk(player, direction)
+	if D.enabled then
+		D.check(player)
+	end
+end
+
+walk:register()
 
 local report = GlobalEvent("FamilyMapDiscoveryReport")
 
