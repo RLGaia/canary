@@ -7,6 +7,16 @@ return {
 		{ name = "broken iks sandals", chance = 200 },
 		{ name = "broken iks spear", chance = 200 },
 	},
+	["Amenef the Burning"] = {
+		{ name = "platinum coin", chance = 33000, maxCount = 68 },
+		{ name = "gold ingot", chance = 33000 },
+		{ name = "axe", chance = 33000 },
+		{ name = "belted cape", chance = 33000 },
+		{ name = "dagger", chance = 33000 },
+		{ name = "fire sword", chance = 2800 },
+		{ name = "sea horse figurine", chance = 900 },
+		{ name = "tagralt-inlaid scabbard", chance = 200 },
+	},
 	["Animated Feather"] = {
 		{ name = "ultimate mana potion", chance = 10000 },
 		{ name = "glacier amulet", chance = 2800 },
@@ -16,6 +26,13 @@ return {
 		{ name = "glacial rod", chance = 900 },
 		{ name = "crystalline armor", chance = 200 },
 		{ name = "leviathan's amulet", chance = 200 },
+	},
+	["Annihilon"] = {
+		{ name = "skullcracker armor", chance = 200 },
+	},
+	["Ashmunrah"] = {
+		{ name = "mini mummy", chance = 200 },
+		{ name = "hammer of wrath", chance = 200 },
 	},
 	["Askarak Demon"] = {
 		{ name = "platinum coin", chance = 33000, maxCount = 3 },
@@ -32,6 +49,9 @@ return {
 		{ name = "extended promotion scroll", chance = 900 },
 		{ name = "revised promotion scroll", chance = 900 },
 	},
+	["Barkless Fanatic"] = {
+		{ name = "torn shirt", chance = 900 },
+	},
 	["Biting Book"] = {
 		{ name = "meat", chance = 2800 },
 		{ name = "ruby necklace", chance = 2800 },
@@ -41,6 +61,18 @@ return {
 	},
 	["Black Sphinx Acolyte"] = {
 		{ name = "small emerald", chance = 2800 },
+	},
+	["Blazing Fire Elemental"] = {
+		{ id = 12600, chance = 900 }, -- coal
+	},
+	["Blistering Fire Elemental"] = {
+		{ name = "fiery heart", chance = 33000 },
+		{ id = 12600, chance = 200 }, -- coal
+	},
+	["Bloated Man-Maggot"] = {
+		{ id = 3052, chance = 10000 }, -- life ring
+		{ name = "small topaz", chance = 10000 },
+		{ name = "devil helmet", chance = 2800 },
 	},
 	["Blood Beast"] = {
 		{ name = "poisoned fang", chance = 10000 },
@@ -119,6 +151,9 @@ return {
 	["Corym Skirmisher"] = {
 		{ name = "spiky club", chance = 200 },
 	},
+	["Count Vlarkorth"] = {
+		{ name = "ancient liche bone", chance = 2800 },
+	},
 	["Crape Man"] = {
 		{ name = "magma coat", chance = 2800 },
 	},
@@ -139,6 +174,20 @@ return {
 	["Crystal Wolf"] = {
 		{ name = "shiny stone", chance = 900 },
 	},
+	["Cult Believer"] = {
+		{ name = "small emerald", chance = 2800 },
+		{ name = "cultish robe", chance = 2800 },
+		{ name = "piggy bank", chance = 200 },
+	},
+	["Cult Enforcer"] = {
+		{ name = "piggy bank", chance = 200 },
+	},
+	["Cult Scholar"] = {
+		{ name = "cultish robe", chance = 10000 },
+		{ name = "small emerald", chance = 2800 },
+		{ name = "small amethyst", chance = 2800 },
+		{ name = "piggy bank", chance = 200 },
+	},
 	["Cursed Ape"] = {
 		{ name = "banana", chance = 33000 },
 	},
@@ -152,6 +201,18 @@ return {
 	["Dark Magician"] = {
 		{ name = "small enchanted amethyst", chance = 900 },
 		{ name = "necrotic rod", chance = 200 },
+	},
+	["Darkfang"] = {
+		{ name = "werewolf fangs", chance = 33000 },
+	},
+	["Darklight Construct"] = {
+		{ name = "green gem", chance = 900 },
+	},
+	["Darklight Emitter"] = {
+		{ name = "green gem", chance = 900 },
+	},
+	["Darklight Source"] = {
+		{ name = "crystalline armor", chance = 200 },
 	},
 	["Dawn Scorpion"] = {
 		{ name = "scorpion tail", chance = 900 },
@@ -171,8 +232,18 @@ return {
 	["Demon Outcast"] = {
 		{ name = "crown armor", chance = 200 },
 	},
+	["Depowered Minotaur"] = {
+		{ name = "meat", chance = 33000, maxCount = 2 },
+		{ name = "small diamond", chance = 10000 },
+		{ name = "small emerald", chance = 10000 },
+		{ name = "small ruby", chance = 10000 },
+		{ name = "strong mana potion", chance = 900 },
+	},
 	["Diabolic Imp"] = {
 		{ name = "platinum coin", chance = 2800, maxCount = 7 },
+	},
+	["Dipthrah"] = {
+		{ name = "mini mummy", chance = 200 },
 	},
 	["Dragolisk"] = {
 		{ id = 3039, chance = 10000 }, -- red gem
@@ -187,6 +258,11 @@ return {
 		{ id = 50150, chance = 200 }, -- ring of orange plasma
 		{ id = 50152, chance = 200 }, -- collar of orange plasma
 		{ id = 23544, chance = 200 }, -- collar of red plasma
+	},
+	["Dreadful Disruptor"] = {
+		{ name = "gold coin", chance = 33000, maxCount = 100 },
+		{ id = 23508, chance = 33000 }, -- energy vein
+		{ id = 23529, chance = 2800 }, -- ring of blue plasma
 	},
 	["Drillworm"] = {
 		{ id = 3097, chance = 2800 }, -- dwarven ring
@@ -222,11 +298,17 @@ return {
 	["Energy Elemental"] = {
 		{ name = "might ring", chance = 2800 },
 	},
+	["Energy Overlord"] = {
+		{ name = "voltage armor", chance = 900 },
+	},
 	["Enlightened of the Cult"] = {
 		{ name = "mysterious voodoo skull", chance = 200 },
 	},
 	["Enraged Crystal Golem"] = {
 		{ name = "crystalline arrow", chance = 2800, maxCount = 5 },
+	},
+	["Faceless Bane"] = {
+		{ name = "muck rod", chance = 33000 },
 	},
 	["Feral Werecrocodile"] = {
 		{ id = 50150, chance = 900 }, -- ring of orange plasma
@@ -234,6 +316,9 @@ return {
 	["Feversleep"] = {
 		{ name = "small ruby", chance = 10000 },
 		{ name = "cluster of solace", chance = 900 },
+	},
+	["Fleshcrawler"] = {
+		{ name = "knight armor", chance = 33000 },
 	},
 	["Floating Savant"] = {
 		{ name = "book of necromantic rituals", chance = 10000 },
@@ -249,6 +334,9 @@ return {
 	["Frost Flower Asura"] = {
 		{ name = "silver necklace", chance = 2800 },
 	},
+	["Furious Scorpion"] = {
+		{ name = "fist on a stick", chance = 33000 },
+	},
 	["Fury"] = {
 		{ name = "small amethyst", chance = 10000, maxCount = 3 },
 		{ name = "slightly rusted legs", chance = 10000 },
@@ -261,6 +349,9 @@ return {
 	["Gargoyle"] = {
 		{ name = "small stone", chance = 10000, maxCount = 10 },
 	},
+	["Gaz'Haragoth"] = {
+		{ name = "platinum coin", chance = 33000, maxCount = 20 },
+	},
 	["Glooth Bandit"] = {
 		{ name = "terra hood", chance = 900 },
 	},
@@ -272,12 +363,64 @@ return {
 		{ name = "glooth blade", chance = 900 },
 		{ name = "terra legs", chance = 900 },
 	},
+	["Glooth Fairy"] = {
+		{ name = "great health potion", chance = 33000, maxCount = 5 },
+		{ name = "great spirit potion", chance = 33000, maxCount = 5 },
+		{ name = "small amethyst", chance = 33000, maxCount = 5 },
+		{ name = "small diamond", chance = 33000, maxCount = 5 },
+		{ name = "small ruby", chance = 33000, maxCount = 5 },
+		{ name = "small sapphire", chance = 33000, maxCount = 5 },
+		{ name = "glooth cape", chance = 2800 },
+	},
 	["Glooth Golem"] = {
 		{ name = "glooth spear", chance = 2800 },
 		{ name = "green gem", chance = 200 },
 	},
 	["Golden Servant Replica"] = {
 		{ name = "heavily rusted armor", chance = 200 },
+	},
+	["Goldhanded Cultist"] = {
+		{ name = "platinum coin", chance = 900 },
+		{ id = 3040, chance = 200 }, -- gold nugget
+	},
+	["Golgordan"] = {
+		{ name = "assassin star", chance = 33000, maxCount = 8 },
+		{ name = "onyx arrow", chance = 33000, maxCount = 7 },
+		{ name = "small diamond", chance = 33000, maxCount = 5 },
+		{ name = "mind stone", chance = 10000 },
+		{ name = "moonlight rod", chance = 10000 },
+		{ name = "necrotic rod", chance = 10000 },
+		{ name = "platinum amulet", chance = 10000 },
+		{ name = "protection amulet", chance = 10000 },
+		{ name = "skull staff", chance = 10000 },
+		{ name = "boots of haste", chance = 2800 },
+		{ id = 3076, chance = 2800 }, -- crystal ball
+	},
+	["Gorzindel"] = {
+		{ name = "blue gem", chance = 2800 },
+		{ name = "crystalline sword", chance = 2800 },
+		{ name = "rusted shield", chance = 2800 },
+		{ name = "slightly rusted helmet", chance = 2800 },
+		{ name = "sulphurous demonbone", chance = 900 },
+		{ name = "sturdy book", chance = 200 },
+	},
+	["Goshnar's Greed"] = {
+		{ id = 49271, chance = 10000 }, -- transcendence potion
+		{ name = "spectral horseshoe", chance = 900 },
+	},
+	["Goshnar's Malice"] = {
+		{ name = "platinum coin", chance = 33000, maxCount = 5 },
+	},
+	["Goshnar's Spite"] = {
+		{ name = "platinum coin", chance = 33000, maxCount = 5 },
+	},
+	["Grand Chaplain Gaunder"] = {
+		{ name = "falcon sai", chance = 200 },
+	},
+	["Grand Master Oberon"] = {
+		{ name = "pelvis bone", chance = 33000 },
+		{ name = "the spatial warp almanac", chance = 33000 },
+		{ name = "heavy old tome", chance = 10000 },
 	},
 	["Green Djinn"] = {
 		{ name = "small oil lamp", chance = 900 },
@@ -315,6 +458,18 @@ return {
 	},
 	["Honey Elemental"] = {
 		{ name = "might ring", chance = 2800 },
+	},
+	["Horadron"] = {
+		{ name = "butcher's axe", chance = 10000 },
+		{ name = "spellbook of dark mysteries", chance = 10000 },
+		{ name = "spellscroll of prophecies", chance = 10000 },
+	},
+	["Horestis"] = {
+		{ name = "rusted legs", chance = 33000 },
+		{ name = "golden armor", chance = 200 },
+	},
+	["Ice Overlord"] = {
+		{ name = "crystalline armor", chance = 200 },
 	},
 	["Icecold Book"] = {
 		{ name = "leviathan's amulet", chance = 200 },
@@ -366,11 +521,37 @@ return {
 		{ name = "crystal mace", chance = 900 },
 		{ name = "might ring", chance = 900 },
 	},
+	["Izcandar the Banished"] = {
+		{ name = "dragon figurine", chance = 2800 },
+		{ id = 23533, chance = 2800 }, -- ring of red plasma
+		{ name = "ice shield", chance = 900 },
+		{ name = "ornate locket", chance = 900 },
+		{ name = "purple tendril lantern", chance = 900 },
+		{ name = "turquoise tendril lantern", chance = 900 },
+	},
 	["Juggernaut"] = {
 		{ name = "small diamond", chance = 10000, maxCount = 5 },
 		{ name = "small amethyst", chance = 10000, maxCount = 5 },
 		{ name = "small topaz", chance = 10000, maxCount = 5 },
 		{ id = 281, chance = 10000 }, -- giant shimmering pearl
+	},
+	["King Zelos"] = {
+		{ name = "mastermind potion", chance = 33000 },
+		{ id = 49271, chance = 33000 }, -- transcendence potion
+		{ id = 23542, chance = 2800 }, -- collar of blue plasma
+		{ id = 23544, chance = 2800 }, -- collar of red plasma
+		{ name = "blue gem", chance = 2800 },
+		{ name = "magic sulphur", chance = 2800 },
+		{ id = 23531, chance = 2800 }, -- ring of green plasma
+		{ name = "violet gem", chance = 2800 },
+		{ name = "ancient liche bone", chance = 2800 },
+		{ name = "rotten heart", chance = 2800 },
+		{ name = "abyss hammer", chance = 900 },
+		{ name = "boots of haste", chance = 900 },
+		{ name = "cobra crown", chance = 900 },
+		{ name = "crown armor", chance = 900 },
+		{ name = "glacier robe", chance = 900 },
+		{ name = "ornate locket", chance = 900 },
 	},
 	["Knowledge Elemental"] = {
 		{ name = "lightning pendant", chance = 2800 },
@@ -381,6 +562,12 @@ return {
 		{ name = "might ring", chance = 900 },
 		{ name = "spellweaver's robe", chance = 200 },
 	},
+	["Lady Tenebris"] = {
+		{ name = "small emerald", chance = 33000 },
+		{ id = 3098, chance = 33000 }, -- ring of healing
+		{ name = "spellweaver's robe", chance = 33000 },
+		{ name = "abyss hammer", chance = 200 },
+	},
 	["Lamassu"] = {
 		{ name = "small emerald", chance = 10000 },
 		{ name = "opal", chance = 10000 },
@@ -390,6 +577,19 @@ return {
 		{ name = "green crystal fragment", chance = 2800 },
 		{ name = "onyx chip", chance = 2800 },
 		{ name = "rainbow quartz", chance = 2800 },
+	},
+	["Latrivan"] = {
+		{ name = "assassin star", chance = 33000, maxCount = 7 },
+		{ name = "onyx arrow", chance = 33000, maxCount = 7 },
+		{ name = "small diamond", chance = 33000, maxCount = 5 },
+		{ id = 3076, chance = 10000 }, -- crystal ball
+		{ name = "mind stone", chance = 10000 },
+		{ name = "moonlight rod", chance = 10000 },
+		{ name = "necrotic rod", chance = 10000 },
+		{ name = "skull staff", chance = 10000 },
+		{ id = 3002, chance = 10000 }, -- voodoo doll
+		{ name = "boots of haste", chance = 2800 },
+		{ name = "mastermind shield", chance = 2800 },
 	},
 	["Lava Lurker"] = {
 		{ name = "might ring", chance = 200 },
@@ -402,6 +602,24 @@ return {
 	},
 	["Lizard Snakecharmer"] = {
 		{ id = 3998, chance = 33000 }, -- dead snake
+	},
+	["Lokathmor"] = {
+		{ name = "berserk potion", chance = 33000 },
+		{ name = "small topaz", chance = 33000, maxCount = 12 },
+		{ name = "blade of corruption", chance = 2800 },
+		{ name = "boots of haste", chance = 2800 },
+		{ name = "demonbone amulet", chance = 2800 },
+		{ name = "guardian boots", chance = 2800 },
+		{ name = "haunted blade", chance = 2800 },
+		{ id = 3039, chance = 2800 }, -- red gem
+		{ name = "rotten demonbone", chance = 2800 },
+		{ name = "rusted shield", chance = 2800 },
+		{ name = "spellweaver's robe", chance = 2800 },
+		{ name = "yellow gem", chance = 2800 },
+		{ id = 28572, chance = 900 }, -- ornate tome
+	},
+	["Lord Azaram"] = {
+		{ name = "embrace of nature", chance = 900 },
 	},
 	["Lost Basher"] = {
 		{ name = "bone fetish", chance = 10000 },
@@ -430,6 +648,19 @@ return {
 		{ name = "powder herb", chance = 10000 },
 		{ name = "cream cake", chance = 900 },
 	},
+	["Madareth"] = {
+		{ name = "small diamond", chance = 33000 },
+		{ name = "rusted armor", chance = 10000 },
+		{ name = "rusted legs", chance = 10000 },
+	},
+	["Malofur Mangrinder"] = {
+		{ name = "abyss hammer", chance = 2800 },
+		{ name = "crunor idol", chance = 2800 },
+		{ name = "malofur's lunchbox", chance = 2800 },
+		{ id = 3341, chance = 900 }, -- arcane staff
+		{ name = "shoulder plate", chance = 900 },
+		{ name = "turquoise tendril lantern", chance = 900 },
+	},
 	["Massive Earth Elemental"] = {
 		{ name = "small diamond", chance = 2800, maxCount = 2 },
 		{ name = "might ring", chance = 2800 },
@@ -444,6 +675,9 @@ return {
 	},
 	["Massive Water Elemental"] = {
 		{ name = "might ring", chance = 2800 },
+	},
+	["Mazzinor"] = {
+		{ name = "epaulette", chance = 200 },
 	},
 	["Mega Dragon"] = {
 		{ name = "dragon blood", chance = 33000 },
@@ -489,6 +723,9 @@ return {
 		{ name = "blue gem", chance = 200 },
 		{ name = "titan axe", chance = 200 },
 	},
+	["Misguided Bully"] = {
+		{ name = "meat", chance = 33000, maxCount = 2 },
+	},
 	["Mitmah Scout"] = {
 		{ name = "ceremonial brush", chance = 900 },
 	},
@@ -500,6 +737,14 @@ return {
 	},
 	["Moohtant"] = {
 		{ id = 3039, chance = 900 }, -- red gem
+	},
+	["Morguthis"] = {
+		{ name = "mini mummy", chance = 200 },
+	},
+	["Muddy Earth Elemental"] = {
+		{ name = "lump of earth", chance = 33000 },
+		{ name = "clay lump", chance = 900 },
+		{ id = 12600, chance = 200 }, -- coal
 	},
 	["Muglex Clan Assassin"] = {
 		{ name = "ranger's cloak", chance = 200 },
@@ -577,8 +822,24 @@ return {
 	["Orclops Doomhauler"] = {
 		{ name = "dreaded cleaver", chance = 200 },
 	},
+	["Overcharged Energy Elemental"] = {
+		{ id = 3098, chance = 900 }, -- ring of healing
+		{ name = "wand of starstorm", chance = 200 },
+	},
 	["Pirate Ghost"] = {
 		{ id = 173, chance = 900 }, -- parchment
+	},
+	["Plagirath"] = {
+		{ name = "blue gem", chance = 33000 },
+		{ name = "small emerald", chance = 33000 },
+		{ name = "small ruby", chance = 33000 },
+		{ name = "great mana potion", chance = 33000 },
+		{ name = "great spirit potion", chance = 33000 },
+		{ name = "green gem", chance = 33000 },
+		{ id = 3098, chance = 33000 }, -- ring of healing
+		{ name = "maimer", chance = 33000 },
+		{ id = 3039, chance = 33000 }, -- red gem
+		{ name = "jade hammer", chance = 200 },
 	},
 	["Plaguesmith"] = {
 		{ name = "war horn", chance = 200 },
@@ -589,8 +850,41 @@ return {
 	["Pooka"] = {
 		{ name = "cookie", chance = 2800, maxCount = 5 },
 	},
+	["Preceptor Lazare"] = {
+		{ id = 3481, chance = 33000 }, -- closed trap
+	},
 	["Priestess of the Wild Sun"] = {
 		{ name = "golden mask", chance = 900 },
+	},
+	["Prince Drazzak"] = {
+		{ name = "blue crystal shard", chance = 33000 },
+		{ name = "cyan crystal fragment", chance = 33000 },
+		{ name = "green crystal fragment", chance = 33000 },
+		{ name = "green crystal shard", chance = 33000 },
+		{ name = "red crystal fragment", chance = 33000 },
+		{ name = "violet crystal shard", chance = 33000 },
+		{ name = "green gem", chance = 33000 },
+		{ id = 3098, chance = 33000 }, -- ring of healing
+		{ name = "abyss hammer", chance = 2800 },
+		{ name = "crystalline armor", chance = 2800 },
+		{ name = "demonbone amulet", chance = 2800 },
+		{ name = "lightning robe", chance = 2800 },
+		{ name = "noble axe", chance = 2800 },
+		{ name = "steel boots", chance = 2800 },
+		{ name = "executioner", chance = 900 },
+		{ name = "nightmare hook", chance = 900 },
+		{ name = "demonwing axe", chance = 200 },
+		{ name = "golden boots", chance = 200 },
+		{ name = "spellbook of dark mysteries", chance = 200 },
+		{ name = "spellscroll of prophecies", chance = 200 },
+	},
+	["Professor Maxxen"] = {
+		{ name = "gold coin", chance = 33000, maxCount = 10 },
+		{ name = "platinum coin", chance = 33000, maxCount = 4 },
+		{ name = "glooth bag", chance = 33000, maxCount = 3 },
+		{ name = "rusted armor", chance = 33000 },
+		{ name = "gold ingot", chance = 10000 },
+		{ name = "slightly rusted armor", chance = 10000 },
 	},
 	["Putrid Mummy"] = {
 		{ name = "broken green glass", chance = 10000 },
@@ -610,6 +904,27 @@ return {
 	},
 	["Quara Raider"] = {
 		{ name = "preserved violet seed", chance = 200 },
+	},
+	["Rahemos"] = {
+		{ name = "mini mummy", chance = 200 },
+	},
+	["Ravenous Hunger"] = {
+		{ name = "small amethyst", chance = 33000, maxCount = 10 },
+		{ name = "small topaz", chance = 33000, maxCount = 10 },
+		{ name = "blue gem", chance = 2800 },
+		{ name = "boots of haste", chance = 2800 },
+		{ name = "magic sulphur", chance = 2800 },
+		{ name = "mammoth fur cape", chance = 2800 },
+		{ name = "terra boots", chance = 2800 },
+		{ name = "crystalline armor", chance = 900 },
+		{ id = 50154, chance = 900 }, -- enchanted merudri brooch
+		{ name = "jade hat", chance = 900 },
+	},
+	["Razzagorn"] = {
+		{ name = "small diamond", chance = 33000, maxCount = 5 },
+		{ name = "small emerald", chance = 33000, maxCount = 5 },
+		{ name = "small ruby", chance = 33000, maxCount = 5 },
+		{ name = "gold ingot", chance = 33000 },
 	},
 	["Reality Reaver"] = {
 		{ name = "wand of starstorm", chance = 900 },
@@ -636,6 +951,9 @@ return {
 		{ name = "butcher's axe", chance = 200 },
 		{ name = "cluster of solace", chance = 200 },
 	},
+	["Roaring Water Elemental"] = {
+		{ id = 281, chance = 2800 }, -- giant shimmering pearl
+	},
 	["Rogue Naga"] = {
 		{ name = "platinum coin", chance = 33000, maxCount = 9 },
 	},
@@ -650,6 +968,10 @@ return {
 	["Scar Tribe Warrior"] = {
 		{ name = "studded legs", chance = 33000 },
 		{ name = "plate shield", chance = 900 },
+	},
+	["Scarlett Etzel"] = {
+		{ name = "giant ruby", chance = 33000 },
+		{ name = "mastermind potion", chance = 33000 },
 	},
 	["Sea Serpent"] = {
 		{ name = "leviathan's amulet", chance = 200 },
