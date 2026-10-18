@@ -13,8 +13,11 @@
 -- a second after login, and right after a spell is learned or forgotten, the
 -- vocation changes or the player data is reloaded. The rest of the packet is
 -- the same as the server's (premium, vocation, prey window, magic shield).
--- (The wheel of destiny and transcendence also make the server send its own
--- packet; the list is corrected again at the next of the moments above.)
+-- The server also sends its own packet when the wheel of destiny is saved or
+-- a gem is changed (client packets 0x62 and 0xE7, seen by the module
+-- data/modules/scripts/family/spell_list.lua) and when transcendence starts
+-- and ends (seen here as the avatar outfit condition coming and going); the
+-- right list follows half a second later.
 --
 -- Switch: Family.knownSpellList (false = upstream).
 
@@ -123,6 +126,9 @@ function Family.sendSpellList(player)
 end
 
 local function sendLater(player, delay)
+	if not Family.knownSpellList then
+		return
+	end
 	local playerId = player:getId()
 	addEvent(function()
 		local p = Player(playerId)
@@ -131,6 +137,8 @@ local function sendLater(player, delay)
 		end
 	end, delay or 100)
 end
+
+Family.sendSpellListLater = sendLater
 
 -- After the server's own packet (it is sent with the other login data).
 local login = CreatureEvent("FamilySpellListLogin")
@@ -157,3 +165,33 @@ for _, method in ipairs({ "learnSpell", "forgetSpell", "setVocation", "reloadDat
 		end
 	end
 end
+
+-- Transcendence: the server sends its own list when the avatar outfit is put
+-- on and again when it ends. Any combat outfit condition counts (a costume
+-- too): sending the right list once more does no harm.
+local outfitOn = {}
+
+local think = EventCallback("FamilySpellListThink")
+
+function think.playerOnThink(player, interval)
+	if not Family.knownSpellList then
+		return
+	end
+	local id = player:getId()
+	local on = player:getCondition(CONDITION_OUTFIT, CONDITIONID_COMBAT) ~= nil
+	if outfitOn[id] ~= nil and outfitOn[id] ~= on then
+		sendLater(player, 500)
+	end
+	outfitOn[id] = on
+end
+
+think:register()
+
+local logout = CreatureEvent("FamilySpellListLogout")
+
+function logout.onLogout(player)
+	outfitOn[player:getId()] = nil
+	return true
+end
+
+logout:register()

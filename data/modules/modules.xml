@@ -27,6 +27,9 @@
 	<module type="recvbyte" byte="219" script="family/map_discovery.lua" />
 	<!-- FAMILY: logout while the battle icon is shown (data/scripts/family/logout_in_fight.lua) -->
 	<module type="recvbyte" byte="20" script="family/logout_in_fight.lua" />
+	<!-- FAMILY: Spell List stays right after wheel of destiny changes (data/scripts/family/spell_list.lua) -->
+	<module type="recvbyte" byte="98" script="family/spell_list.lua" />
+	<module type="recvbyte" byte="231" script="family/spell_list.lua" />
 
 	<!-- Hireling Outfit Helper -->
 	<module type="recvbyte" byte="211" script="hirelings/hireling_module.lua" />
