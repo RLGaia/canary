@@ -1764,6 +1764,28 @@
 	<npc centerx="32342" centery="32229" centerz="7" radius="1">
 		<npc name="Naji" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	<!-- FAMILY: The Way of the Monk NPCs (Dawnport and Blue Valley), not spawned upstream. Positions from the 15.11 client map data. -->
+	<npc centerx="32057" centery="31898" centerz="4" radius="1">
+		<npc name="Ambassador Manop" x="0" y="0" z="4" spawntime="60" />
+	</npc>
+	<npc centerx="33603" centery="31468" centerz="7" radius="1">
+		<npc name="Enpa-Deia Pema" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="33604" centery="31447" centerz="6" radius="1">
+		<npc name="Enpa Rudra" x="0" y="0" z="6" spawntime="60" />
+	</npc>
+	<npc centerx="33544" centery="31447" centerz="5" radius="1">
+		<npc name="Dhar-Enpa Rahng" x="0" y="0" z="5" spawntime="60" />
+	</npc>
+	<npc centerx="33652" centery="31454" centerz="7" radius="1">
+		<npc name="Dajcho The Monk" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="33601" centery="31459" centerz="6" radius="1">
+		<npc name="Saih The Guardian" x="0" y="0" z="6" spawntime="60" />
+	</npc>
+	<npc centerx="33606" centery="31459" centerz="6" radius="1">
+		<npc name="Chesa The Guardian" x="0" y="0" z="6" spawntime="60" />
+	</npc>
 	<npc centerx="32389" centery="32229" centerz="7" radius="1">
 		<npc name="Donald McRonald" x="0" y="0" z="7" spawntime="60" />
 	</npc>

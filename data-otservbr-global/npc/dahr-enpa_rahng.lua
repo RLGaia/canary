@@ -1,4 +1,4 @@
-local internalNpcName = "Dahr-Enpa Rahng"
+local internalNpcName = "Dhar-Enpa Rahng" -- FAMILY: was "Dahr-Enpa Rahng"; real Tibia (client map data) spells it Dhar-Enpa
 local npcType = Game.createNpcType(internalNpcName)
 local npcConfig = {}
 

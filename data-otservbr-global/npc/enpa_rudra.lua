@@ -314,20 +314,19 @@ local function creatureSayCallback(npc, creature, msgType, message)
 		end
 		if shrinesCount >= monkQuestTotalShrines then
 			npcHandler:say("You are a monk of the Merudri, enlightened and beyond the Three-Fold Path. You have visited all of our ancestral shrines and embraced eternity. The Enpa will see you now.", npc, creature)
-		elseif shrinesCount > 0 and shrinesCount < monkQuestTotalShrines then
-			local currentShrine = TheWayOfTheMonkShrines[shrinesCount]
-			local nextShrine = TheWayOfTheMonkShrines[shrinesCount + 1]
+		elseif shrinesCount > 1 and shrinesCount < monkQuestTotalShrines then
+			-- FAMILY: ShrinesCount is the next shrine (1 = none visited yet; upstream named
+			-- the next shrine as the one visited) and the hint says where it is.
+			local currentShrine = TheWayOfTheMonkShrines[shrinesCount - 1]
+			local nextShrine = TheWayOfTheMonkShrines[shrinesCount]
 			local ordinals = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth" }
-			local ordinal = ordinals[shrinesCount] or tostring(shrinesCount)
-			local currentShrineName = currentShrine and currentShrine.name or "the current shrine"
-			local nextShrineName = nextShrine and nextShrine.name or "the next step"
-			npcHandler:say(string.format("You are an initiate of the Merudri, inducted and on the Three-Fold Path. You have visited the %s of the shrines and embraced '%s'. ...", ordinal, currentShrineName), npc, creature)
-			npcHandler:say(string.format("The next step, embracing '%s', will lead you to the south of Thais, away from the city.", nextShrineName), npc, creature)
+			npcHandler:say(string.format("You are an initiate of the Merudri, inducted and on the Three-Fold Path. You have visited the %s of the shrines and embraced '%s'. ...", ordinals[shrinesCount - 1] or tostring(shrinesCount - 1), currentShrine.name), npc, creature)
+			npcHandler:say(string.format("The next step, embracing '%s', will lead you %s.", nextShrine.name, nextShrine.hint), npc, creature)
 		else
 			-- shrinesCount is 0, player hasn't started yet
 			local firstShrine = TheWayOfTheMonkShrines[1]
 			if firstShrine then
-				npcHandler:say(string.format("You are an initiate of the Merudri, ready to begin the Three-Fold Path. Your first step is to embrace '%s'.", firstShrine.name), npc, creature)
+				npcHandler:say(string.format("You are an initiate of the Merudri, ready to begin the Three-Fold Path. Your first step is to embrace '%s'. It will lead you %s. Enpa-Deia Pema guides the pilgrims.", firstShrine.name, firstShrine.hint), npc, creature)
 			end
 		end
 	end

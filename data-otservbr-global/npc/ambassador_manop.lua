@@ -145,7 +145,12 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 			player:setStorageValue(Storage.Dawnport.Mainland, 1)
 			player:setStorageValue(Storage.Quest.U14_15.TheWayOfTheMonk.Missions.TreeFoldPath, 2)
-			player:setStorageValue(Storage.Quest.U14_15.TheWayOfTheMonk.Missions.ShrinesCount, 1)
+			-- FAMILY: was Missions.ShrinesCount (nil key: the pilgrimage never started and
+			-- no Blue Valley shrine could be used). Only set when not started yet, so going
+			-- through this again cannot reset the shrines (upstream #4063).
+			if player:getStorageValue(Storage.Quest.U14_15.TheWayOfTheMonk.ShrinesCount) < 1 then
+				player:setStorageValue(Storage.Quest.U14_15.TheWayOfTheMonk.ShrinesCount, 1)
+			end
 			npcHandler:setTopic(playerId, 0)
 			npcHandler:say("You are now a pilgrim on the Three-Fold Path. Welcome to the Blue Valley, seeker. ...", npc, creature)
 		end

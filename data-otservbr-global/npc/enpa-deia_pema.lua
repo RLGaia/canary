@@ -89,31 +89,57 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	if MsgContains(message, "healing") then
-		npcHandler:say("You do not need any healing right now.", npc, creature)
+	-- FAMILY: Pema heals like the temple NPCs (data/scripts/family/temple_healing.lua),
+	-- starts the pilgrimage for anyone who asks (upstream only Ambassador Manop did, for
+	-- monks leaving Dawnport), says where the next shrine is and closes the quest.
+	local lower = message:lower()
+	if lower:find("heal") then
+		if Family and Family.templeHeal and Family.templeHeal(player) then
+			npcHandler:say("Harmony restores body and mind. You are healed.", npc, creature)
+			player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+		else
+			npcHandler:say("You do not need any healing right now.", npc, creature)
+		end
 	elseif MsgContains(message, "pilgrimage") then
-		local shrinesCount = player:getStorageValue(Storage.Quest.U14_15.TheWayOfTheMonk.ShrinesCount)
-		-- Normalize shrinesCount: guard against nil/non-number and negative values
-		if type(shrinesCount) ~= "number" or shrinesCount < 0 then
+		local monkStorage = Storage.Quest.U14_15.TheWayOfTheMonk
+		local shrinesCount = player:getStorageValue(monkStorage.ShrinesCount)
+		-- FAMILY: no type() here: the callback's "type" argument hides it (upstream
+		-- "pilgrimage" stopped with a Lua error).
+		if not shrinesCount or shrinesCount < 0 then
 			shrinesCount = 0
 		end
+		local isMonk = player:getVocation():getBaseId() == VOCATION.BASE_ID.MONK
 
-		if shrinesCount >= monkQuestTotalShrines then
-			npcHandler:say("You are a monk of the Merudri, enlightened and beyond the Three-Fold Path. You have visited all of our ancestral shrines and embraced eternity. The Enpa will see you now.", npc, creature)
-		elseif shrinesCount > 0 and shrinesCount < monkQuestTotalShrines then
-			local currentShrine = TheWayOfTheMonkShrines[shrinesCount]
-			local nextShrine = TheWayOfTheMonkShrines[shrinesCount + 1]
-			local ordinals = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth" }
-			local ordinal = ordinals[shrinesCount] or tostring(shrinesCount)
-			local currentShrineName = currentShrine and currentShrine.name or "the current shrine"
-			local nextShrineName = nextShrine and nextShrine.name or "the next step"
-			npcHandler:say(string.format("You are an initiate of the Merudri, inducted and on the Three-Fold Path. You have visited the %s of the shrines and embraced '%s'. ...", ordinal, currentShrineName), npc, creature)
-			npcHandler:say(string.format("The next step, embracing '%s', will lead you to the south of Thais, away from the city.", nextShrineName), npc, creature)
-		else
-			-- shrinesCount is 0, player hasn't started yet
+		if shrinesCount < 1 then
+			if player:getStorageValue(monkStorage.QuestLine) < 1 then
+				player:setStorageValue(monkStorage.QuestLine, 1)
+			end
+			player:setStorageValue(monkStorage.Missions.TreeFoldPath, 2)
+			player:setStorageValue(monkStorage.ShrinesCount, 1)
+			shrinesCount = 1
 			local firstShrine = TheWayOfTheMonkShrines[1]
-			if firstShrine then
-				npcHandler:say(string.format("You are an initiate of the Merudri, ready to begin the Three-Fold Path. Your first step is to embrace '%s'.", firstShrine.name), npc, creature)
+			npcHandler:say(string.format("%s The Three-Fold Path leads to %d shrines of the Merudri, one after the other, each when you are experienced enough. ...", isMonk and "Then walk it, monk." or "The path is open to any who seek it, even if you are not one of us.", #TheWayOfTheMonkShrines), npc, creature)
+			npcHandler:say(string.format("Your first step is to embrace '%s'. It will lead you %s.", firstShrine.name, firstShrine.hint), npc, creature, 1000)
+		elseif shrinesCount >= monkQuestTotalShrines then
+			if player:getStorageValue(monkStorage.Missions.TreeFoldPath) < 3 then
+				player:setStorageValue(monkStorage.Missions.TreeFoldPath, 3)
+			end
+			player:addAchievement("Hope of the Merudri")
+			if isMonk then
+				npcHandler:say("You are a monk of the Merudri, enlightened and beyond the Three-Fold Path. You have visited all of our ancestral shrines and embraced eternity. The Enpa will see you now.", npc, creature)
+			else
+				npcHandler:say("You have visited all of our ancestral shrines and embraced eternity. You are not one of us, but you walked the Three-Fold Path like generations of Merudri before you. Harmony be with you.", npc, creature)
+			end
+		else
+			local currentShrine = TheWayOfTheMonkShrines[shrinesCount - 1]
+			local nextShrine = TheWayOfTheMonkShrines[shrinesCount]
+			local ordinals = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth" }
+			if currentShrine then
+				npcHandler:say(string.format("You are an initiate of the Merudri, inducted and on the Three-Fold Path. You have visited the %s of the shrines and embraced '%s'. ...", ordinals[shrinesCount - 1] or tostring(shrinesCount - 1), currentShrine.name), npc, creature)
+				local levelText = player:getLevel() < nextShrine.level and string.format(" Be at least level %d before you embrace it.", nextShrine.level) or ""
+				npcHandler:say(string.format("The next step, embracing '%s', will lead you %s.%s", nextShrine.name, nextShrine.hint, levelText), npc, creature, 1000)
+			else
+				npcHandler:say(string.format("You are an initiate of the Merudri, ready to begin the Three-Fold Path. Your first step is to embrace '%s'. It will lead you %s.", nextShrine.name, nextShrine.hint), npc, creature)
 			end
 		end
 	end
