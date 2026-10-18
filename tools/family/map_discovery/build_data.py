@@ -66,16 +66,18 @@ def creatures(own, keep, server):
         for m in re.finditer(r'name = "([^"]+)",[^}]*?Position\((\d+), (\d+), (\d+)\)',t,re.S): raid(m.group(1),int(m.group(2)),int(m.group(3)))
     return result
 
+MAX_POINTS=48  # candidates per subarea; 10 are picked at each start/reset, so more = more varied resets
+
 def main(client_assets, candidates, out, server='.'):
     areas,npcs,masks=load(client_assets)
     cand={}
     pts=lambda t:[tuple(map(int,p)) for p in re.findall(r'\{(\d+),(\d+),(\d+)\}',t)]
     for m in re.finditer(r'\[(\d+)\]=\{name="([^"]*)",area=(\d+),tiles=(\d+),reach=(\d+),real=\{(.*?)\},poi=\{(.*?)\}\},',open(candidates).read()):
         real,gen=pts(m.group(6)),pts(m.group(7))
-        # real Tibia spots first; generated tiles fill up to 16, away from the real ones
+        # real Tibia spots first; generated tiles fill up to MAX_POINTS, away from the real ones
         merged=list(real)
         for g in gen:
-            if len(merged)>=16: break
+            if len(merged)>=MAX_POINTS: break
             if all(not(p[2]==g[2] and max(abs(p[0]-g[0]),abs(p[1]-g[1]))<=3) for p in merged):
                 merged.append(g)
         cand[int(m.group(1))]=merged
@@ -86,7 +88,7 @@ def main(client_assets, candidates, out, server='.'):
     '-- selected for "Start Discovering"; a subarea is its shape on every floor, above and',
     '-- below ground). Points of interest: the spots where players found them in Tibia',
     "-- (TibiaMaps.io's points-of-interest markers, MIT licence) that can be walked to on our",
-    '-- map, topped up to 16 with evenly spread reachable tiles on any floor (reachable = walked',
+    '-- map, topped up to %d with evenly spread reachable tiles on any floor (reachable = walked' % MAX_POINTS,
     '-- to from a temple or an NPC through stairs, ladders, rope spots, ordinary doors and',
     '-- teleports; houses, quest and level doors excluded). Regenerate with',
     '-- tools/family/map_discovery/ (see its README) when the map or the client changes.',
