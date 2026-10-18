@@ -62,6 +62,7 @@ local vocations = {
 	["sorcerer"] = 0,
 	["druid"] = 1,
 	["paladin"] = 2,
+	["monk"] = 6, -- FAMILY: the monk helmet of Tibia (fist fighting), see moonlight_crystals.lua
 	["knight"] = {
 		["club"] = 3,
 		["axe"] = 4,
@@ -136,10 +137,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		npcHandler:setTopic(playerId, 1)
 	elseif MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 1 then
-			npcHandler:say("So, which profession would you give preference to when enchanting the helmet: {knight}, {sorcerer}, {druid} or {paladin}?", npc, creature)
+			-- FAMILY: monk added
+			npcHandler:say("So, which profession would you give preference to when enchanting the helmet: {knight}, {sorcerer}, {druid}, {paladin} or {monk}?", npc, creature)
 			npcHandler:setTopic(playerId, 2)
 		end
-	elseif table.contains({ "knight", "sorcerer", "druid", "paladin" }, message:lower()) and npcHandler:getTopic(playerId) == 2 then
+	elseif table.contains({ "knight", "sorcerer", "druid", "paladin", "monk" }, message:lower()) and npcHandler:getTopic(playerId) == 2 then -- FAMILY: monk added
 		local helmet = message:lower()
 		if not vocations[helmet] then
 			return false

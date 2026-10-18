@@ -27,6 +27,11 @@ function moonlightCrystals.onUse(player, item, fromPosition, target, toPosition,
 			target:remove() -- Knight sword
 			player:addItem(22129, 1)
 			item:remove(1)
+		elseif player:getStorageValue(Storage.Quest.U10_80.GrimvaleQuest.WereHelmetEnchant) == 6 then
+			-- FAMILY: monk helmet (fist fighting); it starts its hour when worn
+			target:remove()
+			player:addItem(50191, 1)
+			item:remove(1)
 		else
 			return false
 		end

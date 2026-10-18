@@ -215,10 +215,14 @@ function createHirelingType(HirelingName)
 			{ itemName = "longsword", clientId = 3285, buy = 160, sell = 51 },
 			{ itemName = "mace", clientId = 3286, buy = 90, sell = 30 },
 			{ itemName = "morning star", clientId = 3282, buy = 430, sell = 100 },
+			-- FAMILY: monk weapons, as Tibia's weapon dealers (data/scripts/family/monk_gear.lua)
+			{ itemName = "nunchaku", clientId = 50182, buy = 405, sell = 135 },
+			{ itemName = "pair of monk fists", clientId = 50181, buy = 270, sell = 90 },
 			{ itemName = "plate armor", clientId = 3357, buy = 1200, sell = 400 },
 			{ itemName = "plate shield", clientId = 3410, buy = 125, sell = 45 },
 			{ itemName = "rapier", clientId = 3272, buy = 15, sell = 5 },
 			{ itemName = "sabre", clientId = 3273, buy = 35, sell = 12 },
+			{ itemName = "sais", clientId = 50183, buy = 540, sell = 180 }, -- FAMILY: monk weapon
 			{ itemName = "scale armor", clientId = 3377, buy = 260, sell = 75 },
 			{ itemName = "short sword", clientId = 3294, buy = 26, sell = 10 },
 			{ itemName = "sickle", clientId = 3293, buy = 7, sell = 3 },
