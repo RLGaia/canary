@@ -59,7 +59,7 @@ D.pointsNeeded = 7 -- points to find (fewer when a subarea has fewer places)
 D.revealAll = false -- true = all points show on the map at once
 D.revealRangeX = 8 -- a point shows on the map within this many squares (same floor)
 D.revealRangeY = 6
-D.reachRange = 2 -- a point is found within this many squares (same floor)
+D.reachRange = 3 -- a point is found within this many squares (same floor), as in Tibia videos
 D.outfitAreas = { outfit = 10, addon1 = 15, addon2 = 20 }
 D.speedBonus = true -- extra speed inside fully discovered areas
 D.speedBase = 100 -- with one fully discovered area
