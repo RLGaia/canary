@@ -594,6 +594,20 @@ local function say(player, text)
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, text)
 end
 
+-- Removes the pink vortex the client is still showing on these points (the
+-- effect lasts about a second after it was last sent).
+local function clearVortex(player, points)
+	if not D.vortex then
+		return
+	end
+	local pos = player:getPosition()
+	for _, p in ipairs(points or {}) do
+		if p.z == pos.z and math.abs(p.x - pos.x) <= D.revealRangeX + 1 and math.abs(p.y - pos.y) <= D.revealRangeY + 1 then
+			Position(p.x, p.y, p.z):removeMagicEffect(EFFECT_POINT_CLOSE, player)
+		end
+	end
+end
+
 -- Places new points in a subarea (also used to reset them). Returns true when done.
 local function placePoints(player, state, sid)
 	local info = data.subareas[sid]
@@ -626,9 +640,13 @@ function D.start(player, sid)
 		return false
 	end
 	local reset = state.subs[sid] ~= nil
+	if reset then
+		clearVortex(player, state.subs[sid].points)
+	end
 	if D.oneAtATime then
-		for other in pairs(state.subs) do
+		for other, otherSub in pairs(state.subs) do
 			if other ~= sid then
+				clearVortex(player, otherSub.points)
 				state.subs[other] = nil
 				saveSub(player, state, other)
 				local otherInfo = data.subareas[other]
@@ -664,6 +682,9 @@ local function finish(player, state, sid)
 	local before = areaId and D.areaProgress(state.done, areaId) or 0
 	local areasBefore = D.completedAreas(player)
 	state.done[sid] = true
+	if state.subs[sid] then
+		clearVortex(player, state.subs[sid].points)
+	end
 	state.subs[sid] = nil
 	saveDone(player, state)
 	saveSub(player, state, sid)
@@ -713,7 +734,12 @@ local function checkPoints(player, state, sid, pos)
 				p.state = 2
 				changed = true
 				justReached = true
-				Position(p.x, p.y, p.z):sendMagicEffect(EFFECT_POINT_FOUND, player)
+				-- the vortex goes away at once, the treasure map shows it was found
+				local where = Position(p.x, p.y, p.z)
+				if D.vortex then
+					where:removeMagicEffect(EFFECT_POINT_CLOSE, player)
+				end
+				where:sendMagicEffect(EFFECT_POINT_FOUND, player)
 			elseif p.state == 0 and dx <= D.revealRangeX and dy <= D.revealRangeY then
 				p.state = 1
 				changed = true
