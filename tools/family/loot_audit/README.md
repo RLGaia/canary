@@ -26,8 +26,10 @@ Left out on purpose: items TibiaWiki marks with an asterisk (the item's own
 page does not list the creature, "Loot Divergente"; the Stone Skin Amulet on
 most undeads is one), drops listed without a rarity (several boss pages), and
 pages whose list looked wrong when read (copied from another creature). Those
-creatures are noted in the scratch skip list and can be read again later.
+creatures are listed in `skipped.txt` and can be read again later.
 For bosses with a reward chest the quantities of stackable items are not
 taken (one of each), since the pages mix totals and single drops.
 
-Progress is in `wiki_loot.json` (creatures read so far).
+Done 2026-10-18 for every folder except raids, event creatures and
+nostalgia: 910 creatures compared, 996 items added to 332 creatures (summary
+line of `report.md`). Not compared: `skipped.txt`.

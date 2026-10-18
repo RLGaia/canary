@@ -1,0 +1,310 @@
+# Creatures not compared (ours, loot audit 2026-10-18).
+# Reasons: page lists loot only for raids/events, no rarity given,
+# page looked copied from another creature, no page found, or our
+# creature has no loot (boss parts, quest helpers). Whole folders skipped:
+# raids, event_creatures, nostalgia. Worth a new look when the wiki changes.
+A Shielded Astral Glyph
+Aftershock
+An Astral Glyph
+An Observer Eye
+Animated Clomp
+Animated Moohtant
+Animated Mummy
+Animated Skunk
+Animated Stone Golem
+Animated Stone Rhino
+Apocalypse
+Apprentice Sheng
+Arachir the Ancient One
+Armenius (Creature)
+Ascending Ferumbras
+Azerus
+Baleful Bunny
+Barbaria
+Battlemaster Zunzu
+Bazir
+Big Boss Trolliver
+Biting Cold
+Bones
+Boogey
+Bragrumol
+Bretzecutioner
+Brother Chill
+Brother Freeze
+Brother Worm
+Bruise Payne
+Brutus Bloodbeard
+Captain Jones
+Cart Packed with Gold
+Cave Spider
+Charged Anomaly
+Charged Disruption
+Charging Outburst
+Chayenne
+Chikhaton
+Chizzoron the Distorter
+Clubarc The Plunderer
+Concentrated Death
+Control Tower
+Corrupt Naga
+Countess Sorrow
+Crypt Warden
+Custodian
+Damage Resonance
+Dark Knowledge
+Deadeye Devious
+Death Dragon
+Death Priest Shargon
+Deep Terror
+Demodras
+Demon Goblin
+Desperate White Deer
+Destabilized Ferumbras
+Devourer
+Dharalion
+Diblis the Fair
+Dirtbeard
+Diseased Fred
+Disgusting Ooze
+Doctor Marrow
+Doctor Perhaps
+Dracola
+Dragonking Zyrtarch
+Draptor
+Dwarf Miner
+Earworm
+Eclipse Knight
+Ekatrix
+Elvira Hammerthrust
+Empowered Glooth Horror
+Energized Raging Mage
+Enraged Soul
+Enraged Squirrel
+Enraged White Deer
+Eradicator2
+Essence of Malice
+Evil Mastermind
+Fernfang
+Feroxa
+Feroxa5
+Ferumbras
+Flameborn
+Fleabringer
+Fleshslicer
+Fluffy
+Foreman Kneebiter
+Foreshock
+Freegoiz
+Frenzy
+Fury of the Emperor
+Furyosa
+Gelidrazah the Frozen
+General Murius
+Ghazbaran
+Giant Spider Wyda
+Glitterscale
+Glooth Battery
+Glooth Bomb
+Gnome Pack Crawler
+Goshnar's Megalomania Blue
+Goshnar's Megalomania Green
+Goshnar's Megalomania Purple
+Grand Mother Foulscale
+Grandfather Tridian
+Gravelord Oshuran
+Greed
+Grorlam
+Grynch Clan Goblin
+Guardian of Tales
+Hacker
+Hairman the Huge
+Heoni
+Hide
+Hirintror
+Hot Dog
+Infernatil
+Irgix The Flimsy
+Izcandar Champion of Summer
+Izcandar Champion of Winter
+Jaul
+Kalyassa
+Kerberos
+Killer Rabbit
+Koshei the Deathless
+Kraknaknork's Demon
+Last Planegazer
+Lethal Lissy
+Lost Exile
+Lost Gnome
+Lovely Deer
+Lovely Frazzlemaw
+Lovely Polar Bear
+Lovely Rotworm
+Lovely Scorpion
+Lovely Souleater
+Lovely Yielothax
+Man in the Cave
+Massacre
+Mawhawk
+Mechanical Fighter
+Memory of a Banshee
+Memory of a Book
+Memory of a Carnisylvan
+Memory of a Dwarf
+Memory of a Faun
+Memory of a Frazzlemaw
+Memory of a Fungus
+Memory of a Golem
+Memory of a Hero
+Memory of a Hydra
+Memory of a Lizard
+Memory of a Mammoth
+Memory of a Manticore
+Memory of a Pirate
+Memory of a Scarab
+Memory of a Shaper
+Memory of a Vampire
+Memory of a Werelion
+Memory of a Yalahari
+Memory of an Amazon
+Memory of an Elf
+Memory of an Insectoid
+Memory of an Ogre
+Mephiles
+Merikh the Slaughterer
+Minishabaal
+Minotaur Occultist
+Misguided Shadow
+Mole
+Morgaroth
+Morshabaal
+Mozradek
+Mr. Punish
+Munster
+Mutated Visco
+Mutated Zalamon
+Nargol The Impaler
+Necromancer Servant
+Necropharus
+Nomad Female
+Obujos
+Ocyakao
+Old Bear
+Old Beholder
+Old Bug
+Old Giant Spider
+Old Pig
+Old Spider
+Old Wasp
+Old Wolf
+Omrafir
+Orc Armor
+Orc Helmet
+Orc Sambackpack
+Orc Shield
+Orshabaal
+Overcharged Disruption
+Poor Soul
+Primitive
+Pythius The Rotten
+Raxias
+Reflection of Mawhawk
+Reflection of Obujos
+Renegade Orc
+Renegade Quara Predator
+Ron the Ripper
+Rottie the Rotworm
+Rotworm Queen
+Rukor Zad
+Sacred Snake
+Salamander
+Scar Tribe Shaman
+Scorn of the Emperor
+Shard of Corruption
+Shardhead
+Shark
+Sin Devourer
+Sir Nictros
+Sir Valorcrest
+Smuggler Baron Silvertoe
+Snake God Essence
+Snake Thing
+Solid Frozen Horror
+Spirit Overlord
+Spite of the Emperor
+Splasher
+Sugar Mommy
+Sun-Marked Goanna
+Supercharged Mazzinor
+Tanjis
+Teleskor
+The Armored Voidborn
+The Astral Source
+The Blazing Rose
+The Blazing Time Guardian
+The Blightfather
+The Bloodtusk
+The Bloodweb
+The Collector
+The Corruptor of Souls
+The Destruction
+The Devourer of Secrets
+The Diamond Blossom
+The Distorted Astral Source
+The Evil Eye
+The Fear Feaster
+The Fire Empowered Duke
+The First Dragon
+The Freezing Time Guardian
+The Frog Prince
+The Handmaiden
+The Horned Fox
+The Hunger
+The Hungry Baron from Below
+The Imperor
+The Keeper
+The Lily of Night
+The Lord of the Lice
+The Many
+The Mutated Pumpkin
+The Pale Count
+The Primal Menace
+The Rage
+The Remorseless Corruptor
+The Sandking
+The Scion of Havoc
+The Snapper
+The Source of Corruption
+The Spellstealer
+The Time Guardian
+The Unarmored Voidborn
+The Voice of Ruin
+The Welter
+Thorn Steed
+Thul
+Tormentor
+Tromphonyte
+Tyrn
+Undead Minion
+Urmahlullu the Immaculate
+Urmahlullu the Tamed
+Varnished Diremaw
+Verminor
+Versperoth
+Warlord Ruzad
+Weakened Demon
+Weakened Shlorg
+White Pale
+Wildness of Urmahlullu
+Willi Wasp
+Wisdom of Urmahlullu
+Wrath of the Emperor
+Xenia
+Yaga the Crone
+Yakchal
+Zarabustor
+Zevelon Duskbringer
+Zomba
+Zoralurk
+Zulazza the Corruptor
+Zushuka
