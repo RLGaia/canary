@@ -594,6 +594,12 @@ local function say(player, text)
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, text)
 end
 
+-- White message at the bottom of the game window (and in the server log), as
+-- Tibia's messages for entering and leaving the subarea you are discovering.
+local function status(player, text)
+	player:sendTextMessage(MESSAGE_STATUS, text)
+end
+
 -- Removes the pink vortex the client is still showing on these points (the
 -- effect lasts about a second after it was last sent).
 local function clearVortex(player, points)
@@ -611,9 +617,20 @@ end
 -- Places new points in a subarea (also used to reset them). Returns true when done.
 local function placePoints(player, state, sid)
 	local info = data.subareas[sid]
-	local pool = {}
+	-- as in Tibia, no point is placed where you can already see it
+	local pos = player:getPosition()
+	local pool, inView = {}, {}
 	for _, p in ipairs(info.points) do
-		pool[#pool + 1] = p
+		if p[3] == pos.z and math.abs(p[1] - pos.x) <= D.revealRangeX and math.abs(p[2] - pos.y) <= D.revealRangeY then
+			inView[#inView + 1] = p
+		else
+			pool[#pool + 1] = p
+		end
+	end
+	if #pool < D.pointsGenerated then
+		for _, p in ipairs(inView) do
+			pool[#pool + 1] = p
+		end
 	end
 	local points = {}
 	while #pool > 0 and #points < D.pointsGenerated do
@@ -756,6 +773,10 @@ local function checkPoints(player, state, sid, pos)
 		finish(player, state, sid)
 		return
 	end
+	if justReached then
+		local info = data.subareas[sid]
+		status(player, string.format("You have found a point of interest in %s (%d of %d).", info and info.name or "this subarea", reached, sub.needed))
+	end
 	saveSub(player, state, sid)
 	if state.shown == sid or justReached then
 		D.sendPoints(player, sid)
@@ -771,7 +792,19 @@ function D.check(player)
 		sid = nil
 	end
 	if sid ~= state.current then
+		local old = state.current
 		state.current = sid
+		-- not on the first check after logging in
+		if state.checked then
+			if old and state.subs[old] then
+				local oldInfo = data.subareas[old]
+				status(player, string.format("You are leaving %s, the subarea you are discovering.", oldInfo and oldInfo.name or "the subarea"))
+			end
+			if sid and state.subs[sid] then
+				local sub = state.subs[sid]
+				status(player, string.format("You are entering %s, the subarea you are discovering: %d of %d points of interest found.", data.subareas[sid].name, foundCount(sub), sub.needed))
+			end
+		end
 		updateSpeed(player, state)
 		if sid and not state.done[sid] and not state.subs[sid] and D.automatic then
 			placePoints(player, state, sid)
@@ -780,6 +813,7 @@ function D.check(player)
 			D.sendPoints(player, sid)
 		end
 	end
+	state.checked = true
 	-- points of every subarea in progress (a point near a border can be found
 	-- from the neighbouring subarea)
 	local ids = {}
