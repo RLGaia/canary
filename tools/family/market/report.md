@@ -87,7 +87,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | antidote potion | 7644 | 488 | real | 2 |  | 50 |
 | antler-horn helmet | 40588 | 22000000 | real | 7 |  |  |
 | antlers | 10297 | 473 | real | 11 | 50 |  |
-| ape fur | 5883 | 21163 | real | 12 | 120 | 180 |
+| ape fur | 5883 | 21163 | real | 12 | 120 |  |
 | apron | 33933 | 32770 | real | 12 | 1300 |  |
 | arachnophobica soul core | 47923 | 1942583 | real | 9 |  |  |
 | arbalest | 5803 | 37046 | real | 12 | 42000 |  |
@@ -205,16 +205,16 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | bast skirt | 3560 | 44285 | real | 12 | 750 |  |
 | bat decoration | 6491 | 9290 | real | 10 | 2000 |  |
 | bat soul core | 47484 | 650000 | real | 9 |  |  |
-| bat wing | 5894 | 60 | real | 12 | 50 | 75 |
+| bat wing | 5894 | 60 | real | 12 | 50 |  |
 | battle axe | 3266 | 50 | real | 12 | 80 | 235 |
 | battle hammer | 3305 | 76 | real | 12 | 120 | 350 |
 | battle shield | 3413 | 809 | real | 12 | 95 |  |
-| battle stone | 11447 | 242 | real | 12 | 290 | 290 |
+| battle stone | 11447 | 242 | real | 12 | 290 |  |
 | batwing hat | 9103 | 6785 | real | 12 | 8000 |  |
 | beach backpack | 5949 | 330 | real | 11 |  | 20 |
 | beach bag | 5950 | 1778 | real | 5 |  | 4 |
 | bear doll | 3001 | 19527875 | real | 1 |  |  |
-| bear paw | 5896 | 261 | real | 12 | 100 | 150 |
+| bear paw | 5896 | 261 | real | 12 | 100 |  |
 | bear skin | 31578 | 11509 | real | 12 |  |  |
 | bear soul core | 47394 | 687500 | real | 6 |  |  |
 | beast's nightmare-cushion | 29946 | 550000 | real | 5 | 630000 |  |
@@ -224,7 +224,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | beetle carapace | 24381 | 133 | real | 12 | 200 |  |
 | beetle necklace | 10457 | 3118 | real | 12 | 1500 |  |
 | beetroot | 8017 | 36 | real | 11 |  | 2 |
-| behemoth claw | 5930 | 2021 | real | 12 | 2000 | 3000 |
+| behemoth claw | 5930 | 2021 | real | 12 | 2000 |  |
 | behemoth soul core | 47431 | 903518 | real | 9 |  |  |
 | behemoth trophy | 7396 | 16018 | real | 11 | 20000 |  |
 | beijinho | 48253 | 2157 | real | 12 | 2780 |  |
@@ -257,7 +257,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | black shield | 3429 | 711 | real | 12 | 800 |  |
 | black skull | 9056 | 2739 | real | 12 | 4000 |  |
 | black sphinx acolyte soul core | 47935 | 1450000 | real | 7 |  |  |
-| black wool | 11448 | 91 | real | 9 | 300 | 450 |
+| black wool | 11448 | 91 | real | 9 | 300 |  |
 | blacksteel sword | 7406 | 10586 | real | 12 | 6000 |  |
 | blade of corruption | 11693 | 52090 | real | 11 | 60000 |  |
 | blade of destruction | 27449 | 1199855 | real | 9 |  |  |
@@ -265,7 +265,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | blank imbuement scroll | 51442 | 23694 | real | 12 |  | 25000 |
 | blank poetry parchment | 172 | 1 | real | 1 |  |  |
 | blank rune | 3147 | 11 | real | 12 |  | 10 |
-| blazing bone | 16131 | 693 | real | 12 | 610 | 610 |
+| blazing bone | 16131 | 693 | real | 12 | 610 |  |
 | blemished spawn abdomen | 36779 | 3410 | real | 12 | 550 |  |
 | blemished spawn head | 36778 | 7042 | real | 12 | 800 |  |
 | blemished spawn soul core | 47996 | 1350000 | real | 5 |  |  |
@@ -301,7 +301,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | bloodstained scythe | 50101 | 117148 | real | 12 | 4200 |  |
 | bloody dwarven beard | 17827 | 82 | real | 11 | 110 |  |
 | bloody edge | 7416 | 23069 | real | 12 | 30000 |  |
-| bloody pincers | 9633 | 15658 | real | 12 | 100 | 100 |
+| bloody pincers | 9633 | 15658 | real | 12 | 100 |  |
 | bloody tears | 32594 | 1505772 | real | 12 | 70000 |  |
 | blossom bag | 25780 | 386996 | real | 12 |  |  |
 | blue 25 years balloon | 39670 | 942152 | real | 2 |  |  |
@@ -425,8 +425,8 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | bright bell | 30324 | 67 | real | 10 | 220 |  |
 | bright sword | 3295 | 70732 | real | 12 | 6000 |  |
 | brimstone bug soul core | 47688 | 720570 | real | 8 |  |  |
-| brimstone fangs | 11702 | 15834 | real | 12 | 380 | 380 |
-| brimstone shell | 11703 | 247 | real | 12 | 210 | 210 |
+| brimstone fangs | 11702 | 15834 | real | 12 | 380 |  |
+| brimstone shell | 11703 | 247 | real | 12 | 210 |  |
 | brinebrute claw | 50056 | 9788 | real | 11 | 2600 |  |
 | brinebrute inferniarch soul core | 50105 | 2706240 | real | 6 |  |  |
 | broadsword | 3301 | 1933 | real | 12 | 500 |  |
@@ -454,7 +454,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | broken Mitmah necklace | 44438 | 296 | real | 12 | 210 |  |
 | broken pottery | 3113 | 1 | real | 1 |  |  |
 | broken ring of ending | 12737 | 3133 | real | 12 | 4000 |  |
-| broken shamanic staff | 11452 | 12297 | real | 12 | 35 | 35 |
+| broken shamanic staff | 11452 | 12297 | real | 12 | 35 |  |
 | broken shaper soul core | 47851 | 729333 | real | 7 |  |  |
 | broken slicer | 11661 | 2371 | real | 12 | 120 |  |
 | broken sword | 3119 | 2000 | real | 1 |  |  |
@@ -608,7 +608,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | cheesy membership card | 35614 | 108108 | real | 3 | 120000 |  |
 | cherry | 3590 | 12 | real | 6 | 1 | 1 |
 | chest | 2472 | 10 | npc | 0 |  | 10 |
-| chicken feather | 5890 | 4626 | real | 12 | 30 | 45 |
+| chicken feather | 5890 | 4626 | real | 12 | 30 |  |
 | chicken soul core | 47473 | 669444 | real | 3 |  |  |
 | chimney kit | 7864 | 200 | npc | 0 |  | 200 |
 | chisel | 36543 | 1 | real | 1 |  |  |
@@ -688,7 +688,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | colourful water lily | 39548 | 110564 | real | 11 |  |  |
 | comb | 5946 | 66852 | real | 1 |  |  |
 | combat knife | 3292 | 348 | real | 12 | 1 |  |
-| compass | 10302 | 169 | real | 12 | 45 | 45 |
+| compass | 10302 | 169 | real | 12 | 45 |  |
 | composite hornbow | 8027 | 23614 | real | 12 | 25000 |  |
 | compound eye | 14083 | 181 | real | 12 | 150 |  |
 | compromising letter | 7935 | 12537 | real | 2 |  |  |
@@ -735,7 +735,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | crape man soul core | 48054 | 1724550 | real | 10 |  |  |
 | crate | 117 | 1000 | npc | 0 |  |  |
 | crate | 2471 | 11 | real | 1 |  | 10 |
-| crawler head plating | 14079 | 4623 | real | 12 | 210 | 210 |
+| crawler head plating | 14079 | 4623 | real | 12 | 210 |  |
 | crawler soul core | 47727 | 804860 | real | 6 |  |  |
 | crawler's essence | 33982 | 42666 | real | 12 | 3700 |  |
 | crazed beggar soul core | 47637 | 950000 | real | 4 |  |  |
@@ -811,14 +811,14 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | crystalline spikes | 16138 | 962 | real | 12 | 440 |  |
 | crystalline sword | 16160 | 14297 | real | 12 | 2000 |  |
 | crystallised blood | 44752 | 300364 | real | 3 | 270000 |  |
-| crystallized anger | 23507 | 312 | real | 12 | 400 | 400 |
+| crystallized anger | 23507 | 312 | real | 12 | 400 |  |
 | cuckoo clock | 2668 | 9683 | real | 2 |  |  |
 | cucumber | 8014 | 183 | real | 11 |  | 3 |
 | cult believer soul core | 47874 | 911111 | real | 5 |  |  |
 | cult enforcer soul core | 47875 | 904166 | real | 2 |  |  |
 | cult scholar soul core | 49019 | 1318518 | real | 1 |  |  |
-| cultish mask | 9638 | 14069 | real | 12 | 280 | 280 |
-| cultish robe | 9639 | 149 | real | 12 | 150 | 150 |
+| cultish mask | 9638 | 14069 | real | 12 | 280 |  |
+| cultish robe | 9639 | 149 | real | 12 | 150 |  |
 | cultish symbol | 11455 | 458 | real | 12 | 500 |  |
 | cunning werepanther soul core | 48087 | 2000000 | real | 7 |  |  |
 | cup | 2881 | 1150 | real | 1 |  | 2 |
@@ -839,7 +839,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | cyclops head balloon | 37504 | 35612 | real | 5 |  |  |
 | cyclops smith soul core | 47589 | 899999 | real | 5 |  |  |
 | cyclops soul core | 47399 | 663102 | real | 10 |  |  |
-| cyclops toe | 9657 | 572 | real | 12 | 55 | 55 |
+| cyclops toe | 9657 | 572 | real | 12 | 55 |  |
 | cyclops trophy | 7398 | 409 | real | 11 | 500 |  |
 | dagger | 3267 | 19 | real | 9 | 2 | 4 |
 | damaged armor plates | 28822 | 966 | real | 12 | 280 |  |
@@ -850,7 +850,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | damaged worker golem soul core | 47636 | 825000 | real | 7 |  |  |
 | damaged worm head | 27620 | 3634 | real | 10 | 8000 |  |
 | damselfly eye | 17463 | 1185 | real | 12 | 25 |  |
-| damselfly wing | 17458 | 166 | real | 12 | 20 | 20 |
+| damselfly wing | 17458 | 166 | real | 12 | 20 |  |
 | dandelion seeds | 25695 | 2118 | real | 12 | 200 |  |
 | dangerous proto matter | 23515 | 916 | real | 12 | 300 |  |
 | daramian mace | 3327 | 175 | real | 11 | 110 |  |
@@ -927,7 +927,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | deepling staff | 13987 | 2694 | real | 12 | 4000 |  |
 | deepling tyrant soul core | 48978 | 1500000 | real | 3 |  |  |
 | deepling warrior soul core | 47722 | 849500 | real | 7 |  |  |
-| deepling warts | 14012 | 204 | real | 12 | 180 | 180 |
+| deepling warts | 14012 | 204 | real | 12 | 180 |  |
 | deepling worker soul core | 47732 | 820000 | real | 3 |  |  |
 | deepsea blood crab soul core | 47594 | 798000 | real | 7 |  |  |
 | deeptags | 14013 | 999 | real | 12 | 290 |  |
@@ -943,7 +943,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | demon claws | 50060 | 66292826 | real | 3 |  |  |
 | demon dust | 5906 | 2842 | real | 12 | 300 |  |
 | demon helmet | 3387 | 76206 | real | 12 | 40000 |  |
-| demon horn | 5954 | 782 | real | 12 | 1000 | 1000 |
+| demon horn | 5954 | 782 | real | 12 | 1000 |  |
 | demon in a green box | 50064 | 5930000 | real | 11 |  |  |
 | demon infant | 12178 | 149714 | real | 8 |  |  |
 | demon legs | 3389 | 16575074 | real | 11 | 84 |  |
@@ -964,7 +964,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | demonic essence | 6499 | 954 | real | 12 | 1000 |  |
 | demonic finger | 12541 | 1650000 | real | 11 | 1000 |  |
 | demonic matter | 49894 | 4023 | real | 12 |  |  |
-| demonic skeletal hand | 9647 | 100 | real | 12 | 80 | 80 |
+| demonic skeletal hand | 9647 | 100 | real | 12 | 80 |  |
 | demonic tapestry | 20278 | 185723 | real | 11 |  |  |
 | demonrage sword | 7382 | 32634 | real | 12 | 36000 |  |
 | demonwing axe | 8098 | 324724 | real | 11 |  |  |
@@ -1074,7 +1074,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | draken doll | 25979 | 1083056 | real | 2 |  |  |
 | draken elite soul core | 47686 | 1577777 | real | 7 |  |  |
 | draken spellweaver soul core | 47671 | 1374750 | real | 10 |  |  |
-| draken sulphur | 11658 | 720 | real | 12 | 550 | 550 |
+| draken sulphur | 11658 | 720 | real | 12 | 550 |  |
 | draken trophy | 10398 | 18810 | real | 11 | 15000 |  |
 | draken warmaster soul core | 47670 | 800000 | real | 11 |  |  |
 | draken wristbands | 11659 | 4270 | real | 12 | 430 |  |
@@ -1191,14 +1191,14 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | Eloise balloon | 37510 | 76017 | real | 11 |  |  |
 | elven amulet | 3082 | 62 | real | 12 | 100 | 500 |
 | elven astral observer | 11465 | 516 | real | 12 | 90 |  |
-| elven hoof | 18994 | 12052 | real | 12 | 115 | 115 |
+| elven hoof | 18994 | 12052 | real | 12 | 115 |  |
 | elven legs | 3401 | 19999 | real | 11 |  |  |
 | elven mail | 3399 | 2904994 | real | 12 |  |  |
 | elven poetry book | 4844 | 17634 | real | 1 |  |  |
-| elven scouting glass | 11464 | 408 | real | 12 | 50 | 50 |
+| elven scouting glass | 11464 | 408 | real | 12 | 50 |  |
 | elvenhair rope | 646 | 33534 | real | 12 |  |  |
 | elvish bow | 7438 | 2124 | real | 12 | 2000 |  |
-| elvish talisman | 9635 | 5360 | real | 12 | 45 | 45 |
+| elvish talisman | 9635 | 5360 | real | 12 | 45 |  |
 | emberwing figurine | 51752 | 67469 | real | 10 |  |  |
 | emblem | 25980 | 1599999 | real | 1 |  |  |
 | embrace of nature | 31579 | 7021 | real | 12 |  |  |
@@ -1256,7 +1256,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | energy slayer replica | 25964 | 5500 | real | 1 |  |  |
 | energy soil | 945 | 14506 | real | 11 | 2000 |  |
 | energy spike sword replica | 25960 | 199979 | real | 1 |  |  |
-| energy vein | 23508 | 214 | real | 12 | 270 | 270 |
+| energy vein | 23508 | 214 | real | 12 | 270 |  |
 | energy wall rune | 3166 | 91 | real | 11 |  | 85 |
 | energy war axe replica | 25969 | 500 | npc | 0 |  |  |
 | energy war hammer replica | 25974 | 500 | npc | 0 |  |  |
@@ -1316,7 +1316,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | eyeless devourer tongue | 36777 | 12420 | real | 12 | 900 |  |
 | fabulous legs | 32617 | 3023380 | real | 12 |  |  |
 | Fafnar symbol | 31443 | 1112 | real | 12 | 950 |  |
-| fairy wings | 25694 | 296 | real | 12 | 200 | 200 |
+| fairy wings | 25694 | 296 | real | 12 | 200 |  |
 | fake dwarven beard | 170 | 2000 | npc | 0 |  |  |
 | falcon battleaxe | 28724 | 1944589 | real | 12 |  |  |
 | falcon bow | 28718 | 5120882 | real | 12 |  |  |
@@ -1366,7 +1366,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | fiery dragon slayer replica | 25919 | 500 | npc | 0 |  |  |
 | fiery fireworks rocket | 37460 | 65900 | real | 4 |  |  |
 | fiery headchopper replica | 25923 | 500 | npc | 0 |  |  |
-| fiery heart | 9636 | 371 | real | 12 | 375 | 375 |
+| fiery heart | 9636 | 371 | real | 12 | 375 |  |
 | fiery heroic axe replica | 25922 | 500 | npc | 0 |  |  |
 | fiery horseshoe | 36938 | 262237508 | real | 1 |  |  |
 | fiery knight axe replica | 25921 | 500 | npc | 0 |  |  |
@@ -1419,7 +1419,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | Firlefanz | 896 | 393625 | real | 10 |  |  |
 | fish | 3578 | 21 | real | 11 |  | 5 |
 | fish eye | 48517 | 500000 | npc | 0 | 500000 |  |
-| fish fin | 5895 | 143 | real | 12 | 150 | 225 |
+| fish fin | 5895 | 143 | real | 12 | 150 |  |
 | fish tail | 5951 | 20 | real | 3 |  |  |
 | fishbone | 3111 | 6 | real | 4 |  |  |
 | fishing rod | 3483 | 977 | real | 11 | 40 | 40 |
@@ -1435,7 +1435,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | flask of crown polisher | 10009 | 3050 | real | 12 |  |  |
 | flask of demonic blood | 6558 | 32 | real | 12 |  |  |
 | flask of dissolved chitin | 14053 | 1 | real | 1 |  |  |
-| flask of embalming fluid | 11466 | 5404 | real | 12 | 30 | 30 |
+| flask of embalming fluid | 11466 | 5404 | real | 12 | 30 |  |
 | flask of extra greasy oil | 10189 | 100000 | real | 1 |  |  |
 | flask of plant poison | 11364 | 1375 | real | 2 |  |  |
 | flask of poison | 10183 | 1000 | npc | 0 |  |  |
@@ -1511,7 +1511,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | fragment of a statue | 50336 | 10 | real | 1 |  |  |
 | fragment of a statue | 50337 | 5 | real | 1 |  |  |
 | framed birthday card | 24950 | 107047 | real | 1 |  |  |
-| frazzle skin | 20199 | 334 | real | 12 | 400 | 400 |
+| frazzle skin | 20199 | 334 | real | 12 | 400 |  |
 | frazzle tongue | 20198 | 637 | real | 12 | 700 |  |
 | frazzlemaw santa | 20308 | 162644 | real | 2 |  |  |
 | frazzlemaw soul core | 47784 | 1882500 | real | 8 |  |  |
@@ -1532,7 +1532,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | frostmind raiment | 22537 | 1228862 | real | 11 |  |  |
 | frostsoul tabard | 22533 | 800000 | real | 1 |  |  |
 | frosty ear of a troll | 9648 | 138 | real | 9 | 30 |  |
-| frosty heart | 9661 | 276 | real | 12 | 280 | 280 |
+| frosty heart | 9661 | 276 | real | 12 | 280 |  |
 | frozen chain | 30281 | 1288 | real | 2 |  |  |
 | frozen claw | 30279 | 59999 | real | 1 |  |  |
 | frozen heart | 19156 | 2000000 | real | 3 |  |  |
@@ -1583,7 +1583,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | ghost wolf soul core | 49006 | 1499999 | real | 3 |  |  |
 | ghost's tear | 8746 | 5000 | real | 3 |  |  |
 | ghostly fireworks rocket | 37455 | 72962 | real | 3 |  |  |
-| ghostly tissue | 9690 | 38 | real | 12 | 90 | 135 |
+| ghostly tissue | 9690 | 38 | real | 12 | 90 |  |
 | ghoul snack | 11467 | 59 | real | 12 | 60 |  |
 | ghoul soul core | 47396 | 513576 | real | 12 |  |  |
 | ghoulish hyaena soul core | 48943 | 2875000 | real | 2 |  |  |
@@ -1638,7 +1638,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | glob of tar | 9055 | 3496 | real | 12 | 30 |  |
 | globe kit | 2797 | 50 | npc | 0 |  | 50 |
 | gloom maw soul core | 51646 | 5000000 | real | 9 |  |  |
-| gloom wolf fur | 22007 | 25524 | real | 12 | 70 | 70 |
+| gloom wolf fur | 22007 | 25524 | real | 12 | 70 |  |
 | gloom wolf soul core | 49005 | 600000 | real | 3 |  |  |
 | glooth amulet | 21183 | 1613 | real | 12 | 2000 |  |
 | glooth anemone soul core | 47790 | 900000 | real | 3 |  |  |
@@ -1690,7 +1690,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | goat grass | 3674 | 30 | real | 8 | 50 |  |
 | goblet of gloom | 34022 | 11850 | real | 5 | 12000 |  |
 | goblin assassin soul core | 47606 | 645057 | real | 4 |  |  |
-| goblin ear | 11539 | 2200 | real | 11 | 20 | 30 |
+| goblin ear | 11539 | 2200 | real | 11 | 20 |  |
 | goblin leader soul core | 47581 | 2000000 | real | 1 |  |  |
 | goblin scavenger soul core | 47607 | 800000 | real | 5 |  |  |
 | goblin soul core | 47437 | 566666 | real | 11 |  |  |
@@ -1701,7 +1701,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | gold ingot | 9058 | 4771 | real | 12 | 5000 |  |
 | gold nugget | 3040 | 761 | real | 11 | 850 |  |
 | gold ring | 3063 | 7049 | real | 11 | 8000 |  |
-| gold-brocaded cloth | 40529 | 570 | real | 12 | 175 | 260 |
+| gold-brocaded cloth | 40529 | 570 | real | 12 | 175 |  |
 | gold-scaled sentinel | 44751 | 415800 | real | 2 | 380000 |  |
 | golden amulet | 3013 | 66550 | real | 1 | 2000 | 6600 |
 | golden armor | 3360 | 18342 | real | 12 | 20000 |  |
@@ -1755,7 +1755,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | golem wrench | 16251 | 206834 | real | 7 |  |  |
 | goo shell | 19372 | 4249500 | real | 1 | 4000 |  |
 | gooey mass | 14172 | 77857 | real | 11 |  |  |
-| goosebump leather | 20205 | 544 | real | 12 | 650 | 650 |
+| goosebump leather | 20205 | 544 | real | 12 | 650 |  |
 | gore horn | 39377 | 3138 | real | 12 | 2900 |  |
 | gore horn soul core | 48041 | 4000000 | real | 9 |  |  |
 | gorerilla mane | 39392 | 4258 | real | 12 | 2750 |  |
@@ -1809,8 +1809,8 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | green cushioned chair kit | 2776 | 40 | npc | 0 |  | 40 |
 | green demon legs | 37607 | 51513938 | real | 2 |  |  |
 | green djinn soul core | 47427 | 857500 | real | 6 |  |  |
-| green dragon leather | 5877 | 14701 | real | 12 | 100 | 100 |
-| green dragon scale | 5920 | 270 | real | 12 | 100 | 100 |
+| green dragon leather | 5877 | 14701 | real | 12 | 100 |  |
+| green dragon scale | 5920 | 270 | real | 12 | 100 |  |
 | green fireworks powder | 30190 | 398 | real | 5 |  |  |
 | green flask | 2877 | 1 | real | 1 |  | 3 |
 | green frog soul core | 47534 | 950000 | real | 1 |  |  |
@@ -1868,7 +1868,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | handcrafted ribbon | 12171 | 1 | real | 1 |  |  |
 | handful of marzipan carrots | 48582 | 1 | real | 1 |  |  |
 | hard-boiled hydra egg | 33947 | 20000 | real | 11 |  |  |
-| hardened bone | 5925 | 154 | real | 12 | 70 | 105 |
+| hardened bone | 5925 | 154 | real | 12 | 70 |  |
 | harmony amulet | 50195 | 1944 | real | 10 |  | 1000 |
 | harness | 12307 | 43532 | real | 12 |  |  |
 | harp kit | 2808 | 50 | npc | 0 |  | 50 |
@@ -1923,7 +1923,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | hellhunter eye | 50055 | 31412 | real | 11 | 2950 |  |
 | hellhunter inferniarch soul core | 50104 | 2168818 | real | 11 |  |  |
 | hellspawn soul core | 47632 | 1400000 | real | 11 |  |  |
-| hellspawn tail | 10304 | 498 | real | 12 | 475 | 475 |
+| hellspawn tail | 10304 | 498 | real | 12 | 475 |  |
 | hellstalker visor | 49532 | 11708612 | real | 10 |  |  |
 | helmet adornment | 3228 | 268 | real | 2 |  |  |
 | helmet of nature | 9382 | 1150 | real | 1 |  |  |
@@ -1964,7 +1964,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | holy scarab | 3023 | 9900000 | real | 3 |  |  |
 | honey elemental soul core | 49088 | 2350000 | real | 1 |  |  |
 | honey flower | 2984 | 1708 | real | 4 |  | 5 |
-| honeycomb | 5902 | 6286 | real | 12 | 40 | 60 |
+| honeycomb | 5902 | 6286 | real | 12 | 40 |  |
 | honour guard soul core | 48950 | 1025000 | real | 2 |  |  |
 | hook | 6097 | 10610 | real | 12 |  |  |
 | horn | 19359 | 1000000 | real | 3 | 300 |  |
@@ -1992,7 +1992,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | hyaena soul core | 47459 | 725000 | real | 8 |  |  |
 | hydra balloon | 37506 | 20558 | real | 5 |  |  |
 | hydra egg | 4839 | 353 | real | 12 | 500 |  |
-| hydra head | 10282 | 620 | real | 12 | 600 | 900 |
+| hydra head | 10282 | 620 | real | 12 | 600 |  |
 | hydra soul core | 47483 | 850000 | real | 8 |  |  |
 | hydra tongue | 7250 | 1453 | real | 12 |  |  |
 | hydra tongue salad | 9080 | 34856 | real | 11 |  |  |
@@ -2281,11 +2281,11 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | lion spellbook | 34153 | 8017024 | real | 12 |  |  |
 | lion trophy | 7400 | 2058 | real | 11 | 3000 |  |
 | lion wand | 34152 | 4300820 | real | 12 |  |  |
-| lion's mane | 9691 | 74 | real | 12 | 60 | 60 |
+| lion's mane | 9691 | 74 | real | 12 | 60 |  |
 | Lisa's doll | 21218 | 3000002 | real | 1 |  |  |
 | lit torch | 34016 | 54077 | real | 12 |  |  |
 | little adventurer doll | 37058 | 2500000 | real | 1 |  |  |
-| little bowl of myrrh | 25702 | 5981 | real | 12 | 500 | 500 |
+| little bowl of myrrh | 25702 | 5981 | real | 12 | 500 |  |
 | little corym charlatan soul core | 48994 | 999500 | real | 2 |  |  |
 | living armor | 29418 | 96960 | real | 12 |  |  |
 | living vine bow | 29417 | 128629 | real | 12 |  |  |
@@ -2294,10 +2294,10 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | lizard essence | 11680 | 246 | real | 12 | 300 |  |
 | lizard heart | 31340 | 426 | real | 11 | 530 |  |
 | lizard high guard soul core | 47676 | 707500 | real | 10 |  |  |
-| lizard leather | 5876 | 239 | real | 12 | 150 | 225 |
+| lizard leather | 5876 | 239 | real | 12 | 150 |  |
 | lizard legionnaire soul core | 47675 | 793750 | real | 8 |  |  |
 | lizard noble soul core | 47685 | 1863605 | real | 3 |  |  |
-| lizard scale | 5881 | 270 | real | 12 | 120 | 180 |
+| lizard scale | 5881 | 270 | real | 12 | 120 |  |
 | lizard sentinel soul core | 47476 | 899999 | real | 5 |  |  |
 | lizard snakecharmer soul core | 47477 | 800000 | real | 5 |  |  |
 | lizard templar soul core | 47475 | 900000 | real | 7 |  |  |
@@ -2388,13 +2388,13 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | mammoth fur cape | 7463 | 4456 | real | 12 | 6000 |  |
 | mammoth fur shorts | 7464 | 258 | real | 10 | 850 |  |
 | mammoth soul core | 47529 | 691666 | real | 10 |  |  |
-| mammoth tusk | 10321 | 3392 | real | 12 | 100 | 150 |
+| mammoth tusk | 10321 | 3392 | real | 12 | 100 |  |
 | mammoth whopper | 7381 | 1376 | real | 12 | 300 |  |
 | mana potion | 268 | 54 | real | 12 |  | 56 |
 | mandrake | 5014 | 8616 | real | 12 | 5000 |  |
 | mango | 5096 | 464 | real | 12 |  | 8 |
 | manta ray soul core | 48968 | 2431250 | real | 2 |  |  |
-| mantassin tail | 11489 | 2830 | real | 12 | 280 | 420 |
+| mantassin tail | 11489 | 2830 | real | 12 | 280 |  |
 | manticore ear | 31440 | 7116 | real | 12 | 310 |  |
 | manticore soul core | 47940 | 2050000 | real | 6 |  |  |
 | manticore tail | 31439 | 5850 | real | 12 | 220 |  |
@@ -2461,7 +2461,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | metal gargoyle soul core | 47787 | 900000 | real | 5 |  |  |
 | metal jaw | 21193 | 4227 | real | 12 | 260 |  |
 | metal spats | 21169 | 3050 | real | 12 | 2000 |  |
-| metal spike | 10298 | 433 | real | 12 | 320 | 320 |
+| metal spike | 10298 | 433 | real | 12 | 320 |  |
 | metal toe | 21198 | 254 | real | 11 | 430 |  |
 | midnight asura soul core | 47817 | 2129166 | real | 8 |  |  |
 | midnight panther soul core | 47703 | 2018518 | real | 4 |  |  |
@@ -2490,7 +2490,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | minotaur horn | 11472 | 50 | real | 12 | 75 |  |
 | minotaur hunter soul core | 47795 | 950000 | real | 5 |  |  |
 | minotaur invader soul core | 49002 | 1687710 | real | 2 |  |  |
-| minotaur leather | 5878 | 118 | real | 12 | 80 | 120 |
+| minotaur leather | 5878 | 118 | real | 12 | 80 |  |
 | minotaur mage soul core | 47400 | 800000 | real | 7 |  |  |
 | minotaur soul core | 47402 | 662500 | real | 8 |  |  |
 | minotaur statue kit | 2803 | 50 | npc | 0 |  | 50 |
@@ -2515,10 +2515,10 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | monkey statue 'speak' kit | 5088 | 9500 | real | 2 |  |  |
 | monolith of the planes kit | 33330 | 5000000 | real | 1 |  |  |
 | mooh'tah plate | 21166 | 4569 | real | 12 | 6000 |  |
-| mooh'tah shell | 21202 | 1468 | real | 12 | 110 | 110 |
+| mooh'tah shell | 21202 | 1468 | real | 12 | 110 |  |
 | mooh'tah warrior soul core | 47794 | 811111 | real | 7 |  |  |
 | moohtant cudgel | 21173 | 11526 | real | 11 | 14000 |  |
-| moohtant horn | 21200 | 5378 | real | 12 | 140 | 140 |
+| moohtant horn | 21200 | 5378 | real | 12 | 140 |  |
 | moohtant soul core | 47791 | 989934 | real | 2 |  |  |
 | moon backpack | 9604 | 112130 | real | 12 |  |  |
 | moon compass | 43739 | 2417 | real | 5 | 5000 |  |
@@ -2588,7 +2588,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | mystic root | 11551 | 8000 | real | 2 |  |  |
 | mystic turban | 3574 | 82 | real | 12 | 150 |  |
 | mystical dragon robe | 44624 | 15580152 | real | 9 |  |  |
-| mystical hourglass | 9660 | 631 | real | 12 | 700 | 700 |
+| mystical hourglass | 9660 | 631 | real | 12 | 700 |  |
 | mythril axe | 7455 | 63900000 | real | 1 |  |  |
 | naga archer scales | 39413 | 1486 | real | 12 | 340 |  |
 | naga archer soul core | 48036 | 2225002 | real | 5 |  |  |
@@ -2666,7 +2666,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | northern pike soul core | 48971 | 650000 | real | 1 |  |  |
 | northern star | 7409 | 197436 | real | 6 |  |  |
 | northwind rod | 8083 | 1353 | real | 12 | 1500 | 7500 |
-| nose ring | 5804 | 2549888 | real | 12 | 2000 | 3000 |
+| nose ring | 5804 | 2549888 | real | 12 | 2000 |  |
 | novice of the cult soul core | 47524 | 578125 | real | 8 |  |  |
 | noxious ripptor soul core | 48050 | 3583333 | real | 5 |  |  |
 | nunchaku | 50182 | 13074 | real | 10 | 135 | 405 |
@@ -2692,7 +2692,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | ogre choppa | 22172 | 886 | real | 12 | 1500 |  |
 | ogre ear stud | 22188 | 918 | real | 12 | 180 |  |
 | ogre klubba | 22171 | 1646 | real | 12 | 2500 |  |
-| ogre nose ring | 22189 | 262 | real | 12 | 210 | 210 |
+| ogre nose ring | 22189 | 262 | real | 12 | 210 |  |
 | ogre rowdy soul core | 47944 | 1350000 | real | 5 |  |  |
 | ogre ruffian soul core | 47943 | 1500000 | real | 5 |  |  |
 | ogre sage soul core | 47945 | 2051389 | real | 2 |  |  |
@@ -2743,12 +2743,12 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | orc cult priest soul core | 49017 | 1275000 | real | 2 |  |  |
 | orc head balloon | 37508 | 50000 | real | 9 |  |  |
 | orc leader soul core | 47435 | 937722 | real | 4 |  |  |
-| orc leather | 11479 | 17 | real | 12 | 30 | 45 |
+| orc leather | 11479 | 17 | real | 12 | 30 |  |
 | orc rider soul core | 47383 | 1000000 | real | 4 |  |  |
 | orc shaman soul core | 47385 | 700000 | real | 9 |  |  |
 | orc soul core | 47384 | 700000 | real | 7 |  |  |
 | orc spearman soul core | 47426 | 650000 | real | 11 |  |  |
-| orc tooth | 10196 | 443 | real | 12 | 150 | 150 |
+| orc tooth | 10196 | 443 | real | 12 | 150 |  |
 | orc trophy | 7395 | 2277 | real | 4 | 1000 |  |
 | orc tusk | 7786 | 408 | real | 12 | 700 |  |
 | orc warlord soul core | 47381 | 1050000 | real | 2 |  |  |
@@ -2855,7 +2855,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | pastry dragon | 48256 | 69124 | real | 9 | 95000 |  |
 | patch of fine cloth | 28821 | 953 | real | 11 | 1350 |  |
 | patched boots | 3550 | 2000 | npc | 0 | 2000 |  |
-| peacock feather fan | 21975 | 274 | real | 12 | 350 | 350 |
+| peacock feather fan | 21975 | 274 | real | 12 | 350 |  |
 | peanut | 841 | 28132 | real | 12 |  |  |
 | pear | 3584 | 9 | real | 3 |  | 4 |
 | peas | 11683 | 2 | npc | 0 |  | 2 |
@@ -2870,10 +2870,10 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | percht queen's frozen heart | 30280 | 5016 | real | 3 |  |  |
 | percht skull | 30192 | 93534 | real | 10 |  |  |
 | percht soul core | 49028 | 1269420 | real | 1 |  |  |
-| perfect behemoth fang | 5893 | 4248 | real | 12 | 250 | 375 |
+| perfect behemoth fang | 5893 | 4248 | real | 12 | 250 |  |
 | pet pig | 16165 | 932 | real | 11 | 1500 |  |
 | petrified leaf | 48515 | 250000000 | real | 1 |  |  |
-| petrified scream | 10420 | 634 | real | 12 | 250 | 250 |
+| petrified scream | 10420 | 634 | real | 12 | 250 |  |
 | phantasm soul core | 47552 | 1026670 | real | 7 |  |  |
 | phantasmal axe | 32616 | 144646 | real | 12 |  |  |
 | phantasmal hair | 32704 | 151 | real | 1 | 500 |  |
@@ -2896,7 +2896,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | piece of archer armor | 11483 | 38 | real | 11 | 20 |  |
 | piece of cactus | 7245 | 20750 | real | 3 |  |  |
 | piece of crocodile leather | 10279 | 13 | real | 11 | 15 |  |
-| piece of dead brain | 9663 | 24382 | real | 12 | 420 | 420 |
+| piece of dead brain | 9663 | 24382 | real | 12 | 420 |  |
 | piece of draconian steel | 5889 | 5534 | real | 12 | 3000 |  |
 | piece of frozen night | 51474 | 894 | real | 12 |  |  |
 | piece of hell steel | 5888 | 584 | real | 12 | 500 |  |
@@ -2906,8 +2906,8 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | piece of Massacre's shell | 6540 | 100012 | real | 3 | 50000 |  |
 | piece of royal satin | 8762 | 3086 | real | 12 |  | 200 |
 | piece of royal steel | 5887 | 8358 | real | 12 | 10000 |  |
-| piece of scarab shell | 9641 | 446 | real | 12 | 45 | 45 |
-| piece of swampling wood | 17823 | 4597 | real | 12 | 30 | 30 |
+| piece of scarab shell | 9641 | 446 | real | 12 | 45 |  |
+| piece of swampling wood | 17823 | 4597 | real | 12 | 30 |  |
 | piece of Timira's sensors | 39400 | 120214 | real | 11 | 150000 |  |
 | piece of warrior armor | 11482 | 655 | real | 12 | 50 |  |
 | pieces of magic chalk | 18930 | 202 | real | 12 | 210 |  |
@@ -2917,7 +2917,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | pigeon soul core | 48993 | 1269420 | real | 1 |  |  |
 | pigeon trophy | 31266 | 1999000 | real | 1 |  |  |
 | piggy bank | 2995 | 278 | real | 12 |  |  |
-| pile of grave earth | 11484 | 158 | real | 12 | 25 | 25 |
+| pile of grave earth | 11484 | 158 | real | 12 | 25 |  |
 | pile of presents kit | 37562 | 260000 | real | 2 |  |  |
 | pile of three presents kit | 37563 | 200 | npc | 0 |  |  |
 | pillow backpack | 24393 | 248440 | real | 12 |  |  |
@@ -3015,8 +3015,8 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | poison wall rune | 3176 | 28 | real | 10 |  | 52 |
 | poisoned fang | 21195 | 1324 | real | 12 | 130 |  |
 | poisonous carnisylvan soul core | 48005 | 1287500 | real | 3 |  |  |
-| poisonous slime | 9640 | 34 | real | 12 | 50 | 50 |
-| polar bear paw | 9650 | 911 | real | 12 | 30 | 30 |
+| poisonous slime | 9640 | 34 | real | 12 | 50 |  |
+| polar bear paw | 9650 | 911 | real | 12 | 30 |  |
 | polar bear soul core | 47419 | 662500 | real | 8 |  |  |
 | pomegranate | 30169 | 2901 | real | 10 |  |  |
 | pooka soul core | 47859 | 838750 | real | 2 |  |  |
@@ -3089,7 +3089,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | pristine worm head | 27618 | 6755 | real | 5 | 15000 |  |
 | proficiency catalyst | 51588 | 107349 | real | 12 |  |  |
 | protection amulet | 3084 | 54 | real | 12 | 100 | 700 |
-| protective charm | 11444 | 3502 | real | 12 | 60 | 60 |
+| protective charm | 11444 | 3502 | real | 12 | 60 |  |
 | psychedelic tapestry | 20277 | 162888 | real | 7 |  |  |
 | pulverized ore | 16133 | 562 | real | 12 | 400 |  |
 | pumpkin | 3594 | 218 | real | 11 |  | 10 |
@@ -3127,7 +3127,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | quara raider soul core | 49080 | 2625000 | real | 6 |  |  |
 | quara tentacle | 11487 | 2627 | real | 12 | 140 |  |
 | queen's sceptre | 7410 | 44100 | real | 6 | 20000 |  |
-| quill | 28567 | 880 | real | 12 | 1100 | 1100 |
+| quill | 28567 | 880 | real | 12 | 1100 |  |
 | quiver | 35562 | 967 | real | 11 |  | 400 |
 | rabbit soul core | 47450 | 560000 | real | 9 |  |  |
 | rabbit's foot | 12172 | 940 | real | 8 | 50 |  |
@@ -3175,8 +3175,8 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | red balloons | 6575 | 115 | real | 3 |  | 500 |
 | red crystal fragment | 16126 | 681 | real | 12 | 800 |  |
 | red cushioned chair kit | 2775 | 40 | npc | 0 |  | 40 |
-| red dragon leather | 5948 | 2315 | real | 12 | 200 | 300 |
-| red dragon scale | 5882 | 518 | real | 12 | 200 | 300 |
+| red dragon leather | 5948 | 2315 | real | 12 | 200 |  |
+| red dragon scale | 5882 | 518 | real | 12 | 200 |  |
 | red fireworks powder | 30188 | 362 | real | 4 |  |  |
 | red gem | 3039 | 943 | real | 12 | 1000 |  |
 | red goanna scale | 31558 | 5660 | real | 12 | 270 |  |
@@ -3268,9 +3268,9 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | rootthing bug tracker soul core | 49077 | 4050000 | real | 8 |  |  |
 | rootthing nutshell soul core | 49079 | 3370833 | real | 8 |  |  |
 | rope | 3003 | 283 | real | 12 | 15 | 45 |
-| rope belt | 11492 | 4337 | real | 12 | 66 | 66 |
+| rope belt | 11492 | 4337 | real | 12 | 66 |  |
 | rorc egg | 18996 | 37 | real | 11 | 120 |  |
-| rorc feather | 18993 | 265 | real | 12 | 70 | 70 |
+| rorc feather | 18993 | 265 | real | 12 | 70 |  |
 | rorc soul core | 47768 | 750000 | real | 9 |  |  |
 | rose shield | 3427 | 49 | npc | 0 | 49 |  |
 | rot elemental soul core | 47798 | 829000 | real | 8 |  |  |
@@ -3319,7 +3319,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | rusty winged helmet | 24405 | 5798 | real | 2 |  |  |
 | ruthless axe | 6553 | 38908 | real | 11 | 45000 |  |
 | sabre | 3273 | 6 | real | 6 | 12 | 22 |
-| sabretooth | 10311 | 7502 | real | 12 | 400 | 400 |
+| sabretooth | 10311 | 7502 | real | 12 | 400 |  |
 | sabretooth fur | 39378 | 3932 | real | 12 | 2500 |  |
 | sabretooth soul core | 48042 | 3980000 | real | 7 |  |  |
 | sacred antler talisman | 22009 | 18374 | real | 2 |  |  |
@@ -3402,7 +3402,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | sea serpent scale | 9666 | 428 | real | 11 | 520 |  |
 | sea serpent soul core | 47595 | 821500 | real | 8 |  |  |
 | sea serpent trophy | 9613 | 4544 | real | 11 | 10000 |  |
-| seacrest hair | 21801 | 424 | real | 12 | 260 | 260 |
+| seacrest hair | 21801 | 424 | real | 12 | 260 |  |
 | seacrest pearl | 21747 | 309 | real | 12 | 400 |  |
 | seacrest scale | 21800 | 78 | real | 10 | 150 |  |
 | seacrest serpent soul core | 48996 | 1526564 | real | 4 |  |  |
@@ -3472,7 +3472,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | sight of surrender's eye | 20183 | 2130 | real | 11 | 3000 |  |
 | Sight of Surrender's plushie | 32077 | 671800 | real | 4 |  |  |
 | signet ring | 31592 | 410208 | real | 6 | 480000 |  |
-| silencer claws | 20200 | 4144 | real | 12 | 390 | 390 |
+| silencer claws | 20200 | 4144 | real | 12 | 390 |  |
 | silencer resonating chamber | 20201 | 685 | real | 12 | 600 |  |
 | silencer soul core | 47777 | 1997500 | real | 8 |  |  |
 | silken bookmark | 28566 | 1954 | real | 12 | 1300 |  |
@@ -3534,7 +3534,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | slightly rusted legs | 8899 | 1089 | real | 12 |  |  |
 | slightly rusted shield | 8902 | 1226 | real | 11 |  |  |
 | slime gobbler | 12077 | 5000 | real | 7 |  |  |
-| slime heart | 21194 | 106 | real | 12 | 160 | 160 |
+| slime heart | 21194 | 106 | real | 12 | 160 |  |
 | slime mould | 12601 | 3542 | real | 12 | 175 |  |
 | slimy leaf tentacle | 21197 | 2283 | real | 12 | 320 |  |
 | slimy leg | 27623 | 2028 | real | 6 | 4500 |  |
@@ -3585,13 +3585,13 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | snake god's sceptre | 11692 | 69554 | real | 8 |  |  |
 | snake god's wristguard | 11691 | 16204 | real | 11 |  |  |
 | snake sceptre | 11371 | 50000 | real | 3 |  |  |
-| snake skin | 9694 | 428 | real | 12 | 400 | 400 |
+| snake skin | 9694 | 428 | real | 12 | 400 |  |
 | snake soul core | 47405 | 1999996 | real | 1 |  |  |
 | snakebite rod | 3066 | 108 | real | 12 | 100 | 500 |
 | snapping fireworks rocket | 37450 | 64601 | real | 4 |  |  |
 | sneaky stabber of eliteness | 9594 | 801714 | real | 12 |  |  |
 | sniper arrow | 7364 | 8 | real | 11 |  | 5 |
-| sniper gloves | 5875 | 2970 | real | 12 | 2000 | 3000 |
+| sniper gloves | 5875 | 2970 | real | 12 | 2000 |  |
 | snow flake tapestry | 20315 | 50789 | real | 4 |  |  |
 | snow globe | 20311 | 16672 | real | 2 |  |  |
 | snowball | 2992 | 340 | real | 10 |  |  |
@@ -3605,7 +3605,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | solid rage | 23517 | 352 | real | 11 | 310 |  |
 | solitude charm | 10345 | 24189 | real | 12 |  |  |
 | some golden fruits | 3020 | 36236 | real | 4 |  |  |
-| some grimeleech wings | 22730 | 1670 | real | 12 | 1200 | 1200 |
+| some grimeleech wings | 22730 | 1670 | real | 12 | 1200 |  |
 | some leaves | 3129 | 1655 | real | 2 |  |  |
 | some mushrooms | 3729 | 24950 | real | 1 |  |  |
 | some mushrooms | 3730 | 24500 | real | 1 |  |  |
@@ -3687,7 +3687,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | sphinx soul core | 47939 | 2000000 | real | 7 |  |  |
 | sphinx tiara | 31438 | 851 | real | 12 | 360 |  |
 | spider fangs | 8031 | 17 | real | 12 | 10 |  |
-| spider silk | 5879 | 639 | real | 12 | 100 | 150 |
+| spider silk | 5879 | 639 | real | 12 | 100 |  |
 | spider soul core | 47407 | 553999 | real | 11 |  |  |
 | spiderwebs | 8032 | 28633 | real | 6 |  |  |
 | spidris elite soul core | 48974 | 1199999 | real | 3 |  |  |
@@ -3786,7 +3786,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | stonecutter axe | 3319 | 278448 | real | 11 | 320 |  |
 | stonerefiner soul core | 47876 | 999999 | real | 3 |  |  |
 | stonerefiner's skull | 27606 | 666 | real | 12 | 100 |  |
-| strand of medusa hair | 10309 | 3942 | real | 12 | 600 | 600 |
+| strand of medusa hair | 10309 | 3942 | real | 12 | 600 |  |
 | strange helmet | 3373 | 1369 | real | 12 | 500 |  |
 | strange inedible fruit | 48514 | 19458334 | real | 2 |  |  |
 | strange mallet | 27523 | 75000000 | real | 1 |  |  |
@@ -3847,7 +3847,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | suspicious documents | 400 | 2000 | npc | 0 |  |  |
 | suspicious signet ring | 349 | 17931 | real | 2 |  |  |
 | suspicious surprise bag | 8853 | 10062 | real | 2 |  |  |
-| swamp grass | 9686 | 336 | real | 11 | 20 | 20 |
+| swamp grass | 9686 | 336 | real | 11 | 20 |  |
 | swamp troll soul core | 47451 | 765432 | real | 11 |  |  |
 | swamplair armor | 8052 | 13049 | real | 11 | 16000 |  |
 | swampling club | 17824 | 1763 | real | 12 | 40 |  |
@@ -3876,7 +3876,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | taiyaki ice cream | 48273 | 4516 | real | 10 | 6750 |  |
 | talon | 3034 | 304 | real | 12 | 320 |  |
 | Tanjis' Sight | 14022 | 14000000 | real | 5 |  |  |
-| tarantula egg | 10281 | 544 | real | 12 | 80 | 120 |
+| tarantula egg | 10281 | 544 | real | 12 | 80 |  |
 | tarantula soul core | 47496 | 550000 | real | 11 |  |  |
 | tarnished rhino figurine | 24387 | 202 | real | 11 | 320 |  |
 | tarnished spirit soul core | 47767 | 832008 | real | 1 |  |  |
@@ -3949,7 +3949,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | the torso of a jester doll | 8780 | 10000 | real | 3 |  |  |
 | the Vampire Count's medal | 18936 | 50000 | real | 5 |  |  |
 | Theodore Loveless' key | 7934 | 150000 | real | 1 |  |  |
-| thick fur | 10307 | 1144 | real | 12 | 150 | 150 |
+| thick fur | 10307 | 1144 | real | 12 | 150 |  |
 | thorn | 9643 | 1795 | real | 12 | 100 |  |
 | thorn seed | 24965 | 12500 | real | 4 |  |  |
 | thorn spitter | 14768 | 5206752 | real | 5 |  |  |
@@ -4046,7 +4046,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | turquoise fireworks powder | 30270 | 582 | real | 4 |  |  |
 | turquoise tendril lantern | 30170 | 12355 | real | 12 |  |  |
 | turtle amulet | 39235 | 37500000 | real | 7 |  |  |
-| turtle shell | 5899 | 14905 | real | 12 | 90 | 135 |
+| turtle shell | 5899 | 14905 | real | 12 | 90 |  |
 | tusk | 3044 | 1084 | real | 12 | 100 |  |
 | tusk chair kit | 2780 | 25 | npc | 0 |  | 25 |
 | tusk shield | 3443 | 467 | real | 12 | 850 |  |
@@ -4144,13 +4144,13 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | valuable remedy wand | 26039 | 30000 | real | 3 |  |  |
 | vampire bride soul core | 47613 | 700000 | real | 7 |  |  |
 | vampire doll | 8191 | 7275000 | real | 1 |  |  |
-| vampire dust | 5905 | 7037 | real | 12 | 100 | 150 |
+| vampire dust | 5905 | 7037 | real | 12 | 100 |  |
 | vampire lord token | 8192 | 585456 | real | 12 |  |  |
 | vampire pig soul core | 48935 | 3000000 | real | 1 |  |  |
 | vampire shield | 3434 | 14230 | real | 12 | 15000 |  |
 | vampire silk slippers | 19374 | 11505750 | real | 1 |  |  |
 | vampire soul core | 47444 | 750000 | real | 11 |  |  |
-| vampire teeth | 9685 | 355 | real | 12 | 275 | 275 |
+| vampire teeth | 9685 | 355 | real | 12 | 275 |  |
 | vampire viscount soul core | 47758 | 1225000 | real | 4 |  |  |
 | vampire's cape chain | 18927 | 12877 | real | 12 | 150 |  |
 | vampire's signet ring | 18935 | 755250 | real | 3 |  |  |
@@ -4180,7 +4180,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | vessel of Horestis | 37575 | 75000 | real | 5 |  |  |
 | vessel of the Mad Mage | 37574 | 44000 | real | 7 |  |  |
 | vexclaw soul core | 47831 | 1666666 | real | 11 |  |  |
-| vexclaw talon | 22728 | 1250 | real | 12 | 1100 | 1100 |
+| vexclaw talon | 22728 | 1250 | real | 12 | 1100 |  |
 | vial | 2874 | 469 | real | 11 | 5 | 5 |
 | vial of Hatred | 33927 | 622438 | real | 4 | 737000 |  |
 | vibrant egg | 23538 | 2192869 | real | 12 |  |  |
@@ -4232,7 +4232,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | wand of vortex | 3074 | 329 | real | 12 | 100 | 500 |
 | wandering pillar soul core | 48082 | 4250000 | real | 8 |  |  |
 | war axe | 3342 | 12267 | real | 12 | 12000 |  |
-| war crystal | 9654 | 439 | real | 12 | 460 | 460 |
+| war crystal | 9654 | 439 | real | 12 | 460 |  |
 | war drum | 2966 | 820 | real | 6 |  | 1000 |
 | war golem soul core | 47642 | 999999 | real | 3 |  |  |
 | war hammer | 3279 | 796 | real | 12 | 1200 | 10000 |
@@ -4243,7 +4243,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | wardragon tooth | 44749 | 1045 | real | 12 | 730 |  |
 | warlock soul core | 47389 | 1150000 | real | 3 |  |  |
 | warlord sword | 3296 | 360 | npc | 0 | 360 |  |
-| warmaster's wristguards | 10405 | 307 | real | 12 | 200 | 200 |
+| warmaster's wristguards | 10405 | 307 | real | 12 | 200 |  |
 | warrior helmet | 3369 | 4591 | real | 12 | 5000 |  |
 | warrior's axe | 14040 | 8986 | real | 12 | 11000 |  |
 | warrior's shield | 14042 | 7380 | real | 12 | 9000 |  |
@@ -4252,7 +4252,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | wasp soul core | 47421 | 624062 | real | 10 |  |  |
 | waspoid claw | 14080 | 4888 | real | 12 | 320 |  |
 | waspoid soul core | 47731 | 700000 | real | 3 |  |  |
-| waspoid wing | 14081 | 556 | real | 12 | 190 | 190 |
+| waspoid wing | 14081 | 556 | real | 12 | 190 |  |
 | watch | 2906 | 2064 | real | 6 | 6 | 20 |
 | water buffalo soul core | 47737 | 1609710 | real | 2 |  |  |
 | water elemental soul core | 47505 | 700000 | real | 7 |  |  |
@@ -4279,7 +4279,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | werebear skull | 22056 | 2890 | real | 12 | 195 |  |
 | werebear soul core | 47820 | 800000 | real | 5 |  |  |
 | werebear trophy | 22103 | 9132 | real | 12 | 11000 |  |
-| wereboar hooves | 22053 | 176 | real | 12 | 175 | 175 |
+| wereboar hooves | 22053 | 176 | real | 12 | 175 |  |
 | wereboar loincloth | 22087 | 8765 | real | 12 | 1500 |  |
 | wereboar soul core | 47821 | 900000 | real | 7 |  |  |
 | wereboar trophy | 22102 | 8123 | real | 12 | 10000 |  |
@@ -4343,7 +4343,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | winged helmet | 3368 | 320 | npc | 0 | 320 |  |
 | winged tail | 10313 | 9062 | real | 12 | 800 |  |
 | winning lottery ticket | 5958 | 49535 | real | 12 |  |  |
-| winter wolf fur | 10295 | 7401 | real | 12 | 20 | 20 |
+| winter wolf fur | 10295 | 7401 | real | 12 | 20 |  |
 | winter wolf soul core | 47428 | 658333 | real | 8 |  |  |
 | winterberry liquor | 30202 | 996 | real | 5 |  |  |
 | winterblade | 29422 | 431524 | real | 12 |  |  |
@@ -4355,7 +4355,7 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | withered pauldrons | 27607 | 256 | real | 2 | 850 |  |
 | withered scalp | 27608 | 271 | real | 1 | 900 |  |
 | wolf backpack | 22084 | 312941 | real | 12 |  |  |
-| wolf paw | 5897 | 95 | real | 12 | 70 | 105 |
+| wolf paw | 5897 | 95 | real | 12 | 70 |  |
 | wolf soul core | 47404 | 750000 | real | 11 |  |  |
 | wolf tooth chain | 3012 | 62 | real | 12 | 100 |  |
 | wolf tooth chain | 5940 | 51500 | real | 1 |  |  |
@@ -4387,11 +4387,11 @@ ref = real price (median of the worlds' month averages) or NPC fallback; pays/ch
 | wrinkled parchment | 4846 | 4000 | npc | 0 |  |  |
 | writhing brain | 32600 | 341500 | real | 2 | 370000 |  |
 | writhing heart | 32599 | 179112 | real | 3 | 185000 |  |
-| wyrm scale | 9665 | 464 | real | 12 | 400 | 400 |
+| wyrm scale | 9665 | 464 | real | 12 | 400 |  |
 | wyrm soul core | 47604 | 718405 | real | 10 |  |  |
 | wyvern fang | 7408 | 1198 | real | 12 | 1500 |  |
 | wyvern soul core | 47550 | 797222 | real | 8 |  |  |
-| wyvern talisman | 9644 | 9272 | real | 12 | 265 | 265 |
+| wyvern talisman | 9644 | 9272 | real | 12 | 265 |  |
 | Xodet's first wand | 9187 | 52000 | real | 1 |  |  |
 | yalahari armor | 8862 | 107124 | real | 10 |  |  |
 | yalahari figurine | 9068 | 17000 | real | 3 |  |  |

@@ -32,6 +32,11 @@ npcConfig.voices = {
 
 local playerImbuementData = {}
 
+-- FAMILY: no imbuement material sales since 2026-10-18 (Rodrigo): creature
+-- products come from hunting or the market (data/scripts/family/market_bot.lua).
+-- true = upstream (packages and shop).
+local FAMILY_SALES = false
+
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 
@@ -335,6 +340,13 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	local imbuementPackages =
 		"These are the available imbuement packages, Skill increase: {bash}, {blockade}, {chop}, {epiphany}, {precision}, {slash}. Additional attributes: {featherweight}, {strike}, {swiftness}, {vampirism}, {vibrancy}, {void}. Elemental damage: {electrify}, {frost}, {reap}, {scorch}, {venom}. Elemental protection: {cloud fabric}, {demon presence}, {dragon hide}, {lich shroud}, {quara scale}, {snake skin}."
+	-- FAMILY: sales off, point to the market instead.
+	if not FAMILY_SALES then
+		if MsgContains(message, "imbuement") or MsgContains(message, "package") or MsgContains(message, "trade") or imbuementPackagesData[message] then
+			npcHandler:say("I don't sell imbuement materials any more. Hunt the creatures, or look in the market of any depot: it always has offers.", npc, creature)
+		end
+		return true
+	end
 	if MsgContains(message, "imbuement packages") then
 		npcHandler:setTopic(playerId, 1)
 		npcHandler:say(imbuementPackages, npc, creature)
@@ -356,7 +368,12 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Hello |PLAYERNAME|, say {imbuement packages} or {trade} for buy imbuement items.")
+-- FAMILY: greeting without sales when FAMILY_SALES is false.
+if FAMILY_SALES then
+	npcHandler:setMessage(MESSAGE_GREET, "Hello |PLAYERNAME|, say {imbuement packages} or {trade} for buy imbuement items.")
+else
+	npcHandler:setMessage(MESSAGE_GREET, "Hello |PLAYERNAME|. Imbuement materials come from hunting now, or from the market in any depot.")
+end
 npcHandler:setMessage(MESSAGE_WALKAWAY, "See you later |PLAYERNAME| come back soon.")
 npcHandler:setMessage(MESSAGE_FAREWELL, "See you later |PLAYERNAME| come back soon.")
 
@@ -435,6 +452,10 @@ npcConfig.shop = {
 	{ itemName = "wyrm scale", clientId = 9665, buy = 400 },
 	{ itemName = "wyvern talisman", clientId = 9644, buy = 265 },
 }
+-- FAMILY: no shop window when sales are off.
+if not FAMILY_SALES then
+	npcConfig.shop = nil
+end
 -- On buy npc shop message
 npcType.onBuyItem = function(npc, player, itemId, subType, amount, ignore, inBackpacks, totalCost)
 	npc:sellItem(player, itemId, amount, subType, 0, ignore, inBackpacks)

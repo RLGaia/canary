@@ -11,11 +11,16 @@ FamilyCityLife = {
 	-- Walking NPCs created in each city at server start.
 	walkersPerCity = 16,
 
-	-- Vendors per kind (food, potions/runes, creature products). Each one is
-	-- placed in a random city at server start and stays there that day; the
-	-- cities are filled evenly (6 per kind = 18 vendors, 1-2 in each of the 11
-	-- cities). 11 per kind puts one of each kind in every city.
+	-- Vendors per kind (food, potions/runes). Each one is placed in a random
+	-- city at server start and stays there that day; the cities are filled
+	-- evenly (6 per kind = 12 vendors, 1-2 in each of the 11 cities). 11 per
+	-- kind puts one of each kind in every city.
 	vendorsPerKind = 6,
+
+	-- Extra plain walkers (tips and news), one per city in turn. Since
+	-- 2026-10-18 they replace the 6 creature products traders: creature
+	-- products are bought and sold on the market (data/scripts/family/market_bot.lua).
+	extraWalkers = 6,
 
 	-- Chance (0-1) that a walker, after reaching a spot, sails to another city.
 	travelChance = 0.08,
@@ -269,7 +274,8 @@ FamilyCityLife.serverTips = {
 	"Bosses can be fought again after one hour, and one player is enough for every boss lever.",
 	"Rare creatures and raids come back about every half hour.",
 	"Offline training works even while the server is off. Log out on a training statue.",
-	"Auto-loot and auto-bank are on. Your gold goes straight to the bank.",
+	"Auto-loot is on. Looted gold goes to your backpack, and 100 coins change up by themselves.",
+	"The market in every depot always has offers, at prices like on the real worlds.",
 	"Rashid buys almost any loot. Ask me for {news} to know where he is today.",
 	"Yasir, the oriental trader, visits every day: Ankrahmun, Carlin or Liberty Bay. Ask me for {news}.",
 	"Houses are paid once here, no rent. Guildhalls too, no guild needed. Say !house to learn how.",
@@ -288,7 +294,6 @@ FamilyCityLifeStock = {}
 FamilyCityLife.vendorKinds = {
 	{ key = "food", title = "food seller", greeting = "Fresh food! Fruits, fish, ham... Want to {trade}?", stock = "food", randomCount = 14 },
 	{ key = "potions", title = "potion and rune seller", greeting = "Potions and runes for the brave! Want to {trade}?", stock = "potions", always = "potions", randomFrom = "runes", randomCount = 16 },
-	{ key = "creatures", title = "creature products trader", greeting = "Teeth, claws, scales and furs, for imbuements and addons. Want to {trade}?", stock = "creatureProducts", randomCount = 30 },
 }
 
 -- Food: prices are the cheapest NPC price in this datapack.
@@ -390,106 +395,4 @@ FamilyCityLifeStock.runes = {
 	{ itemName = "chameleon rune", clientId = 3178, buy = 210 },
 	{ itemName = "animate dead rune", clientId = 3203, buy = 375 },
 	{ itemName = "paralyze rune", clientId = 3165, buy = 700 },
-}
--- Creature products: imbuement materials and addon/quest materials.
--- Price: 1.5x the best NPC buy-back price (rounded to 5), so hunting still pays.
-FamilyCityLifeStock.creatureProducts = {
-	{ itemName = "ape fur", clientId = 5883, buy = 180 }, -- addon/quest, NPCs pay 120
-	{ itemName = "bat wing", clientId = 5894, buy = 75 }, -- addon/quest, NPCs pay 50
-	{ itemName = "battle stone", clientId = 11447, buy = 435 }, -- imbuement, NPCs pay 290
-	{ itemName = "bear paw", clientId = 5896, buy = 150 }, -- addon/quest, NPCs pay 100
-	{ itemName = "behemoth claw", clientId = 5930, buy = 3000 }, -- addon/quest, NPCs pay 2000
-	{ itemName = "black wool", clientId = 11448, buy = 450 }, -- addon/quest, NPCs pay 300
-	{ itemName = "blazing bone", clientId = 16131, buy = 915 }, -- imbuement, NPCs pay 610
-	{ itemName = "bloody pincers", clientId = 9633, buy = 150 }, -- imbuement, NPCs pay 100
-	{ itemName = "brimstone fangs", clientId = 11702, buy = 570 }, -- imbuement, NPCs pay 380
-	{ itemName = "brimstone shell", clientId = 11703, buy = 315 }, -- imbuement, NPCs pay 210
-	{ itemName = "broken shamanic staff", clientId = 11452, buy = 50 }, -- imbuement, NPCs pay 35
-	{ itemName = "chicken feather", clientId = 5890, buy = 45 }, -- addon/quest, NPCs pay 30
-	{ itemName = "compass", clientId = 10302, buy = 70 }, -- imbuement, NPCs pay 45
-	{ itemName = "crawler head plating", clientId = 14079, buy = 315 }, -- imbuement, NPCs pay 210
-	{ itemName = "crystallized anger", clientId = 23507, buy = 600 }, -- imbuement, NPCs pay 400
-	{ itemName = "cultish mask", clientId = 9638, buy = 420 }, -- imbuement, NPCs pay 280
-	{ itemName = "cultish robe", clientId = 9639, buy = 225 }, -- imbuement, NPCs pay 150
-	{ itemName = "cyclops toe", clientId = 9657, buy = 80 }, -- imbuement, NPCs pay 55
-	{ itemName = "damselfly wing", clientId = 17458, buy = 30 }, -- imbuement, NPCs pay 20
-	{ itemName = "deepling warts", clientId = 14012, buy = 270 }, -- imbuement, NPCs pay 180
-	{ itemName = "demon dust", clientId = 5526, buy = 450 }, -- addon/quest, NPCs pay 300
-	{ itemName = "demon horn", clientId = 5954, buy = 1500 }, -- imbuement, NPCs pay 1000
-	{ itemName = "demonic skeletal hand", clientId = 9647, buy = 120 }, -- imbuement, NPCs pay 80
-	{ itemName = "draken sulphur", clientId = 11658, buy = 825 }, -- imbuement, NPCs pay 550
-	{ itemName = "elven hoof", clientId = 18994, buy = 170 }, -- imbuement, NPCs pay 115
-	{ itemName = "elven scouting glass", clientId = 11464, buy = 75 }, -- imbuement, NPCs pay 50
-	{ itemName = "elvish talisman", clientId = 9635, buy = 70 }, -- imbuement, NPCs pay 45
-	{ itemName = "energy vein", clientId = 23508, buy = 405 }, -- imbuement, NPCs pay 270
-	{ itemName = "fairy wings", clientId = 25694, buy = 300 }, -- imbuement, NPCs pay 200
-	{ itemName = "fiery heart", clientId = 9636, buy = 560 }, -- imbuement, NPCs pay 375
-	{ itemName = "fish fin", clientId = 5895, buy = 225 }, -- addon/quest, NPCs pay 150
-	{ itemName = "frazzle skin", clientId = 20199, buy = 600 }, -- imbuement, NPCs pay 400
-	{ itemName = "frosty heart", clientId = 9661, buy = 420 }, -- imbuement, NPCs pay 280
-	{ itemName = "ghostly tissue", clientId = 9690, buy = 135 }, -- imbuement, NPCs pay 90
-	{ itemName = "gloom wolf fur", clientId = 22007, buy = 105 }, -- imbuement, NPCs pay 70
-	{ itemName = "goblin ear", clientId = 11539, buy = 30 }, -- addon/quest, NPCs pay 20
-	{ itemName = "gold-brocaded cloth", clientId = 40529, buy = 260 }, -- imbuement, NPCs pay 175
-	{ itemName = "goosebump leather", clientId = 20205, buy = 975 }, -- imbuement, NPCs pay 650
-	{ itemName = "green dragon leather", clientId = 5877, buy = 150 }, -- imbuement, NPCs pay 100
-	{ itemName = "green dragon scale", clientId = 5920, buy = 150 }, -- imbuement, NPCs pay 100
-	{ itemName = "hardened bone", clientId = 5925, buy = 105 }, -- addon/quest, NPCs pay 70
-	{ itemName = "hellspawn tail", clientId = 10304, buy = 710 }, -- imbuement, NPCs pay 475
-	{ itemName = "honeycomb", clientId = 5902, buy = 60 }, -- addon/quest, NPCs pay 40
-	{ itemName = "hydra head", clientId = 10282, buy = 900 }, -- addon/quest, NPCs pay 600
-	{ itemName = "lion's mane", clientId = 9691, buy = 90 }, -- imbuement, NPCs pay 60
-	{ itemName = "little bowl of myrrh", clientId = 25702, buy = 750 }, -- imbuement, NPCs pay 500
-	{ itemName = "lizard leather", clientId = 5876, buy = 225 }, -- addon/quest, NPCs pay 150
-	{ itemName = "lizard scale", clientId = 5881, buy = 180 }, -- addon/quest, NPCs pay 120
-	{ itemName = "mammoth tusk", clientId = 10321, buy = 150 }, -- addon/quest, NPCs pay 100
-	{ itemName = "mantassin tail", clientId = 11489, buy = 420 }, -- imbuement, NPCs pay 280
-	{ itemName = "metal spike", clientId = 10298, buy = 480 }, -- imbuement, NPCs pay 320
-	{ itemName = "minotaur leather", clientId = 5878, buy = 120 }, -- addon/quest, NPCs pay 80
-	{ itemName = "mooh'tah shell", clientId = 21202, buy = 165 }, -- imbuement, NPCs pay 110
-	{ itemName = "moohtant horn", clientId = 21200, buy = 210 }, -- imbuement, NPCs pay 140
-	{ itemName = "mystical hourglass", clientId = 9660, buy = 1050 }, -- imbuement, NPCs pay 700
-	{ itemName = "nose ring", clientId = 5804, buy = 3000 }, -- addon/quest, NPCs pay 2000
-	{ itemName = "ogre nose ring", clientId = 22189, buy = 315 }, -- imbuement, NPCs pay 210
-	{ itemName = "orc leather", clientId = 11479, buy = 45 }, -- addon/quest, NPCs pay 30
-	{ itemName = "orc tooth", clientId = 10196, buy = 225 }, -- imbuement, NPCs pay 150
-	{ itemName = "peacock feather fan", clientId = 21975, buy = 525 }, -- imbuement, NPCs pay 350
-	{ itemName = "perfect behemoth fang", clientId = 5893, buy = 375 }, -- addon/quest, NPCs pay 250
-	{ itemName = "petrified scream", clientId = 10420, buy = 375 }, -- imbuement, NPCs pay 250
-	{ itemName = "piece of dead brain", clientId = 9663, buy = 630 }, -- imbuement, NPCs pay 420
-	{ itemName = "piece of scarab shell", clientId = 9641, buy = 70 }, -- imbuement, NPCs pay 45
-	{ itemName = "piece of swampling wood", clientId = 17823, buy = 45 }, -- imbuement, NPCs pay 30
-	{ itemName = "pile of grave earth", clientId = 11484, buy = 40 }, -- imbuement, NPCs pay 25
-	{ itemName = "poisonous slime", clientId = 9640, buy = 75 }, -- imbuement, NPCs pay 50
-	{ itemName = "polar bear paw", clientId = 9650, buy = 45 }, -- imbuement, NPCs pay 30
-	{ itemName = "protective charm", clientId = 11444, buy = 90 }, -- imbuement, NPCs pay 60
-	{ itemName = "quill", clientId = 28567, buy = 1650 }, -- imbuement, NPCs pay 1100
-	{ itemName = "red dragon leather", clientId = 5948, buy = 300 }, -- addon/quest, NPCs pay 200
-	{ itemName = "red dragon scale", clientId = 5882, buy = 300 }, -- addon/quest, NPCs pay 200
-	{ itemName = "rope belt", clientId = 11492, buy = 100 }, -- imbuement, NPCs pay 66
-	{ itemName = "rorc feather", clientId = 18993, buy = 105 }, -- imbuement, NPCs pay 70
-	{ itemName = "sabretooth", clientId = 10311, buy = 600 }, -- imbuement, NPCs pay 400
-	{ itemName = "seacrest hair", clientId = 21801, buy = 390 }, -- imbuement, NPCs pay 260
-	{ itemName = "silencer claws", clientId = 20200, buy = 585 }, -- imbuement, NPCs pay 390
-	{ itemName = "slime heart", clientId = 21194, buy = 240 }, -- imbuement, NPCs pay 160
-	{ itemName = "snake skin", clientId = 9694, buy = 600 }, -- imbuement, NPCs pay 400
-	{ itemName = "sniper gloves", clientId = 5875, buy = 3000 }, -- addon/quest, NPCs pay 2000
-	{ itemName = "some grimeleech wings", clientId = 22730, buy = 1800 }, -- imbuement, NPCs pay 1200
-	{ itemName = "spider silk", clientId = 5879, buy = 150 }, -- addon/quest, NPCs pay 100
-	{ itemName = "strand of medusa hair", clientId = 10309, buy = 900 }, -- imbuement, NPCs pay 600
-	{ itemName = "swamp grass", clientId = 9686, buy = 30 }, -- imbuement, NPCs pay 20
-	{ itemName = "tarantula egg", clientId = 10281, buy = 120 }, -- imbuement, NPCs pay 80
-	{ itemName = "thick fur", clientId = 10307, buy = 225 }, -- imbuement, NPCs pay 150
-	{ itemName = "turtle shell", clientId = 5899, buy = 135 }, -- addon/quest, NPCs pay 90
-	{ itemName = "vampire dust", clientId = 5905, buy = 150 }, -- addon/quest, NPCs pay 100
-	{ itemName = "vampire teeth", clientId = 9685, buy = 410 }, -- imbuement, NPCs pay 275
-	{ itemName = "vexclaw talon", clientId = 22728, buy = 1650 }, -- imbuement, NPCs pay 1100
-	{ itemName = "war crystal", clientId = 9654, buy = 690 }, -- imbuement, NPCs pay 460
-	{ itemName = "warmaster's wristguards", clientId = 10405, buy = 300 }, -- imbuement, NPCs pay 200
-	{ itemName = "waspoid wing", clientId = 14081, buy = 285 }, -- imbuement, NPCs pay 190
-	{ itemName = "wereboar hooves", clientId = 22053, buy = 260 }, -- imbuement, NPCs pay 175
-	{ itemName = "winter wolf fur", clientId = 10295, buy = 30 }, -- imbuement, NPCs pay 20
-	{ itemName = "wolf paw", clientId = 5897, buy = 105 }, -- addon/quest, NPCs pay 70
-	{ itemName = "wyrm scale", clientId = 9665, buy = 600 }, -- imbuement, NPCs pay 400
-	{ itemName = "wyvern talisman", clientId = 9644, buy = 400 }, -- imbuement, NPCs pay 265
 }

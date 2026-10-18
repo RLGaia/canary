@@ -113,6 +113,8 @@ def read_npc_shops():
         s = open(f, errors="replace").read()
         if re.search(r"npcConfig\.currency\s*=", s):
             continue
+        if re.search(r"local FAMILY_SALES = false", s):
+            continue  # shop switched off (Imbuement Assistant)
         skip = NOT_GOLD.get(f, set())
         for m in ENTRY.finditer(s):
             iid = int(m.group(1))

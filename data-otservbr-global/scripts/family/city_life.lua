@@ -819,6 +819,23 @@ function cityLife.onStartup()
 		end
 	end
 
+	-- Extra plain walkers, one per city in turn (they took the place of the
+	-- creature products traders on 2026-10-18).
+	for n = 1, cfg.extraWalkers or 0 do
+		local cityState = #cityStates > 0 and cityStates[(n - 1) % #cityStates + 1]
+		local entry = cityState and nextName()
+		if entry then
+			local walker = newWalker(entry, nil)
+			local area = pickArea(cityState)
+			walker.city, walker.state_city = cityState.city, area
+			createType(walker)
+			if spawnAt(walker, pick(area.open), area) then
+				walkers[#walkers + 1] = walker
+				total = total + 1
+			end
+		end
+	end
+
 	logger.info("[Family] city life: {} walkers and {} vendors in {} cities ({} with ships)", total, vendorCount, #cityStates, travelPorts)
 	if not started then
 		started = true
