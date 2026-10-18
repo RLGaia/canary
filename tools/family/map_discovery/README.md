@@ -37,11 +37,9 @@ files), Python 3 and a server you can start for a minute (a test copy is best).
   ladders, rope spots, sewer grates, ordinary doors and teleports are followed; houses and
   doors with an action or unique id are not). The real spots players mapped in Tibia
   (TibiaMaps.io flag markers) are kept when that tile, or one within 2 squares on the same
-  floor, can be walked to on our map (about 85% of them). Up to 48 evenly spread reachable
-  tiles on any floor are generated too (`GENERATED` in `poi_generator.lua`), and
-  `build_data.py` adds them only while a subarea has fewer than 48 candidates (`MAX_POINTS`).
-  10 of them are picked at each start or reset (never the previous ones when there are
-  enough), so more candidates make resets more varied. Stray pieces of a subarea shape (under 15% of its biggest
+  floor, can be walked to on our map (about 85% of them). Up to 16 evenly spread reachable
+  tiles on any floor are generated too, and `build_data.py` adds them only while a subarea
+  has fewer than 16 real spots. Stray pieces of a subarea shape (under 15% of its biggest
   piece) get no generated points.
 
 - Where each subarea is (`grid`): 4 x 4 square blocks, each given to the subarea that owns

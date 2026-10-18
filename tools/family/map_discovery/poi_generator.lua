@@ -3,12 +3,11 @@
 -- of a test server (see README.md), then delete it.
 --
 -- Reads masks.lua (export_masks.py) and writes poi_candidates.lua: for every subarea the
--- real point of interest spots that can be walked to on our map ("real"), and up to GENERATED
+-- real point of interest spots that can be walked to on our map ("real"), and up to 16
 -- evenly spread reachable tiles on any floor below or above its shape ("poi").
 
 local MASKS = "masks.lua" -- paths relative to the server folder; change if needed
 local OUTPUT = "poi_candidates.lua"
-local GENERATED = 48 -- evenly spread tiles per subarea (more = more varied resets)
 
 local generator = GlobalEvent("FamilyPoiGenerator")
 
@@ -173,19 +172,19 @@ local function generate()
 				end
 			end
 		end
-		-- shuffle, then keep points at least r apart (r shrinks until GENERATED are found)
+		-- shuffle, then keep points at least r apart (r shrinks until 16 are found)
 		for i = #tiles, 2, -1 do
 			local j = math.random(i)
 			tiles[i], tiles[j] = tiles[j], tiles[i]
 		end
 		local picks = {}
-		local r = math.sqrt(#tiles / GENERATED) * 1.2
+		local r = math.sqrt(#tiles / 16) * 1.2
 		if r < 1 then
 			r = 1
 		end
-		while #picks < GENERATED and r >= 0.9 do
+		while #picks < 16 and r >= 0.9 do
 			for _, p in ipairs(tiles) do
-				if #picks >= GENERATED then
+				if #picks >= 16 then
 					break
 				end
 				local ok = true

@@ -619,25 +619,20 @@ end
 -- Places new points in a subarea (also used to reset them). Returns true when done.
 local function placePoints(player, state, sid)
 	local info = data.subareas[sid]
-	-- As in Tibia, no point is placed where you can already see it, and a
-	-- reset avoids the spots of the previous points (both only while the
-	-- subarea has enough other places).
+	-- as in Tibia, no point is placed where you can already see it
 	local pos = player:getPosition()
-	local previous = {}
-	for _, p in ipairs(state.subs[sid] and state.subs[sid].points or {}) do
-		previous[string.format("%d,%d,%d", p.x, p.y, p.z)] = true
-	end
-	local pool, spare = {}, {}
+	local pool, inView = {}, {}
 	for _, p in ipairs(info.points) do
-		local inView = p[3] == pos.z and math.abs(p[1] - pos.x) <= D.revealRangeX and math.abs(p[2] - pos.y) <= D.revealRangeY
-		if inView or previous[string.format("%d,%d,%d", p[1], p[2], p[3])] then
-			spare[#spare + 1] = p
+		if p[3] == pos.z and math.abs(p[1] - pos.x) <= D.revealRangeX and math.abs(p[2] - pos.y) <= D.revealRangeY then
+			inView[#inView + 1] = p
 		else
 			pool[#pool + 1] = p
 		end
 	end
-	while #pool < D.pointsGenerated and #spare > 0 do
-		pool[#pool + 1] = table.remove(spare, math.random(#spare))
+	if #pool < D.pointsGenerated then
+		for _, p in ipairs(inView) do
+			pool[#pool + 1] = p
+		end
 	end
 	local points = {}
 	while #pool > 0 and #points < D.pointsGenerated do
