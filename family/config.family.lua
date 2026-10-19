@@ -52,6 +52,17 @@ autoBank = false                -- looted gold goes to the backpack (true until 
                                 -- themselves (data/scripts/family/coin_change.lua)
 preyFreeThirdSlot = true        -- third Prey slot without Tibia Coins
 taskHuntingFreeThirdSlot = true -- third Hunting Task slot without Tibia Coins
+-- Since 2026-10-19 (asked by Rodrigo): rerolling the creature list is always
+-- free, and "choose from the full list" costs no Prey Wildcards (upstream 5),
+-- so you can always pick the creature you want. Side effects: locking a Prey
+-- slot (keep creature and bonus when it runs out) and cancelling a Hunting
+-- Task are free too. Rerolling a bonus or a task reward still costs 1 Wildcard.
+preyFreeRerollTime = 0
+preyRerollPricePerLevel = 0
+preySelectListPrice = 0
+taskHuntingFreeRerollTime = 0
+taskHuntingRerollPricePerLevel = 0
+taskHuntingSelectListPrice = 0
 
 -- ===========================================================================
 -- Batch 2 (2026-10-12): death, training and respawn
