@@ -96,6 +96,9 @@ function Family.cyclopediaInstantBuy(player, msg)
 	end
 
 	player:setBankBalance(player:getBankBalance() - price)
+	if Family.houseDecorClear then
+		Family.houseDecorClear(house) -- the furniture of a house for sale goes (house_decor.lua)
+	end
 	house:setHouseOwner(player:getGuid())
 	for _, spellName in ipairs(houseSpells) do
 		if not player:hasLearnedSpell(spellName) then

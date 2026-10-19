@@ -13,6 +13,10 @@ function houseOwner.onSay(player, words, param)
 
 	if param == "" or param == "none" then
 		house:setHouseOwner(0)
+		-- FAMILY: a house for sale is furnished again (data/scripts/family/house_decor.lua).
+		if Family and Family.houseDecorate and Family.houseDecor then
+			Family.houseDecorate(house)
+		end
 		return true
 	end
 
@@ -22,6 +26,10 @@ function houseOwner.onSay(player, words, param)
 		return true
 	end
 
+	-- FAMILY: the furniture of a house for sale goes before it gets an owner.
+	if Family and Family.houseDecorClear then
+		Family.houseDecorClear(house)
+	end
 	house:setHouseOwner(targetPlayer:getGuid())
 	return true
 end

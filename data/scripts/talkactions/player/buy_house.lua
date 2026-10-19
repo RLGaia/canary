@@ -41,6 +41,12 @@ function buyHouse.onSay(player, words, param)
 		return true
 	end
 
+	-- FAMILY: a house for sale is furnished (data/scripts/family/house_decor.lua);
+	-- the furniture goes once the buyer can pay, before the empty-house check.
+	if Family and Family.houseDecorClear and player:getMoney() + player:getBankBalance() >= house:getPrice() then
+		Family.houseDecorClear(house)
+	end
+
 	if house:hasItemOnTile() then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You cannot buy this house, as there are items inside it. Please, contact an administrator.")
 		return true
