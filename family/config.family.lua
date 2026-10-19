@@ -56,7 +56,11 @@ taskHuntingFreeThirdSlot = true -- third Hunting Task slot without Tibia Coins
 -- free, and "choose from the full list" costs no Prey Wildcards (upstream 5),
 -- so you can always pick the creature you want. Side effects: locking a Prey
 -- slot (keep creature and bonus when it runs out) and cancelling a Hunting
--- Task are free too. Rerolling a bonus or a task reward still costs 1 Wildcard.
+-- Task are free too. Same day: rerolling a Prey bonus or a Hunting Task reward
+-- rarity costs no Wildcard either (upstream 1), so automatic bonus reroll when
+-- a slot runs out is free as well.
+preyBonusRerollPrice = 0
+taskHuntingBonusRerollPrice = 0
 preyFreeRerollTime = 0
 preyRerollPricePerLevel = 0
 preySelectListPrice = 0
