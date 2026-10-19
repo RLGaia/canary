@@ -15,5 +15,8 @@ is edited. The rules are at the top of `plan.py`; the catalogue (furniture
 per town style, with the facing of every rotating piece checked against the
 client's sprites) is below them.
 
-First plan (2026-10-19): 982 houses, 321 of them rich, 17,201 pieces
-(17,161 placed on the test server; a few tiles changed since the dump).
+First plan (2026-10-19): 982 houses, 321 of them rich, 17,201 pieces. Same
+day, made more cluttered at Rodrigo's request (denser furniture, doors and
+stairs keep only their 4 neighbours free, beds one way in, small things on
+tables, furniture tops and 40-60% of the free floor): 991 houses, 43,978
+pieces (43,874 placed on the test server; the save takes about 0.4 s).

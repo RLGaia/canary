@@ -21,6 +21,10 @@ Rules, per house and floor:
 - About a third of the houses (more of the big ones) are "rich": more
   furniture, the luxury sets, trophies, statues and valuable equipment
   (prices from data/scripts/family/market_bot_data.lua) on tables and floors.
+- Clutter as in lived-in houses: things on every table and on many flat
+  furniture tops, and on 40% (rich: 60%, sometimes piles) of the free floor:
+  books, bags, food, kitchenware, candles, tools, music instruments; rich
+  houses add gems, gold, goblets and treasures.
 - Every house is planned from its own id, so it looks the same every time.
 """
 import os
@@ -112,6 +116,19 @@ FLOOR = {
 TABLETOP = {
     "lit table lamp": [2935], "gold cup": [32921], "silver cup": [32920], "bronze cup": [32919],
 }
+# Small things lying around (on tables, on furniture with a flat top, on the floor).
+CLUTTER = {
+    "books": [2816, 2821, 2824, 2825, 2826, 2827, 2828, 2829], "scroll": [347, 2815, 2814], "bag": [2853, 2854],
+    "food": [3600, 3582, 3607, 3585, 3598], "fruit": [3587, 3589, 3585], "fish": [3578],
+    "kitchenware": [2875, 2876, 2905, 2880, 2881, 2882, 3465, 2873, 3470], "light": [2917, 2911, 2932],
+    "music": [2948, 2949, 2950, 2952], "toys": [2991, 2993], "tools": [3003, 3457, 3456, 3483],
+    "flower pot": [329, 330, 331, 332, 333, 334, 335, 336], "watch": [2906, 12045],
+    "gems": [3028, 3030, 3032, 3029, 3033, 3026, 3027], "gold": [9058, 3035], "goblets": [5805, 5806],
+    "treasures": [3076, 3060, 5799, 3025, 3011, 3463], "magic": [3059, 3076],
+}
+STACKABLE_COUNT = {3600: 3, 3582: 2, 3585: 5, 3598: 6, 3587: 4, 3589: 2, 3578: 3, 3028: 4, 3030: 3, 3032: 5, 3029: 3, 3033: 5,
+                   3026: 6, 3027: 4, 9058: 2, 3035: 23, 3076: 1, 3060: 1}
+
 # Wall hangings (all with hook patterns, so they work on south and east walls).
 WALL = {
     "picture": [2639, 2640, 2641], "tapestry": [2659, 2647, 2656, 2650, 2653, 2644, 2667],
@@ -185,6 +202,18 @@ THEMES = {
         "rich_wall": ["luxury tapestry", "painting", "deed", "trophy"],
     },
 }
+# Clutter per theme (rich houses add the "rich" list).
+CLUTTER_THEME = {
+    "classic": ["books", "scroll", "bag", "food", "kitchenware", "light", "music", "toys", "flower pot", "watch"],
+    "elven": ["books", "scroll", "fruit", "music", "flower pot", "light", "kitchenware"],
+    "dwarven": ["tools", "food", "kitchenware", "light", "bag", "books"],
+    "nordic": ["food", "fish", "tools", "kitchenware", "light", "bag"],
+    "desert": ["scroll", "fruit", "kitchenware", "light", "books", "bag"],
+    "tropical": ["fruit", "fish", "tools", "kitchenware", "bag", "light"],
+    "yalahar": ["books", "scroll", "magic", "kitchenware", "light", "watch"],
+}
+CLUTTER_RICH = ["gems", "gems", "gold", "goblets", "treasures", "books", "light"]
+
 TOWN_THEME = {
     "Ab'Dendriel": "elven", "Kazordoon": "dwarven", "Farmine": "dwarven", "Svargrond": "nordic",
     "Ankrahmun": "desert", "Darashia": "desert", "Issavi": "desert",
@@ -343,12 +372,13 @@ class Planner:
 
     def plan_house(self, h):
         rng = random.Random(h["id"] * 7919 + 17)
-        theme = THEMES[TOWN_THEME.get(h["town"], "classic")]
+        theme_name = TOWN_THEME.get(h["town"], "classic")
+        theme = THEMES[theme_name]
         size = len(h["tiles"])
         rich = rng.random() < 0.18 + 0.32 * min(1.0, size / 150.0)
         placed = []
         for z in sorted({p[2] for p in h["tiles"]}):
-            placed += self.plan_floor(h, z, theme, rich, rng)
+            placed += self.plan_floor(h, z, theme, rich, rng, theme_name)
         return rich, placed
 
     def pick(self, rng, theme, key, rich):
@@ -357,7 +387,12 @@ class Planner:
             pool = theme["rich_" + key] * 2 + pool  # luxury first, plain still possible
         return rng.choice(pool) if pool else None
 
-    def plan_floor(self, h, z, theme, rich, rng):
+    def clutter(self, rng, theme_name, rich, p):
+        pool = list(CLUTTER_THEME[theme_name]) + (CLUTTER_RICH if rich else [])
+        iid = rng.choice(CLUTTER[rng.choice(pool)])
+        return (p, iid, STACKABLE_COUNT.get(iid, 1))
+
+    def plan_floor(self, h, z, theme, rich, rng, theme_name):
         tiles = {p: ids for p, ids in h["tiles"].items() if p[2] == z}
         kind = {p: self.classify(ids) for p, ids in tiles.items()}
         walk = {p for p, k in kind.items() if k in ("floor", "walk", "special")}
@@ -367,12 +402,14 @@ class Planner:
 
         reserved = set()
         for p in doors | {q for q, k in kind.items() if k == "special"}:
-            for dx in (-1, 0, 1):
-                for dy in (-1, 0, 1):
-                    reserved.add((p[0] + dx, p[1] + dy, z))
-        for b in beds:
+            reserved.add(p)
             for d in DIRS:
-                reserved.add((b[0] + STEP[d][0], b[1] + STEP[d][1], z))
+                reserved.add((p[0] + STEP[d][0], p[1] + STEP[d][1], z))
+        for b in sorted(beds):
+            ways = [(b[0] + STEP[d][0], b[1] + STEP[d][1], z) for d in DIRS]
+            ways = [w for w in ways if w in walk and w not in beds]
+            if ways and not any(w in reserved for w in ways):
+                reserved.add(ways[0])  # one way to the bed is enough
         free = {p for p, k in kind.items() if k == "floor" and p not in reserved and p not in beds}
 
         # seeds for reachability: walkable tiles next to doors or stairs
@@ -423,10 +460,10 @@ class Planner:
         nfree = len(free)
         if nfree == 0:
             return self.plan_walls(h, z, tiles, walk, theme, rich, rng, out)
-        budget = max(1, int(nfree * (0.42 if rich else 0.32) + 0.5))
+        budget = max(1, int(nfree * (0.6 if rich else 0.48) + 0.5))
 
         # 1. table groups in open spots (not against walls when possible)
-        groups = max(1, nfree // 18) if nfree >= 5 else 0
+        groups = max(1, nfree // 12) if nfree >= 4 else 0
         candidates = sorted(free, key=lambda p: (len(wall_side(p)), rng.random()))
         for p in candidates:
             if groups <= 0 or budget <= 0:
@@ -450,8 +487,10 @@ class Planner:
             tt = self.pick(rng, theme, "tabletop", rich)
             if rich and self.valuables and rng.random() < 0.6:
                 out.append((p, rng.choice(self.valuables)))
-            elif tt and rng.random() < 0.5:
+            elif tt and rng.random() < 0.4:
                 out.append((p, rng.choice(TABLETOP[tt])))
+            for _ in range(rng.randint(1, 3 if rich else 2)):
+                out.append(self.clutter(rng, theme_name, rich, p))
             # chairs facing the table
             rng.shuffle(nbrs)
             for d in nbrs[: 2 if not rich else 3]:
@@ -489,6 +528,8 @@ class Planner:
             if self.is_blocking(iid):
                 blocked.add(p)
             budget -= 1
+            if 27 in self.flags(iid) and 5 not in self.flags(iid) and rng.random() < (0.6 if rich else 0.4):
+                out.append(self.clutter(rng, theme_name, rich, p))
 
         # 3. floor decorations and valuables (nothing blocks)
         floor_items = 1 if nfree >= 6 else 0
@@ -504,14 +545,20 @@ class Planner:
                 free.discard(p)
                 floor_items -= 1
         if rich and self.valuables:
-            for p in [q for q in sorted(free, key=lambda q: rng.random()) if wall_side(q)][: 1 + nfree // 15]:
+            for p in [q for q in sorted(free, key=lambda q: rng.random()) if wall_side(q)][: 1 + nfree // 10]:
                 out.append((p, rng.choice(self.valuables)))
                 free.discard(p)
+        # clutter lying around (nobody trips over it)
+        share = 0.6 if rich else 0.4
+        for p in sorted(free, key=lambda q: rng.random()):
+            if rng.random() < share:
+                for _ in range(rng.randint(1, 2) if rich else 1):
+                    out.append(self.clutter(rng, theme_name, rich, p))
 
         return self.plan_walls(h, z, tiles, walk, theme, rich, rng, out)
 
     def plan_walls(self, h, z, tiles, walk, theme, rich, rng, out):
-        share = 0.55 if rich else 0.3
+        share = 0.85 if rich else 0.6
         for p, ids in sorted(tiles.items()):
             hk = self.hook(ids)
             if not hk:
@@ -542,11 +589,12 @@ def main():
         rich_count += 1 if rich else 0
         theme = TOWN_THEME.get(h["town"], "classic")
         by_theme[theme] = by_theme.get(theme, 0) + 1
-        cells = ", ".join("{%d,%d,%d,%d}" % (p[0], p[1], p[2], iid) for p, iid in placed)
+        cells = ", ".join(("{%d,%d,%d,%d}" % (c[0][0], c[0][1], c[0][2], c[1])) if len(c) == 2 or c[2] == 1
+                          else ("{%d,%d,%d,%d,%d}" % (c[0][0], c[0][1], c[0][2], c[1], c[2])) for c in placed)
         lines.append("\t[%d] = { %s }, -- %s, %s%s" % (h["id"], cells, h["name"].replace("\n", " "), h["town"], ", rich" if rich else ""))
     with open(OUT_LUA, "w") as o:
         o.write("-- Generated by tools/family/house_decor/plan.py. Do not edit by hand.\n")
-        o.write("-- [houseId] = { {x, y, z, itemId}, ... } in placement order (tables before what stands on them).\n")
+        o.write("-- [houseId] = { {x, y, z, itemId[, count]}, ... } in placement order (tables before what stands on them).\n")
         o.write("return {\n" + "\n".join(lines) + "\n}\n")
     with open(OUT_REPORT, "w") as o:
         o.write("# House decoration plan\n\nGenerated by plan.py.\n\n")

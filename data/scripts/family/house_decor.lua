@@ -73,7 +73,7 @@ function Family.houseDecorate(house)
 		local tile = Tile(position)
 		local tileHouse = tile and tile:getHouse()
 		if tileHouse and tileHouse:getId() == house:getId() and not tile:getTopCreature() then
-			local item = Game.createItem(cell[4], 1, position)
+			local item = Game.createItem(cell[4], cell[5] or 1, position)
 			if item then
 				item:setCustomAttribute(KEY, 1)
 				placed = placed + 1
