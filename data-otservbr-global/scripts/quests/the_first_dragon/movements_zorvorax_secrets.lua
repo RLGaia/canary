@@ -13,6 +13,33 @@ local UniqueTable = {
 	},
 }
 
+-- FAMILY: the Life counter is the number of sacred sites visited (2026-10-18).
+function TheFirstDragonSecretsVisited(player)
+	local visited = 0
+	for _, setting in pairs(UniqueTable) do
+		if player:getStorageValue(setting.storage) > 0 then
+			visited = visited + 1
+		end
+	end
+	return visited
+end
+
+function TheFirstDragonSyncSecrets(player)
+	local visited = TheFirstDragonSecretsVisited(player)
+	local counter = Storage.Quest.U11_02.TheFirstDragon.SecretsCounter
+	if visited > 0 and player:getStorageValue(counter) ~= visited then
+		player:setStorageValue(counter, visited)
+	end
+	return visited
+end
+
+local secretsLogin = CreatureEvent("FamilyFirstDragonSecrets")
+function secretsLogin.onLogin(player)
+	TheFirstDragonSyncSecrets(player)
+	return true
+end
+secretsLogin:register()
+
 local zorvoraxSecrets = MoveEvent()
 
 function zorvoraxSecrets.onStepIn(creature, item, position, fromPosition)
@@ -28,7 +55,7 @@ function zorvoraxSecrets.onStepIn(creature, item, position, fromPosition)
 
 	if player:getStorageValue(setting.storage) < 1 then
 		player:setStorageValue(setting.storage, 1)
-		player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.SecretsCounter, player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.SecretsCounter) + 1)
+		TheFirstDragonSyncSecrets(player) -- FAMILY: count of sites visited (upstream +1 from -1 lost the first site visited before Tamoril)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, setting.msg)
 		return true
 	end

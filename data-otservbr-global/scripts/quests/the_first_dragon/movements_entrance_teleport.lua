@@ -11,7 +11,7 @@ local UniqueTable = {
 	-- Kalyassa entrance
 	[35002] = {
 		storage = Storage.Quest.U11_02.TheFirstDragon.ChestCounter,
-		value = 4,
+		value = 5, -- FAMILY: 5 of the 20 chests as in Tibia (TibiaWiki BR, TibiaQA); upstream 4
 		range = 10,
 		newPos = { x = 32078, y = 32456, z = 8 },
 		bossName = "Kalyassa",

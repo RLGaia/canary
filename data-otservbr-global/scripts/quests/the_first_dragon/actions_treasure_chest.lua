@@ -83,6 +83,30 @@ local UniqueTable = {
 	},
 }
 
+-- FAMILY: the Treasure counter is the number of chests opened (2026-10-18).
+-- Upstream added 1 to the storage, which starts at -1: a chest opened before
+-- talking to Tamoril was lost (the counter ended one short, so Kalyassa needed
+-- an extra chest and the 20th chest gave no Treasure Hunter achievement).
+-- Tamoril and a login check use the same count, which repairs old progress.
+function TheFirstDragonChestsOpened(player)
+	local opened = 0
+	for uid in pairs(UniqueTable) do
+		if player:getStorageValue(uid) > 0 then
+			opened = opened + 1
+		end
+	end
+	return opened
+end
+
+function TheFirstDragonSyncChests(player)
+	local opened = TheFirstDragonChestsOpened(player)
+	local counter = Storage.Quest.U11_02.TheFirstDragon.ChestCounter
+	if opened > 0 and player:getStorageValue(counter) ~= opened then
+		player:setStorageValue(counter, opened)
+	end
+	return opened
+end
+
 local treasureChest = Action()
 
 function treasureChest.onUse(player, item, fromPosition, target, toPosition, isHotkey)
@@ -97,16 +121,11 @@ function treasureChest.onUse(player, item, fromPosition, target, toPosition, isH
 		return true
 	end
 
-	if player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.ChestCounter) >= 19 then
-		player:addAchievement("Treasure Hunter")
-		player:addItem(setting.name or setting.itemId, setting.count, true)
-		player:setStorageValue(item.uid, 1)
-		player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.ChestCounter, player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.ChestCounter) + 1)
-		return true
-	end
-
 	player:setStorageValue(item.uid, 1)
-	player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.ChestCounter, player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.ChestCounter) + 1)
+	local opened = TheFirstDragonSyncChests(player)
+	if opened >= 20 then
+		player:addAchievement("Treasure Hunter")
+	end
 
 	if setting.name then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You found " .. setting.count .. " " .. setting.name .. ".")
@@ -123,3 +142,12 @@ for index, value in pairs(UniqueTable) do
 end
 
 treasureChest:register()
+
+-- FAMILY: repair the Treasure counter of characters who opened chests before
+-- this fix (counted one short).
+local chestLogin = CreatureEvent("FamilyFirstDragonChests")
+function chestLogin.onLogin(player)
+	TheFirstDragonSyncChests(player)
+	return true
+end
+chestLogin:register()

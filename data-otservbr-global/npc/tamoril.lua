@@ -99,12 +99,19 @@ local function creatureSayCallback(npc, creature, type, message)
 		if player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.Questline) < 1 then
 			player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.Questline, 1)
 		end
+		-- FAMILY: chests opened and sacred sites visited before count, and asking
+		-- again no longer resets the dragons hunted or Gelidrazah's access.
 		if player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.ChestCounter) < 0 then
-			player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.ChestCounter, 0)
+			player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.ChestCounter, TheFirstDragonChestsOpened and TheFirstDragonChestsOpened(player) or 0)
 		end
-		player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.DragonCounter, 0)
-		player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.GelidrazahAccess, 0)
-		player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.SecretsCounter, 0)
+		if player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.SecretsCounter) < 0 then
+			player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon.SecretsCounter, TheFirstDragonSecretsVisited and TheFirstDragonSecretsVisited(player) or 0)
+		end
+		for _, key in ipairs({ "DragonCounter", "GelidrazahAccess" }) do
+			if player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon[key]) < 0 then
+				player:setStorageValue(Storage.Quest.U11_02.TheFirstDragon[key], 0)
+			end
+		end
 	end
 
 	return true
