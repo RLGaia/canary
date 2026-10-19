@@ -78,7 +78,7 @@ STORAGE = {
     "dresser": ([2441, 2444, 2443, 2442], "S"), "drawers": ([2431, 2434, 2433, 2432], "S"),
     "large trunk": ([2483, 2486, 2484, 2485], "S"), "comfy chest": ([28938, 28940, 28941, 28939], "S"),
     "locker": ([2449, 2452, 2450, 2451], "S"), "bookcase": ([6367, 6370, 6369, 6368], "E"),
-    "comfy cabinet": ([28942, 28943], "S2"), "cupboard": ([34276, 34277], "S2"),
+    "comfy cabinet": ([28942, 28943], "S2"), "cupboard": ([34276], "S2"),  # 34277 (other side) is not in the client data
     "knightly chest": ([39504, 39505, 39506, 39507], "S"), "knightly cabinet": ([39441, 39442], "S2"),
     "magnificent trunk": ([23427, 23428, 23429, 23430], "S"), "magnificent cabinet": ([23419, 23420], "S2"),
     "grandiose cupboard": ([35911, 35912], "S2"), "grandiose gilded chest": ([35923, 35924, 35925, 35926], "S"),
@@ -577,6 +577,17 @@ def main():
     app = read_appearances()
     names, special = read_items_xml()
     valuables = read_valuables(app, names)
+    # every catalogue id must exist in the client data (else the server cannot create it)
+    for cat in (CHAIRS, STORAGE):
+        for key, (ids, _) in cat.items():
+            for i in ids:
+                if i not in app:
+                    raise SystemExit("unknown item %d in %s" % (i, key))
+    for cat in (TABLES, STANDING, FLOOR, TABLETOP, WALL, CLUTTER):
+        for key, ids in cat.items():
+            for i in ids:
+                if i not in app:
+                    raise SystemExit("unknown item %d in %s" % (i, key))
     planner = Planner(app, names, special, valuables)
     houses = read_dump(dump)
     total, rich_count, by_theme = 0, 0, {}
