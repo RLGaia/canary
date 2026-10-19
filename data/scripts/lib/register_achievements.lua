@@ -567,6 +567,10 @@ ACHIEVEMENTS = {
 	[568] = { name = "Bat Person", grade = 1, points = 3, description = "No matter your command, this beast is all ears!" },
 	[569] = { name = "Illuminator", grade = 1, points = 3, description = "Joran and Yvette have brought the colours back to the world, and you have freed it from the monsters of this story. The world of books is now yours." },
 	[570] = { name = "Power of Words", grade = 2, points = 5, description = "The pen is mightier than the sword. In a way, yes, you have had this experience. You have seen with your own eyes what the power of words can do, the written word, to be precise." },
+	-- FAMILY: Gaia Family server (data-otservbr-global/scripts/family/edron_tasks.lua). Secret, because the
+	-- client shows the server's name and description only for secret achievements (public ones come
+	-- from the client's own list by id). Id far above Tibia's so it never clashes with a real one.
+	[9001] = { name = "Champion of Edron", grade = 2, points = 5, secret = true, description = "Trolls, goblins, rotworms, cyclopes, orcs, dwarves, treelings, wyverns, the undead, lycanthropes, renegade heroes, dragons and even demons - you have done every task Daniel Steelsoul had for you. Edron sleeps safer thanks to you." },
 }
 
 --[[

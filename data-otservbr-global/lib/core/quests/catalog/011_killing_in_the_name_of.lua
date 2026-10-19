@@ -1135,68 +1135,8 @@ local quest = {
 				[4] = "You've finished this task - for now. If you want to kill the different necromancers and priestesses again for an experience and money bonus, talk to Lugri about this task.",
 			},
 		},
-		[84] = {
-			name = "Edron City: Trolls",
-			storageId = Storage.Quest.U8_5.KillingInTheNameOf.TrollTask,
-			missionId = 10164,
-			startValue = 0,
-			endValue = 1,
-			states = {
-				[0] = function(player)
-					return string.format("Daniel Steelsoul sent you to kill 100 trolls, preferably west of Edron city. You have killed %d trolls and %d troll champions so far.", player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.AltKillCount.TrollCount), player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.AltKillCount.TrollChampionCount))
-				end,
-				[1] = "You succesfully killed 100 trolls. As long as you are level 20 or lower, you may repeat this task by talking to Daniel Steelsoul about it.",
-			},
-		},
-		[85] = {
-			name = "Edron City: Goblins",
-			storageId = Storage.Quest.U8_5.KillingInTheNameOf.GoblinTask,
-			missionId = 10165,
-			startValue = 0,
-			endValue = 1,
-			states = {
-				[0] = function(player)
-					return string.format(
-						"Daniel Steelsoul sent you to kill 150 goblins, preferably west of Edron city. You have killed %d goblins so far, %d goblin scavengers and %d goblin assassins.",
-						player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.AltKillCount.GoblinCount),
-						player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.AltKillCount.GoblinScavengerCount),
-						player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.AltKillCount.GoblinAssassinCount)
-					)
-				end,
-				[1] = "You succesfully killed 150 goblins. As long as you are level 20 or lower, you may repeat this task by talking to Daniel Steelsoul about it.",
-			},
-		},
-		[86] = {
-			name = "Edron City: Rotworms",
-			storageId = Storage.Quest.U8_5.KillingInTheNameOf.RotwormTask,
-			missionId = 10166,
-			startValue = 0,
-			endValue = 1,
-			states = {
-				[0] = function(player)
-					return string.format("Daniel Steelsoul sent you to kill 300 rotworms, preferably in their tunnels south of Edron city. You have killed %d rotworms and %d carrion worms so far.", player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.AltKillCount.RotwormCount), player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.AltKillCount.CarrionWormnCount))
-				end,
-				[1] = "You succesfully killed 300 rotworms. As long as you are level 40 or lower, you may repeat this task by talking to Daniel Steelsoul about it.",
-			},
-		},
-		[87] = {
-			name = "Edron City: Cyclops",
-			storageId = Storage.Quest.U8_5.KillingInTheNameOf.CyclopsTask,
-			missionId = 10167,
-			startValue = 0,
-			endValue = 1,
-			states = {
-				[0] = function(player)
-					return string.format(
-						"Daniel Steelsoul sent you to kill 500 cyclops, preferably in Cyclopolis north of Edron city. You have killed %d cyclops, %d drones and %d smiths so far.",
-						player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.AltKillCount.CyclopsCount),
-						player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.AltKillCount.CyclopsDroneCount),
-						player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.AltKillCount.CyclopsSmithCount)
-					)
-				end,
-				[1] = "You succesfully killed 500 cyclops. As long as you are level 60 or lower, you may repeat this task by talking to Daniel Steelsoul about it.",
-			},
-		},
+		-- FAMILY: missions 84-87 (Daniel Steelsoul's Edron City tasks) moved to the quest
+		-- "Edron City Tasks" (053_edron_city_tasks.lua), with nine new tasks.
 	},
 }
 

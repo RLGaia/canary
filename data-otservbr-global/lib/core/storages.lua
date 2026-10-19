@@ -2961,6 +2961,38 @@ Storage = {
 				AccessDoor = 47952,
 			},
 		},
+		-- FAMILY: Gaia Family server, Edron City Tasks (Daniel Steelsoul) - Reserved Storages 48600 - 48799.
+		-- Used by data-otservbr-global/scripts/family/edron_tasks.lua and quest catalog 053.
+		FamilyEdronTasks = {
+			Questline = 48600,
+			-- times each task was finished (-1 never taken, 0 taken but not finished yet); 48601 - 48613
+			Times = {
+				Trolls = 48601,
+				Goblins = 48602,
+				Rotworms = 48603,
+				Cyclopes = 48604,
+				Orcs = 48605,
+				Dwarves = 48606,
+				Treelings = 48607,
+				Wyverns = 48608,
+				Undead = 48609,
+				Lycanthropes = 48610,
+				Heroes = 48611,
+				Dragons = 48612,
+				Demons = 48613,
+			},
+			-- new tasks: state (-1 never, 0 active, 1 finished), kill count, then one counter per creature
+			-- (base + 2 + creature index - 1); 10 storages per task, 48620 - 48709
+			Orcs = 48620,
+			Dwarves = 48630,
+			Treelings = 48640,
+			Wyverns = 48650,
+			Undead = 48660,
+			Lycanthropes = 48670,
+			Heroes = 48680,
+			Dragons = 48690,
+			Demons = 48700,
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,
