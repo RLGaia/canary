@@ -406,6 +406,44 @@ restores. After reinstalling Windows: install the programs, clone the repository
 recreate `family\local.env`, run `family\setup.ps1`, then `restore-db.ps1`
 (full steps in the manual).
 
+## Upstream fixes copied since v3.6.1
+
+Canary's `main` keeps moving after a release. Our `canary.exe` is the v3.6.1
+release, so only data fixes (Lua, XML, NPCs) that work with it are copied, one
+by one with `git cherry-pick -x` (the commit message names the upstream
+commit). Checked on 2026-10-19: of the 95 upstream commits after v3.6.1,
+about half change C++ (they need a newer `canary.exe`) and most others are CI,
+Docker or documentation. Copied (35):
+
+- Daily reward: reward wall fix #4146 (see Daily reward above).
+- Quests: Mortimer's pick and Explorer Society storages (#4047), Barbarian Test
+  (#4025), Storkus (#4053), Inquisition holy water rollback (#4083) and Henricus
+  (#4084), Cults of Tibia Barkless (#4074) and Gerimor (#4075), Sister of Jack
+  (#4107), quest storages that did not exist (#4064), Rookie Guard energy
+  barrier (#4110).
+- NPCs: djinns accept a normal greeting once they know you (#4044), Zoltan's
+  addon for male summoners (#4060), Brengus buys the tribal mask (#4061),
+  Augustin's sales (#4062), Simon the Beggar's shovel price (#4066), spells sold
+  under names that exist, familiar spells included (#4046, #4065), Cipfried and
+  Dallheim cure burning (#4096, with the shared heal keyword #4099), missing
+  dialogue of 28 Carlin and about 70 Thais NPCs (#4077, #4082, #4094, #4100).
+- Other: `!autoloot all` (#4067), Prey Wildcard Store offers (#4045, #4095),
+  death screenshot type (#4106), level-up saves debounced (#4119), guild war
+  query handle (#4111), safe table unserialize (#4101), NPC say error (#4105),
+  antiPush cleanup (#4103), monk's apparition race id (#4147), invalid item
+  ranges in items.xml (from #4034).
+
+Not copied on purpose: #4136 (a character that never claimed a daily reward
+would lose the default streak bonuses it has now), #4116 (interval save, which
+we keep off), #4063 (Way of the Monk, already in our own fix).
+Adjusted after copying: Charos keeps our `discovering` answer (#4100 gave him
+static `discovering`, `map` and `service` answers, which the NPC system answers
+before our dialogue).
+
+Release tags are single snapshot commits without history, so for the next
+release compare the new tag with v3.6.1 (`git diff v3.6.1 vX.Y.Z`) instead of
+expecting `git merge` to know what we already copied.
+
 ## Updating to a new Canary release
 
 ```powershell
