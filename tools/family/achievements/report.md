@@ -1,0 +1,317 @@
+# Achievements audit (2026-10-20)
+
+Registry: `data/scripts/lib/register_achievements.lua` (541 Tibia achievements + our
+"Champion of Edron", id 9001). Compared with the 15.11 client (`staticdata` of
+`dudantas/tibia-client` tag `15.11.c9d1cf`) and TibiaWiki BR.
+
+## Against the 15.11 client
+
+- All 349 public achievements of the client are registered, with the same ids and names.
+- Secret achievements are not in the client (the server sends their name and text).
+  Against TibiaWiki BR's 205 secret achievements, the ones that existed by 15.11 and are
+  not registered: Smart Thinking (195, 8.7, how to get it is unknown), A Friend in Need
+  (550, 13.40, Threatened Dreams), Holzkopf (551, 13.40, eat 100 demon roots), The
+  Forbidden Build (567, 15.10, weapon proficiency mastery), and ID 563 (unknown,
+  unconfirmed). No script gives them and the English texts are not on the wiki, so they
+  are not registered. The other unregistered ones are newer than 15.11 (15.20 and later:
+  Bastard, Errand Runner, Feral Trapper, Lost Letters, Mimic, Pest Control, Razor's Edge,
+  Stagmeister, Taskaholic, Workhorse, Castle Crasher, A reliable Friend, the Echo ones,
+  Purrfectly Addicted...).
+- Fixed: Soul Mender (513) was public but is secret in Tibia (the 15.11 client could not
+  show it); Heartbreaker (145) is "Heartbreaker!"; the Hero of Rathleton chest gave
+  "The Professors Nut" (not a registered name) instead of "The Professor's Nut" (characters
+  who opened the chest get it at login, `data/scripts/family/achievement_fixes.lua`).
+
+## Registered but never given
+
+287 registered achievements are not given by any script (no script, table or C++
+code names them). Most belong to content that Canary does not implement or does not wire
+to the achievement. List (id, name, s = secret):
+
+- 1 Castlemania (s)
+- 2 Chorister
+- 3 The Milkman
+- 4 Vive la Resistance
+- 5 Culinary Master
+- 16 Beach Tamer
+- 17 Follower of Azerus
+- 18 Follower of Palimuth
+- 21 Passionate Kisser
+- 24 Top TBI Agent
+- 26 Golem in the Gears
+- 27 Poet Laureate (s)
+- 28 Minstrel (s)
+- 30 Territorial (s)
+- 33 Lucid Dreamer
+- 34 Explorer
+- 35 Sea Scout
+- 36 Unlikely Pathfinder (s)
+- 38 Ghostwhisperer
+- 42 Worm Whacker (s)
+- 43 King Tibianus Fan
+- 44 Just in Time
+- 49 His True Face (s)
+- 50 Razing! (s)
+- 51 Master Thief
+- 52 Amateur Actor
+- 56 Herbicide (s)
+- 61 Ruthless
+- 64 Waverider (s)
+- 67 High-Flyer (s)
+- 70 Deep Sea Diver (s)
+- 71 Firewalker (s)
+- 73 Green Thumb (s)
+- 77 Jinx (s)
+- 78 Lucky Devil (s)
+- 82 Quick as a Turtle (s)
+- 85 Steampunked (s)
+- 86 Vanity (s)
+- 87 Superstitious (s)
+- 88 Turncoat (s)
+- 93 Jamjam (s)
+- 94 I Did My Part (s)
+- 95 Notorious Worldsaver (s)
+- 96 Teamplayer (s)
+- 97 Daring Trespasser (s)
+- 98 Slayer of Anmothra (s)
+- 99 Slayer of Chikhaton (s)
+- 100 Slayer of Irahsae (s)
+- 101 Slayer of Phrodomo (s)
+- 102 Slayer of Teneshpar (s)
+- 103 Cocoon of Doom (s)
+- 104 Devovorga's Nemesis (s)
+- 105 Mister Sandman (s)
+- 106 Rock Me to Sleep (s)
+- 107 Modest Guest (s)
+- 112 The Snowman (s)
+- 114 I Need a Hug
+- 115 Slim Chance
+- 117 Make a Wish (s)
+- 118 Santa's Li'l Helper (s)
+- 120 Free Items! (s)
+- 122 Transmutator (s)
+- 126 Do Not Disturb (s)
+- 127 Let the Sunshine In (s)
+- 129 Nothing Can Stop Me (s)
+- 130 Happy Farmer (s)
+- 131 Natural Sweetener (s)
+- 132 Homebrewed (s)
+- 135 Cookie Monster (s)
+- 136 The Cake's the Truth (s)
+- 137 Sweet Tooth (s)
+- 138 With a Cherry on Top (s)
+- 140 Keeper of the Flame (s)
+- 141 True Lightbearer (s)
+- 142 Godslayer
+- 143 The Day After (s)
+- 144 Commitment Phobic (s)
+- 145 Heartbreaker! (s)
+- 146 Swift Death
+- 148 Life on the Streets
+- 151 Exemplary Citizen
+- 153 Of Wolves and Bears
+- 154 Hunting with Style
+- 156 In Shining Armor
+- 157 Aristocrat
+- 158 Out in the Snowstorm
+- 159 One Thousand and One
+- 160 Swashbuckler
+- 162 Ritualist
+- 163 Master of War
+- 165 Peazzekeeper
+- 166 Yalahari of Wisdom
+- 167 Yalahari of Power
+- 168 Piece of Cake
+- 169 Alumni
+- 171 Bunny Slipped (s)
+- 172 Guinea Pig
+- 173 Merry Adventures
+- 174 Afraid of no Ghost!
+- 175 Extreme Degustation (s)
+- 176 Cake Conqueror (s)
+- 177 Baby Sitter (s)
+- 178 Nanny from Hell (s)
+- 179 Ghost Sailor (s)
+- 180 Spectral Traveller (s)
+- 181 Nether Pirate (s)
+- 182 Scourge of Death (s)
+- 183 Fire Lighter (s)
+- 184 Witches Lil' Helper (s)
+- 185 Banebringers' Bane (s)
+- 187 Pyromaniac (s)
+- 188 Honorary Witch (s)
+- 191 Hidden Powers
+- 192 I Like it Fancy (s)
+- 196 Safely Stored Away (s)
+- 197 Something's in There (s)
+- 198 Silent Pet (s)
+- 201 Nomad Soul (s)
+- 204 Berry Picker (s)
+- 205 True Colours (s)
+- 206 Master Shapeshifter (s)
+- 207 Slimer (s)
+- 209 Biodegradable (s)
+- 210 Eye of the Deep (s)
+- 211 Invader of the Deep (s)
+- 212 Firefighter (s)
+- 213 Deer Hunt (s)
+- 214 Askarak Nemesis (s)
+- 215 Shaburak Nemesis (s)
+- 216 Fearless (s)
+- 219 Mystic Fabric Magic
+- 241 Pwned a Lot of Fur (s)
+- 242 Honest Finder
+- 243 Goldhunter (s)
+- 244 Trail of the Ape God (s)
+- 246 Whistle-Blower (s)
+- 247 Torn Treasures (s)
+- 248 Loyal Subject (s)
+- 249 Desert Fisher
+- 251 Dog Sitter
+- 252 Ice Harvester
+- 253 Preservationist (s)
+- 254 Chest Robber
+- 255 Down the Drain
+- 256 Fire from the Earth
+- 257 Minor Disturbance
+- 258 Dazzler
+- 259 Hive Blinder
+- 260 Hickup
+- 261 Heartburn
+- 262 Stomach Ulcer
+- 263 Planter
+- 264 Pimple
+- 265 Suppressor
+- 266 Gatherer
+- 267 Supplier
+- 268 Chitin Bane
+- 269 Guard Killer
+- 270 Hive Infiltrator
+- 272 Headache
+- 273 Confusion
+- 274 Manic
+- 276 Navigational Error (s)
+- 278 Guardian Downfall
+- 279 Death Song
+- 280 Depth Dwellers
+- 281 Gem Cutter (s)
+- 282 Spolium Profundis
+- 283 Bane of the Hive
+- 285 Hive War Veteran
+- 286 Hive Fighter
+- 295 Pwned All Fur (s)
+- 297 Bibby's Bloodbath (s)
+- 298 Nestling
+- 308 Dungeon Cleaner (s)
+- 322 Gnomish Art Of War
+- 324 True Dedication (s)
+- 325 Task Manager (s)
+- 328 Umbral Swordsman
+- 331 Cave Completionist
+- 332 Umbral Bladelord
+- 333 Umbral Headsman
+- 334 Umbral Executioner
+- 335 Umbral Brawler
+- 336 Umbral Berserker
+- 337 Umbral Archer
+- 338 Umbral Marksman
+- 339 Umbral Harbinger
+- 340 Umbral Master
+- 341 Nevermending Story (s)
+- 342 Luring Silence
+- 343 Never Surrender
+- 344 Dream Wright
+- 345 Ending the Horror
+- 346 Sleepwalking
+- 348 Prison Break
+- 349 Noblesse Obliterated
+- 350 Elementary, My Dear
+- 351 Rathleton Commoner
+- 352 Rathleton Inhabitant
+- 353 Rathleton Citizen
+- 354 Combo Master (s)
+- 357 Seasoned Adventurer
+- 358 Mind the Step!
+- 359 Rathleton Squire
+- 361 Plant vs. Minos (s)
+- 362 Rumble in the Plant (s)
+- 363 Robo Chop (s)
+- 366 Publicity
+- 371 Luminous Kitty
+- 377 Fabled Construction
+- 390 Thick-Skinned
+- 403 Icy Glare
+- 404 Cartography 101
+- 405 Lost Palace Raider (s)
+- 406 The More the Merrier (s)
+- 411 Ogre Chef
+- 412 The Call of the Wild
+- 417 Forbidden Knowledge (s)
+- 419 Reason to Celebrate
+- 420 Toothfairy Assistant
+- 430 Little Adventure
+- 431 Little Big Adventure (s)
+- 432 Contender
+- 433 Serious Contender (s)
+- 434 Skilled Hunter
+- 435 Master Hunter (s)
+- 436 Hunting Permit
+- 437 Over the Moon
+- 442 Scourge of Scarabs
+- 465 Library Liberator
+- 471 Running the Rift
+- 473 Exalted Battle Mage
+- 474 Areas of Effect (s)
+- 480 No Horse Open Sleigh
+- 481 Raider in the Dark
+- 483 Champion of Summer (s)
+- 484 Champion of Winter (s)
+- 486 Bewitcher (s)
+- 489 Sun and Sea
+- 491 Avid Spectral Reader (s)
+- 492 Hippofoddermus (s)
+- 496 Traditionalist
+- 497 Do a Barrel Roll!
+- 499 Orcsoberfest Welcome (s)
+- 500 Prospectre (s)
+- 502 Verminbane
+- 503 Monsterhunter
+- 504 Taskmaster
+- 507 Steppe Elegance
+- 510 Drama in Darama
+- 511 Malefitz (s)
+- 512 Lionheart
+- 513 Soul Mender
+- 521 Pied Piper (s)
+- 522 Woodcarver (s)
+- 523 Bounacean Chivalry (s)
+- 526 King's Council
+- 528 Shell We Take a Ride
+- 529 Phantastic!
+- 530 Some Like It Hot
+- 531 First Achievement (s)
+- 532 Sharp Dressed
+- 535 Wedding Planner
+- 536 Beaver Away
+- 538 Royalty of Hazard
+- 541 Warrior of the Iks
+- 542 Mutagenius
+- 543 Strangest Thing
+- 544 Fully Decayed
+- 547 Museum Goer
+- 548 Mystic Predator
+- 549 The Rule of Raccool
+- 552 I Wanna Fly Away
+- 553 The Rootwalker
+- 554 Soul Crusher
+- 555 Inner Peace
+- 556 Fiend Rider
+- 558 Tear the Toxic Veil
+- 560 Umbral Redeemer
+- 561 Hell Rider
+- 562 Alpha Rider
+- 564 The First of Many
+- 565 A Well-Honed Arsenal
+- 566 Arsenal of War
+- 568 Bat Person
+- 570 Power of Words

@@ -6,7 +6,7 @@ function heroRathletonReward.onUse(player, item, fromPosition, target, toPositio
 		player:addItem(21897)
 		player:addItem(9058)
 		player:addItem(836)
-		player:addAchievement("The Professors Nut")
+		player:addAchievement("The Professor's Nut") -- FAMILY: was "The Professors Nut", not a registered name (no achievement given)
 		player:setStorageValue(24850, 1) -- storage da recompensa
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You opened the Maxxen's chest.")
 	else

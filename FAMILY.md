@@ -256,6 +256,8 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data-otservbr-global/lib/core/storages.lua` | `Storage.Quest.FamilyEdronTasks`, storages 48600-48799 |
 | `data/scripts/lib/register_achievements.lua` | Achievement 9001 "Champion of Edron" (secret, because the client shows names from the server only for secret achievements) |
 | `data/XML/mounts.xml` | Mount names carry their terrains, e.g. "Water Buffalo (Swamp/Water)" (written by `tools/family/mount_terrain/annotate.py`; `--strip` restores the names) |
+| `data/scripts/lib/register_achievements.lua` (2026-10-20) | Soul Mender secret and "Heartbreaker!" as in Tibia (audit in `tools/family/achievements/report.md`) |
+| `data-otservbr-global/scripts/quests/hero_of_rathleton/actions_reward.lua` | Gives "The Professor's Nut" (upstream asked for "The Professors Nut", which does not exist); earlier openers get it at login (`data/scripts/family/achievement_fixes.lua`) |
 | `data/scripts/systems/custom_monster_loot.lua` | Upstream example loot disabled: every monster dropped 1-10 christmas tokens all year and dragons platinum coins. Tokens now drop in December only (winter event) |
 
 If a Canary update conflicts in `raids.xml` or `otservbr-monster.xml`, take the upstream file and
