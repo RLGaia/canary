@@ -94,41 +94,25 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("I am very glad you helped me, but I am very busy at the moment.", npc, creature)
 			npcHandler:setTopic(playerId, 0)
 		end
-	elseif MsgContains(message, "addons") then
-		local hasMasks = player:getItemCount(25088) >= 3
-		local hasFeathers = player:getItemCount(25089) >= 50
-		if player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.Feathers) == 2 and player:getStorageValue(Storage.Quest.U11_02.FestiveOutfits.Addon1) == 1 and hasMasks then
-			npcHandler:say("I see you have the porcelain masks. Are you ready to exchange them for the first addon?", npc, creature)
+	elseif MsgContains(message, "addons") or MsgContains(message, "addon") then
+		-- FAMILY: Festive addons fixed (2026-10-20). Upstream only opened the
+		-- trade when an addon storage was already 1, and only the trade itself
+		-- set it to 1, so nobody could ever get the addons. Now as in Tibia
+		-- (TibiaWiki "Festive Outfits Quest"): addons, yes, then mask or feather.
+		if not FamilyFestive.hasOutfit(player) then
+			npcHandler:say("You need the festive outfit first. Perhaps the legendary First Dragon has something for you.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		elseif FamilyFestive.hasAddon(player, 1) and FamilyFestive.hasAddon(player, 2) then
+			npcHandler:say("You already have both festive costume accessories. You look marvellous!", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		else
+			npcHandler:say("I provide two addons. For the first one I need you to bring me three porcelain masks. For the second addon you need fifty colourful ostrich feathers. Do you want one of these addons?", npc, creature)
 			npcHandler:setTopic(playerId, 2)
-		elseif player:getStorageValue(Storage.Quest.U11_02.TheFirstDragon.Feathers) == 2 and player:getStorageValue(Storage.Quest.U11_02.FestiveOutfits.Addon2) == 1 and hasFeathers then
-			npcHandler:say("I see you have the colourful feathers. Are you ready to exchange them for the second addon?", npc, creature)
-			npcHandler:setTopic(playerId, 4)
-		else
-			npcHandler:say("You need the outfit and 3 porcelain masks or 50 colored feathers to get the festive costume accessories.", npc, creature)
-			npcHandler:setTopic(playerId, 0)
 		end
-	elseif MsgContains(message, "mask") and player:getStorageValue(Storage.Quest.U11_02.FestiveOutfits.Addon1) == 1 then
-		if player:removeItem(25088, 3) then
-			player:addOutfit(929, 1)
-			player:addOutfit(931, 1)
-			npcHandler:say("Very good! You gained the first addon to the festive outfit.", npc, creature)
-			player:setStorageValue(Storage.Quest.U11_02.FestiveOutfits.Addon1, 2)
-			npcHandler:setTopic(playerId, 0)
-		else
-			npcHandler:say("Oh, sorry but you don't have enough porcelain masks!", npc, creature)
-			npcHandler:setTopic(playerId, 0)
-		end
-	elseif MsgContains(message, "feather") and player:getStorageValue(Storage.Quest.U11_02.FestiveOutfits.Addon2) == 1 then
-		if player:removeItem(25089, 50) then
-			player:addOutfit(929, 2)
-			player:addOutfit(931, 2)
-			npcHandler:say("Very good! You gained the second addon to the festive outfit.", npc, creature)
-			player:setStorageValue(Storage.Quest.U11_02.FestiveOutfits.Addon2, 2)
-			npcHandler:setTopic(playerId, 0)
-		else
-			npcHandler:say("Oh, sorry but you don't have enough colourful feathers!", npc, creature)
-			npcHandler:setTopic(playerId, 0)
-		end
+	elseif (MsgContains(message, "mask") or MsgContains(message, "masks")) and npcHandler:getTopic(playerId) == 3 then
+		FamilyFestive.trade(npc, creature, player, 1, npcHandler)
+	elseif (MsgContains(message, "feather") or MsgContains(message, "feathers")) and npcHandler:getTopic(playerId) == 3 then
+		FamilyFestive.trade(npc, creature, player, 2, npcHandler)
 	elseif MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 1 then
 			npcHandler:say({
@@ -139,14 +123,8 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_1.TibiaTales.IntoTheBonePit, 1)
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 2 then
-			npcHandler:say("I provide two addons. For the first one I need you to bring me three porcelain masks. For the second addon you need fifty colourful ostrich feathers. Do you want one of these addons?", npc, creature)
+			npcHandler:say("What do you have for me: the porcelain {masks} or the colourful {feathers}?", npc, creature)
 			npcHandler:setTopic(playerId, 3)
-		elseif npcHandler:getTopic(playerId) == 3 then
-			npcHandler:say("What do you have for me: the porcelain masks or the colourful feathers?", npc, creature)
-			player:setStorageValue(Storage.Quest.U11_02.FestiveOutfits.Addon1, 1)
-		elseif npcHandler:getTopic(playerId) == 4 then
-			npcHandler:say("I provide two addons. For the first one I need you to bring me three porcelain masks. For the second addon you need fifty colourful ostrich feathers. Do you want one of these addons?", npc, creature)
-			player:setStorageValue(Storage.Quest.U11_02.FestiveOutfits.Addon2, 1)
 		end
 	elseif MsgContains(message, "no") then
 		npcHandler:say("Ohh, then I need to find another adventurer who wants to earn a great reward. Bye!", npc, creature)
