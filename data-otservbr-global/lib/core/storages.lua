@@ -2993,6 +2993,10 @@ Storage = {
 			Dragons = 48690,
 			Demons = 48700,
 		},
+		-- FAMILY: Sinatuki (Grimlund), green perches and rainbow trouts eaten so far (0 - 100)
+		FamilySinatuki = {
+			Fish = 48710,
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,
