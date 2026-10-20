@@ -297,6 +297,18 @@ local quest = {
 				[2] = "You navigated the ship to the right location. You are now able to dive down and explore the caves.",
 			},
 		},
+		-- FAMILY: The Spirit Will Get You (ours, 2026-10-20; scripts/family/spirit_will_get_you.lua)
+		[17] = {
+			name = "The Spirit Will Get You",
+			storageId = Storage.Quest.FamilySpiritWillGetYou.Mission,
+			missionId = 11220,
+			startValue = 1,
+			endValue = 2,
+			states = {
+				[1] = "The Cranky Lizard Crone on the mountain of the Spirittrails north of Zao wants the three pages of a faded last will back. They are hidden in the ruins around her house. Bring all three to her.",
+				[2] = "You brought the faded last will back to the Cranky Lizard Crone. Now she may fix an old cape or a sedge hat for you, as Wayfarer addons.",
+			},
+		},
 		-- [17] = {
 		-- name = "Nomads Land",
 		-- storageId = PLACEHOLDER,

@@ -3001,6 +3001,11 @@ Storage = {
 		FamilyWaterskinOfMead = {
 			Reward = 48711,
 		},
+		-- FAMILY: The Spirit Will Get You (Cranky Lizard Crone): mission -1 none, 1 searching, 2 done; pages 1 = found
+		FamilySpiritWillGetYou = {
+			Mission = 48712,
+			Pages = { 48713, 48714, 48715 },
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,
