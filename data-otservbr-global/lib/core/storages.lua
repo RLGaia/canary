@@ -2997,6 +2997,10 @@ Storage = {
 		FamilySinatuki = {
 			Fish = 48710,
 		},
+		-- FAMILY: Waterskin of Mead barrel in the Formorgar Mines (1 = taken)
+		FamilyWaterskinOfMead = {
+			Reward = 48711,
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,
