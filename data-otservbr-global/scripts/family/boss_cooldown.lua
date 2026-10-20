@@ -9,7 +9,7 @@
 --      (Grimvale and Feaster of Souls portals, Cults of Tibia...).
 --   2. Older quests that keep the wait in a character storage instead (Prince
 --      Drazzak, Grave Danger, Forgotten Knowledge, the Dream Courts, Brokul,
---      the First Dragon, the Dangerous Depths warzones): writing a future time
+--      the First Dragon): writing a future time
 --      to those storages stores "now" instead, and leftover waits are cleared
 --      at login.
 -- Boss rooms that are still occupied stay closed until the fight is over, as
@@ -71,9 +71,10 @@ local TIMER_PATHS = {
 	{ "Quest", "U12_00", "TheDreamCourts", "DreamScarGlobal", "MalofurTimer" },
 	{ "Quest", "U12_00", "TheDreamCourts", "DreamScarGlobal", "NightmareTimer" },
 	{ "Quest", "U11_80", "TheSecretLibrary", "LiquidDeath", "BrokulTimer" },
-	{ "Quest", "U11_50", "DangerousDepths", "Access", "TimerWarzoneIV" },
-	{ "Quest", "U11_50", "DangerousDepths", "Access", "TimerWarzoneV" },
-	{ "Quest", "U11_50", "DangerousDepths", "Access", "TimerWarzoneVI" },
+	-- Not here (fixed 2026-10-20): Dangerous Depths' TimerWarzoneIV/V/VI are not waits but
+	-- the 8 hours of free entry after stopping a warzone's lava pumps. Clamping them to
+	-- "now" made the pumps necessary again on every entry. The warzone bosses' own wait
+	-- (setBossCooldown, 10 h) is still removed by mechanism 1.
 }
 
 local timerKeys = {}
