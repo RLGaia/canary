@@ -58,6 +58,22 @@ function Family.catchUpDailyRewardDay()
 	return false
 end
 
+-- Since upstream #4146 (backported 2026-10-19) missed days are counted with a
+-- server save counter that grows at every real 06:00 save, not with the last
+-- server save time. Keeping the character's claimed window at most one behind
+-- the counter means no window is ever missed, so no joker token is spent and
+-- the streak stays.
+function Family.keepDailyRewardWindow(player)
+	if not Family.dailyRewardNeverExpires or not player.getDailyRewardClaimedServerSave or not GetDailyRewardServerSaveCount then
+		return
+	end
+	local claimed = player:getDailyRewardClaimedServerSave()
+	local current = GetDailyRewardServerSaveCount()
+	if claimed and claimed < current - 1 then
+		player:setDailyRewardClaimedServerSave(current - 1)
+	end
+end
+
 local familyDailyReward = GlobalEvent("FamilyDailyReward")
 
 function familyDailyReward.onStartup()
@@ -78,6 +94,7 @@ function familyDailyReward.onStartup()
 			if player:getNextRewardTime() < lastSave then
 				player:setNextRewardTime(lastSave)
 			end
+			Family.keepDailyRewardWindow(player)
 		end
 		return originalInit(playerId)
 	end
