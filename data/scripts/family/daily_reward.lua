@@ -19,13 +19,58 @@
 --    countdown instead.
 -- 4. Item rewards go to the Store inbox, as in real Tibia; a message now says
 --    so, because nothing arrives in the backpack.
+-- 5. No Prey rerolls (2026-10-21, chosen by Rodrigo): every Prey reroll and
+--    list choice is already free here, so days 3 and 5 gave nothing useful.
+--    Day 3 is now an XP boost (+50%, 30 minutes like day 7) and day 5 is 25
+--    Tibia Coins (picked on the wall, delivered to the Store inbox; using them
+--    adds them to the coin balance). Upstream an XP boost claim only tops the
+--    daily boost back up to its minutes (a second claim before using the first
+--    one adds nothing); here every claim adds its full time.
 --
 -- Switches: Family.dailyRewardNeverExpires (false = upstream rules 1 and 2),
--- Family.dailyRewardWallCountdown (false = upstream wall after a claim).
+-- Family.dailyRewardWallCountdown (false = upstream wall after a claim),
+-- Family.dailyRewardNoPrey (false = upstream days 3 and 5 and XP top-up).
 
 Family = Family or {}
 Family.dailyRewardNeverExpires = true
 Family.dailyRewardWallCountdown = true
+Family.dailyRewardNoPrey = true
+
+-- upstream reward types (daily_reward.lua): 1 item pick, 3 prey reroll, 4 XP boost;
+-- wall layouts: 1 item pick, 2 other
+local REWARD_ITEM, REWARD_PREY, REWARD_XP = 1, 3, 4
+local TIBIA_COIN = 22118
+Family.dailyRewardPreyReplacements = {
+	[3] = { type = REWARD_XP, systemType = 2, freeAccount = 10, premiumAccount = 30 },
+	[5] = { type = REWARD_ITEM, systemType = 1, items = { TIBIA_COIN }, freeAccount = 10, premiumAccount = 25 },
+}
+
+-- Replaces the Prey reroll days and makes XP boost claims add their full time.
+function Family.applyDailyRewardNoPrey()
+	if not Family.dailyRewardNoPrey then
+		return 0
+	end
+	local replaced = 0
+	for day, reward in pairs(Family.dailyRewardPreyReplacements) do
+		local current = DailyReward.rewards[day]
+		if current and current.type == REWARD_PREY then
+			DailyReward.rewards[day] = reward
+			replaced = replaced + 1
+		end
+	end
+	if not Family.originalSelectDailyReward then
+		Family.originalSelectDailyReward = Player.selectDailyReward
+		Player.selectDailyReward = function(self, msg)
+			local reward = DailyReward.rewards[self:getDayStreak() + 1]
+			if Family.dailyRewardNoPrey and reward and reward.type == REWARD_XP then
+				-- upstream subtracts the daily boost minutes still left
+				self:kv():remove("daily-reward-xp-boost")
+			end
+			return Family.originalSelectDailyReward(self, msg)
+		end
+	end
+	return replaced
+end
 
 local DAY = 24 * 60 * 60
 
@@ -130,9 +175,18 @@ function familyDailyReward.onStartup()
 		local reward = player and DailyReward.rewards[player:getDayStreak() + 1]
 		local result = originalProcess(playerId, target)
 		if player and reward and reward.type == 1 then -- DAILY_REWARD_TYPE_ITEM
-			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your daily reward items are in your Store inbox.")
+			if reward.items and reward.items[1] == TIBIA_COIN and #reward.items == 1 then
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your Tibia Coins are in your Store inbox. Use them to add them to your coin balance.")
+			else
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your daily reward items are in your Store inbox.")
+			end
 		end
 		return result
+	end
+
+	local replaced = Family.applyDailyRewardNoPrey()
+	if replaced > 0 then
+		logger.info("[Family] daily reward: {} Prey reroll days replaced (day 3 XP boost, day 5 Tibia Coins)", replaced)
 	end
 
 	local newDay = Family.catchUpDailyRewardDay()
