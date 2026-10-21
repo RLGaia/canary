@@ -3607,9 +3607,7 @@
 		<monster name="Orc Spearman" x="1" y="-1" z="3" spawntime="90" />
 		<monster name="Orc Spearman" x="0" y="1" z="3" spawntime="90" />
 	</monster>
-	<monster centerx="33236" centery="31768" centerz="3" radius="1">
-		<monster name="Werebadger" x="0" y="0" z="3" spawntime="90" />
-	</monster>
+	<!-- FAMILY: Werebadger 33236,31768,3 spawns only at night (data-otservbr-global/scripts/family/night_spawns.lua) -->
 	<monster centerx="33847" centery="31831" centerz="3" radius="1">
 		<monster name="Courage Leech" x="0" y="0" z="3" spawntime="60" />
 	</monster>
@@ -6250,9 +6248,7 @@
 		<monster name="Orc Warrior" x="0" y="1" z="4" spawntime="90" />
 		<monster name="Orc Spearman" x="-1" y="2" z="4" spawntime="90" />
 	</monster>
-	<monster centerx="33217" centery="31767" centerz="4" radius="1">
-		<monster name="Werebadger" x="0" y="0" z="4" spawntime="90" />
-	</monster>
+	<!-- FAMILY: Werebadger 33217,31767,4 spawns only at night (data-otservbr-global/scripts/family/night_spawns.lua) -->
 	<monster centerx="32585" centery="31775" centerz="4" radius="1">
 		<monster name="Sheep" x="1" y="1" z="4" spawntime="90" />
 	</monster>
@@ -6264,9 +6260,7 @@
 		<monster name="Orc Spearman" x="0" y="-1" z="4" spawntime="90" />
 		<monster name="Orc Spearman" x="0" y="1" z="4" spawntime="90" />
 	</monster>
-	<monster centerx="33237" centery="31775" centerz="4" radius="1">
-		<monster name="Werefox" x="0" y="0" z="4" spawntime="90" />
-	</monster>
+	<!-- FAMILY: Werefox 33237,31775,4 spawns only at night (data-otservbr-global/scripts/family/night_spawns.lua) -->
 	<monster centerx="32605" centery="31783" centerz="4" radius="1">
 		<monster name="Poison Spider" x="0" y="-1" z="4" spawntime="90" />
 	</monster>
