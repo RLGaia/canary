@@ -15,9 +15,10 @@
 -- the same as the server's (premium, vocation, prey window, magic shield).
 -- The server also sends its own packet when the wheel of destiny is saved or
 -- a gem is changed (client packets 0x62 and 0xE7, seen by the module
--- data/modules/scripts/family/spell_list.lua) and when transcendence starts
--- and ends (seen here as the avatar outfit condition coming and going); the
--- right list follows half a second later.
+-- data/modules/scripts/family/spell_list.lua), when transcendence starts
+-- and ends (seen here as the avatar outfit condition coming and going) and
+-- when the character comes back after a death (seen as a pause in its
+-- thinking); the right list follows half a second later.
 --
 -- Switch: Family.knownSpellList (false = upstream).
 
@@ -171,6 +172,15 @@ end
 -- too): sending the right list once more does no harm.
 local outfitOn = {}
 
+-- After a death (2026-10-20): the character leaves the game while the death
+-- window is open and comes back with the same character object when "Ok" is
+-- clicked; the server then sends its own list again (all spells of the
+-- vocation) but no login event runs. The character does not think while it
+-- is away, so a pause of a few seconds between two thinks means it has just
+-- come back: send the right list again.
+local lastThink = {}
+local AWAY_SECONDS = 3
+
 local think = EventCallback("FamilySpellListThink")
 
 function think.playerOnThink(player, interval)
@@ -178,6 +188,11 @@ function think.playerOnThink(player, interval)
 		return
 	end
 	local id = player:getId()
+	local now = os.time()
+	if lastThink[id] and now - lastThink[id] >= AWAY_SECONDS then
+		sendLater(player, 500)
+	end
+	lastThink[id] = now
 	local on = player:getCondition(CONDITION_OUTFIT, CONDITIONID_COMBAT) ~= nil
 	if outfitOn[id] ~= nil and outfitOn[id] ~= on then
 		sendLater(player, 500)
@@ -191,6 +206,7 @@ local logout = CreatureEvent("FamilySpellListLogout")
 
 function logout.onLogout(player)
 	outfitOn[player:getId()] = nil
+	lastThink[player:getId()] = nil
 	return true
 end
 
