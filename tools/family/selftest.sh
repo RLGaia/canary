@@ -10,7 +10,9 @@
 # warnings. config.lua and zz_selftest.lua are always deleted afterwards; never
 # commit them. Start from tools/family/selftest_template.lua.
 #
-# Needs the Linux build of the pinned Canary (v3.6.1) and MariaDB:
+# Needs the Linux build of the pinned Canary (v3.6.1) and MariaDB. The binary:
+#   curl -sL -o canary-linux.zip https://github.com/opentibiabr/canary/releases/download/v3.6.1/canary-linux-release.zip
+#   (SHA256 6a2b7381a2dc38ce0845bc2eb47e1fc57e29ed161466bff0992b05ef18174799), unzip, chmod +x canary
 #   CANARY_BIN       path to the Linux canary binary (required)
 #   FAMILY_TEST_DIR  folder for logs and the test database
 #                    (default /tmp/family-selftest; database in db/, socket my.sock)
