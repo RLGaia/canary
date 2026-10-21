@@ -58,7 +58,44 @@ local function doNotTeleport(player)
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, message)
 end
 
+-- FAMILY: usable anywhere (2026-10-20, asked by Rodrigo; switch
+-- Family.adventurerStoneAnywhere in data/scripts/family/adventurer_stone.lua):
+-- not while in a fight (battle icon) or PZ-locked, and not where logging out is
+-- not allowed or inside a boss or encounter zone (boss and quest rooms).
+local function familyStoneAnywhere(player)
+	local playerPos = player:getPosition()
+	local tile = Tile(playerPos)
+	if player:isPzLocked() or player:getCondition(CONDITION_INFIGHT, CONDITIONID_DEFAULT) then
+		player:getPosition():sendMagicEffect(CONST_ME_POFF)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You cannot use the adventurer's stone during a fight.")
+		return false
+	end
+	local blocked = not tile or tile:hasFlag(TILESTATE_NOLOGOUT)
+	if not blocked and Zone and Zone.getByPosition then
+		for _, zone in ipairs(Zone.getByPosition(playerPos) or {}) do
+			local name = zone:getName() or ""
+			if name:find("^boss%.") or name:find("^encounter") then
+				blocked = true
+				break
+			end
+		end
+	end
+	if blocked then
+		player:getPosition():sendMagicEffect(CONST_ME_POFF)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The spiritual energy of this place is too strong. You cannot use the adventurer's stone here.")
+		return false
+	end
+	playerPos:sendMagicEffect(CONST_ME_TELEPORT)
+	local destination = Position(32210, 32300, 6)
+	player:teleportTo(destination)
+	destination:sendMagicEffect(CONST_ME_TELEPORT)
+	return true
+end
+
 function adventurersStone.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if Family and Family.adventurerStoneAnywhere then
+		return familyStoneAnywhere(player)
+	end
 	local tile = Tile(player:getPosition())
 	if not tile:hasFlag(TILESTATE_PROTECTIONZONE) or tile:hasFlag(TILESTATE_HOUSE) or player:isPzLocked() then
 		doNotTeleport(player)

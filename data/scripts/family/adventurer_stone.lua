@@ -17,6 +17,13 @@
 
 Family = Family or {}
 Family.dailyFreeAdventurerStone = true
+-- (2026-10-20) The stone works anywhere, not only in temples: not during a
+-- fight, not where logging out is not allowed, not in boss or encounter zones
+-- (FAMILY: in actions/adventurers_guild/adventurers_stone.lua). The guild's
+-- exit portal always leads to the home temple (FAMILY: in
+-- movements/teleport/adventurers_guild.lua). false = upstream for each.
+Family.adventurerStoneAnywhere = true
+Family.adventurerGuildExitHome = true
 
 local KV_SCOPE = "family-adventurer-stone"
 
