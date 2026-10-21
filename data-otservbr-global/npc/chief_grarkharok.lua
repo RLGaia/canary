@@ -55,12 +55,50 @@ end
 
 local mission = Storage.Quest.U8_2.TrollSabotageQuest
 local ThreatenedDreams = Storage.Quest.U11_40.ThreatenedDreams
+
+-- FAMILY: (2026-10-21) While he waits for the troll lady's name (topic 3), his
+-- other keywords stay quiet: "saradoca" used to hit "do" (an alias of necklace)
+-- and the name was never heard. As TibiaWiki says, the name must be a female
+-- character of this server; he repeats that name (upstream said the speaker's
+-- own name and took any text).
+local function notWaitingForName(player)
+	return not player or npcHandler:getTopic(player:getId()) ~= 3
+end
+
+local function femaleCharacterName(text)
+	local name = tostring(text or ""):gsub("^%s+", ""):gsub("%s+$", "")
+	if name == "" or #name > 30 then
+		return nil
+	end
+	local result = db.storeQuery("SELECT `name` FROM `players` WHERE `name` = " .. db.escapeString(name) .. " AND `sex` = " .. PLAYERSEX_FEMALE .. " AND `deletion` = 0 LIMIT 1")
+	if not result then
+		return nil
+	end
+	local found = Result.getString(result, "name")
+	Result.free(result)
+	return found
+end
+
 local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	local playerId = player:getId()
 
 	if not npcHandler:checkInteraction(npc, creature) then
 		return false
+	end
+
+	-- FAMILY: the name is checked before any other topic (see above)
+	if npcHandler:getTopic(playerId) == 3 then
+		local lady = femaleCharacterName(message)
+		if not lady then
+			npcHandler:say("Grarkharok no know troll lady with that name! Tell name of real lady!!", npc, creature)
+			return true
+		end
+		npcHandler:say(lady .. "?!? Sound good! Bring troll lady to Grarkharok!! Here, give troll lady! Take take! Bring lady to Grarkharok for make tribe!! Now GO!", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+		player:setStorageValue(mission.Questline, 2)
+		player:addItem(7754, 1)
+		return true
 	end
 
 	if MsgContains(message, "cloak") or MsgContains(message, "feather") or MsgContains(message, "swan") or MsgContains(message, "maiden") then
@@ -103,11 +141,6 @@ local function creatureSayCallback(npc, creature, type, message)
 				npcHandler:setTopic(playerId, 0)
 			end
 		end
-	elseif npcHandler:getTopic(playerId) == 3 then
-		npcHandler:say("|PLAYERNAME|?!? Sound good! Bring troll lady to Grarkharok!! Here, give troll lady! Take take! Bring lady to Grarkharok for make tribe!! Now GO!", npc, creature)
-		npcHandler:setTopic(playerId, 0)
-		player:setStorageValue(mission.Questline, 2)
-		player:addItem(7754, 1)
 	elseif MsgContains(message, "frog") then
 		npcHandler:say("Have dead frog for Grarkharok??", npc, creature)
 		npcHandler:setTopic(playerId, 100)
@@ -126,34 +159,34 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 -- basic
-keywordHandler:addKeyword({ "tribe" }, StdModule.say, { npcHandler = npcHandler, text = "Me tribe in production! Only need troll lady!" })
+keywordHandler:addKeyword({ "tribe" }, StdModule.say, { npcHandler = npcHandler, text = "Me tribe in production! Only need troll lady!" }, notWaitingForName)
 keywordHandler:addAliasKeyword({ "troll" })
 keywordHandler:addAliasKeyword({ "other" })
 
-keywordHandler:addKeyword({ "gold" }, StdModule.say, { npcHandler = npcHandler, text = "Me no nothing! Need all money to make Grarkharok tribe!" })
+keywordHandler:addKeyword({ "gold" }, StdModule.say, { npcHandler = npcHandler, text = "Me no nothing! Need all money to make Grarkharok tribe!" }, notWaitingForName)
 keywordHandler:addAliasKeyword({ "crystal" })
 keywordHandler:addAliasKeyword({ "platinum" })
 keywordHandler:addAliasKeyword({ "money" })
 keywordHandler:addAliasKeyword({ "pay" })
-keywordHandler:addKeyword({ "boom" }, StdModule.say, { npcHandler = npcHandler, text = "Grarkharok like BOOM, BOOM sound! Go mountain, push rock and BOOM!" })
-keywordHandler:addKeyword({ "bottom" }, StdModule.say, { npcHandler = npcHandler, text = "Like it?? Hope troll lady also like it!" })
+keywordHandler:addKeyword({ "boom" }, StdModule.say, { npcHandler = npcHandler, text = "Grarkharok like BOOM, BOOM sound! Go mountain, push rock and BOOM!" }, notWaitingForName)
+keywordHandler:addKeyword({ "bottom" }, StdModule.say, { npcHandler = npcHandler, text = "Like it?? Hope troll lady also like it!" }, notWaitingForName)
 keywordHandler:addAliasKeyword({ "butt" })
-keywordHandler:addKeyword({ "human" }, StdModule.say, { npcHandler = npcHandler, text = "Me no like human. Need quiet to make tribe! Only need troll lady!" })
-keywordHandler:addKeyword({ "chief" }, StdModule.say, { npcHandler = npcHandler, text = "Yeye, me stole chief club from Fragratosh, hrhrhrh! Now make me own tribe!" })
-keywordHandler:addKeyword({ "fragratosh" }, StdModule.say, { npcHandler = npcHandler, text = "Fragratosh stupid. He chief of me old tribe. No frogs, no snakes, no smashing humans withrocks. Booooooring tribe! Now me make own tribe!!" })
-keywordHandler:addKeyword({ "necklace" }, StdModule.say, { npcHandler = npcHandler, text = "Grarkharok no listen to talk of stinky human! Lalalalalala! Like song? Grarkharok made!" })
+keywordHandler:addKeyword({ "human" }, StdModule.say, { npcHandler = npcHandler, text = "Me no like human. Need quiet to make tribe! Only need troll lady!" }, notWaitingForName)
+keywordHandler:addKeyword({ "chief" }, StdModule.say, { npcHandler = npcHandler, text = "Yeye, me stole chief club from Fragratosh, hrhrhrh! Now make me own tribe!" }, notWaitingForName)
+keywordHandler:addKeyword({ "fragratosh" }, StdModule.say, { npcHandler = npcHandler, text = "Fragratosh stupid. He chief of me old tribe. No frogs, no snakes, no smashing humans withrocks. Booooooring tribe! Now me make own tribe!!" }, notWaitingForName)
+keywordHandler:addKeyword({ "necklace" }, StdModule.say, { npcHandler = npcHandler, text = "Grarkharok no listen to talk of stinky human! Lalalalalala! Like song? Grarkharok made!" }, notWaitingForName)
 keywordHandler:addAliasKeyword({ "do" })
 keywordHandler:addAliasKeyword({ "reason" })
 keywordHandler:addAliasKeyword({ "why" })
-keywordHandler:addKeyword({ "destroy" }, StdModule.say, { npcHandler = npcHandler, text = "You have what want! Go go, find lady so be Grarkharok tribe!!" })
-keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "Me be Grarkharok!!" })
+keywordHandler:addKeyword({ "destroy" }, StdModule.say, { npcHandler = npcHandler, text = "You have what want! Go go, find lady so be Grarkharok tribe!!" }, notWaitingForName)
+keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "Me be Grarkharok!!" }, notWaitingForName)
 keywordHandler:addAliasKeyword({ "grarkharok" })
-keywordHandler:addKeyword({ "gurak cha rak" }, StdModule.say, { npcHandler = npcHandler, text = "You say troll speak!! Hmmm, sound like south tribe! You know Ingortrak ?? He chief of big tribe in jungle! Good chief he is!" })
-keywordHandler:addKeyword({ "item" }, StdModule.say, { npcHandler = npcHandler, text = "I Tem?!?!? No know! Maybe YOU Tem?" })
-keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "Me be Grarkharok. No me name Job!" })
+keywordHandler:addKeyword({ "gurak cha rak" }, StdModule.say, { npcHandler = npcHandler, text = "You say troll speak!! Hmmm, sound like south tribe! You know Ingortrak ?? He chief of big tribe in jungle! Good chief he is!" }, notWaitingForName)
+keywordHandler:addKeyword({ "item" }, StdModule.say, { npcHandler = npcHandler, text = "I Tem?!?!? No know! Maybe YOU Tem?" }, notWaitingForName)
+keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "Me be Grarkharok. No me name Job!" }, notWaitingForName)
 keywordHandler:addAliasKeyword({ "nothing" })
-keywordHandler:addKeyword({ "tibia" }, StdModule.say, { npcHandler = npcHandler, text = "Tribe Grarkharok will rules Tibia! Me only need troll lady, then start tribe!" })
-keywordHandler:addKeyword({ "mission" }, StdModule.say, { npcHandler = npcHandler, text = "Grarkharok destroy human cave down hill! Human away, my mission done,hrhrhrhrhr!" })
+keywordHandler:addKeyword({ "tibia" }, StdModule.say, { npcHandler = npcHandler, text = "Tribe Grarkharok will rules Tibia! Me only need troll lady, then start tribe!" }, notWaitingForName)
+keywordHandler:addKeyword({ "mission" }, StdModule.say, { npcHandler = npcHandler, text = "Grarkharok destroy human cave down hill! Human away, my mission done,hrhrhrhrhr!" }, notWaitingForName)
 keywordHandler:addAliasKeyword({ "quest" })
 npcHandler:setMessage(MESSAGE_GREET, "Me Chief Grarkharok! No do {nothing}!")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Grarkharok be {chief}!")
