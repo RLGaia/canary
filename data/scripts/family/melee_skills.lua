@@ -27,8 +27,13 @@ function Family.syncMeleeSkills(player)
 		return 0
 	end
 	local bestLevel, bestPercent = -1, 0
+	-- FAMILY: the true percentage from the tries (skill_percent_fix.lua), not
+	-- the shown one, which Canary gets wrong after a death.
+	local function percentOf(skill)
+		return Family.trueSkillPercent and Family.trueSkillPercent(player, skill) or player:getSkillPercent(skill)
+	end
 	for _, skill in ipairs(MELEE) do
-		local level, percent = player:getSkillLevel(skill), player:getSkillPercent(skill)
+		local level, percent = player:getSkillLevel(skill), percentOf(skill)
 		if level > bestLevel or (level == bestLevel and percent > bestPercent) then
 			bestLevel, bestPercent = level, percent
 		end
@@ -36,7 +41,7 @@ function Family.syncMeleeSkills(player)
 	local changed = 0
 	local vocation = player:getVocation()
 	for _, skill in ipairs(MELEE) do
-		local level, percent = player:getSkillLevel(skill), player:getSkillPercent(skill)
+		local level, percent = player:getSkillLevel(skill), percentOf(skill)
 		if level < bestLevel or (level == bestLevel and percent < bestPercent - TOLERANCE) then
 			local nextReq = vocation:getRequiredSkillTries(skill, bestLevel + 1)
 			local tries = 0
