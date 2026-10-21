@@ -3006,6 +3006,11 @@ Storage = {
 			Mission = 48712,
 			Pages = { 48713, 48714, 48715 },
 		},
+		-- FAMILY: Pilgrimage of Ashes: mission -1 none, 1 on the pilgrimage, 2 done; discount used per blessing id
+		FamilyPilgrimageOfAshes = {
+			Mission = 48716,
+			Discount = { [2] = 48717, [3] = 48718, [4] = 48719, [5] = 48720, [6] = 48721 },
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,

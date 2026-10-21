@@ -125,6 +125,9 @@ keywordHandler:addKeyword({ "harbour" }, StdModule.say, { npcHandler = npcHandle
 keywordHandler:addKeyword({ "post" }, StdModule.say, { npcHandler = npcHandler, text = "The post office is at the entrance of the depot. Very convenient! Liane will be glad to help you." })
 keywordHandler:addKeyword({ "blessings" }, StdModule.say, { npcHandler = npcHandler, text = "Blessings reduce the death penalty, meaning that if you should die, you will lose less experience, fewer skill points and fewer to no items, if you have all five blessings." })
 
+-- FAMILY: Pilgrimage of Ashes (lib/others/family_pilgrimage.lua)
+FamilyPilgrimage.addGuide(keywordHandler, npcHandler)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

@@ -104,6 +104,9 @@ npcHandler:setMessage(MESSAGE_WALKAWAY, "Good bye.")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Daraman's blessings, enjoy your stay in Darashia, |PLAYERNAME|")
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+-- FAMILY: Pilgrimage of Ashes (lib/others/family_pilgrimage.lua)
+FamilyPilgrimage.addGuide(keywordHandler, npcHandler)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

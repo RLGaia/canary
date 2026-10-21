@@ -103,6 +103,9 @@ npcHandler:setMessage(MESSAGE_GREET, "Welcome, noble |PLAYERNAME|")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Good Bye, noble |PLAYERNAME|")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Good Bye, noble |PLAYERNAME|")
 
+-- FAMILY: Pilgrimage of Ashes, "mission" = this blessing for 1,000 gold less (lib/others/family_pilgrimage.lua)
+FamilyPilgrimage.addPriest(keywordHandler, npcHandler, 6)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

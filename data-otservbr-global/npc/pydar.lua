@@ -97,6 +97,9 @@ npcHandler:setMessage(MESSAGE_GREET, "Be greeted |PLAYERNAME|! I can smell the s
 npcHandler:setMessage(MESSAGE_FAREWELL, "May the fire in your heart never die, |PLAYERNAME|!")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "May the fire in your heart never die.")
 
+-- FAMILY: Pilgrimage of Ashes, "mission" = this blessing for 1,000 gold less (lib/others/family_pilgrimage.lua)
+FamilyPilgrimage.addPriest(keywordHandler, npcHandler, 3)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

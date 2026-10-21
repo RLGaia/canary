@@ -50,6 +50,9 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: Pilgrimage of Ashes (lib/others/family_pilgrimage.lua)
+FamilyPilgrimage.addGuide(keywordHandler, npcHandler)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

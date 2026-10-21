@@ -309,6 +309,18 @@ local quest = {
 				[2] = "You brought the faded last will back to the Cranky Lizard Crone. Now she may fix an old cape or a sedge hat for you, as Wayfarer addons.",
 			},
 		},
+		-- FAMILY: Pilgrimage of Ashes (ours, 2026-10-20; lib/others/family_pilgrimage.lua)
+		[18] = {
+			name = "Pilgrimage of Ashes",
+			storageId = Storage.Quest.FamilyPilgrimageOfAshes.Mission,
+			missionId = 11221,
+			startValue = 1,
+			endValue = 2,
+			states = {
+				[1] = "Receive the five blessings at the sacred places: Norf south of Thais, Humphrey north of Carlin, Edala near Ab'Dendriel, Kawill and Pydar in Kazordoon and the hermit Eremo near Cormaya. Ask each priest for your mission to pay 1,000 gold less. Then report to any guide.",
+				[2] = "You completed the Pilgrimage of Ashes and received 20 platinum coins from a guide.",
+			},
+		},
 		-- [17] = {
 		-- name = "Nomads Land",
 		-- storageId = PLACEHOLDER,

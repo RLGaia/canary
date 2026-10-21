@@ -209,6 +209,9 @@ npcHandler:setMessage(MESSAGE_WALKAWAY, "It was a pleasure to help you, |PLAYERN
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
+-- FAMILY: Pilgrimage of Ashes, "mission" = this blessing for 1,000 gold less (lib/others/family_pilgrimage.lua)
+FamilyPilgrimage.addPriest(keywordHandler, npcHandler, 2)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 npcConfig.shop = {

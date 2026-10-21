@@ -132,6 +132,9 @@ npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Asha Thrazi, |PLAYERNAME|!")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Asha Thrazi, |PLAYERNAME|!")
 
+-- FAMILY: Pilgrimage of Ashes, "mission" = this blessing for 1,000 gold less (lib/others/family_pilgrimage.lua)
+FamilyPilgrimage.addPriest(keywordHandler, npcHandler, 4)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

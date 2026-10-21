@@ -118,6 +118,9 @@ keywordHandler:addKeyword({ "magic" }, StdModule.say, { npcHandler = npcHandler,
 keywordHandler:addKeyword({ "gems" }, StdModule.say, { npcHandler = npcHandler, text = "Hanna buys and sells gems. Her shop is just to the right of the magic shop. Walk east from here and you can't miss it." })
 keywordHandler:addKeyword({ "food" }, StdModule.say, { npcHandler = npcHandler, text = "You could buy food at the McRonald's farm in the eastern part of town or at Frodo's tavern, north of the temple." })
 
+-- FAMILY: Pilgrimage of Ashes (lib/others/family_pilgrimage.lua)
+FamilyPilgrimage.addGuide(keywordHandler, npcHandler)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

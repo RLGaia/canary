@@ -106,6 +106,9 @@ keywordHandler:addKeyword({ "ashes" }, StdModule.say, { npcHandler = npcHandler,
 keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "My name is Norf." })
 keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "I am here to provide one of the five blessings." })
 
+-- FAMILY: Pilgrimage of Ashes, "mission" = this blessing for 1,000 gold less (lib/others/family_pilgrimage.lua)
+FamilyPilgrimage.addPriest(keywordHandler, npcHandler, 5)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table
