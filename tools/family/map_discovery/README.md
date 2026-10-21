@@ -33,9 +33,13 @@ files), Python 3 and a server you can start for a minute (a test copy is best).
   drawn on the surface map) can be selected in the client, so only those are used.
 - A subarea is its shape on every floor (the shapes never overlap; real Tibia points of
   interest are found from floor 0 to 15 inside them).
-- Points of interest: `poi_generator.lua` walks the map from every temple and NPC (stairs,
-  ladders, rope spots, sewer grates, ordinary doors and teleports are followed; houses and
-  doors with an action or unique id are not). The real spots players mapped in Tibia
+- Points of interest: `poi_generator.lua` walks the map from every temple, following stairs,
+  holes, ladders, rope spots, sewer grates and teleports to the exact square the server
+  sends a player to, and ordinary doors; never houses (`Tile:getHouse()`: Canary v3.6.1 has
+  no `TILESTATE_HOUSE`), locked doors or doors with an action or unique id. NPC squares and
+  every `Position(...)` in the NPC scripts (boat destinations, quest teleports) are extra
+  starts, used only when they lead to at least 100 new squares (so the squares behind a shop
+  counter are left out). Fixed on 2026-10-21 after a point was found inside a Stonehome house. The real spots players mapped in Tibia
   (TibiaMaps.io flag markers) are kept when that tile, or one within 2 squares on the same
   floor, can be walked to on our map (about 85% of them). Up to 16 evenly spread reachable
   tiles on any floor are generated too, and `build_data.py` adds them only while a subarea

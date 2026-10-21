@@ -7,6 +7,9 @@ Real point of interest spots seen in Tibia (TibiaMaps.io's tibia-map-data,
 extra/points-of-interest/markers.json, MIT licence; flag markers only) are assigned to the
 subarea whose shape contains them.
 
+Every Position(x, y, z) written in the server's NPC scripts (travel destinations, kick spots,
+quest teleports) is exported as a possible starting point too (2026-10-21).
+
 usage: export_masks.py <client assets folder> <output masks.lua> <server npc xml> [<poi markers.json>]"""
 import sys,os,re,json
 sys.path.insert(0,os.path.dirname(__file__))
@@ -62,6 +65,15 @@ def main(assets, out, npcxml=None, poijson=None):
             sid=owner.get((f['x'],f['y']))
             if f.get('icon')=='flag' and sid and areas.get(sid,{}).get(3)==2:
                 real.setdefault(sid,[]).append((f['x'],f['y'],f['z']))
+    dests=set()
+    if npcxml:
+        npcdir=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(npcxml))),'npc')
+        for f in sorted(os.listdir(npcdir)):
+            if f.endswith('.lua'):
+                t=open(os.path.join(npcdir,f),encoding='utf-8',errors='ignore').read()
+                for m in re.finditer(r'Position\(\s*(\d{4,5})\s*,\s*(\d{4,5})\s*,\s*(\d{1,2})\s*\)',t):
+                    dests.add(tuple(map(int,m.groups())))
+    L.append('dests={'+','.join('{%d,%d,%d}'%p for p in sorted(dests))+'},')
     L.append('real={'+','.join('[%d]={%s}'%(sid,','.join('{%d,%d,%d}'%p for p in pts)) for sid,pts in sorted(real.items()))+'},')
     L.append('npcs={'+','.join('{%d,%d,%d}'%p for p in seeds)+'},')
     L.append('}')

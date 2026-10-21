@@ -87,8 +87,9 @@ def main(client_assets, candidates, out, server='.'):
     '-- below ground). Points of interest: the spots where players found them in Tibia',
     "-- (TibiaMaps.io's points-of-interest markers, MIT licence) that can be walked to on our",
     '-- map, topped up to 16 with evenly spread reachable tiles on any floor (reachable = walked',
-    '-- to from a temple or an NPC through stairs, ladders, rope spots, ordinary doors and',
-    '-- teleports; houses, quest and level doors excluded). Regenerate with',
+    '-- to from a temple, or from an NPC or NPC destination leading to 100+ squares, through',
+    '-- stairs, ladders, rope spots, sewer grates, ordinary doors and teleports; never houses,',
+    '-- locked, quest or level doors). Regenerate with',
     '-- tools/family/map_discovery/ (see its README) when the map or the client changes.',
     '-- Used by data/scripts/family/map_discovery.lua.','','FamilyDiscoveryData = {','\tareas = {']
     inc={}

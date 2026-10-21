@@ -5,9 +5,19 @@
 -- Reads masks.lua (export_masks.py) and writes poi_candidates.lua: for every subarea the
 -- real point of interest spots that can be walked to on our map ("real"), and up to 16
 -- evenly spread reachable tiles on any floor below or above its shape ("poi").
+--
+-- 2026-10-21: a point was found inside a Stonehome house. Canary v3.6.1 has no
+-- TILESTATE_HOUSE (the flag was nil, so houses were never skipped); houses are now found
+-- with Tile:getHouse(). The walk also follows stairs, holes, ladders, rope spots, sewer
+-- grates and teleports to the exact square the server sends a player to (it used to mark
+-- every square within 2 of it, which could cross walls), and locked doors stay closed.
+-- Temples are the start; NPC squares and the positions in NPC scripts (boat destinations,
+-- quest teleports) only add the part of the map they lead to when it has at least
+-- MIN_REGION squares, so the few squares behind a shop counter are not used.
 
 local MASKS = "masks.lua" -- paths relative to the server folder; change if needed
 local OUTPUT = "poi_candidates.lua"
+local MIN_REGION = 100
 
 local generator = GlobalEvent("FamilyPoiGenerator")
 
@@ -17,116 +27,239 @@ local function generate()
 	local function key(x, y, z)
 		return (z * 65536 + x) * 65536 + y
 	end
-	local ladderIds, ropeIds, grateIds = {}, {}, {}
-	local function classify(item)
-		local id = item:getId()
-		if ladderIds[id] == nil then
-			local n = ItemType(id):getName():lower()
-			ladderIds[id] = n:find("ladder") ~= nil
-			ropeIds[id] = n:find("rope spot") ~= nil or n:find("hole") ~= nil and ItemType(id):isGroundTile() == false
-			grateIds[id] = n:find("sewer grate") ~= nil or n:find("trapdoor") ~= nil
-		end
-		return ladderIds[id], ropeIds[id], grateIds[id]
+	local function unkey(k)
+		local y = k % 65536
+		local xz = (k - y) / 65536
+		local x = xz % 65536
+		return x, y, (xz - x) / 65536
 	end
-	local function passable(tile)
-		if not tile or not tile:getGround() then
-			return false
+
+	-- ordinary doors anyone can open (no action or unique id)
+	local openDoors = {}
+	for _, t in ipairs({ CustomDoorTable, KeyDoorTable }) do
+		for _, d in ipairs(t) do
+			if d.closedDoor then
+				openDoors[d.closedDoor] = true
+			end
 		end
-		if tile:hasFlag(TILESTATE_HOUSE) then
-			return false
+	end
+	local ladders = {}
+	for _, id in ipairs(Game.getLadderIds()) do
+		ladders[id] = true
+	end
+
+	local passCache = {}
+	local function passable(x, y, z)
+		local k = key(x, y, z)
+		local c = passCache[k]
+		if c ~= nil then
+			return c
 		end
-		if tile:hasProperty(CONST_PROP_BLOCKSOLID) or tile:hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID) then
-			-- closed ordinary doors (no action/unique id) can be opened
-			for _, item in ipairs(tile:getItems() or {}) do
-				local it = ItemType(item:getId())
-				if it:isBlocking() then
-					if not it:isDoor() or item:hasAttribute(ITEM_ATTRIBUTE_ACTIONID) or item:hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) then
-						return false
+		local tile = Tile(x, y, z)
+		local good = true
+		if not tile or not tile:getGround() or tile:getHouse() then
+			good = false
+		elseif tile:hasProperty(CONST_PROP_BLOCKSOLID) or tile:hasProperty(CONST_PROP_IMMOVABLEBLOCKSOLID) then
+			if ItemType(tile:getGround():getId()):isBlocking() then
+				good = false
+			else
+				for _, item in ipairs(tile:getItems() or {}) do
+					if ItemType(item:getId()):isBlocking() then
+						if not openDoors[item:getId()] or item:hasAttribute(ITEM_ATTRIBUTE_ACTIONID) or item:hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) then
+							good = false
+							break
+						end
 					end
 				end
 			end
-			if ItemType(tile:getGround():getId()):isBlocking() then
-				return false
+		end
+		passCache[k] = good
+		return good
+	end
+
+	-- where stairs and holes take a player (Tile::queryDestination in the C++)
+	local function stairsDest(tile, x, y, z)
+		if tile:hasFlag(TILESTATE_FLOORCHANGE_DOWN) then
+			local dx, dy, dz = x, y, z + 1
+			local s = Tile(dx, dy - 1, dz)
+			local e = Tile(dx - 1, dy, dz)
+			if s and s:hasFlag(TILESTATE_FLOORCHANGE_SOUTH_ALT) then
+				dy = dy - 2
+			elseif e and e:hasFlag(TILESTATE_FLOORCHANGE_EAST_ALT) then
+				dx = dx - 2
+			else
+				local d = Tile(dx, dy, dz)
+				if not d then
+					return nil
+				end
+				if d:hasFlag(TILESTATE_FLOORCHANGE_NORTH) then
+					dy = dy + 1
+				end
+				if d:hasFlag(TILESTATE_FLOORCHANGE_SOUTH) then
+					dy = dy - 1
+				end
+				if d:hasFlag(TILESTATE_FLOORCHANGE_SOUTH_ALT) then
+					dy = dy - 2
+				end
+				if d:hasFlag(TILESTATE_FLOORCHANGE_EAST) then
+					dx = dx - 1
+				end
+				if d:hasFlag(TILESTATE_FLOORCHANGE_EAST_ALT) then
+					dx = dx - 2
+				end
+				if d:hasFlag(TILESTATE_FLOORCHANGE_WEST) then
+					dx = dx + 1
+				end
+			end
+			return dx, dy, dz
+		end
+		local dx, dy, dz = x, y, z - 1
+		if tile:hasFlag(TILESTATE_FLOORCHANGE_NORTH) then
+			dy = dy - 1
+		end
+		if tile:hasFlag(TILESTATE_FLOORCHANGE_SOUTH) then
+			dy = dy + 1
+		end
+		if tile:hasFlag(TILESTATE_FLOORCHANGE_EAST) then
+			dx = dx + 1
+		end
+		if tile:hasFlag(TILESTATE_FLOORCHANGE_WEST) then
+			dx = dx - 1
+		end
+		if tile:hasFlag(TILESTATE_FLOORCHANGE_SOUTH_ALT) then
+			dy = dy + 2
+		end
+		if tile:hasFlag(TILESTATE_FLOORCHANGE_EAST_ALT) then
+			dx = dx + 2
+		end
+		return dx, dy, dz
+	end
+
+	-- where using a ladder, a rope spot or a sewer grate on this square takes a player
+	local useCache = {}
+	local function useDest(x, y, z)
+		local k = key(x, y, z)
+		local c = useCache[k]
+		if c ~= nil then
+			return c
+		end
+		c = false
+		local tile = Tile(x, y, z)
+		if tile and tile:getGround() then
+			local up, down = tile:isRopeSpot(), false
+			for _, item in ipairs(tile:getItems() or {}) do
+				if ladders[item:getId()] then
+					up = true
+				elseif item:getId() == 435 then -- sewer grate (actions/items/ladder_up.lua)
+					down = true
+				end
+			end
+			if up then
+				local p = Position(x, y, z):moveUpstairs()
+				c = { p.x, p.y, p.z }
+			elseif down then
+				c = { x, y, z + 1 }
 			end
 		end
-		return true
+		useCache[k] = c
+		return c
 	end
-	local seen, queue, qh = {}, {}, 1
-	local function push(x, y, z)
-		if z < 0 or z > 15 then
-			return
-		end
-		local k = key(x, y, z)
-		if seen[k] == nil then
-			local good = passable(Tile(x, y, z))
+
+	-- Walks from the seeds; squares already in `reached` are not walked again.
+	-- Returns the list of new squares.
+	local function walk(seeds, reached)
+		local seen, queue, qh = {}, {}, 1
+		local function arrive(x, y, z)
+			if z < 0 or z > 15 then
+				return
+			end
+			local k = key(x, y, z)
+			if reached[k] or seen[k] ~= nil then
+				return
+			end
+			local good = passable(x, y, z)
 			seen[k] = good
 			if good then
 				queue[#queue + 1] = k
 			end
 		end
-	end
-	local function pushArea(x, y, z, r)
-		for dx = -r, r do
-			for dy = -r, r do
-				push(x + dx, y + dy, z)
-			end
+		for _, s in ipairs(seeds) do
+			arrive(s[1], s[2], s[3])
 		end
-	end
-	for _, town in pairs(Game.getTowns()) do
-		local p = town:getTemplePosition()
-		push(p.x, p.y, p.z)
-	end
-	for _, n in ipairs(M.npcs) do
-		pushArea(n[1], n[2], n[3], 1)
-	end
-	while qh <= #queue do
-		local k = queue[qh]
-		qh = qh + 1
-		local y = k % 65536
-		local xz = (k - y) / 65536
-		local x = xz % 65536
-		local z = (xz - x) / 65536
-		local tile = Tile(x, y, z)
-		if tile:hasFlag(TILESTATE_FLOORCHANGE) then
-			if tile:hasFlag(TILESTATE_FLOORCHANGE_DOWN) then
-				pushArea(x, y, z + 1, 2)
-			else
-				pushArea(x, y, z - 1, 2)
+		while qh <= #queue do
+			local k = queue[qh]
+			qh = qh + 1
+			local x, y, z = unkey(k)
+			local tile = Tile(x, y, z)
+			local moved = false
+			if tile:hasFlag(TILESTATE_FLOORCHANGE) then
+				local dx, dy, dz = stairsDest(tile, x, y, z)
+				if dx then
+					arrive(dx, dy, dz)
+				end
+				moved = true
 			end
-		else
-			push(x + 1, y, z)
-			push(x - 1, y, z)
-			push(x, y + 1, z)
-			push(x, y - 1, z)
-			push(x + 1, y + 1, z)
-			push(x - 1, y - 1, z)
-			push(x - 1, y + 1, z)
-			push(x + 1, y - 1, z)
-		end
-		if tile:hasFlag(TILESTATE_TELEPORT) then
-			for _, item in ipairs(tile:getItems() or {}) do
-				local ok, dest = pcall(function()
-					return Teleport(item:getUniqueId()):getDestination()
-				end)
-				if ok and dest and dest.x > 0 then
-					pushArea(dest.x, dest.y, dest.z, 1)
+			if tile:hasFlag(TILESTATE_TELEPORT) then
+				for _, item in ipairs(tile:getItems() or {}) do
+					local ok, dest = pcall(function()
+						return Teleport(item:getUniqueId()):getDestination()
+					end)
+					if ok and dest and dest.x > 0 then
+						arrive(dest.x, dest.y, dest.z)
+						moved = true
+					end
+				end
+			end
+			if not moved then
+				for dx = -1, 1 do
+					for dy = -1, 1 do
+						if dx ~= 0 or dy ~= 0 then
+							arrive(x + dx, y + dy, z)
+						end
+						local u = useDest(x + dx, y + dy, z)
+						if u then
+							arrive(u[1], u[2], u[3])
+						end
+					end
 				end
 			end
 		end
-		for _, item in ipairs(tile:getItems() or {}) do
-			local ladder, rope, grate = classify(item)
-			if ladder or rope then
-				pushArea(x, y + 1, z - 1, 1)
-			end
-			if grate then
-				pushArea(x, y, z + 1, 1)
-			end
+		return queue
+	end
+
+	local reached, count = {}, 0
+	local function accept(list)
+		for _, k in ipairs(list) do
+			reached[k] = true
+		end
+		count = count + #list
+	end
+	local temples = {}
+	for _, town in pairs(Game.getTowns()) do
+		local p = town:getTemplePosition()
+		temples[#temples + 1] = { p.x, p.y, p.z }
+	end
+	accept(walk(temples, reached))
+	local extra, kept, dropped = {}, 0, 0
+	for _, p in ipairs(M.dests or {}) do
+		extra[#extra + 1] = p
+	end
+	for _, n in ipairs(M.npcs) do
+		extra[#extra + 1] = n
+	end
+	for _, s in ipairs(extra) do
+		local list = walk({ s }, reached)
+		if #list >= MIN_REGION then
+			accept(list)
+			kept = kept + 1
+		elseif #list > 0 then
+			dropped = dropped + 1
 		end
 	end
-	logger.info("[PoiGenerator] {} reachable tiles in {}s", #queue, os.clock() - t0)
+	logger.info("[PoiGenerator] {} reachable tiles ({} extra starts kept, {} small ones left out) in {}s", count, kept, dropped, os.clock() - t0)
 
 	local function usable(x, y, z)
-		if not seen[key(x, y, z)] then
+		if not reached[key(x, y, z)] then
 			return false
 		end
 		local tile = Tile(x, y, z)

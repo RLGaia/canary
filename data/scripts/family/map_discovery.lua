@@ -28,7 +28,7 @@
 --      at 10 and 20 areas.
 --
 -- A subarea is the shape the client draws on the map, on every floor above and
--- below it, so points can be in mountains, buildings or caves (only the 189
+-- below it, so points can be in mountains, buildings or caves (only the 188
 -- subareas with a shape can be selected; the client has no shape for a few old
 -- underground ones). Points are the real Tibia spots players have mapped
 -- (TibiaMaps.io), when they can be walked to on our map, plus generated ones
@@ -159,6 +159,66 @@ local function idsText(set)
 	return table.concat(ids, ",")
 end
 
+-- 2026-10-21: the point data was rebuilt (some points were inside houses or where only
+-- an NPC can stand). Points not found yet that are no longer in the data move to other
+-- spots of the same subarea (found ones stay); subareas no longer in the data are
+-- dropped. Runs whenever a character's state is read, so later rebuilds are covered too.
+local validPoints = {}
+local function pointKey(x, y, z)
+	return x .. "," .. y .. "," .. z
+end
+local function refreshStoredPoints(kv, state)
+	local changed = false
+	for sid, sub in pairs(state.subs) do
+		local info = data.subareas[sid]
+		if not info then
+			state.subs[sid] = nil
+			kv:remove("sub-" .. sid)
+			changed = true
+		else
+			local valid = validPoints[sid]
+			if not valid then
+				valid = {}
+				for _, p in ipairs(info.points) do
+					valid[pointKey(p[1], p[2], p[3])] = true
+				end
+				validPoints[sid] = valid
+			end
+			local used, stale = {}, false
+			for _, p in ipairs(sub.points) do
+				used[pointKey(p.x, p.y, p.z)] = true
+				if p.state ~= 2 and not valid[pointKey(p.x, p.y, p.z)] then
+					stale = true
+				end
+			end
+			if stale then
+				local pool = {}
+				for _, p in ipairs(info.points) do
+					if not used[pointKey(p[1], p[2], p[3])] then
+						pool[#pool + 1] = p
+					end
+				end
+				local points = {}
+				for _, p in ipairs(sub.points) do
+					if p.state == 2 or valid[pointKey(p.x, p.y, p.z)] then
+						points[#points + 1] = p
+					elseif #pool > 0 then
+						local q = table.remove(pool, math.random(#pool))
+						points[#points + 1] = { x = q[1], y = q[2], z = q[3], state = p.state }
+					end
+				end
+				sub.points = points
+				sub.needed = math.min(sub.needed, #points)
+				kv:set("sub-" .. sid, string.format("%d|%s", sub.needed, pointsText(points)))
+				changed = true
+			end
+		end
+	end
+	if changed then
+		kv:set("progress", idsText(state.subs))
+	end
+end
+
 local function stateOf(player)
 	local id = player:getId()
 	local state = cache[id]
@@ -213,6 +273,7 @@ local function stateOf(player)
 		kv:set("progress", idsText(state.subs))
 		kv:set("manual", 1)
 	end
+	refreshStoredPoints(kv, state)
 	cache[id] = state
 	return state
 end
