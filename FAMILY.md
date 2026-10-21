@@ -465,6 +465,16 @@ Release tags are single snapshot commits without history, so for the next
 release compare the new tag with v3.6.1 (`git diff v3.6.1 vX.Y.Z`) instead of
 expecting `git merge` to know what we already copied.
 
+## Self-tests (Linux workspace)
+
+Changes are tested on a Linux copy of the server before they are committed:
+`tools/family/selftest.sh <test.lua> [timeout]` writes a temporary `config.lua`,
+copies the test to `data/scripts/zz_selftest.lua`, starts the server, waits for
+`[Selftest] DONE`, stops it, prints the results and deletes both files again.
+It needs `CANARY_BIN` (the Linux build of the pinned v3.6.1) and MariaDB; the
+test database is created on first use. Start from
+`tools/family/selftest_template.lua`. Not used on the Windows server PC.
+
 ## Updating to a new Canary release
 
 ```powershell
