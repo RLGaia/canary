@@ -84,7 +84,7 @@ monster.loot = {
 	{ id = 238, chance = 30000, minCount = 1, maxCount = 19 }, -- great mana potion
 	{ id = 23373, chance = 25000, minCount = 1, maxCount = 19 }, -- ultimate mana potion
 	{ id = 7440, chance = 22000, minCount = 1, maxCount = 9 }, -- mastermind potion
-	{ id = 51302, chance = 22000, minCount = 1, maxCount = 9 }, -- transcendence potion
+	{ id = 49271, chance = 22000, minCount = 1, maxCount = 9 }, -- transcendence potion (FAMILY: was 51302, not a potion in client 15.11)
 	{ id = 7443, chance = 20000, minCount = 1, maxCount = 9 }, -- bullseye potion
 	{ id = 35572, chance = 17000, minCount = 3, maxCount = 102 }, -- pirate coin
 	{ id = 7439, chance = 16000, minCount = 1, maxCount = 9 }, -- berserk potion

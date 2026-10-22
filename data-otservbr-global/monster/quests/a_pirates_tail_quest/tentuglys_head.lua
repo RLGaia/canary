@@ -71,7 +71,7 @@ monster.loot = {
 	{ id = 3035, chance = 23240, minCount = 2, maxCount = 19 }, -- platinum coin
 	{ id = 7443, chance = 20420, minCount = 1, maxCount = 9 }, -- bullseye potion
 	{ id = 7440, chance = 16900, minCount = 2, maxCount = 9 }, -- mastermind potion
-	{ id = 51302, chance = 16900, minCount = 2, maxCount = 9 }, -- transcendence potion
+	{ id = 49271, chance = 16900, minCount = 2, maxCount = 9 }, -- transcendence potion (FAMILY: was 51302, not a potion in client 15.11)
 	{ id = 35572, chance = 13380, minCount = 3, maxCount = 86 }, -- pirate coin
 	{ id = 35508, chance = 7750 }, -- cheesy key
 	{ id = 32623, chance = 4930 }, -- giant topaz
