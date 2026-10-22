@@ -83870,6 +83870,12 @@ Granted by TibiaGoals.com"/>
 			<attribute key="increase speed" value="3"/>
 		</attribute>
 	</item>
+	<!-- FAMILY: the monk shrines of The Way of the Monk (Dawnport and the ten Merudri shrines)
+	     had no name, so Look said "an item of type 50244". TibiaWiki: "Ancient Shrine".
+	     50242 = idle, 50244 = after use, 50243/50245 = the upper part on the floor above. -->
+	<item fromid="50242" toid="50245" article="an" name="ancient shrine">
+		<attribute key="primarytype" value="shrines and altars"/>
+	</item>
 	<item id="50250" article="a" name="inferniarch claws">
 		<attribute key="primarytype" value="fist weapons"/>
 		<attribute key="weapontype" value="fist"/>
