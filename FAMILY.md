@@ -257,7 +257,7 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data-otservbr-global/npc/charos.lua` | As in Tibia since Measuring Tibia: no travel greeting, talks about `discovering`, gives the Discoverer outfit and addons (`outfit`, `yes`, `ten`/`fifteen`/`twenty`); the old city attunement still works with `attune` (limit 7); explains `Start Discovering` and the pink vortex |
 | `data-otservbr-global/npc/oressa.lua` | Upstream bug fixed (2026-10-17): saying `knight` got no answer (the monk answer had been merged into the knight branch), so knight could only be chosen through `choose`, `close` |
 | `data-otservbr-global/world/otservbr-npc.xml` | Spawns the seven Way of the Monk NPCs (Manop, Pema, Rudra, Rahng, Dajcho, Saih, Chesa) at their Tibia positions |
-| `data-otservbr-global/npc/ambassador_manop.lua` | Upstream bug fixed (as upstream #4063): the pilgrimage counter was written to a key that does not exist, so no Blue Valley shrine could be used; it is no longer reset when talking to him again |
+| `data-otservbr-global/npc/ambassador_manop.lua` | Upstream bug fixed (as upstream #4063): the pilgrimage counter was written to a key that does not exist, so no Blue Valley shrine could be used; it is no longer reset when talking to him again. 2026-10-22: no silent answers (monk, purpose, legacy, role, yes when started, non-monks, no shrine, no); no second set of starting gear |
 | `data-otservbr-global/npc/enpa-deia_pema.lua` | `heal` / `healing` heals as at the temples; `pilgrimage` starts the pilgrimage for anyone, names the shrine visited last and where the next one is (and its level), and closes the quest after the tenth; fixed upstream's Lua error on `pilgrimage` and its count, one shrine ahead |
 | `data-otservbr-global/npc/enpa_rudra.lua` | `pilgrimage`: the right shrine count and where the next shrine is |
 | `data-otservbr-global/npc/dahr-enpa_rahng.lua` | Named Dhar-Enpa Rahng, as in Tibia (was Dahr-Enpa) |
@@ -293,7 +293,6 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data/scripts/systems/custom_monster_loot.lua` | Upstream example loot disabled: every monster dropped 1-10 christmas tokens all year and dragons platinum coins. Tokens now drop in December only (winter event) |
 | `data/scripts/actions/items/potions.lua`, `data/items/items.xml` (item 238), `data-otservbr-global/monster/quests/{feaster_of_souls/the_dread_maiden,adventures_of_galthen/megasylvan_yselda,a_pirates_tail_quest/tentuglys_head,a_pirates_tail_quest/ratmiral_blackwhiskers}.lua` | Great mana potion for every vocation (Tibia 15.25); boss loot transcendence potion 51302 -> 49271 (2026-10-22) |
 | `data/items/items.xml` (items 50242-50245) | Monk shrines named "ancient shrine" (were nameless) (2026-10-22) |
-| `data-otservbr-global/npc/ambassador_manop.lua` | No silent answers (monk, purpose, legacy, role, yes when started, non-monks, no shrine, no); no second set of starting gear (2026-10-22) |
 
 If a Canary update conflicts in `raids.xml` or `otservbr-monster.xml`, take the upstream file and
 apply the same caps again (margin above 30 becomes 30; spawntime above 3600 becomes 3600).
