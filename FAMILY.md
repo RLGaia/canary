@@ -504,6 +504,14 @@ Then, on the update branch:
 3. Start the server and run the smoke test with the GOD account: log in, walk, fight
    a monster, loot, use a depot, log out and back in, and confirm the character was saved.
 4. Only then merge `update-vX.Y.Z` into `family`, and install the matching client on both PCs.
+5. Workarounds to remove when the release contains the upstream fix:
+   - Hit sound (2026-10-22): if `WeaponProficiency::applyOn` in
+     `src/creatures/players/components/weapon_proficiency.cpp` skips a gain of 0 and no
+     longer sets `SPELL_LIGHT_HEALING`, the server no longer plays the Light Healing sound
+     on every hit. A new client replaces the sound file anyway; if the old client stays,
+     run `family\client-mute-hit-sound.ps1 -Undo` on both PCs so exura has its sound
+     again. If the release still has the bug, run the script (without `-Undo`) on both
+     PCs after installing the new client.
 
 The `upstream` remote is added once with:
 `git remote add upstream https://github.com/opentibiabr/canary.git`

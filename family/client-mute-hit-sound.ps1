@@ -23,7 +23,7 @@
 # After a client update the sound file may be replaced; run it again.
 
 param(
-	[string]$ClientPath = 'C:\Games\tibia-client-15.11',
+	[string]$ClientPath = '',
 	[switch]$Undo
 )
 
@@ -35,7 +35,14 @@ function Write-Ok([string]$Text) { Write-Host "    OK  $Text" -ForegroundColor G
 function Stop-Script([string]$Text) { Write-Host "ERROR: $Text" -ForegroundColor Red; exit 1 }
 
 # --- find the client's sound data file ---------------------------------------
-while (-not (Test-Path -LiteralPath (Join-Path (Join-Path $ClientPath 'sounds') 'catalog-sound.json'))) {
+if (-not $ClientPath) {
+	# Where the clients are on the family PCs (Rodrigo's since 2026-10-22), else the manual's default
+	foreach ($candidate in @('C:\Games\tibia-client-15.11.c9d1cf\tibia-client-15.11.c9d1cf', 'C:\Games\tibia-client-15.11')) {
+		if (Test-Path -LiteralPath ([System.IO.Path]::Combine($candidate, 'sounds', 'catalog-sound.json'))) { $ClientPath = $candidate; break }
+	}
+	if (-not $ClientPath) { $ClientPath = 'C:\Games\tibia-client-15.11' }
+}
+while (-not (Test-Path -LiteralPath ([System.IO.Path]::Combine($ClientPath, 'sounds', 'catalog-sound.json')))) {
 	Write-Host "No game client found in '$ClientPath' (expected a 'sounds' folder with catalog-sound.json)."
 	$ClientPath = Read-Host 'Folder of the game client (empty = cancel)'
 	if (-not $ClientPath) { exit 1 }
