@@ -67,6 +67,10 @@ preySelectListPrice = 0
 taskHuntingFreeRerollTime = 0
 taskHuntingRerollPricePerLevel = 0
 taskHuntingSelectListPrice = 0
+-- Since 2026-10-21 (Rodrigo): after claiming a Hunting Task the slot can take
+-- a new creature at once (upstream waits 20 hours), and claimed Hunting Task
+-- Points are multiplied by 10 (data/scripts/family/hunting_task_points.lua).
+taskHuntingLimitedTasksExhaust = 0
 
 -- ===========================================================================
 -- Batch 2 (2026-10-12): death, training and respawn

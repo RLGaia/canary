@@ -30,6 +30,8 @@
 	<!-- FAMILY: Spell List stays right after wheel of destiny changes (data/scripts/family/spell_list.lua) -->
 	<module type="recvbyte" byte="98" script="family/spell_list.lua" />
 	<module type="recvbyte" byte="231" script="family/spell_list.lua" />
+	<!-- FAMILY: claimed Hunting Task Points x10 (data/scripts/family/hunting_task_points.lua) -->
+	<module type="recvbyte" byte="186" script="family/hunting_tasks.lua" />
 
 	<!-- Hireling Outfit Helper -->
 	<module type="recvbyte" byte="211" script="hirelings/hireling_module.lua" />
