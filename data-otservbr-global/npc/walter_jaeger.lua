@@ -270,7 +270,7 @@ local function getOfferString(name, offer, topic)
 	if topic == config.topics.outfit then
 		string = "The {base} " .. offerTable.name .. " outfit costs " .. tostring(offerTable.base) .. " HTP, the {first} addon " .. tostring(offerTable.firstAddon) .. " HTP and the {second} addon " .. tostring(offerTable.secondAddon) .. " HTP."
 	elseif topic == config.topics.mount then
-		string = "The {" .. offerTable.name .. "} mount costs " .. tostring(offerTable.value) .. " HTP."
+		string = "The {" .. offerTable.name .. "} mount costs " .. tostring(offerTable.value) .. " HTP. Do you want it?" -- FAMILY: asks, the answer buys it
 	end
 
 	return string
@@ -297,6 +297,31 @@ local function processItemInboxPurchase(player, name, id)
 	return false
 end
 
+-- FAMILY: (2026-10-21) Points spent here are counted per character, so "spent"
+-- (offered in his greeting) answers; upstream had it commented out.
+local function spentPoints(player)
+	return tonumber(player:kv():scoped("family-hunting-task-points"):get("spent") or 0) or 0
+end
+
+local function spendPoints(player, amount)
+	if not player:removeTaskHuntingPoints(amount) then
+		return false
+	end
+	player:kv():scoped("family-hunting-task-points"):set("spent", spentPoints(player) + amount)
+	return true
+end
+
+local function formatPoints(n)
+	local text = tostring(math.floor(n))
+	while true do
+		local replaced
+		text, replaced = text:gsub("^(%d+)(%d%d%d)", "%1,%2")
+		if replaced == 0 then
+			return text
+		end
+	end
+end
+
 local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	local playerId = player:getId()
@@ -317,10 +342,9 @@ local function creatureSayCallback(npc, creature, type, message)
 		npcHandler:say("Right now you have " .. player:getTaskHuntingPoints() .. " HTP.", npc, creature)
 		npcHandler:setTopic(playerId, 0)
 
-		-- Add task hunting points history here.
-		--elseif MsgContains(message, "spent") then
-		--	npcHandler:say("You have already spent " .. nil .. " HTP.", npc, creature)
-		--	npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "spent") then -- FAMILY: see spentPoints
+		npcHandler:say("You have already spent " .. formatPoints(spentPoints(player)) .. " HTP with me.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
 
 		-- Rewards topic
 	elseif npcHandler:getTopic(playerId) == 1 then
@@ -378,7 +402,7 @@ local function creatureSayCallback(npc, creature, type, message)
 				local offerTable = getOfferByName(message, config.trophies, npcHandler:getTopic(playerId))
 				if offerTable ~= nil then
 					if player:getTaskHuntingPoints() >= offerTable.value then
-						if processItemInboxPurchase(player, offerTable.name, offerTable.itemId) and player:removeTaskHuntingPoints(offerTable.value) then
+						if processItemInboxPurchase(player, offerTable.name, offerTable.itemId) and spendPoints(player, offerTable.value) then
 							npcHandler:say("Here you have it.", npc, creature)
 						else
 							npcHandler:say("Sorry, but you don't have enough slots on your inbox or capacity.", npc, creature)
@@ -396,7 +420,7 @@ local function creatureSayCallback(npc, creature, type, message)
 				local offerTable = getOfferByName(message, config.furniture, npcHandler:getTopic(playerId))
 				if offerTable ~= nil then
 					if player:getTaskHuntingPoints() >= offerTable.value then
-						if processItemInboxPurchase(player, offerTable.name, offerTable.itemId) and player:removeTaskHuntingPoints(offerTable.value) then
+						if processItemInboxPurchase(player, offerTable.name, offerTable.itemId) and spendPoints(player, offerTable.value) then
 							npcHandler:say("Here you have it.", npc, creature)
 						else
 							npcHandler:say("Sorry, but you don't have enough slots on your inbox or capacity.", npc, creature)
@@ -417,11 +441,13 @@ local function creatureSayCallback(npc, creature, type, message)
 						local points = offerTable.base
 						if player:hasOutfit(offerTable.male) or player:hasOutfit(offerTable.female) then
 							npcHandler:say("You already have this outfit.", npc, creature)
-						elseif player:removeTaskHuntingPoints(points) then
+						elseif spendPoints(player, points) then
 							-- Add task hunting points history here.
 							player:addOutfit(offerTable.male)
 							player:addOutfit(offerTable.female)
 							npcHandler:say("Here you have it.", npc, creature)
+						else -- FAMILY: upstream said nothing
+							npcHandler:say("Sorry, but you don't have enough hunting task points.", npc, creature)
 						end
 					elseif MsgContains(message, "first") then
 						local points = offerTable.firstAddon
@@ -429,7 +455,7 @@ local function creatureSayCallback(npc, creature, type, message)
 							npcHandler:say("First you need to buy the base addon to unlock this addon.", npc, creature)
 						elseif player:hasOutfit(offerTable.male, 1) or player:hasOutfit(offerTable.female, 1) then
 							npcHandler:say("You already have this addon.", npc, creature)
-						elseif player:removeTaskHuntingPoints(points) then
+						elseif spendPoints(player, points) then
 							-- Add task hunting points history here.
 							player:addOutfitAddon(offerTable.male, 1)
 							player:addOutfitAddon(offerTable.female, 1)
@@ -443,7 +469,7 @@ local function creatureSayCallback(npc, creature, type, message)
 							npcHandler:say("First you need to buy the base addon to unlock this addon.", npc, creature)
 						elseif player:hasOutfit(offerTable.male, 2) or player:hasOutfit(offerTable.female, 2) then
 							npcHandler:say("You already have this addon.", npc, creature)
-						elseif player:removeTaskHuntingPoints(points) then
+						elseif spendPoints(player, points) then
 							-- Add task hunting points history here.
 							player:addOutfitAddon(offerTable.male, 2)
 							player:addOutfitAddon(offerTable.female, 2)
@@ -466,10 +492,12 @@ local function creatureSayCallback(npc, creature, type, message)
 					local points = offerTable.value
 					if player:hasMount(offerTable.mountId) then
 						npcHandler:say("You already have this mount.", npc, creature)
-					elseif player:removeTaskHuntingPoints(points) then
+					elseif spendPoints(player, points) then
 						-- Add task hunting points history here.
 						player:addMount(offerTable.mountId)
 						npcHandler:say("Here you have it.", npc, creature)
+					else -- FAMILY: upstream said nothing
+						npcHandler:say("Sorry, but you don't have enough hunting task points.", npc, creature)
 					end
 				else
 					return true
@@ -490,8 +518,14 @@ npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
 -- Dialogue keywords the NPC answers on the official server
 keywordHandler:addKeyword({ "moderate" }, StdModule.say, { npcHandler = npcHandler, text = "Too much of anything is always a problem. Nothing in excess! That's my motto." })
-keywordHandler:addKeyword({ "falconer" }, StdModule.say, { npcHandler = npcHandler, text = "The base Falconer outfit costs 100,000 HTP, the first addon 35,000 HTP and the second addon 35,000 HTP." })
-keywordHandler:addKeyword({ "antelope" }, StdModule.say, { npcHandler = npcHandler, text = "The antelope mount costs 145,000 HTP." })
+-- FAMILY: (2026-10-21) these two answer only outside the outfit and mount offers;
+-- there they answered first and the callback never started the purchase, so the
+-- Falconer outfit, its addons and the Antelope could not be bought
+local function notChoosingOffer(player)
+	return not player or npcHandler:getTopic(player:getId()) < config.topics.outfit
+end
+keywordHandler:addKeyword({ "falconer" }, StdModule.say, { npcHandler = npcHandler, text = "The base Falconer outfit costs 100,000 HTP, the first addon 35,000 HTP and the second addon 35,000 HTP." }, notChoosingOffer)
+keywordHandler:addKeyword({ "antelope" }, StdModule.say, { npcHandler = npcHandler, text = "The antelope mount costs 145,000 HTP." }, notChoosingOffer)
 keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "My name is Walter Jaeger. Hunting is for me a necessary process to keep the creatures in Tibia in a sustainable balance. None of the creatures should gain the upper hand." })
 keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "I am the commissioner for hunting in Tibia. It is important to keep populations of all creatures at a moderate level. That's why the prey hunting tasks are that important." })
 
