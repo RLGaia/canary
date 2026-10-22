@@ -49,6 +49,9 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: Venore Daily Tasks dialogue (data-otservbr-global/lib/others/family_venore_tasks.lua)
+FamilyVenoreTasks.setupNorman(keywordHandler, npcHandler)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

@@ -3011,6 +3011,19 @@ Storage = {
 			Mission = 48716,
 			Discount = { [2] = 48717, [3] = 48718, [4] = 48719, [5] = 48720, [6] = 48721 },
 		},
+		-- FAMILY: Venore Daily Tasks (Norman the Foreman), lib/others/family_venore_tasks.lua:
+		-- tasks -1/0 free, 1 taken, 2 done, 3 reported today; kills, machines and deliveries
+		-- are progress counters / bit masks; bonus 1 = paid today
+		FamilyVenoreTasks = {
+			Questline = 48722,
+			Sabotage = 48723,
+			Maintenance = 48724,
+			Pathfinder = 48725,
+			Kills = 48726,
+			Machines = 48727,
+			Deliveries = 48728,
+			Bonus = 48729,
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,

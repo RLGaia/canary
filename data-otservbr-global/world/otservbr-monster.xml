@@ -126314,6 +126314,10 @@
 	<monster centerx="32532" centery="31503" centerz="11" radius="1">
 		<monster name="Gozzler" x="1" y="0" z="11" spawntime="90" />
 	</monster>
+	<!-- FAMILY: Braindeath guarding the coffin of The Undeath Stare (Braindeath Quest, TibiaWiki: The Hidden City of Beregar), 2026-10-21 -->
+	<monster centerx="32544" centery="31520" centerz="11" radius="2">
+		<monster name="Braindeath" x="0" y="0" z="11" spawntime="90" />
+	</monster>
 	<monster centerx="33077" centery="31504" centerz="11" radius="1">
 		<monster name="Stone Golem" x="1" y="0" z="11" spawntime="90" />
 	</monster>
