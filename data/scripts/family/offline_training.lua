@@ -12,7 +12,11 @@
 -- Training still only happens when you log out on a training statue (a bed
 -- only restores health, mana and soul, as upstream). The skill stages of
 -- solo_balance.lua apply as for normal training, times rateOfflineTrainingSpeed
--- in family/config.family.lua (2x).
+-- (4x since 2026-10-23, was 2x). Shielding, trained next to every statue skill,
+-- does not use that rate upstream (a quarter of a try per second), so
+-- Family.offlineShieldMultiplier (2) doubles it too: every statue skill takes
+-- half the hours it took before 2026-10-23. Magic level: magic_training.lua.
+-- The rate is set in family/config.family.lua.
 --
 -- The change itself is marked FAMILY: in
 -- data/scripts/creaturescripts/player/offline_training.lua.
@@ -30,6 +34,7 @@ Family = Family or {}
 Family.offlineTrainingUnlimited = true
 Family.offlineTrainingMaxDays = 365
 Family.bedFullRest = true
+Family.offlineShieldMultiplier = 2 -- 1 = upstream (2026-10-23)
 
 local FULL = 12 * 3600 * 1000
 

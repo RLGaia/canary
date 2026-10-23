@@ -89,7 +89,8 @@ function offlineTraining.onLogin(player)
 	end
 
 	if updateSkills then
-		player:addOfflineTrainingTries(SKILL_SHIELD, trainingTime / 4)
+		-- FAMILY: shielding x Family.offlineShieldMultiplier (data/scripts/family/offline_training.lua)
+		player:addOfflineTrainingTries(SKILL_SHIELD, trainingTime / 4 * ((Family and Family.offlineShieldMultiplier) or 1))
 	end
 	return true
 end

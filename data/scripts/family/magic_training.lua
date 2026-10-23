@@ -7,13 +7,14 @@
 -- second, Royal Paladin 0.67, Elite Knight 0.33, then x rateOfflineTrainingSpeed),
 -- which made magic level about 300 times slower than on an exercise dummy,
 -- while melee on a statue is about 14 times slower than on a dummy. Now every
--- second away counts statueMagicManaPerSecond mana spent, for every vocation
--- (600 / 14: 1/14 of the old dummy speed, the same proportion as melee). This
--- value already includes rateOfflineTrainingSpeed. The magic level stages of
+-- second away counts statueMagicManaPerSecond mana spent, for every vocation:
+-- 600 / 14 at first (2026-10-23), then 600 / 7 the same evening when every
+-- statue skill was made twice as fast (halved hours). This value already
+-- includes rateOfflineTrainingSpeed. The magic level stages of
 -- solo_balance.lua (12/9/7/4) apply on top, as before.
--- Rough hours away: sorcerer/druid ML 60 to 90 about 74 h (was 1,588 h),
--- 90 to 100 about 214 h; paladin 25 to 30 about 43 h; monk 30 to 40 about
--- 128 h; knight 8 to 10 about 23 h.
+-- Rough hours away: sorcerer/druid ML 60 to 90 about 37 h (upstream regeneration
+-- 1,588 h), 90 to 100 about 107 h; paladin 25 to 30 about 21 h; monk 30 to 40
+-- about 64 h; knight 8 to 10 about 11 h.
 --
 -- Exercise dummies (and training rods/wands): every hit counts
 -- exerciseMagicManaPerHit mana spent (upstream 600), times the dummy rate.
@@ -29,7 +30,7 @@
 -- mana regeneration, Family.exerciseMagicManaPerHit = nil uses 600).
 
 Family = Family or {}
-Family.statueMagicManaPerSecond = 600 / 14
+Family.statueMagicManaPerSecond = 600 / 7
 Family.exerciseMagicManaPerHit = 1200
 
 local report = GlobalEvent("FamilyMagicTrainingReport")

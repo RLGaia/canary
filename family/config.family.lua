@@ -84,10 +84,12 @@ deathLosePercent = 0
 -- without a vocation (Dawnport).
 adventurersBlessingLevel = 100000
 
--- Training: exercise weapons and offline training (statues) work twice as
--- fast. solo_balance.lua makes exercise weapons last forever.
+-- Training: exercise weapons hit twice as fast (one hit per second).
+-- Offline training (statues, beds) is 4x (2x until 2026-10-23, halved hours;
+-- magic level and shielding follow in data/scripts/family/magic_training.lua
+-- and offline_training.lua). solo_balance.lua makes exercise weapons last forever.
 rateExerciseTrainingSpeed = 2.0
-rateOfflineTrainingSpeed = 2.0
+rateOfflineTrainingSpeed = 4.0
 
 -- Respawn: monsters come back twice as fast (classic hunts: 90 s -> 45 s).
 rateSpawn = 2
