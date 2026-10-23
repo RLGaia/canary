@@ -84,7 +84,8 @@ monster.loot = {
 	{ name = "ham", chance = 20120 },
 	{ name = "worm", chance = 3000, maxCount = 3 },
 	{ name = "lump of dirt", chance = 10000 },
-	{ name = "legion helmet", chance = 1890 },
+	-- FAMILY: legion helmet removed (2026-10-23). TibiaWiki BR: plain Rotworms do not
+	-- drop it, only Rottie the Rotworm and the Rotworm Queen (invasions); upstream had 1.89%.
 }
 
 monster.attacks = {

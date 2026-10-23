@@ -36,7 +36,7 @@ Family.marketBot = {
 	spread = 0.10,
 	priceScale = 1.0,
 	amountStackable = 10000, -- per offer, refilled at every start
-	amountSingle = 100,
+	amountSingle = 10000, -- 100 until 2026-10-23; the client takes at most 2,000 per purchase
 	characterName = "Family Market",
 	accountName = "familymarket",
 }
