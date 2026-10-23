@@ -35,8 +35,8 @@
 -- * Supplies are infinite in the arena: the potions, runes and ammunition
 --   (arrows, bolts, spears, throwing stars...) carried when entering are
 --   refilled every second, up to the amount carried at the start.
--- * Cooldown: 60 minutes after leaving the arena (players with access ignore
---   it).
+-- * Cooldown: 10 minutes after leaving the arena (Tibia: 60; lowered on
+--   2026-10-23 at Rodrigo's request). Players with access ignore it.
 --
 -- Switch: Family.tibiadrome (false = the teleports work as upstream and the
 -- arena does nothing).
@@ -49,7 +49,7 @@ local D = {
 	pauseSeconds = 5,
 	firstWaveDelay = 10,
 	minLevel = 50,
-	cooldown = 60 * 60,
+	cooldown = 10 * 60,
 	strengthPerWave = 0.08,
 	referenceLevel = 100, -- party level that gets the base values of the creature files
 	minLevelFactor = 0.5,
