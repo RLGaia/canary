@@ -2,8 +2,9 @@
 -- upstream. Our map has Tibia's Tibiadrome rooms (the lobby with Xodet and the
 -- arena, reached through the demon trophies of Thais, Edron, Kazordoon,
 -- Rathleton and Ankrahmun), but nothing happened in the arena. This adds the
--- fights. Phase 1: waves, Drome levels, infinite supplies. Rotations, points
--- and the reward exchange come in phase 2.
+-- fights. Phase 1: waves, Drome levels, infinite supplies. Phase 2
+-- (2026-10-23, tibiadrome_rewards.lua and the NPC Lorenzo): rotations, Drome
+-- points, potions by mail and the reward exchange.
 --
 -- How it works
 -- * Every demon trophy leads to the lobby in Thais; its exit leads back to the
@@ -14,7 +15,8 @@
 --   anything; the level range of shared experience is the server's (our config
 --   allows any levels).
 -- * The party starts at the lowest Drome level among its members (the first
---   wave is that level + 1). Each wave has 2 minutes. Killing every creature
+--   wave is that level + 1). In a new rotation a character who fought before
+--   starts 5 waves below his last Drome level (Family.dromeStartLevel). Each wave has 2 minutes. Killing every creature
 --   clears the wave: the Drome level of everyone still in the arena goes up
 --   (if it is higher than their best) and the next wave starts after 5
 --   seconds. When the time runs out, the run ends and everyone goes back to
@@ -101,10 +103,25 @@ function Family.inDromeArena(pos)
 	return inRect(pos, ARENA_RECT)
 end
 
--- Highest wave the character has cleared (his Drome level).
+-- Highest wave the character has cleared in this rotation (his Drome level).
 function Family.dromeLevel(player)
 	local level = kv(player):get("level")
 	return type(level) == "number" and level or 0
+end
+
+-- Where a run of this character starts: his Drome level, or 5 waves below the
+-- last level of an earlier rotation if that is higher (kv "start", written by
+-- tibiadrome_rewards.lua when a rotation ends).
+function Family.dromeStartLevel(player)
+	local start = kv(player):get("start")
+	return math.max(Family.dromeLevel(player), type(start) == "number" and start or 0)
+end
+
+-- Phase 2 hooks (tibiadrome_rewards.lua); harmless when that file is missing.
+local function settle(player)
+	if Family.dromeSettle then
+		Family.dromeSettle(player)
+	end
 end
 
 function Family.setDromeLevel(player, level)
@@ -374,8 +391,12 @@ end
 local function waveCleared()
 	run.cleared = run.wave
 	for _, player in ipairs(runPlayers()) do
+		settle(player) -- a rotation may have ended during the run
 		if run.wave > Family.dromeLevel(player) then
 			Family.setDromeLevel(player, run.wave)
+			if Family.dromeRecord then
+				Family.dromeRecord(player, run.wave)
+			end
 		end
 	end
 	tell(string.format("Wave %d cleared! Drome level %d. The next wave starts in %d seconds.", run.wave, run.wave, D.pauseSeconds))
@@ -460,7 +481,7 @@ end
 local function startRun(members)
 	local lowest, levelSum = math.huge, 0
 	for _, member in ipairs(members) do
-		lowest = math.min(lowest, Family.dromeLevel(member))
+		lowest = math.min(lowest, Family.dromeStartLevel(member))
 		levelSum = levelSum + member:getLevel()
 	end
 	local averageLevel = levelSum / #members
@@ -506,6 +527,7 @@ local function checkEntry(player)
 		end
 	end
 	for _, member in ipairs(members) do
+		settle(member)
 		local name = member:getId() == player:getId() and "You" or member:getName()
 		if not inRect(member:getPosition(), LOBBY_RECT) then
 			return nil, string.format("%s must be in the Tibiadrome lobby.", name)

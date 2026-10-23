@@ -2672,6 +2672,10 @@
 	<npc centerx="32251" centery="32207" centerz="11" radius="1">
 		<npc name="Xodet" x="0" y="0" z="11" spawntime="60" />
 	</npc>
+	<!-- FAMILY: Lorenzo, the Tibiadrome reward exchange (ours, 2026-10-23), in the east nook of the lobby. -->
+	<npc centerx="32264" centery="32204" centerz="11" radius="1">
+		<npc name="Lorenzo" x="0" y="0" z="11" spawntime="60" />
+	</npc>
 	<npc centerx="32854" centery="32327" centerz="11" radius="1">
 		<npc name="A Ghostly Knight" x="0" y="0" z="11" spawntime="60" />
 	</npc>
