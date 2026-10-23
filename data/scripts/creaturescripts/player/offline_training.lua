@@ -75,6 +75,12 @@ function offlineTraining.onLogin(player)
 		end
 
 		tries = trainingTime * (vocation:getManaGainAmount() / gainTicks)
+		-- FAMILY: statues count a fixed amount of mana per second instead of the
+		-- vocation's mana regeneration (data/scripts/family/magic_training.lua).
+		-- Divided by the offline rate here because it is applied below.
+		if Family and Family.statueMagicManaPerSecond then
+			tries = trainingTime * Family.statueMagicManaPerSecond / configManager.getFloat(configKeys.RATE_OFFLINE_TRAINING_SPEED)
+		end
 	end
 
 	local updateSkills = false

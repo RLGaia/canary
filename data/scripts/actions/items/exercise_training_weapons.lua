@@ -111,7 +111,8 @@ local function exerciseTrainingEvent(playerId, tilePosition, weaponId, dummyId)
 	local rate = dummies[dummyId] / 100
 	local isMagic = exerciseWeaponsTable[weaponId].skill == SKILL_MAGLEVEL
 	if isMagic then
-		player:addManaSpent(600 * rate)
+		-- FAMILY: mana per hit from data/scripts/family/magic_training.lua (upstream 600)
+		player:addManaSpent(((Family and Family.exerciseMagicManaPerHit) or 600) * rate)
 	else
 		player:addSkillTries(exerciseWeaponsTable[weaponId].skill, 7 * rate)
 	end

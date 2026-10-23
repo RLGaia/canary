@@ -17,7 +17,7 @@
 -- blocked for the ids upstream lists in data/events/scripts/player.lua.
 --
 -- Training and exercise weapons train the same (7 skill tries or 600 mana per
--- hit, times the dummy's rate), and here they never lose charges
+-- hit; 1,200 mana since 2026-10-23, magic_training.lua; times the dummy's rate), and here they never lose charges
 -- (Family.infiniteTrainingWeapons), so one per skill is enough.
 --
 -- Switch: Family.disposableTrainingWeapons (false = upstream Store items).
