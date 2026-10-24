@@ -36,8 +36,7 @@
 -- is, creatures) is in data/scripts/lib/family_map_discovery_data.lua.
 -- Raid warnings come from the rare creature raids (data/scripts/family/
 -- rare_creatures.lua announces them FamilyDiscovery.raidWarningMinutes ahead).
--- Donations for an improved respawn rate are not implemented (respawn is
--- already doubled everywhere).
+-- Donations for an improved respawn rate are not implemented.
 --
 -- Packets (client 15.11, see tools/family/map_discovery/README.md): the client
 -- sends 0xDB (read by data/modules/scripts/family/map_discovery.lua); the
@@ -910,7 +909,7 @@ function D.onClientAction(player, action, id, amount)
 	if action == 0 then
 		D.start(player, id)
 	elseif action == 1 then
-		say(player, "Donations for an improved respawn rate are not available on this server: respawn is already faster everywhere.")
+		say(player, "Donations for an improved respawn rate are not available on this server.")
 	end
 end
 

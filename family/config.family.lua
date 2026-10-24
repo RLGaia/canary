@@ -91,8 +91,11 @@ adventurersBlessingLevel = 100000
 rateExerciseTrainingSpeed = 2.0
 rateOfflineTrainingSpeed = 4.0
 
--- Respawn: monsters come back twice as fast (classic hunts: 90 s -> 45 s).
-rateSpawn = 2
+-- Respawn: the map's own times (classic hunts 90 s, newer areas 60 s).
+-- 2x (45 s / 30 s) from 2026-10-12 to 2026-10-24; Rodrigo found it too fast.
+-- Whole numbers only (the engine reads an integer). The boosted creature of
+-- the day still respawns 2x faster (engine rule).
+rateSpawn = 1
 
 -- ===========================================================================
 -- Houses (2026-10-13): Cyclopedia -> Houses -> Bid buys a free house at once
