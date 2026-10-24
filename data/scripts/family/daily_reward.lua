@@ -26,15 +26,28 @@
 --    adds them to the coin balance). Upstream an XP boost claim only tops the
 --    daily boost back up to its minutes (a second claim before using the first
 --    one adds nothing); here every claim adds its full time.
+-- 6. Day 6 mixed pick (2026-10-24, chosen by Rodrigo): training weapons never
+--    run out here, so after the first ones day 6 gave nothing. Now day 6 lists
+--    the 8 training weapons, the vocation's potions and runes (the same list
+--    as days 1, 2 and 4) and an XP boost, 20 picks in any mix. Each XP boost
+--    pick adds 3 minutes of +50% experience right away (20 picks = 1 hour, one
+--    Store XP boost); nothing is delivered for it. The wall shows the XP boost
+--    with the picture of a scroll of heroic deeds, the only way the client can
+--    show a pick; that item is created in the Store inbox and removed again in
+--    the same claim. Training weapons now come with their normal 50 charges
+--    from items.xml (upstream gives every day 6 pick 50 charges, which would
+--    have turned one potion pick into 50 potions).
 --
 -- Switches: Family.dailyRewardNeverExpires (false = upstream rules 1 and 2),
 -- Family.dailyRewardWallCountdown (false = upstream wall after a claim),
--- Family.dailyRewardNoPrey (false = upstream days 3 and 5 and XP top-up).
+-- Family.dailyRewardNoPrey (false = upstream days 3 and 5 and XP top-up),
+-- Family.dailyRewardDay6Mix (false = upstream day 6: 2 training weapons).
 
 Family = Family or {}
 Family.dailyRewardNeverExpires = true
 Family.dailyRewardWallCountdown = true
 Family.dailyRewardNoPrey = true
+Family.dailyRewardDay6Mix = true
 
 -- upstream reward types (daily_reward.lua): 1 item pick, 3 prey reroll, 4 XP boost;
 -- wall layouts: 1 item pick, 2 other
@@ -70,6 +83,227 @@ function Family.applyDailyRewardNoPrey()
 		end
 	end
 	return replaced
+end
+
+-- 6. Day 6 mixed pick.
+local DAY6 = 6
+Family.dailyRewardDay6 = {
+	picksFree = 10,
+	picksPremium = 20,
+	xpIcon = 11510, -- scroll of heroic deeds: only its picture is used
+	xpMinutesPerPick = 3,
+	xpPercent = 50,
+	trainingWeapons = { 28540, 28541, 28542, 28543, 28544, 28545, 44064, 50292 },
+}
+local XP_BOOST_MAX_SECONDS = 65535 -- the C++ keeps the boost time in 16 bits
+
+-- Upstream keeps the vocation lists of days 1, 2 and 4 in a local table
+-- (DailyRewardItems); read it from Player.readDailyReward so it stays upstream's.
+local vocationItems
+local function upstreamVocationItems()
+	if vocationItems == nil then
+		vocationItems = false
+		local fn = Family.originalReadDailyReward or Player.readDailyReward
+		for i = 1, 60 do
+			local name, value = debug.getupvalue(fn, i)
+			if not name then
+				break
+			end
+			if name == "DailyRewardItems" and type(value) == "table" then
+				vocationItems = value
+				break
+			end
+		end
+		if not vocationItems then
+			logger.warn("[Family] daily reward day 6: vocation item lists not found, only training weapons and XP boost")
+		end
+	end
+	return vocationItems or nil
+end
+
+-- Day 6 list for this character: training weapons, vocation supplies, XP boost.
+function Family.dailyRewardDay6Items(player)
+	local cfg = Family.dailyRewardDay6
+	local list, seen = {}, {}
+	local function add(id)
+		if not seen[id] and #list < 255 then
+			seen[id] = true
+			list[#list + 1] = id
+		end
+	end
+	for _, id in ipairs(cfg.trainingWeapons) do
+		add(id)
+	end
+	local lists = upstreamVocationItems()
+	if lists then
+		local supplies = lists[player:getVocation():getBaseId()] or lists[0] or {}
+		for _, id in ipairs(supplies) do
+			add(id)
+		end
+	end
+	add(cfg.xpIcon)
+	return list
+end
+
+local function inboxCount(player, itemId)
+	local inbox = player:getStoreInbox()
+	local n = 0
+	if inbox then
+		for _, item in ipairs(inbox:getItems()) do
+			if item:getId() == itemId then
+				n = n + math.max(1, item:getCount())
+			end
+		end
+	end
+	return n
+end
+
+local function removeFromInbox(player, itemId, count)
+	local inbox = player:getStoreInbox()
+	if not inbox then
+		return 0
+	end
+	local removed = 0
+	for _, item in ipairs(inbox:getItems()) do
+		if removed >= count then
+			break
+		end
+		if item:getId() == itemId then
+			local n = math.min(math.max(1, item:getCount()), count - removed)
+			if item:remove(n) then
+				removed = removed + n
+			end
+		end
+	end
+	return removed
+end
+
+-- Adds XP boost minutes (every claim adds its full time, as rule 5).
+function Family.addDailyRewardXpBoost(player, minutes)
+	local seconds = math.min(XP_BOOST_MAX_SECONDS, player:getXpBoostTime() + minutes * 60)
+	player:setXpBoostTime(seconds)
+	player:setXpBoostPercent(Family.dailyRewardDay6.xpPercent)
+	return seconds
+end
+
+-- Reads the picks of an item claim without consuming them: XP boost picks, other picks.
+local function peekPicks(msg, xpIcon)
+	local unread = msg:getUnreadBytes()
+	if unread < 2 then
+		return 0, 0
+	end
+	msg:getByte() -- target (shrine / panel)
+	local columns = msg:getByte()
+	local read = 2
+	local xp, other = 0, 0
+	for _ = 1, columns do
+		if unread < read + 3 then
+			break
+		end
+		local itemId = msg:getU16()
+		local count = msg:getByte()
+		read = read + 3
+		if itemId == xpIcon then
+			xp = xp + count
+		else
+			other = other + count
+		end
+	end
+	msg:skipBytes(-read)
+	return xp, other
+end
+
+function Family.applyDailyRewardDay6Mix()
+	if not Family.dailyRewardDay6Mix then
+		return false
+	end
+	local cfg = Family.dailyRewardDay6
+	local current = DailyReward.rewards[DAY6]
+	-- only replace upstream's training weapon day (type 1 with charges)
+	if not current or current.familyMix or current.type ~= REWARD_ITEM or not current.itemCharges then
+		return current and current.familyMix or false
+	end
+	DailyReward.rewards[DAY6] = {
+		type = REWARD_ITEM,
+		systemType = 1,
+		items = { 28540 }, -- set per character before every use
+		freeAccount = cfg.picksFree,
+		premiumAccount = cfg.picksPremium,
+		familyMix = true,
+	}
+
+	-- Wall: same bytes as upstream for an item day, with the XP boost named as such.
+	if not Family.originalReadDailyReward then
+		Family.originalReadDailyReward = Player.readDailyReward
+		Player.readDailyReward = function(self, msg, currentDay, state)
+			local reward = DailyReward.rewards[currentDay]
+			if not (reward and reward.familyMix) then
+				return Family.originalReadDailyReward(self, msg, currentDay, state)
+			end
+			local items = Family.dailyRewardDay6Items(self)
+			reward.items = items
+			msg:addByte(reward.systemType)
+			msg:addByte(state == 1 and reward.premiumAccount or reward.freeAccount) -- 1 = premium column
+			msg:addByte(#items)
+			for _, itemId in ipairs(items) do
+				local itemType = ItemType(itemId)
+				msg:addU16(itemId)
+				if itemId == cfg.xpIcon then
+					msg:addString(string.format("XP boost: %d minutes per pick", cfg.xpMinutesPerPick), "Family day 6 - XP boost")
+					msg:addU32(0)
+				else
+					msg:addString(itemType:getArticle() .. " " .. itemType:getName(), "Family day 6 - item name")
+					msg:addU32(itemType:getWeight())
+				end
+			end
+		end
+	end
+
+	-- History line: the XP boost instead of "Nx scroll of heroic deeds".
+	if not Family.originalInsertDailyRewardHistory then
+		Family.originalInsertDailyRewardHistory = DailyReward.insertHistory
+		DailyReward.insertHistory = function(guid, dayStreak, description)
+			if Family.day6Claim and type(description) == "string" then
+				local name = ItemType(cfg.xpIcon):getName():gsub("%p", "%%%0")
+				description = description:gsub("(%d+)x " .. name, function(n)
+					return string.format("XP boost for %d minutes", tonumber(n) * cfg.xpMinutesPerPick)
+				end)
+			end
+			return Family.originalInsertDailyRewardHistory(guid, dayStreak, description)
+		end
+	end
+
+	-- Claim: upstream checks and delivers every pick; the XP boost picks are
+	-- then taken back out of the Store inbox and turned into boost time.
+	if not Family.originalSelectDailyRewardDay6 then
+		Family.originalSelectDailyRewardDay6 = Player.selectDailyReward
+		Player.selectDailyReward = function(self, msg)
+			local reward = DailyReward.rewards[self:getDayStreak() + 1]
+			if not (Family.dailyRewardDay6Mix and reward and reward.familyMix) then
+				return Family.originalSelectDailyRewardDay6(self, msg)
+			end
+			reward.items = Family.dailyRewardDay6Items(self)
+			local xpPicks, otherPicks = peekPicks(msg, cfg.xpIcon)
+			local before = inboxCount(self, cfg.xpIcon)
+			Family.day6Claim = { xp = xpPicks, other = otherPicks }
+			local ok, result = pcall(Family.originalSelectDailyRewardDay6, self, msg)
+			Family.day6Claim = nil
+			local delivered = inboxCount(self, cfg.xpIcon) - before
+			if delivered > 0 then
+				local removed = removeFromInbox(self, cfg.xpIcon, delivered)
+				if removed > 0 then
+					local minutes = removed * cfg.xpMinutesPerPick
+					local total = Family.addDailyRewardXpBoost(self, minutes)
+					self:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("XP boost +%d minutes: %d minutes of +%d%% experience left.", minutes, math.floor(total / 60), cfg.xpPercent))
+				end
+			end
+			if not ok then
+				error(result)
+			end
+			return result
+		end
+	end
+	return true
 end
 
 local DAY = 24 * 60 * 60
@@ -174,7 +408,8 @@ function familyDailyReward.onStartup()
 		local player = Player(playerId)
 		local reward = player and DailyReward.rewards[player:getDayStreak() + 1]
 		local result = originalProcess(playerId, target)
-		if player and reward and reward.type == 1 then -- DAILY_REWARD_TYPE_ITEM
+		local day6 = Family.day6Claim
+		if player and reward and reward.type == 1 and not (day6 and day6.other == 0) then -- DAILY_REWARD_TYPE_ITEM; day 6 with only XP boost picks delivers nothing
 			if reward.items and reward.items[1] == TIBIA_COIN and #reward.items == 1 then
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your Tibia Coins are in your Store inbox. Use them to add them to your coin balance.")
 			else
@@ -187,6 +422,11 @@ function familyDailyReward.onStartup()
 	local replaced = Family.applyDailyRewardNoPrey()
 	if replaced > 0 then
 		logger.info("[Family] daily reward: {} Prey reroll days replaced (day 3 XP boost, day 5 Tibia Coins)", replaced)
+	end
+
+	if Family.applyDailyRewardDay6Mix() then
+		local cfg = Family.dailyRewardDay6
+		logger.info("[Family] daily reward: day 6 is a mixed pick of " .. cfg.picksPremium .. " (training weapons, vocation supplies, XP boost " .. cfg.xpMinutesPerPick .. " minutes per pick)")
 	end
 
 	local newDay = Family.catchUpDailyRewardDay()
