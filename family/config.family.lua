@@ -134,3 +134,15 @@ toggleSaveInterval = false
 -- every level shares. The other rules stay: members within 30 squares of the
 -- leader (and one floor) and active in the fight in the last 2 minutes.
 partyShareRangeMultiplier = 10000
+
+-- ===========================================================================
+-- Store pictures (2026-10-24). The client draws items, mounts and outfits
+-- itself, but category icons, home banners and offers like beds, blessings,
+-- Premium Time and boosts are pictures it downloads from this address
+-- (<url>64/<offer>.png, <url>13/<category>.png). Upstream points at a web
+-- server on 127.0.0.1 that we do not run, so those offers had no picture.
+-- The pictures are in family/store-images (this repository is public, so
+-- GitHub serves them to both PCs); tools/family/store_images/check.py lists
+-- and fills them when the Store catalog changes.
+-- ===========================================================================
+coinImagesURL = "https://raw.githubusercontent.com/RLGaia/canary/family/family/store-images/"
