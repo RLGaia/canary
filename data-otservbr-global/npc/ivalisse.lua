@@ -75,19 +75,11 @@ local function creatureSayCallback(npc, creature, type, message)
 			"But beware, as far as we know, some of them have been claimed by other ancient beings and there is now way for us to prepare you what lies beyond any of those gates.",
 		}, npc, creature)
 		npcHandler:setTopic(playerId, 0)
-	elseif MsgContains(message, "father") and npcHandler:getTopic(playerId) == 1 then
-		if player:getStorageValue(Storage.Quest.U8_54.TheNewFrontier.Questline) == 29 then
-			npcHandler:say({
-				"Papa- my father has recently started an adventure on his own. His name is Silus; he is a member of the Edron academy. ...",
-				"Ever since he joined what he called a 'special research division', he went on and on about Zao and how venturing there would help him get ahead. ...",
-				"You must know he lives for science, especially concerning faraway lands and cultures. He talked about the importance of practical field studies but, frankly, he isn't particularly cut out for that. ...",
-				"I know he has to focus to get his research done right now, and I simply cannot leave my duties in the temple. You seem like a person who travels a lot; would you be willing to help me?",
-			}, npc, creature)
-			npcHandler:setTopic(playerId, 2)
-		elseif player:getStorageValue(Storage.Quest.U11_02.ForgottenKnowledge.Ivalisse) == 1 or player:getStorageValue(Storage.Quest.U11_02.ForgottenKnowledge.Chalice) == 1 then
-			npcHandler:say("Well, I hope you like it here. We tried to rebuild in the Shaper's will. I am a bit preoccupied at the moment because of the absence of my father. I may not be the best of help currently, sorry.", npc, creature)
-			npcHandler:setTopic(playerId, 0)
-		elseif player:getStorageValue(Storage.Quest.U11_02.ForgottenKnowledge.DragonkingKilled) >= 1 and player:getStorageValue(Storage.Quest.U11_02.ForgottenKnowledge.Ivalisse) < 1 then
+	elseif MsgContains(message, "father") then
+		-- FAMILY: "father" works without saying "temple"/"mission" first, the
+		-- report comes before the offer, and a player without The New Frontier
+		-- gets an answer instead of silence (Fire Portal access; TibiaWiki BR).
+		if player:getStorageValue(Storage.Quest.U11_02.ForgottenKnowledge.DragonkingKilled) >= 1 and player:getStorageValue(Storage.Quest.U11_02.ForgottenKnowledge.Ivalisse) < 1 then
 			npcHandler:say({
 				"What? You're telling me you found father? How is he? What did papa say? A chalice? As a disguise? The whole time? ...",
 				"Well, I am not as much surprised as I am happy to hear that he's alright. You know, after the incident with the duck and the umbrella—it doesn't get to me that easily anymore. ...",
@@ -95,6 +87,23 @@ local function creatureSayCallback(npc, creature, type, message)
 			}, npc, creature)
 			player:setStorageValue(Storage.Quest.U11_02.ForgottenKnowledge.Ivalisse, 1)
 			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(Storage.Quest.U11_02.ForgottenKnowledge.Ivalisse) == 1 then
+			npcHandler:say("Thanks to you I know papa is alright. I will be forever grateful.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(Storage.Quest.U11_02.ForgottenKnowledge.Chalice) == 1 then
+			npcHandler:say("The fiery gate is open for you. Please find papa in Zao and tell him I miss him!", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(Storage.Quest.U8_54.TheNewFrontier.Questline) < 29 then
+			npcHandler:say("Papa went to Zao, far beyond the steppes and the mountains. I could open a gate close to where he was last seen, but only for someone who already knows the lands of Zao. Come back when you have helped the people of Farmine reach it.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(Storage.Quest.U8_54.TheNewFrontier.Questline) == 29 then
+			npcHandler:say({
+				"Papa- my father has recently started an adventure on his own. His name is Silus; he is a member of the Edron academy. ...",
+				"Ever since he joined what he called a 'special research division', he went on and on about Zao and how venturing there would help him get ahead. ...",
+				"You must know he lives for science, especially concerning faraway lands and cultures. He talked about the importance of practical field studies but, frankly, he isn't particularly cut out for that. ...",
+				"I know he has to focus to get his research done right now, and I simply cannot leave my duties in the temple. You seem like a person who travels a lot; would you be willing to help me?",
+			}, npc, creature)
+			npcHandler:setTopic(playerId, 2)
 		end
 	elseif MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 2 then
