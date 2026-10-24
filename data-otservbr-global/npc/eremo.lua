@@ -203,6 +203,28 @@ keywordHandler:addKeyword({ "name" }, StdModule.say, {
 	text = "I am Eremo, an old man who has seen many things.",
 })
 
+-- FAMILY: spells (2026-10-24). Upstream's Eremo says he teaches spells but had
+-- no spell dialogue, and no other NPC teaches these three, so nobody could learn
+-- them (toggleLearnSpells). Spells and prices from TibiaWiki (EN spell table:
+-- Challenge 2,000, Conjure Wand of Darkness 5,000, Wild Growth Rune 2,000);
+-- vocations as the spell files allow. Divine Dazzle, which TibiaWiki EN still
+-- lists for him, comes from the Wheel of Destiny in current Tibia (TibiaWiki BR)
+-- and in our server (io_wheel.cpp), so it is not sold. Lines are ours.
+keywordHandler:addKeyword({ "spells" }, StdModule.say, {
+	npcHandler = npcHandler,
+	onlyFocus = true,
+	text = "I can teach {Challenge} to elite knights, {Conjure Wand of Darkness} to sorcerers and the {Wild Growth Rune} to druids.",
+})
+keywordHandler:addAliasKeyword({ "spell" })
+local challengeNode = keywordHandler:addKeyword({ "challenge" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Would you like to learn {challenge} magic spell for 2000 gold?" })
+challengeNode:addChildKeyword({ "yes" }, StdModule.learnSpell, { npcHandler = npcHandler, premium = true, spellName = "challenge", vocation = { 8 }, price = 2000, level = 20 })
+local wandNode = keywordHandler:addKeyword({ "conjure wand of darkness" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Would you like to learn {conjure wand of darkness} magic spell for 5000 gold?" })
+wandNode:addChildKeyword({ "yes" }, StdModule.learnSpell, { npcHandler = npcHandler, premium = true, spellName = "conjure wand of darkness", vocation = { 1, 5 }, price = 5000, level = 41 })
+keywordHandler:addAliasKeyword({ "wand of darkness" })
+local growthNode = keywordHandler:addKeyword({ "wild growth rune" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Would you like to learn {Wild Growth Rune} spell for 2000 gold?" })
+growthNode:addChildKeyword({ "yes" }, StdModule.learnSpell, { npcHandler = npcHandler, premium = true, spellName = "wild growth rune", vocation = { 2, 6 }, price = 2000, level = 27 })
+keywordHandler:addAliasKeyword({ "wild growth" })
+
 npcHandler:setMessage(MESSAGE_GREET, "Welcome to my little garden, adventurer |PLAYERNAME|!")
 npcHandler:setMessage(MESSAGE_FAREWELL, "It was a pleasure to help you, |PLAYERNAME|.")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "It was a pleasure to help you, |PLAYERNAME|.")
