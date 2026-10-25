@@ -1149,6 +1149,10 @@
 	<npc centerx="32849" centery="31300" centerz="7" radius="1">
 		<npc name="Iriana" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	<!-- FAMILY: Jimmy (Top of the City Quest), on the pier behind the sealed door at 32858,31374,6 -->
+	<npc centerx="32857" centery="31378" centerz="6" radius="1">
+		<npc name="Jimmy" x="0" y="0" z="6" spawntime="60" />
+	</npc>
 	<npc centerx="32856" centery="31302" centerz="7" radius="1">
 		<npc name="Peter" x="0" y="0" z="7" spawntime="60" />
 	</npc>

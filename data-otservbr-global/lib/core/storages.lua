@@ -3024,6 +3024,11 @@ Storage = {
 			Deliveries = 48728,
 			Bonus = 48729,
 		},
+		-- FAMILY: Top of the City (ours, 2026-10-25; scripts/family/top_of_the_city.lua)
+		FamilyTopOfTheCity = {
+			Mission = 48730, -- 1 chase, 2 crate for Jimmy, 3 chest for Iriana, 4 done; also the action id of Jimmy's door
+			AssassinsCalled = 48731,
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,

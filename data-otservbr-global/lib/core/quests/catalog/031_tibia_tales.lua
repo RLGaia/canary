@@ -321,6 +321,20 @@ local quest = {
 				[2] = "You completed the Pilgrimage of Ashes and received 20 platinum coins from a guide.",
 			},
 		},
+		-- FAMILY: Top of the City (ours, 2026-10-25; scripts/family/top_of_the_city.lua)
+		[19] = {
+			name = "Top of the City",
+			storageId = Storage.Quest.FamilyTopOfTheCity.Mission,
+			missionId = 11225,
+			startValue = 1,
+			endValue = 4,
+			states = {
+				[1] = "A masked man stole Iriana's day's earnings in the Trade Quarter of Yalahar and fled over the rooftops. Go up to the roof through her house and follow him. If you lose him, start again from her roof.",
+				[2] = "The masked man is Jimmy. He will give back Iriana's chest if you bring him a crate of food from the cellar of Pugwah's tavern in the inner city. The way in is from below: dig through the soft dirt in the sewers south of the tavern and climb up with a rope.",
+				[3] = "Jimmy gave you Iriana's chest. Bring it back to her.",
+				[4] = "You brought Iriana's chest back and received 10 heaven blossoms.",
+			},
+		},
 		-- [17] = {
 		-- name = "Nomads Land",
 		-- storageId = PLACEHOLDER,
