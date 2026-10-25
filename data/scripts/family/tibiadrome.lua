@@ -29,6 +29,12 @@
 --   level 100 = the values of tibiadrome_monsters.lua, level 300 = three times
 --   them, level 50 or less = half. A living Domestikion makes the other Drome
 --   creatures within 5 squares hit 15% harder.
+-- * The arena has three levels joined by stairs and trapdoors: the open floor
+--   where the run starts (floor 11), the floor under the pits (12) and a tunnel
+--   below it (13). All three count as the arena (until 2026-10-25 only floor
+--   11 did, so going down the stairs ended the run). Creatures appear on the
+--   levels where the players are, and creatures left on a level without
+--   players move to a player's level after 3 seconds.
 -- * No death: a deadly hit heals the character fully and sends him to the
 --   lobby; the run goes on for the others. The corner portals of the arena are
 --   exits too.
@@ -74,6 +80,8 @@ local LOBBY_EXIT = Position(32249, 32204, Z)
 local ARENA_EXITS = { Position(32241, 32168, Z), Position(32269, 32168, Z), Position(32241, 32196, Z), Position(32269, 32196, Z) }
 local LOBBY_RECT = { x1 = 32246, y1 = 32198, x2 = 32272, y2 = 32210 }
 local ARENA_RECT = { x1 = 32240, y1 = 32168, x2 = 32270, y2 = 32196 }
+local ARENA_FLOORS = { [11] = true, [12] = true, [13] = true }
+local STRANDED_SECONDS = 3 -- creature on a level without players this long -> moved
 
 -- Demon trophies (teleports) and where their lobby exit leads back to.
 local TROPHIES = {
@@ -99,8 +107,12 @@ local function inRect(pos, rect)
 	return pos.z == Z and pos.x >= rect.x1 and pos.x <= rect.x2 and pos.y >= rect.y1 and pos.y <= rect.y2
 end
 
+local function inArena(pos)
+	return ARENA_FLOORS[pos.z] == true and pos.x >= ARENA_RECT.x1 and pos.x <= ARENA_RECT.x2 and pos.y >= ARENA_RECT.y1 and pos.y <= ARENA_RECT.y2
+end
+
 function Family.inDromeArena(pos)
-	return inRect(pos, ARENA_RECT)
+	return inArena(pos)
 end
 
 -- Highest wave the character has cleared in this rotation (his Drome level).
@@ -147,23 +159,37 @@ end
 -- ---------------------------------------------------------------------------
 -- Arena tiles (found once)
 -- ---------------------------------------------------------------------------
-local arenaTiles
+local arenaTiles -- [floor] = { positions }
 
-local function getArenaTiles()
-	if arenaTiles then
-		return arenaTiles
-	end
-	arenaTiles = {}
-	for x = ARENA_RECT.x1, ARENA_RECT.x2 do
-		for y = ARENA_RECT.y1, ARENA_RECT.y2 do
-			local pos = Position(x, y, Z)
-			local tile = Tile(pos)
-			if tile and tile:getGround() and tile:hasFlag(TILESTATE_PVPZONE) and not tile:hasFlag(TILESTATE_TELEPORT) and not tile:hasProperty(CONST_PROP_BLOCKSOLID) then
-				arenaTiles[#arenaTiles + 1] = pos
+-- Squares a creature may appear on: inside the arena box on an arena floor,
+-- no-logout (every arena square has it), walkable, no stairs or teleports.
+local function getArenaTiles(z)
+	if not arenaTiles then
+		arenaTiles = {}
+		for floor in pairs(ARENA_FLOORS) do
+			local list = {}
+			for x = ARENA_RECT.x1, ARENA_RECT.x2 do
+				for y = ARENA_RECT.y1, ARENA_RECT.y2 do
+					local pos = Position(x, y, floor)
+					local tile = Tile(pos)
+					if tile and tile:getGround() and tile:hasFlag(TILESTATE_NOLOGOUT) and not tile:hasFlag(TILESTATE_TELEPORT) and not tile:hasFlag(TILESTATE_FLOORCHANGE) and not tile:hasProperty(CONST_PROP_BLOCKSOLID) then
+						list[#list + 1] = pos
+					end
+				end
 			end
+			arenaTiles[floor] = list
 		end
 	end
-	return arenaTiles
+	if z then
+		return arenaTiles[z] or {}
+	end
+	local all = {}
+	for _, list in pairs(arenaTiles) do
+		for _, pos in ipairs(list) do
+			all[#all + 1] = pos
+		end
+	end
+	return all
 end
 
 -- ---------------------------------------------------------------------------
@@ -321,12 +347,16 @@ endRun = function(reason)
 	run = nil
 end
 
-local function freeSpawnPosition(players, used)
-	local tiles = getArenaTiles()
+-- A free square on floor z, at least spawnDistance from every player there.
+local function freeSpawnPosition(players, used, z)
+	local tiles = getArenaTiles(z)
+	if #tiles == 0 then
+		tiles = getArenaTiles(Z)
+	end
 	local fallback
 	for _ = 1, 40 do
 		local pos = tiles[math.random(#tiles)]
-		local key = pos.x * 100000 + pos.y
+		local key = (pos.z * 100000 + pos.x) * 100000 + pos.y
 		if not used[key] then
 			fallback = fallback or pos
 			local far = true
@@ -343,6 +373,49 @@ local function freeSpawnPosition(players, used)
 		end
 	end
 	return fallback or ARENA_START
+end
+
+-- Floor of each player in the run, in run order.
+local function playerFloors(players)
+	local floors = {}
+	for _, player in ipairs(players) do
+		floors[#floors + 1] = player:getPosition().z
+	end
+	return floors
+end
+
+-- Creatures alone on a level without players for STRANDED_SECONDS go to a
+-- player's level (monsters do not use stairs).
+local function regroupMonsters(players, now)
+	local floors = playerFloors(players)
+	if #floors == 0 then
+		return
+	end
+	local occupied = {}
+	for _, z in ipairs(floors) do
+		occupied[z] = true
+	end
+	run.stranded = run.stranded or {}
+	local used = {}
+	for id in pairs(run.monsters) do
+		local monster = Monster(id)
+		if monster then
+			local pos = monster:getPosition()
+			if occupied[pos.z] then
+				run.stranded[id] = nil
+			elseif not run.stranded[id] then
+				run.stranded[id] = now
+			elseif now - run.stranded[id] >= STRANDED_SECONDS then
+				local dest = freeSpawnPosition(players, used, floors[math.random(#floors)])
+				pos:sendMagicEffect(CONST_ME_TELEPORT)
+				monster:teleportTo(dest)
+				dest:sendMagicEffect(CONST_ME_TELEPORT)
+				run.stranded[id] = nil
+			end
+		else
+			run.stranded[id] = nil
+		end
+	end
 end
 
 local function spawnWave()
@@ -369,10 +442,12 @@ local function spawnWave()
 	local strength = waveStrength(run.wave)
 	local count = creatureCount(run.members)
 	local used = {}
+	local floors = playerFloors(players)
 	run.monsters = {}
+	run.stranded = {}
 	for i = 1, count do
 		local name = kinds[(i - 1) % #kinds + 1]
-		local pos = freeSpawnPosition(players, used)
+		local pos = freeSpawnPosition(players, used, floors[(i - 1) % #floors + 1])
 		local monster = Game.createMonster(name, pos, false, true)
 		if monster then
 			local maxHealth = math.max(1, math.floor(monster:getMaxHealth() * strength + 0.5))
@@ -427,7 +502,7 @@ local function tick(token)
 		if not player then
 			run.players[id] = nil
 			run.supplies[id] = nil
-		elseif not inRect(player:getPosition(), ARENA_RECT) then
+		elseif not inArena(player:getPosition()) then
 			leaveRun(player, "You left the arena.")
 			if not run then
 				return
@@ -455,6 +530,9 @@ local function tick(token)
 			else
 				run.monsters[id] = nil
 			end
+		end
+		if alive > 0 then
+			regroupMonsters(runPlayers(), now)
 		end
 		if alive == 0 then
 			waveCleared()
@@ -666,7 +744,7 @@ local login = CreatureEvent("FamilyDromeLogin")
 function login.onLogin(player)
 	player:registerEvent("FamilyDromeDeath")
 	-- left in the arena by a restart
-	if inRect(player:getPosition(), ARENA_RECT) and not (run and run.players[player:getId()]) then
+	if inArena(player:getPosition()) and not (run and run.players[player:getId()]) then
 		player:teleportTo(LOBBY_RETURN)
 	end
 	return true
@@ -743,7 +821,7 @@ function startup.onStartup()
 		end
 		silence(LOBBY_EXIT)
 	end
-	logger.info("[Family] Tibiadrome: {} teleports taken over, {} arena squares{}", changed, #getArenaTiles(), #problems > 0 and (", NOT FOUND: " .. table.concat(problems, " ")) or "")
+	logger.info("[Family] Tibiadrome: {} teleports taken over, {} arena squares (floor 11 {}, 12 {}, 13 {}){}", changed, #getArenaTiles(), #getArenaTiles(11), #getArenaTiles(12), #getArenaTiles(13), #problems > 0 and (", NOT FOUND: " .. table.concat(problems, " ")) or "")
 	return true
 end
 
