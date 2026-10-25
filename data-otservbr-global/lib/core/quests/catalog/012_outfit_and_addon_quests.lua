@@ -20,12 +20,13 @@ local quest = {
 			storageId = Storage.Quest.U7_8.CitizenOutfits.MissionBackpack,
 			missionId = 10169,
 			startValue = 1,
-			endValue = 2,
+			endValue = 3, -- FAMILY: was 2; 3 = addon received (Lubo set 0, which hid the mission)
 			states = {
 				[1] = "Collect 100 pieces of minotaur leather and bring it to either Amber or Lubo \z
 					to have them make a backpack addon for you.",
 				[2] = "You delivered 100 pieces of minotaur leather. Some time is needed to make the backpack for you though. \z
 					You should check back later and ask either Amber or Lubo for your backpack.",
+				[3] = "You got the Citizen Backpack Addon!", -- FAMILY
 			},
 		},
 		[3] = {

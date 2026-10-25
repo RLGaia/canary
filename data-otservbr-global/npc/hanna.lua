@@ -80,6 +80,10 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	if npcHandler:getTopic(playerId) == 1 then
 		if MsgContains(message, "yes") then
+			-- FAMILY: show the "Outfit and Addon Quests" group, which holds this mission
+			if player:getStorageValue(Storage.OutfitQuest.DefaultStart) ~= 1 then
+				player:setStorageValue(Storage.OutfitQuest.DefaultStart, 1)
+			end
 			player:setStorageValue(Storage.Quest.U7_8.CitizenOutfits.AddonHat, 1)
 			player:setStorageValue(Storage.Quest.U7_8.CitizenOutfits.MissionHat, 1)
 			npcHandler:say("Okay, here we go, listen closely! I need a few things... a basic hat of course, maybe a legion helmet would do. Then about 100 chicken feathers... and 50 honeycombs as glue. That's it, come back to me once you gathered it!", npc, creature)
@@ -103,7 +107,8 @@ local function creatureSayCallback(npc, creature, type, message)
 				player:removeItem(5890, 100)
 				player:addOutfitAddon(136, 2)
 				player:addOutfitAddon(128, 2)
-				player:setStorageValue(Storage.Quest.U7_8.CitizenOutfits.MissionHat, 0)
+				-- FAMILY: 2 = finished ("You got the Citizen Hat Addon!"); upstream 0 hid the mission
+				player:setStorageValue(Storage.Quest.U7_8.CitizenOutfits.MissionHat, 2)
 				player:setStorageValue(Storage.Quest.U7_8.CitizenOutfits.AddonHat, 2)
 			end
 		else
