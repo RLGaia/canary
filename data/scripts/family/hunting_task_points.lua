@@ -23,6 +23,14 @@
 -- list: the Free reroll and full-list buttons are enabled, and the first click
 -- gives a new list as usual. Relogging also fixes the slot.
 --
+-- Fixed 2026-10-25 (reported again by Rodrigo): the slot was only made ready
+-- when the action packet had 5 bytes after 0xBA, but the client sends only
+-- slot and action for a claim (C++ reads the upgrade byte with its log turned
+-- off for that reason), so the slot stayed Exhausted. Slot and action are now
+-- read whenever 2 bytes are there. Client 15.11 shows state 2 (selection grid)
+-- with Reroll and the full-list button enabled (SingleHuntingTaskView.qml:
+-- buttonsEnabled = slotState == SelectionGrid).
+--
 -- Switches: Family.huntingTaskPointsMultiplier (1 = upstream amounts),
 -- Family.huntingTaskSlotReadyAfterClaim (false = upstream Exhausted slot).
 
@@ -65,18 +73,20 @@ local function checkClaim(playerId, before, slot)
 	end
 	if slot and Family.huntingTaskSlotReadyAfterClaim and configManager.getNumber(configKeys.TASK_HUNTING_LIMIT_EXHAUST) == 0 then
 		Family.sendHuntingTaskSlotReady(player, slot)
+		player:sendTextMessage(MESSAGE_STATUS, "Hunting task slot ready: press Reroll (free) for new creatures, or choose from the full list.")
 	end
 end
 
 -- Called by the recvbyte module with the packet right after its 0xBA byte:
--- slot (u8), action (u8), upgrade (u8), race id (u16). The position is put back,
--- so the server reads the packet as usual.
+-- slot (u8), action (u8), then only for some actions upgrade (u8) and race id
+-- (u16); a claim has just slot and action. The position is put back, so the
+-- server reads the packet as usual.
 function Family.boostHuntingTaskClaim(player, msg)
 	if not player then
 		return
 	end
 	local slot, action
-	if msg and msg:getUnreadBytes() >= 5 then
+	if msg and msg:getUnreadBytes() >= 2 then
 		slot = msg:getByte()
 		action = msg:getByte()
 		msg:skipBytes(-2)
