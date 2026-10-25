@@ -200,7 +200,10 @@ local function creatureSayCallback(npc, creature, type, message)
 	elseif MsgContains(message, "points") then
 		local level = Family.dromeLevel and Family.dromeLevel(player) or 0
 		local start = Family.dromeStartLevel and Family.dromeStartLevel(player) or level
-		npcHandler:say(string.format("You have %s Drome points. In this {rotation} your Drome level is %d; your next run starts at wave %d.", pointsText(points), level, start + 1), npc, creature)
+		-- (2026-10-25) say what the current level will pay: points only arrive when the rotation ends
+		local perLevel = Family.dromeRewards and Family.dromeRewards.pointsPerLevel or 100
+		local pending = level > 0 and string.format(" When this rotation ends on %s you get %s Drome points for it (%d per level).", Family.dromeDateText(Family.dromeRotationEnd()), pointsText(level * perLevel), perLevel) or " Clear a wave in the arena to earn points when this rotation ends."
+		npcHandler:say(string.format("You have %s Drome points to spend. In this {rotation} your Drome level is %d; your next run starts at wave %d.%s", pointsText(points), level, start + 1, pending), npc, creature)
 	elseif MsgContains(message, "rotation") then
 		local endTime = Family.dromeRotationEnd()
 		local days = math.max(0, math.ceil((endTime - os.time()) / 86400))
