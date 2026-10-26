@@ -26,3 +26,13 @@ offers). At startup: 4,372 buy offers and 2,389 sell offers (after the NPC creat
 
 To refresh prices later: `python3 tools/family/market/fetch.py /tmp/worlds`
 then `python3 tools/family/market/build.py /tmp/worlds` and restart the server.
+
+Quest items (2026-10-25): `quest_items.py <map.otbm>` (from the repository
+root; the map is not in the repository, download otservbr.otbm from the
+v3.6.1 release) writes `data/scripts/family/market_bot_quest_data.lua` and
+`quest_items.md`: the market items handed out or asked for by quest chests on
+the map (action id 2000 and quest_system1's special ids), the chest table and
+quest scripts/NPCs, minus non-quest sources (surprise bags, baking, skinning,
+fishing, mount taming, soul pit, event and token traders, Tibiadrome shop).
+They get sell offers at the same prices. First run: 698 quest items, 274 of
+them had no sell offer before (estimate from the creature files).

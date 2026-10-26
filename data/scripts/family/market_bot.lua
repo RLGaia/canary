@@ -18,10 +18,14 @@
 --     offer is never cheaper than an NPC that sells them: real worlds have
 --     cheaper sources we lack (Minzy's potions cost 19 there) and supplies are
 --     the main gold sink. Equipment can be cheaper than at the NPCs.
--- Sell offers only for items players can get again and again: creature loot
+-- Sell offers for items players can get again and again: creature loot
 -- (all creatures, bosses included, loot added at startup counts) or an NPC
--- shop. Quest, event and store items only get buy offers. Currencies and
--- tokens are left out (in the data tool).
+-- shop, and (since 2026-10-25, asked by Rodrigo) quest items: market items
+-- that quest content hands out or asks for, listed by
+-- tools/family/market/quest_items.py in market_bot_quest_data.lua, same
+-- prices. Event items (winter event, raid token souvenirs, the Tibiadrome
+-- shop) still only get buy offers. Currencies and tokens are left out (in
+-- the data tool).
 --
 -- When a player sells to a buy offer the item goes to the market character's
 -- inbox; that inbox, its market history and its bank balance are cleared at
@@ -33,6 +37,7 @@
 Family = Family or {}
 Family.marketBot = {
 	enabled = true,
+	questItems = true, -- sell offers for quest items too (2026-10-25)
 	spread = 0.10,
 	priceScale = 1.0,
 	amountStackable = 10000, -- per offer, refilled at every start
@@ -150,6 +155,15 @@ local function refresh()
 		logger.error("[Family] market: price table not loaded: {}", tostring(data))
 		return
 	end
+	local quest = {}
+	if cfg.questItems then
+		local okQuest, questData = pcall(dofile, CORE_DIRECTORY .. "/scripts/family/market_bot_quest_data.lua")
+		if okQuest and type(questData) == "table" then
+			quest = questData
+		else
+			logger.error("[Family] market: quest item list not loaded: {}", tostring(questData))
+		end
+	end
 	local botId = Family.marketBotCharacter()
 	if not botId then
 		logger.error("[Family] market: could not create the market character")
@@ -162,7 +176,7 @@ local function refresh()
 
 	local dropped = droppedItems()
 	local now = os.time()
-	local rows, buys, sells = {}, 0, 0
+	local rows, buys, sells, questSells = {}, 0, 0, 0
 	local function flush()
 		if #rows > 0 then
 			db.query("INSERT INTO `market_offers` (`player_id`, `sale`, `itemtype`, `amount`, `created`, `anonymous`, `price`, `tier`) VALUES " .. table.concat(rows, ","))
@@ -179,7 +193,7 @@ local function refresh()
 		local itemType = ItemType(itemId)
 		if itemType and itemType:getId() == itemId then
 			local ref, npcPays, npcCharges, npcSells = entry[1], entry[2], entry[3], entry[4]
-			local canSell = npcSells == 1 or dropped[itemId] == true
+			local canSell = npcSells == 1 or dropped[itemId] == true or quest[itemId] == true
 			local stackable = itemType:isStackable()
 			local buy, sell = Family.marketBotPrices(ref, npcPays, npcCharges, canSell, stackable)
 			local amount = stackable and cfg.amountStackable or cfg.amountSingle
@@ -190,11 +204,14 @@ local function refresh()
 			if sell then
 				add(SALE, itemId, amount, sell)
 				sells = sells + 1
+				if quest[itemId] and npcSells ~= 1 and not dropped[itemId] then
+					questSells = questSells + 1
+				end
 			end
 		end
 	end
 	flush()
-	logger.info("[Family] market: {} buy offers, {} sell offers (price scale {})", buys, sells, cfg.priceScale)
+	logger.info("[Family] market: {} buy offers, {} sell offers ({} for quest items only) (price scale {})", buys, sells, questSells, cfg.priceScale)
 end
 
 local startup = GlobalEvent("FamilyMarketBot")
