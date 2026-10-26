@@ -50,4 +50,5 @@ FamilyChangelog = {
 	{ "2026-10-25", "Exaltation Forge: more dust, cheaper tiers and a better success rate; more influenced creatures near players." },
 	{ "2026-10-25", "The market also sells quest items." },
 	{ "2026-10-26", "The Gaia Times prints server updates and the adventurers' chronicle of the last day played." },
+	{ "2026-10-26", "The Inquisition bosses, the Ankrahmun pharaohs and The Lord of the Lice drop Tibia Coins too." },
 }

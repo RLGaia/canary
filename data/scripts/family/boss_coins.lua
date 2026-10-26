@@ -39,12 +39,18 @@ local TIBIA_COINS = 22118
 
 -- Coins for a monster type: min, max (nil when it gets none).
 function Family.bossCoinsFor(mType)
-	local raceId = mType:bossRaceId() or 0
-	local isBoss = raceId > 0 or mType:isRewardBoss()
+	-- In the Bosstiary = the bosstiary class is set. (Until 2026-10-26 this
+	-- tested bossRaceId() > 0, but that getter returns the rarity, which is 0
+	-- for bane bosses, so the 16 bane bosses without a reward chest - the
+	-- Inquisition bosses and the Ankrahmun pharaohs - got no coins, and The
+	-- Lord of the Lice (bane, reward chest, 0 experience) was taken for a
+	-- helper.)
+	local inBosstiary = mType:bossRace() ~= nil
+	local isBoss = inBosstiary or mType:isRewardBoss()
 	if not isBoss then
 		return nil
 	end
-	if raceId == 0 and (mType:experience() or 0) == 0 then
+	if not inBosstiary and (mType:experience() or 0) == 0 then
 		return nil -- a helper of a boss fight
 	end
 	local loot = mType:getLoot() or {}
