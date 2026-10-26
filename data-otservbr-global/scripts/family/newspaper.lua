@@ -12,7 +12,9 @@
 -- the travelling vendors are; world changes (Fury Gate, Nightmare Isle,
 -- Grimvale, Their Master's Voice); rare creatures and bosses seen today or
 -- still possible today, and where classic raids can strike; active events
--- (experience, loot, skill); server notes.
+-- (experience, loot, skill); server updates of the last week and the
+-- adventurers' chronicle of the last day played (since 2026-10-26, see
+-- chronicle.lua); server notes.
 --
 -- Reading is hooked into data/scripts/actions/items/dolls.lua (FAMILY: edit),
 -- which already handles "use" on the golden newspaper.
@@ -329,6 +331,33 @@ function Family.newspaperText(key)
 		end
 	end
 	line()
+
+	-- Since 2026-10-26: the server changelog (scripts/lib/family_changelog.lua)
+	-- and the adventurers' chronicle of the last day played (chronicle.lua).
+	if Family.changelogLines then
+		local changes = Family.changelogLines(key)
+		if #changes > 0 then
+			line("SERVER UPDATES")
+			for _, change in ipairs(changes) do
+				line(change)
+			end
+			line()
+		end
+	end
+
+	if Family.chronicleLines then
+		local day, chronicle = Family.chronicleLines(key)
+		line("ADVENTURERS' CHRONICLE")
+		if day then
+			line("  " .. longDate(day) .. ":")
+			for _, text in ipairs(chronicle) do
+				line(text)
+			end
+		else
+			line("  No adventures were recorded in the last days.")
+		end
+		line()
+	end
 
 	line("SERVER NOTES")
 	line("  The world is saved every 15 minutes; type /save to save now.")

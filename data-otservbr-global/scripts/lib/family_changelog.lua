@@ -1,0 +1,53 @@
+-- Gaia Family server: the server changelog read by the newspaper (2026-10-26).
+--
+-- Ours, not upstream. One plain sentence per change players can notice,
+-- newest last, in the words a player would use (no file names). The Gaia
+-- Times prints the changes of the last FamilyChangelogDays days in its
+-- "Server updates" section. Every change committed to the family branch adds
+-- its line here (see FAMILY.md, "Newspaper").
+
+FamilyChangelogDays = 7
+
+FamilyChangelog = {
+	{ "2026-10-17", "Map discovery: Start Discovering in the Cyclopedia map and find the pink vortexes (Measuring Tibia)." },
+	{ "2026-10-17", "Offline training counts the whole time away, up to a year; a bed in your house restores health, mana and soul at login." },
+	{ "2026-10-17", "Sword, axe and club fighting always share the highest of the three." },
+	{ "2026-10-17", "Shared party experience has no level limit and no distance or activity rule." },
+	{ "2026-10-17", "Bosses have no cooldown." },
+	{ "2026-10-17", "Fresh corpses can be moved right away." },
+	{ "2026-10-17", "The Way of the Monk is playable and every monk item can be found." },
+	{ "2026-10-18", "The spell list shows only the spells you have learned." },
+	{ "2026-10-18", "Vocation bonuses: extra regeneration and critical chance while fed." },
+	{ "2026-10-18", "The Tibiadrome arena is open behind the demon trophies." },
+	{ "2026-10-18", "NPCs understand whole words first (no more answers to words hidden inside others)." },
+	{ "2026-10-18", "Bosses drop Tibia Coins." },
+	{ "2026-10-18", "Creatures drop the loot TibiaWiki lists for them." },
+	{ "2026-10-18", "The market always has offers to buy and sell." },
+	{ "2026-10-18", "The First Dragon: every dragon chest and sacred site counts." },
+	{ "2026-10-19", "Houses for sale are furnished; the furniture goes away when you buy one." },
+	{ "2026-10-19", "Prey and Hunting Task rerolls and list choices are free." },
+	{ "2026-10-19", "Mounts run faster on their home terrain (say !mounts)." },
+	{ "2026-10-19", "Edron City Tasks: Daniel Steelsoul has 13 tasks, several at once, at any level." },
+	{ "2026-10-20", "New quests: Sinatuki's fish, the Festive Outfit addons, Waterskin of Mead, The Spirit Will Get You and Pilgrimage of Ashes." },
+	{ "2026-10-20", "The quest tracker updates right away." },
+	{ "2026-10-20", "Skill bars and the spell list stay right after dying." },
+	{ "2026-10-20", "The adventurer's stone works anywhere outside a fight; the battle icon ends when no enemy is near." },
+	{ "2026-10-21", "Werebadgers and werefoxes on the Troll Sabotage path come out only at night." },
+	{ "2026-10-21", "Map discovery points are never inside houses." },
+	{ "2026-10-21", "Troll Sabotage: Chief Grarkharok accepts the lady's name." },
+	{ "2026-10-21", "Daily reward days 3 and 5 give an XP boost and 25 Tibia Coins instead of Prey rerolls." },
+	{ "2026-10-21", "Venore Daily Tasks (ask Norman) and the Braindeath near Beregar's coffin." },
+	{ "2026-10-21", "Walter Jaeger sells the Falconer outfit, its addons and the Antelope for Hunting Task points." },
+	{ "2026-10-21", "Hunting Tasks pay 10 times the points and a new task can be chosen at once." },
+	{ "2026-10-22", "Great mana potions can be drunk by every vocation from level 80." },
+	{ "2026-10-22", "Training weapons from the daily reward can be thrown away." },
+	{ "2026-10-23", "Tibiadrome: Lorenzo trades Drome points for rewards; rotations every two weeks; 10 minutes between runs." },
+	{ "2026-10-23", "Rotworms no longer drop legion helmets." },
+	{ "2026-10-23", "Magic level trains faster on statues and dummies, and statue training is twice as fast." },
+	{ "2026-10-25", "Tibiadrome runs go on when you take the stairs to the arena's lower floors." },
+	{ "2026-10-25", "The Citizen addons show in the quest log." },
+	{ "2026-10-25", "New quest: Top of the City in Yalahar (ask Iriana)." },
+	{ "2026-10-25", "Exaltation Forge: more dust, cheaper tiers and a better success rate; more influenced creatures near players." },
+	{ "2026-10-25", "The market also sells quest items." },
+	{ "2026-10-26", "The Gaia Times prints server updates and the adventurers' chronicle of the last day played." },
+}
