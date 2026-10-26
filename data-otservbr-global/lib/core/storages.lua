@@ -3029,6 +3029,12 @@ Storage = {
 			Mission = 48730, -- 1 chase, 2 crate for Jimmy, 3 chest for Iriana, 4 done; also the action id of Jimmy's door
 			AssassinsCalled = 48731,
 		},
+		-- FAMILY: Cartography 101 (ours, 2026-10-26; scripts/family/cartography_101.lua)
+		-- (48732-48733 are action ids of Top of the City, kept free here)
+		FamilyCartography = {
+			Mission = 48734, -- 1 charting, 2 done (achievement given)
+			Charted = 48735, -- bit mask of the charted locations
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,

@@ -26,6 +26,20 @@ local quest = {
 				[3] = "You told Tarun about his brother's sad fate. He was very downhearted but gave you his sincere thanks. The beautiful asuri have taken a young man's life and the happiness of another one.",
 			},
 		},
+		-- FAMILY: Cartography 101 (ours, 2026-10-26; scripts/family/cartography_101.lua)
+		[3] = {
+			name = "Cartography 101",
+			storageId = Storage.Quest.FamilyCartography.Mission,
+			missionId = 11226,
+			startValue = 1,
+			endValue = 2,
+			description = function(player)
+				if FamilyCartography then
+					return FamilyCartography.describe(player)
+				end
+				return "The Adventurers' Guild need some help cartographing the Tibian lands."
+			end,
+		},
 	},
 }
 

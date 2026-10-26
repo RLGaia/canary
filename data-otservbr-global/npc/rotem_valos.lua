@@ -114,6 +114,84 @@ keywordHandler:addKeyword({ "loot" }, StdModule.say, {
 keywordHandler:addKeyword({ "work" }, StdModule.say, { npcHandler = npcHandler, text = "We always need a hand charting Tibia. Our map of the world can't be detailed enough. Talk to me if you're interested or if you already have a map and lost it." })
 keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "Welcome to the Adventurers' Guild, my friend." })
 
+-- FAMILY: Cartography 101 Quest (2026-10-26; scripts/family/cartography_101.lua).
+-- Lines from TibiaWiki's transcripts: map (first time, while charting, all
+-- found), the start of the yes answer and lost. The list answer and the rest
+-- of the yes answer are ours (TibiaWiki cuts it off).
+local function creatureSayCallback(npc, creature, type, message)
+	local player = Player(creature)
+	if not player then
+		return false
+	end
+	local playerId = player:getId()
+	if not npcHandler:checkInteraction(npc, creature) then
+		return false
+	end
+	local F = FamilyCartography
+	if not F or not Family.cartography101 then
+		return false
+	end
+	local state = F.state(player)
+	local topic = npcHandler:getTopic(playerId)
+
+	if MsgContains(message, "map") or MsgContains(message, "chart") or MsgContains(message, "charting") then
+		if state < 1 then
+			npcHandler:say("There are a lot of dark corners in this world. Not nearly have we uncovered even half of them. We need help in charting the world - interested?", npc, creature)
+			npcHandler:setTopic(playerId, 1)
+		elseif state == 1 and F.count(player) >= #F.places then
+			F.finish(player)
+			npcHandler:say({
+				"Looks like you found all the locations! ...",
+				"Feel free to return here any time you like, we may have additional {work} for you!",
+			}, npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		elseif state == 1 then
+			npcHandler:say(string.format("How is it going? Did you find anything worth charting? Make sure to show us the results once you have visited all the locations from our {list}. You have charted %d of %d.", F.count(player), #F.places), npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		else
+			npcHandler:say("Looks like you found all the locations! Feel free to return here any time you like, we may have additional {work} for you!", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		end
+	elseif MsgContains(message, "yes") and topic == 1 then
+		F.start(player)
+		player:addItem(F.mapItem, 1)
+		npcHandler:say({
+			"Alright, here is a map of Tibia including some areas we have marked only vaguely. It can be folded and fits in any backpack. ...",
+			"Use it at each of the places on our {list} to chart them, in any order you like. Some are dangerous, so be prepared. If you lose the map, tell me it is {lost}.",
+		}, npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "no") and topic == 1 then
+		npcHandler:say("Maybe another time then.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "list") and state >= 1 then
+		local missing = F.missing(player)
+		if #missing == 0 then
+			npcHandler:say("You have charted every place on our list. Show me your {map}!", npc, creature)
+		else
+			local lines = {}
+			for _, place in ipairs(missing) do
+				lines[#lines + 1] = string.format("%s: %s.", place[1]:gsub("^%l", string.upper), place[2])
+			end
+			local text = { string.format("%d places are still missing on your map. ...", #missing) }
+			for i = 1, #lines, 3 do
+				text[#text + 1] = table.concat(lines, " ", i, math.min(i + 2, #lines)) .. (i + 2 < #lines and " ..." or "")
+			end
+			npcHandler:say(text, npc, creature)
+		end
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "lost") and state == 1 then
+		if player:getItemCount(F.mapItem) > 0 then
+			npcHandler:say("But you are carrying your map right now!", npc, creature)
+		else
+			player:addItem(F.mapItem, 1)
+			npcHandler:say("Alright, here's another map. Take care of it. And I mean more than you did last time.", npc, creature)
+		end
+		npcHandler:setTopic(playerId, 0)
+	end
+	return true
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table
