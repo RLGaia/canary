@@ -8,7 +8,8 @@
 --
 -- Here:
 --   * every creature that comes near a player (about one screen, same floor)
---     gets one roll: 5% to become influenced, stage 3-5. The global limit
+--     gets one roll: 2.5% to become influenced, stage 3-5 (5% until the
+--     evening of 2026-10-25, halved at Rodrigo's request). The global limit
 --     (forgeInfluencedLimit in family/config.family.lua) is made room for by
 --     clearing a random influenced creature far from every player;
 --   * dust per kill x2: stage x2 to stage x6 (fiendish 30-90);
@@ -20,7 +21,7 @@
 --   * fusion gold: 10% of Tibia's prices up to tier 5, then a steeper cut
 --     (tier 10 200 million instead of 15 billion); convergence prices get the
 --     same cut per tier; exalted cores needed for a transfer are halved.
--- Config side (family/config.family.lua): 1,500 random influenced creatures,
+-- Config side (family/config.family.lua): 750 random influenced creatures,
 -- 8 fiendish, fusion success 65% (80% with a core), 25 slivers per core.
 --
 -- Switch: Family.forgeBoost (false = upstream dust, limit and prices).
@@ -28,7 +29,7 @@
 Family = Family or {}
 Family.forgeBoost = true
 Family.forgeDustMultiplier = 2 -- dust per kill = upstream x this
-Family.forgeNearChance = 5 -- % per creature near a player
+Family.forgeNearChance = 2.5 -- % per creature near a player (decimals allowed)
 Family.forgeNearStages = { 3, 5 } -- stage of those influenced creatures
 Family.forgeFullDustLimit = true -- dust limit 225 from the start
 
@@ -177,7 +178,7 @@ function Family.forgeRollMonster(monster, players)
 	if not tile or tile:hasFlag(TILESTATE_NOLOGOUT) or tile:hasFlag(TILESTATE_PROTECTIONZONE) then
 		return false
 	end
-	if math.random(100) > Family.forgeNearChance then
+	if math.random() * 100 >= Family.forgeNearChance then
 		return false
 	end
 	if not Family.forgeMakeRoom(players) then
