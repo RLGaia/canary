@@ -139,6 +139,21 @@ toggleSaveInterval = false
 partyShareRangeMultiplier = 10000
 
 -- ===========================================================================
+-- Exaltation Forge (2026-10-25). The rest of the boost (dust per kill, party
+-- dust, influenced creatures near players, dust limit, tier prices) is in
+-- data/scripts/family/forge_boost.lua.
+-- ===========================================================================
+-- Influenced creatures placed at random anywhere on the map (upstream 300 of
+-- about 83,000 creatures). The ones near players come from forge_boost.lua.
+forgeInfluencedLimit = 1500
+-- Fiendish creatures alive at once (upstream 4; Tibia's Exaltation Overload 8).
+forgeFiendishLimit = 8
+-- Fusion success: 65% (upstream 50%), 80% with an exalted core (+15 as upstream).
+forgeBaseSuccessRate = 65
+-- Slivers per exalted core (upstream 50 = 1,000 dust; now 500 dust).
+forgeCoreCost = 25
+
+-- ===========================================================================
 -- Store pictures (2026-10-24). The client draws items, mounts and outfits
 -- itself, but category icons, home banners and offers like beds, blessings,
 -- Premium Time and boosts are pictures it downloads from this address
