@@ -32,6 +32,11 @@
 	<module type="recvbyte" byte="231" script="family/spell_list.lua" />
 	<!-- FAMILY: claimed Hunting Task Points x10 (data/scripts/family/hunting_task_points.lua) -->
 	<module type="recvbyte" byte="186" script="family/hunting_tasks.lua" />
+	<!-- FAMILY: paralysis only slows walking; spells, runes and potions work while paralyzed (data/scripts/lib/family_paralyze.lua) -->
+	<module type="recvbyte" byte="150" script="family/paralyze.lua" />
+	<module type="recvbyte" byte="130" script="family/paralyze.lua" />
+	<module type="recvbyte" byte="131" script="family/paralyze.lua" />
+	<module type="recvbyte" byte="132" script="family/paralyze.lua" />
 
 	<!-- Hireling Outfit Helper -->
 	<module type="recvbyte" byte="211" script="hirelings/hireling_module.lua" />
