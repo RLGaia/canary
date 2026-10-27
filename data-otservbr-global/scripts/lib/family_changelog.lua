@@ -53,4 +53,5 @@ FamilyChangelog = {
 	{ "2026-10-26", "The Inquisition bosses, the Ankrahmun pharaohs and The Lord of the Lice drop Tibia Coins too." },
 	{ "2026-10-26", "New quest: Cartography 101 (ask Rotem Valos in the Adventurers' Guild about a map)." },
 	{ "2026-10-26", "New quest: Dragon Slayer Outfits (ask Big Ben in Ab'Dendriel about the dragon slayer attire); Albino Dragons live in five dragon lairs; the First Dragon quest is open all year." },
+	{ "2026-10-26", "The adventurers' chronicle records Goshnar's Megalomania bosstiary levels too." },
 }

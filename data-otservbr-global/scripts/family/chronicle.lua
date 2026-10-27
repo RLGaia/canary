@@ -308,9 +308,16 @@ end
 storageCallback:register()
 
 -- Bestiary and bosstiary.
-local known = {} -- [guid] = { bestiary = {[raceId] = true}, boss = {[name] = level} }
-local bestiaryRaces -- [raceId] = name
-local bossNames -- list of bosstiary boss names
+-- Lookups by name (MonsterType(name), player:getBosstiaryLevel(name)) need the
+-- REGISTERED type name (mType:getTypeName(), the key of Game.getMonsterTypes()),
+-- not mType:name(), the name players see. They differ for creatures with
+-- variants: Goshnar's Megalomania is registered only as "... Blue", "... Green"
+-- and "... Purple", so looking up the shown name logged "Monster with name
+-- goshnar's megalomania not exist" twice at every login. Bosses are kept by
+-- race id, so variants sharing a race (Blue and Green, 1969) count as one boss.
+local known = {} -- [guid] = { bestiary = {[raceId] = true}, boss = {[raceId] = level} }
+local bestiaryRaces -- [raceId] = true
+local bossTypes -- [raceId] = registered type name of one bosstiary type of that race
 
 local function loadLists()
 	if bestiaryRaces then
@@ -320,10 +327,11 @@ local function loadLists()
 	for _, raceId in ipairs(Game.getBestiaryList() or {}) do
 		bestiaryRaces[raceId] = true
 	end
-	bossNames = {}
-	for _, mType in pairs(Game.getMonsterTypes() or {}) do
-		if mType:bossRace() ~= nil and mType:raceId() > 0 then
-			bossNames[#bossNames + 1] = mType:name()
+	bossTypes = {}
+	for typeName, mType in pairs(Game.getMonsterTypes() or {}) do
+		local raceId = mType:raceId()
+		if mType:bossRace() ~= nil and raceId > 0 and not bossTypes[raceId] then
+			bossTypes[raceId] = typeName
 		end
 	end
 end
@@ -336,8 +344,8 @@ function Family.chronicleNoteProgress(player)
 			state.bestiary[raceId] = true
 		end
 	end
-	for _, name in ipairs(bossNames) do
-		state.boss[name] = player:getBosstiaryLevel(name) or 0
+	for raceId, typeName in pairs(bossTypes) do
+		state.boss[raceId] = player:getBosstiaryLevel(typeName) or 0
 	end
 	known[player:getGuid()] = state
 end
@@ -357,10 +365,10 @@ function cfg.checkType(typeName, players)
 		local state = known[player:getGuid()]
 		if state then
 			if isBoss then
-				if state.boss[name] ~= nil then
-					local level = player:getBosstiaryLevel(name) or 0
-					if level > state.boss[name] then
-						state.boss[name] = level
+				if state.boss[raceId] ~= nil then
+					local level = player:getBosstiaryLevel(typeName) or 0
+					if level > state.boss[raceId] then
+						state.boss[raceId] = level
 						if BOSS_LEVELS[level] then
 							-- only the last level reached with each boss
 							local prefix = name .. " ("
@@ -391,7 +399,7 @@ function Family.chronicleKilled(mType)
 	if not mType or not Family.chronicleEnabled then
 		return
 	end
-	local typeName = mType:name()
+	local typeName = mType:getTypeName() -- registered name (see above), not the shown one
 	if pending[typeName] then
 		return
 	end
