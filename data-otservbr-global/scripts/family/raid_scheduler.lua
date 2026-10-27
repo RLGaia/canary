@@ -33,6 +33,10 @@
 -- * The other classic raids (creature invasions) in a random rotation: one
 --   at a time, 30 minutes after the previous raid start, each again only
 --   after 8 h of play.
+-- * 22 rare bosses that had monster files but no raid, spawn or script
+--   (Hairman the Huge, The Evil Eye, Rotworm Queen, Willi Wasp, Morshabaal,
+--   The Abomination...; added later the same day, see R.spawnBosses) on the
+--   same timers.
 -- The Lua raids (Midnight Panther, Tyrn, White Pale...) are not touched; see
 -- rare_creatures.lua.
 --
@@ -93,18 +97,110 @@ R.bossRaids = {
 	{ raid = "Dharalion", group = "common", bosses = { "Dharalion" } },
 }
 
--- The Ruthless Seven (Pits of Inferno, floor 15): no raid file, they just
--- appear (as in Tibia, no announcement). Positions from upstream's
--- globalevents_pits_of_inferno_bosses.lua, which is switched off while
--- Family.raidScheduler is on (FAMILY: edit there).
+-- Bosses with no raid file, created by this file. Fields:
+--   spots    places it can appear (one picked at random each visit)
+--   minions  creatures that come with it: { name, min, max }
+--   announce broadcast messages (white, like raids): { seconds, text }
+--   delay    seconds from the first message until the boss appears
+--   despawn  minutes after which it leaves if nobody is fighting it
+--
+-- The Ruthless Seven (Pits of Inferno, floor 15): appear without a message, as
+-- in Tibia. Positions from upstream's globalevents_pits_of_inferno_bosses.lua,
+-- which is switched off while Family.raidScheduler is on (FAMILY: edit there).
+--
+-- The rare bosses below (2026-10-27) had monster files but nothing ever
+-- created them. Places, companions, messages and the "leaves after an hour"
+-- rule from TibiaWiki EN (each boss's page and the city raid pages; spots are
+-- the wiki's Mapper coordinates, each checked on our map: a free square among
+-- the creatures of that hunting ground). Groups from TibiaDepot's spawn
+-- windows: a window around 8 days or less = common, longer = medium, about
+-- half a year = legendary. Only Willi Wasp, Morshabaal and The Abomination
+-- have documented messages; the others appear unannounced, as in Tibia.
+-- Family versions: Morshabaal fights at the Edron stone circle and The
+-- Abomination in one of its ten spawn rooms, because their own lairs (a
+-- dwelling under Edron and a room under the Ice Islands) are not on our map;
+-- the companion count of Willi Wasp's wasps is ours.
+local function P(x, y, z)
+	return Position(x, y, z)
+end
+
 R.spawnBosses = {
-	{ name = "Massacre", group = "medium", pos = Position(32876, 32270, 15) },
-	{ name = "Dracola", group = "medium", pos = Position(32837, 32309, 15) },
-	{ name = "The Imperor", group = "medium", pos = Position(32907, 32215, 15) },
-	{ name = "Mr. Punish", group = "medium", pos = Position(32763, 32243, 15) },
-	{ name = "Countess Sorrow", group = "medium", pos = Position(32802, 32333, 15) },
-	{ name = "The Plasmother", group = "medium", pos = Position(32845, 32332, 15) },
-	{ name = "The Handmaiden", group = "medium", pos = Position(32785, 32290, 15) },
+	-- Ruthless Seven (medium)
+	{ name = "Massacre", group = "medium", spots = { P(32876, 32270, 15) } },
+	{ name = "Dracola", group = "medium", spots = { P(32837, 32309, 15) } },
+	{ name = "The Imperor", group = "medium", spots = { P(32907, 32215, 15) } },
+	{ name = "Mr. Punish", group = "medium", spots = { P(32763, 32243, 15) } },
+	{ name = "Countess Sorrow", group = "medium", spots = { P(32802, 32333, 15) } },
+	{ name = "The Plasmother", group = "medium", spots = { P(32845, 32332, 15) } },
+	{ name = "The Handmaiden", group = "medium", spots = { P(32785, 32290, 15) } },
+
+	-- common (Tibia window about a week or less)
+	{ name = "Hairman the Huge", group = "common", spots = { P(32846, 32510, 8) }, minions = { { "Kongra", 1, 1 } } }, -- Banuta underground, 6-9 days
+	{ name = "Captain Jones", group = "common", spots = { P(33321, 32184, 7) } }, -- Ghostship deck, 6-8 days
+	{ name = "General Murius", group = "common", spots = { P(32417, 32119, 15) } }, -- Mintwallin, 6-8 days
+	{ name = "Grandfather Tridian", group = "common", spots = { P(32423, 32779, 11) } }, -- Cult Cave (Liberty Bay), 6-8 days
+	{ name = "Rukor Zad", group = "common", spots = { P(32604, 32381, 10) } }, -- Dark Cathedral, 6-9 days
+	{ name = "Warlord Ruzad", group = "common", spots = { P(32970, 31721, 5) } }, -- Orc Fortress tower, 6-8 days
+	{
+		name = "Willi Wasp",
+		group = "common", -- north of Carlin, 5-9 days
+		spots = { P(32347, 31706, 7) },
+		announce = {
+			{ 0, "Some wasps have been found north of Carlin. There is some loud buzzing in the air." },
+			{ 250, "Buzzing madness north of Carlin! Be careful if you're allergic!" },
+			{ 300, "Willi Wasp the Wicked has arrived!" },
+		},
+		delay = 300,
+		minions = { { "Wasp", 6, 8 } },
+	},
+	{ name = "Yaga the Crone", group = "common", spots = { P(32712, 32011, 11) }, minions = { { "Witch", 1, 1 } } }, -- way to the Blood Herb, 5-7 days
+	{ name = "Zarabustor", group = "common", spots = { P(32509, 31595, 14) }, minions = { { "Warlock", 2, 2 } }, despawn = 60 }, -- Demona, 6-8 days
+	{ name = "Big Boss Trolliver", group = "common", spots = { P(33140, 31721, 10) }, minions = { { "Troll Champion", 1, 2 } }, despawn = 60 }, -- Edron Troll Cave, 3-5 days
+	{ name = "Fleabringer", group = "common", spots = { P(33092, 31388, 8), P(33110, 31462, 8), P(33251, 31425, 7) }, minions = { { "Insect Swarm", 2, 5 } } }, -- Zao steppe, 1-3 days
+	{ name = "Foreman Kneebiter", group = "common", spots = { P(32550, 31877, 15) }, despawn = 60 }, -- Kazordoon Dwarf Mines, 3-6 days
+
+	-- medium (Tibia window one to four weeks)
+	{ name = "The Evil Eye", group = "medium", spots = { P(32810, 31613, 14) }, minions = { { "Bonelord", 5, 5 }, { "Elder Bonelord", 3, 3 } } }, -- Hellgate library, 6-11 days
+	{ name = "Dreadmaw", group = "medium", spots = { P(33280, 31157, 7), P(33297, 31149, 7) } }, -- Muggy Plains rice fields, 12-24 days
+	{ name = "Man in the Cave", group = "medium", spots = { P(32133, 31148, 2) }, minions = { { "Monk", 3, 4 } } }, -- Formorgar Glacier, 13-15 days
+	{
+		name = "Rotworm Queen",
+		group = "medium", -- 12-15 days; one of the four caves
+		spots = { P(33062, 32372, 9), P(33232, 31848, 9), P(32261, 32690, 10), P(32783, 31600, 12) },
+		minions = { { "Carrion Worm", 2, 2 }, { "Rotworm", 3, 3 } },
+	},
+	{ name = "Smuggler Baron Silvertoe", group = "medium", spots = { P(32541, 32649, 10) } }, -- Tiquanda Bandit Caves, 8-14 days
+	{ name = "Xenia", group = "medium", spots = { P(32891, 31889, 8) } }, -- Venore amazon camp, 7-13 days
+	{ name = "Barbaria", group = "medium", spots = { P(32009, 31416, 7) } }, -- Krimhorn camp, 8-12 days
+	{ name = "Gravelord Oshuran", group = "medium", spots = { P(32979, 32395, 12) } }, -- Vampire Crypts (Drefia), 7-11 days
+
+	-- legendary (Tibia about every half year; world bosses for many players)
+	{
+		name = "Morshabaal",
+		group = "legendary",
+		spots = { P(33118, 31701, 7) }, -- the stone circle north-west of Edron (his teleporter's place in Tibia)
+		announce = { { 0, "Beware mortals! Orshabaal's brother, the infamous Morshabaal is out for revenge and will spread fear for his family once again!" } },
+		delay = 60,
+	},
+	{
+		name = "The Abomination",
+		group = "legendary",
+		-- the ten rooms where its spawns appear in Tibia (one picked)
+		spots = {
+			P(32701, 31612, 15), -- Hellgate
+			P(32740, 32435, 9), -- Dark Cathedral
+			P(33665, 31783, 9), -- Krailos
+			P(33216, 31406, 10), -- Zao Steppe
+			P(32902, 31906, 11), -- Gnomebase Alpha
+			P(33098, 32687, 11), -- Ankrahmun scarab cave
+			P(32609, 31514, 15), -- Beregar
+			P(33300, 31754, 14), -- Cyclopolis
+			P(32247, 31164, 12), -- Formorgar Mines
+			P(32509, 31942, 13), -- Kazordoon Dwarf Mines
+		},
+		announce = { { 0, "Something abominable is rising! Search for its spawns! Gather an army and destroy this threat!" } },
+		delay = 60,
+	},
 }
 
 local store = kv.scoped("family-raid-scheduler")
@@ -258,7 +354,12 @@ local function setNextDue(entry, first)
 	store:set("next." .. entry.key, R.uptime() + math.floor(wait + 0.5))
 end
 
+local pending = {} -- key -> true while a boss's messages run (it is coming)
+
 function R.isAlive(entry)
+	if pending[entry.key] then
+		return true
+	end
 	for _, id in ipairs(aliveIds[entry.key] or {}) do
 		local creature = Creature(id)
 		if creature and not creature:isRemoved() and creature:getHealth() > 0 then
@@ -283,16 +384,72 @@ local function rememberRaidBosses(entry)
 	aliveIds[entry.key] = ids
 end
 
+-- A creature near a spot: the spot itself if free, else a free square
+-- nearby (extended search), forced onto the spot only as a last resort.
+local function createNear(name, pos)
+	return Game.createMonster(name, pos, true, false) or Game.createMonster(name, pos, true, true)
+end
+
+-- Leaves after `minutes` (TibiaWiki: some bosses disappear one hour after
+-- they appear), but not in the middle of a fight: then checked every minute.
+local function despawnLater(id, minutes)
+	addEvent(function()
+		local monster = Monster(id)
+		if not monster or monster:isRemoved() then
+			return
+		end
+		if monster:getTarget() then
+			despawnLater(id, 1)
+			return
+		end
+		monster:getPosition():sendMagicEffect(CONST_ME_POFF)
+		monster:remove()
+	end, minutes * 60 * 1000)
+end
+
+local function spawnNow(entry, spot)
+	pending[entry.key] = nil
+	local def = entry.spawn
+	local boss = createNear(def.name, spot)
+	if not boss then
+		logger.error("[Family] raid scheduler: could not create {} at {}", def.name, tostring(spot))
+		aliveIds[entry.key] = {}
+		return
+	end
+	aliveIds[entry.key] = { boss:getId() }
+	for _, m in ipairs(def.minions or {}) do
+		for _ = 1, math.random(m[2], m[3]) do
+			createNear(m[1], spot)
+		end
+	end
+	if def.despawn then
+		despawnLater(boss:getId(), def.despawn)
+	end
+end
+
+-- Starts a boss without a raid file (messages first when it has any).
+function R.startSpawnBoss(entry)
+	local def = entry.spawn
+	local spot = def.spots[math.random(#def.spots)]
+	if not def.announce then
+		spawnNow(entry, spot)
+		return R.isAlive(entry)
+	end
+	pending[entry.key] = true
+	for _, a in ipairs(def.announce) do
+		local text = a[2]
+		addEvent(function()
+			Game.broadcastMessage(text, MESSAGE_EVENT_ADVANCE)
+		end, a[1] * 1000)
+	end
+	addEvent(spawnNow, (def.delay or 0) * 1000, entry, spot)
+	return true
+end
+
 -- Starts a boss now. Returns true when it started.
 function R.startEntry(entry)
 	if entry.spawn then
-		local monster = Game.createMonster(entry.spawn.name, entry.spawn.pos, true, true)
-		if not monster then
-			logger.error("[Family] raid scheduler: could not create {}", entry.spawn.name)
-			return false
-		end
-		aliveIds[entry.key] = { monster:getId() }
-		return true
+		return R.startSpawnBoss(entry)
 	end
 	-- Anything but RETURNVALUE_NOERROR means another raid is running (the raid
 	-- itself was checked in raids.xml at load; the raid error codes are not
