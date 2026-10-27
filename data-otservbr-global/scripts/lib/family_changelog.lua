@@ -54,4 +54,5 @@ FamilyChangelog = {
 	{ "2026-10-26", "New quest: Cartography 101 (ask Rotem Valos in the Adventurers' Guild about a map)." },
 	{ "2026-10-26", "New quest: Dragon Slayer Outfits (ask Big Ben in Ab'Dendriel about the dragon slayer attire); Albino Dragons live in five dragon lairs; the First Dragon quest is open all year." },
 	{ "2026-10-26", "The adventurers' chronicle records Goshnar's Megalomania bosstiary levels too." },
+	{ "2026-10-27", "New promotions at levels 200, 400, 600, 800 and 1000 (say 'promotion' to King Tibianus and the other promoting NPCs; !promotion shows your bonuses)." },
 }

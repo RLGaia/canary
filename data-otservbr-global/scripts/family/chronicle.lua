@@ -24,6 +24,8 @@
 --                    for every online player 200 ms later
 --   houses           wrapper of House.setHouseOwner (Cyclopedia purchase,
 --                    !buyhouse and /owner all go through it)
+--   promotions       Family.chronicleRecord(player, "p", title) from
+--                    data/scripts/family/promotions.lua (2026-10-27)
 -- Characters of the GOD group are left out.
 --
 -- Storage: global KV scope "family-chronicle.<day>", one map per character
@@ -504,6 +506,7 @@ function Family.chronicleLines(key)
 					{ "b", "Bestiary completed: " },
 					{ "x", "Bosstiary: " },
 					{ "h", "New house: " },
+					{ "p", "Promotion: " },
 				}
 				for _, item in ipairs(lists) do
 					local text = listText(entry[item[1]])

@@ -59,6 +59,11 @@ local function handleCreatureDescription(inspectedThing, lookDistance)
 		end
 	end
 
+	-- FAMILY: promotions after level 20 add their title (data/scripts/family/promotions.lua).
+	if inspectedThing:isPlayer() and Family and Family.promotionLookText then
+		descriptionText = Family.promotionLookText(inspectedThing, descriptionText)
+	end
+
 	return "You see " .. descriptionText
 end
 
