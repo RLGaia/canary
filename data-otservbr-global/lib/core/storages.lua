@@ -3035,6 +3035,10 @@ Storage = {
 			Mission = 48734, -- 1 charting, 2 done (achievement given)
 			Charted = 48735, -- bit mask of the charted locations
 		},
+		-- FAMILY: Dragon Slayer Outfits (ours, 2026-10-26; lib/others/family_dragon_slayer.lua)
+		FamilyDragonSlayer = {
+			Mission = 48736, -- 1 asked Big Ben, 2 outfit, 3 first addon, 4 second addon
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,

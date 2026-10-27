@@ -63,6 +63,11 @@ local function creatureSayCallback(npc, creature, type, message)
 	local msg = string.lower(message)
 	local isYes = (msg == "yes")
 
+	-- FAMILY: Dragon Slayer Outfits (lib/others/family_dragon_slayer.lua)
+	if FamilyDragonSlayer and FamilyDragonSlayer.onSay(npc, creature, msg, npcHandler) then
+		return true
+	end
+
 	-- uth'lokr
 	if MsgContains(msg, "uth'lokr") then
 		local stor = player:getStorageValue(Storage.Quest.U7_8.FriendsAndTraders.TheSweatyCyclops)

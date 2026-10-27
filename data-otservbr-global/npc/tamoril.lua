@@ -43,6 +43,10 @@ npcType.onThink = function(npc, interval)
 end
 
 local function isDateWithinEvent()
+	-- FAMILY: the First Dragon all year (Family.firstDragonAllYear, scripts/family/dragon_slayer.lua)
+	if Family and Family.firstDragonAllYear then
+		return true
+	end
 	local currentDate = os.date("*t")
 	local startDate = { day = 14, month = 1 }
 	local endDate = { day = 12, month = 2 }

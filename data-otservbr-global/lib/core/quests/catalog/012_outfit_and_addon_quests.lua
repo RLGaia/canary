@@ -317,6 +317,20 @@ local quest = {
 					Bring them to Chondur to earn your shamanic mask.",
 			},
 		},
+		-- FAMILY: Dragon Slayer Outfits (ours, 2026-10-26; lib/others/family_dragon_slayer.lua)
+		[20] = {
+			name = "Dragon Slayer Outfits",
+			storageId = Storage.Quest.FamilyDragonSlayer.Mission,
+			missionId = 11227,
+			startValue = 1,
+			endValue = 4,
+			description = function(player)
+				if FamilyDragonSlayer then
+					return FamilyDragonSlayer.describe(player)
+				end
+				return "Big Ben, the sweaty cyclops smith in Ab'Dendriel, makes the attire of a true dragon slayer."
+			end,
+		},
 	},
 }
 
