@@ -318,6 +318,16 @@ function Family.newspaperText(key)
 	if #places > 0 then
 		line("  Raiders may strike near: " .. table.concat(places, ", ") .. ".")
 	end
+	-- Classic raid bosses and the Ruthless Seven (raid_scheduler.lua).
+	if Family.raidScheduler and FamilyRaids and FamilyRaids.news then
+		local soon, roaming = FamilyRaids.news()
+		if #roaming > 0 then
+			line("  Still at large: " .. table.concat(roaming, ", ") .. ".")
+		end
+		if #soon > 0 then
+			line("  Rumours say these are stirring: " .. table.concat(soon, ", ") .. ".")
+		end
+	end
 	line("  They return about every half hour once defeated.")
 	line()
 

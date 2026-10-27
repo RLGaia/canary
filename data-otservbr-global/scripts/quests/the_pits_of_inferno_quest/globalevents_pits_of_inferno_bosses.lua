@@ -10,6 +10,11 @@ local spawns = {
 
 local pitsOfInfernoBosses = GlobalEvent("PitsOfInfernoBosses")
 function pitsOfInfernoBosses.onThink(interval, lastExecution)
+	-- FAMILY: the Ruthless Seven come from the family raid scheduler
+	-- (data-otservbr-global/scripts/family/raid_scheduler.lua) while it is on.
+	if Family and Family.raidScheduler then
+		return true
+	end
 	local spawn = spawns[math.random(#spawns)]
 	local monster = Game.createMonster(spawn.monster, spawn.position, true, true)
 

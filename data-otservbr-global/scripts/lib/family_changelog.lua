@@ -55,4 +55,5 @@ FamilyChangelog = {
 	{ "2026-10-26", "New quest: Dragon Slayer Outfits (ask Big Ben in Ab'Dendriel about the dragon slayer attire); Albino Dragons live in five dragon lairs; the First Dragon quest is open all year." },
 	{ "2026-10-26", "The adventurers' chronicle records Goshnar's Megalomania bosstiary levels too." },
 	{ "2026-10-27", "New promotions at levels 200, 400, 600, 800 and 1000 (say 'promotion' to King Tibianus and the other promoting NPCs; !promotion shows your bonuses)." },
+	{ "2026-10-27", "Raid bosses really come now: Orshabaal, Morgaroth, Ghazbaran and Ferumbras about every 20 hours of play, rarer bosses and the Ruthless Seven about every 8, common ones about every 3; other invasions come in random order." },
 }

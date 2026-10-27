@@ -165,3 +165,15 @@ forgeCoreCost = 25
 -- and fills them when the Store catalog changes.
 -- ===========================================================================
 coinImagesURL = "https://raw.githubusercontent.com/RLGaia/canary/family/family/store-images/"
+
+-- ===========================================================================
+-- Raids (2026-10-27). Canary's own raid scheduler is broken in v3.6.1 (every
+-- raid wins its roll, so they ran in file order once per start and Orshabaal,
+-- Morgaroth, Ghazbaran never came). The raids of raids/raids.xml are now
+-- started by data-otservbr-global/scripts/family/raid_scheduler.lua (bosses
+-- every 3/8/20 hours of play, other raids in a random rotation); the server's
+-- own scheduler is kept idle by a 49.7-day margin on every raid in raids.xml.
+-- Must stay false: with true the server does not even load the raids, and
+-- nothing (not our scheduler, not GOD's /raid) can start them.
+-- ===========================================================================
+disableLegacyRaids = false
