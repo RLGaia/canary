@@ -5,7 +5,9 @@
 -- Simple settings (premium, loot, boss multipliers...) are in
 -- family/config.family.lua; this file holds what config.lua cannot express.
 
-local FAMILY_BOSS_COOLDOWN = 0 -- seconds; matches bossDefaultTimeToFightAgain (no cooldown since 2026-10-17; 1 hour before)
+-- Boss levers keep their own cooldown since 2026-10-28 (it was capped to 0,
+-- and to 1 hour before 2026-10-17); every boss wait now ends at the next
+-- midnight at most (data-otservbr-global/scripts/family/boss_cooldown.lua).
 
 Family = Family or {}
 -- Exercise weapons never lose charges (read by
@@ -52,8 +54,7 @@ magicLevelStages = {
 }
 
 -- ---------------------------------------------------------------------------
--- 2. Boss levers: one player is always enough, and no lever keeps a cooldown
---    longer than FAMILY_BOSS_COOLDOWN. Every standard boss lever uses
+-- 2. Boss levers: one player is always enough. Every standard boss lever uses
 --    BossLever (data/libs/functions/boss_lever.lua) and registers itself as
 --    BossLever[<boss name>]. Some levers (Soul War) are created before this
 --    file loads, so the registered levers are adjusted at startup, before
@@ -69,9 +70,6 @@ local function patchBossLevers()
 	for _, lever in pairs(BossLever) do
 		if type(lever) == "table" and lever.playerPositions and lever.timeToFightAgain then
 			lever.minPlayers = 1
-			if lever.timeToFightAgain > FAMILY_BOSS_COOLDOWN then
-				lever.timeToFightAgain = FAMILY_BOSS_COOLDOWN
-			end
 			leversPatched = leversPatched + 1
 		end
 	end

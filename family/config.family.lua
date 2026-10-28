@@ -41,10 +41,10 @@ rateBossHealth = 0.5
 rateBossAttack = 0.7
 rateBossDefense = 1.0
 
--- Boss cooldown: none (since 2026-10-17; 1 hour before, upstream 20 hours).
--- solo_balance.lua also caps levers that set their own, longer cooldown, and
--- data-otservbr-global/scripts/family/boss_cooldown.lua removes the rest.
-bossDefaultTimeToFightAgain = 0
+-- Boss cooldown: Tibia's 20 hours again (2026-10-28; none from 2026-10-17,
+-- 1 hour before), but every boss wait ends at the next midnight at most:
+-- data-otservbr-global/scripts/family/boss_cooldown.lua (Family.bossCooldownMode).
+bossDefaultTimeToFightAgain = 20 * 60 * 60
 
 -- Conveniences
 autoLoot = true                 -- loot goes straight to your loot containers

@@ -1,42 +1,67 @@
--- Gaia Family server: no boss cooldown (2026-10-17). Ours, not upstream.
+-- Gaia Family server: boss cooldowns end at midnight (2026-10-28; from
+-- 2026-10-17 to 2026-10-28 there was no boss cooldown at all). Ours, not
+-- upstream.
 --
--- Bosses can be fought again right away. Three mechanisms are covered:
+-- Chosen by Rodrigo on 2026-10-28 (no cooldown could flood the economy, even
+-- for two players): every boss wait ends at the next midnight (00:00 on the
+-- server PC's clock), or earlier when the boss's own Tibia cooldown is
+-- shorter. A boss killed at 23:00 can be fought again at 00:00; one killed at
+-- 10:00 also at 00:00 (Tibia: 20 h later, 06:00 the next day). The Bosstiary
+-- and the lever messages show the time left until then.
+-- Three mechanisms are covered:
 --   1. The general boss cooldown (Bosstiary, boss levers and most boss
---      rooms): bossDefaultTimeToFightAgain = 0 in family/config.family.lua,
---      levers capped to 0 in data/scripts/family/solo_balance.lua, and here
---      Player:getBossCooldown always answers "no cooldown", which also clears
---      cooldowns set before this change or by scripts with their own hours
---      (Grimvale and Feaster of Souls portals, Cults of Tibia...).
+--      rooms): bossDefaultTimeToFightAgain is Tibia's 20 h again
+--      (family/config.family.lua), levers keep their own times
+--      (data/scripts/family/solo_balance.lua no longer caps them), and
+--      Player:setBossCooldown here moves any end time to the next midnight
+--      at most.
 --   2. Older quests that keep the wait in a character storage instead (Prince
 --      Drazzak, Grave Danger, Forgotten Knowledge, the Dream Courts, Brokul,
---      the First Dragon): writing a future time
---      to those storages stores "now" instead, and leftover waits are cleared
---      at login.
+--      the First Dragon): writing a future time to those storages stores the
+--      next midnight at most. The Last Lore Keeper (14 days in Tibia) is
+--      daily too.
+--   3. Daily tasks that read the boss default (Commander Stone's four
+--      Bigfoot's Burden tasks, the Bigfoot mouthpiece, Rottin Wood and the
+--      Married Men): the same midnight rule, so they do not jump from free to
+--      20 h when the default went back to 20 h.
 -- Boss rooms that are still occupied stay closed until the fight is over, as
 -- upstream.
 --
--- Switch: Family.noBossCooldown (false = the 1-hour family cooldown for
--- mechanism 1 needs bossDefaultTimeToFightAgain and FAMILY_BOSS_COOLDOWN put
--- back too; mechanism 2 returns to the quests' own times).
+-- Switch: Family.bossCooldownMode = "midnight" (this), "tibia" (each boss's
+-- own cooldown) or "none" (no wait, as from 2026-10-17 to 2026-10-28).
 
 Family = Family or {}
-Family.noBossCooldown = true
+Family.bossCooldownMode = "midnight"
 
--- 1. General boss cooldown -------------------------------------------------
-local originalGetBossCooldown = Player.getBossCooldown
-function Player:getBossCooldown(bossNameOrId)
-	if Family.noBossCooldown then
-		return 0
-	end
-	return originalGetBossCooldown(self, bossNameOrId)
+-- The next 00:00 after `now` on the server's clock (os.time normalises
+-- day 32 into the next month).
+function Family.nextMidnight(now)
+	local d = os.date("*t", now or os.time())
+	return os.time({ year = d.year, month = d.month, day = d.day + 1, hour = 0, min = 0, sec = 0 })
 end
 
+-- The end time actually kept when a script asks for `value`.
+function Family.bossWaitEnd(value)
+	if type(value) ~= "number" then
+		return value
+	end
+	local now = os.time()
+	if value <= now then
+		return value
+	end
+	if Family.bossCooldownMode == "none" then
+		return now
+	end
+	if Family.bossCooldownMode == "midnight" then
+		return math.min(value, Family.nextMidnight(now))
+	end
+	return value
+end
+
+-- 1. General boss cooldown -------------------------------------------------
 local originalSetBossCooldown = Player.setBossCooldown
 function Player:setBossCooldown(bossNameOrId, time)
-	if Family.noBossCooldown and type(time) == "number" and time > os.time() then
-		time = os.time()
-	end
-	return originalSetBossCooldown(self, bossNameOrId, time)
+	return originalSetBossCooldown(self, bossNameOrId, Family.bossWaitEnd(time))
 end
 
 -- 2. Storage-based boss waits ----------------------------------------------
@@ -71,10 +96,17 @@ local TIMER_PATHS = {
 	{ "Quest", "U12_00", "TheDreamCourts", "DreamScarGlobal", "MalofurTimer" },
 	{ "Quest", "U12_00", "TheDreamCourts", "DreamScarGlobal", "NightmareTimer" },
 	{ "Quest", "U11_80", "TheSecretLibrary", "LiquidDeath", "BrokulTimer" },
+	-- 3. daily tasks that use the boss default time
+	{ "Quest", "U9_60", "BigfootsBurden", "CrystalKeeperTimout" },
+	{ "Quest", "U9_60", "BigfootsBurden", "RaidersOfTheLostSparkTimeout" },
+	{ "Quest", "U9_60", "BigfootsBurden", "ExterminatorsTimeout" },
+	{ "Quest", "U9_60", "BigfootsBurden", "MushroomDiggerTimeout" },
+	{ "Quest", "U9_60", "BigfootsBurden", "Mouthpiece" },
+	{ "Quest", "U8_7", "RottinWoodAndTheMarriedMen", "Time" },
 	-- Not here (fixed 2026-10-20): Dangerous Depths' TimerWarzoneIV/V/VI are not waits but
 	-- the 8 hours of free entry after stopping a warzone's lava pumps. Clamping them to
 	-- "now" made the pumps necessary again on every entry. The warzone bosses' own wait
-	-- (setBossCooldown, 10 h) is still removed by mechanism 1.
+	-- (setBossCooldown, 10 h) follows mechanism 1.
 }
 
 local timerKeys = {}
@@ -109,8 +141,8 @@ end
 
 -- The value actually stored when a script writes "value" to storage "key".
 function Family.bossTimerValue(key, value)
-	if Family.noBossCooldown and timerKeys[key] and type(value) == "number" and value > os.time() then
-		return os.time()
+	if timerKeys[key] then
+		return Family.bossWaitEnd(value)
 	end
 	return value
 end
@@ -120,15 +152,15 @@ function Player.setStorageValue(self, key, value, ...)
 	return originalSetStorageValue(self, key, Family.bossTimerValue(key, value), ...)
 end
 
+-- Waits stored before (other rules) are cut the same way at login.
 local login = CreatureEvent("FamilyNoBossCooldownLogin")
 
 function login.onLogin(player)
-	if Family.noBossCooldown then
-		local now = os.time()
-		for key in pairs(timerKeys) do
-			if player:getStorageValue(key) > now then
-				player:setStorageValue(key, now)
-			end
+	for key in pairs(timerKeys) do
+		local value = player:getStorageValue(key)
+		local kept = Family.bossWaitEnd(value)
+		if kept ~= value then
+			player:setStorageValue(key, kept)
 		end
 	end
 	return true
@@ -139,7 +171,7 @@ login:register()
 local report = GlobalEvent("FamilyNoBossCooldownReport")
 
 function report.onStartup()
-	logger.info("[Family] boss cooldown: none={} (default {} s; {} quest timer storages)", tostring(Family.noBossCooldown), configManager.getNumber(configKeys.BOSS_DEFAULT_TIME_TO_FIGHT_AGAIN), timerCount)
+	logger.info("[Family] boss cooldown: {} (default {} s; {} quest timer storages)", Family.bossCooldownMode, configManager.getNumber(configKeys.BOSS_DEFAULT_TIME_TO_FIGHT_AGAIN), timerCount)
 	return true
 end
 
