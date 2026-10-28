@@ -60,4 +60,5 @@ FamilyChangelog = {
 	{ "2026-10-27", "Morshabaal and The Abomination are made for two players: far less health, softer hits (none above 1,500) and much weaker healing." },
 	{ "2026-10-27", "Small bosses (20,000 health or less, like Hairman the Huge or the pharaohs) keep their full health; Feroxa's phases and Zamulosh's clones work again." },
 	{ "2026-10-28", "Bosses have their Tibia cooldown again (20 hours for most), but every boss cooldown also ends at midnight: a boss killed at 23:00 can be fought again at 00:00." },
+	{ "2026-10-28", "The Lion Sanctum doors open for level 250 or more, so its four bosses can be fought (until the An Ancient Feud mission exists)." },
 }
