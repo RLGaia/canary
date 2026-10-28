@@ -118,6 +118,10 @@ local config = {
 local skinning = Action()
 
 function skinning.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: An Ancient Feud (scripts/family/ancient_feud.lua): the obsidian knife chops a lion's mane flower
+	if FamilyAncientFeud and FamilyAncientFeud.onChop and FamilyAncientFeud.onChop(player, item, target) then
+		return true
+	end
 	local topItem = false
 	local skin = config[item.itemid][target.itemid]
 	local tile = Tile(toPosition)

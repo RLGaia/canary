@@ -11,7 +11,10 @@ function entranceAncientFeud.onUse(creature, item, position, fromPosition)
 	if not player then
 		return false
 	end
-	if player:getStorageValue(Storage.Quest.U10_80.GrimvaleQuest.AncientFeudShortcut) < 0 then
+	-- FAMILY: An Ancient Feud (scripts/family/ancient_feud.lua): the lion column also
+	-- carries a player who wears Domizian's lion ring during the mission
+	local familyColumn = FamilyAncientFeud and FamilyAncientFeud.canUseColumn and FamilyAncientFeud.canUseColumn(player, item:getPosition())
+	if player:getStorageValue(Storage.Quest.U10_80.GrimvaleQuest.AncientFeudShortcut) < 0 and not familyColumn then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You are not worthy to travel by the lion's roar.")
 		player:teleportTo(fromPosition, true)
 		player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)

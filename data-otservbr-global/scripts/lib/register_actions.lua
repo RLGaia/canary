@@ -1044,6 +1044,10 @@ function onUseScythe(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: An Ancient Feud (scripts/family/ancient_feud.lua): chop a lion's mane flower
+	if FamilyAncientFeud and FamilyAncientFeud.onChop and FamilyAncientFeud.onChop(player, item, target) then
+		return true
+	end
 	if not table.contains({ 3469, 9594, 9598 }, item.itemid) then
 		return false
 	end

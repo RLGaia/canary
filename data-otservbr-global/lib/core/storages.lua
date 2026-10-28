@@ -3049,6 +3049,13 @@ Storage = {
 			Ritual = 48741, -- 1 = ritual in the Grimvale ruins performed
 			Brew = 48742, -- ingredients put into the apparatus so far (0-3)
 		},
+		-- FAMILY: Grimvale Quest, An Ancient Feud (ours, 2026-10-28; lib/others/family_ancient_feud.lua)
+		FamilyAncientFeud = {
+			Mission = 48744, -- 1-14, see lib/others/family_ancient_feud.lua
+			Clues = 48745, -- bit mask: 1 pool of blood, 2 skulls on a stonepile, 4 blood-stained pagoda, 8 a Skull named the leader
+			Kills = 48746, -- werehyaenas and werehyaena shamans killed during the mission (up to 300)
+			Phrase = 48747, -- 1 = the phrase was said at the door of the Lion Sanctum
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,
