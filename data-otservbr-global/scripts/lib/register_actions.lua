@@ -513,6 +513,10 @@ function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: The Curse Spreads (scripts/family/curse_spreads.lua): gold and silver nuggets in the Corym mines
+	if FamilyCurseSpreads and FamilyCurseSpreads.onPick and FamilyCurseSpreads.onPick(player, target, toPosition) then
+		return true
+	end
 	local stonePos = Position(32648, 32134, 10)
 	if toPosition == stonePos then
 		local tile = Tile(stonePos)

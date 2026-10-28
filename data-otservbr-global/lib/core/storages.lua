@@ -3039,6 +3039,16 @@ Storage = {
 		FamilyDragonSlayer = {
 			Mission = 48736, -- 1 asked Big Ben, 2 outfit, 3 first addon, 4 second addon
 		},
+		-- FAMILY: Grimvale Quest, The Curse Spreads (ours, 2026-10-28; lib/others/family_grimvale.lua)
+		-- (48743 is the action id of the box with Milos' note, kept free here)
+		FamilyCurseSpreads = {
+			Mission = 48737, -- 1-12, see lib/others/family_grimvale.lua
+			Notes = 48738, -- bit mask of Milos' notes taken (1 gold, 2 silver, 4 shadow bite, 8 scribbled note)
+			Totems = 48739, -- bit mask of the cleansed totems (1 Krailos, 2 Banuta, 4 Vengoth)
+			Leaders = 48740, -- bit mask of the were-beast leaders killed during the mission
+			Ritual = 48741, -- 1 = ritual in the Grimvale ruins performed
+			Brew = 48742, -- ingredients put into the apparatus so far (0-3)
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,

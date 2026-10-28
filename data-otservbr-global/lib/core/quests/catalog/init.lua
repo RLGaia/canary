@@ -53,6 +53,7 @@ local questModules = {
 	"052_measuring_tibia", -- FAMILY: Cyclopedia map discovery
 	"053_edron_city_tasks", -- FAMILY: Daniel Steelsoul's tasks
 	"054_venore_daily_tasks", -- FAMILY: Norman the Foreman's daily tasks
+	"055_grimvale_quest", -- FAMILY: Grimvale Quest (The Curse Spreads)
 }
 
 local catalog = dofile(CORE_DIRECTORY .. "/lib/core/quests/catalog.lua")

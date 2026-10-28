@@ -136,6 +136,9 @@ local function creatureSayCallback(npc, creature, type, message)
 		player:addCondition(condition)
 		npcHandler:removeInteraction(npc, creature)
 		npcHandler:resetNpc(creature)
+	-- FAMILY: Grimvale Quest, The Curse Spreads (lib/others/family_grimvale.lua): "curse", "potion"
+	elseif FamilyCurseSpreads and FamilyCurseSpreads.onSay("daniel", npc, creature, player, message, npcHandler) then
+		return true
 	elseif MsgContains(message, "mission") then
 		if player:getStorageValue(Storage.Quest.U8_1.TibiaTales.AgainstTheSpiderCult) < 1 then
 			npcHandler:setTopic(playerId, 1)

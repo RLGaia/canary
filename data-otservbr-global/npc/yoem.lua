@@ -58,6 +58,19 @@ end
 
 keywordHandler:addKeyword({ "furniture" }, StdModule.say, { npcHandler = npcHandler, text = "I have {beds}, {chairs}, {containers}, {decoration}, {flowers}, {instruments}, {pillows}, {pottery}, {statues}, {tapestries} and {tables}. Which of those would you like to see?" })
 
+-- FAMILY: Grimvale Quest, The Curse Spreads (lib/others/family_grimvale.lua): "curse"
+local function creatureSayCallback(npc, creature, type, message)
+	local player = Player(creature)
+	if not npcHandler:checkInteraction(npc, creature) then
+		return false
+	end
+	if FamilyCurseSpreads then
+		FamilyCurseSpreads.onSay("yoem", npc, creature, player, message, npcHandler)
+	end
+	return true
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:setMessage(MESSAGE_GREET, "Hello |PLAYERNAME|! Do you need some equipment for your house?")
 npcHandler:setMessage(MESSAGE_SENDTRADE, "Have a look. Most furniture comes in handy kits. Just use them in your house to assemble the furniture. Do you want to see only a certain {type} of furniture?")
 

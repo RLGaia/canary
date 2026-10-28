@@ -1462,6 +1462,10 @@
 	<npc centerx="32363" centery="31796" centerz="7" radius="1">
 		<npc name="Florentine" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	<!-- FAMILY: Milos (Grimvale Quest, The Curse Spreads), north-western academy tower +4; TibiaWiki EN position -->
+	<npc centerx="33259" centery="31826" centerz="3" radius="1">
+		<npc name="Milos" x="0" y="0" z="3" spawntime="60" />
+	</npc>
 	<npc centerx="33192" centery="31796" centerz="7" radius="1">
 		<npc name="Daniel Steelsoul" x="0" y="0" z="7" spawntime="60" />
 	</npc>

@@ -56,7 +56,21 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Oh hello. I hardly noticed you. I'm afraid I am a bit distracted at the moment.")
+-- FAMILY: Grimvale Quest, The Curse Spreads (lib/others/family_grimvale.lua): "curse", "notes",
+-- "ley", "distracted". Milos had no dialogue and was not spawned upstream (world/otservbr-npc.xml).
+local function creatureSayCallback(npc, creature, type, message)
+	local player = Player(creature)
+	if not npcHandler:checkInteraction(npc, creature) then
+		return false
+	end
+	if FamilyCurseSpreads then
+		FamilyCurseSpreads.onSay("milos", npc, creature, player, message, npcHandler)
+	end
+	return true
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:setMessage(MESSAGE_GREET, "Oh hello. I hardly noticed you. I'm afraid I am a bit {distracted} at the moment.") -- FAMILY: {distracted} clickable
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

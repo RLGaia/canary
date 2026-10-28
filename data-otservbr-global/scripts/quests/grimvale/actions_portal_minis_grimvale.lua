@@ -98,6 +98,14 @@ function teleportBoss.onStepIn(creature, item, position, fromPosition)
 				creature:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 				return true
 			end
+			-- FAMILY: The Curse Spreads (lib/others/family_grimvale.lua): the gates let a player
+			-- pass only once Daniel Steelsoul sent them after the leaders (mission state 11+).
+			if FamilyCurseSpreads and not FamilyCurseSpreads.canFightLeaders(creature) then
+				creature:teleportTo(fromPosition, true)
+				creature:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+				creature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "A strange force keeps you from passing the gate.")
+				return true
+			end
 			local spec = Spectators()
 			spec:setOnlyPlayer(false)
 			spec:setRemoveDestination(value.exitPosition)
