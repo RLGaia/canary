@@ -11,7 +11,9 @@ function zamuloshClone.onThink(creature)
 	local spectators = Game.getSpectators(Position(33644, 32757, 11), false, false, 10, 10, 10, 10)
 	for i = 1, #spectators do
 		local master = spectators[i]
-		if master:getMaxHealth() == 300000 and not master:getMaster() then
+		-- FAMILY: the real Zamulosh is found by being the Bosstiary boss, not by
+		-- 300000 max health (he has half that here because of rateBossHealth).
+		if master:isMonster() and master:getType():bossRace() ~= nil and master:getName() == "Zamulosh" and not master:getMaster() then
 			master:setSummon(creature)
 		end
 	end

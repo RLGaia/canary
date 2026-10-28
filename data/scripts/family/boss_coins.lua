@@ -38,7 +38,7 @@ Family.bossCoinTiers = {
 local TIBIA_COINS = 22118
 
 -- Coins for a monster type: min, max (nil when it gets none).
-function Family.bossCoinsFor(mType)
+function Family.bossCoinsFor(mType, typeName)
 	-- In the Bosstiary = the bosstiary class is set. (Until 2026-10-26 this
 	-- tested bossRaceId() > 0, but that getter returns the rarity, which is 0
 	-- for bane bosses, so the 16 bane bosses without a reward chest - the
@@ -57,7 +57,9 @@ function Family.bossCoinsFor(mType)
 	if #loot == 0 then
 		return nil -- a part or phase of a boss fight
 	end
-	local health = mType:maxHealth() or 0
+	-- The monster file's health (boss_health.lua may raise the type's health so
+	-- small bosses keep it in game; rewards stay as they were).
+	local health = (typeName and Family.bossFileHealth and Family.bossFileHealth[typeName]) or mType:maxHealth() or 0
 	for _, tier in ipairs(Family.bossCoinTiers) do
 		if health <= tier.maxHealth then
 			return tier.min, tier.max
@@ -69,8 +71,8 @@ local startup = GlobalEvent("FamilyBossCoins")
 
 local function addCoins()
 	local count, byTier = 0, {}
-	for _, mType in pairs(Game.getMonsterTypes()) do
-		local min, max = Family.bossCoinsFor(mType)
+	for typeName, mType in pairs(Game.getMonsterTypes()) do
+		local min, max = Family.bossCoinsFor(mType, typeName)
 		if min then
 			local present = false
 			for _, loot in ipairs(mType:getLoot() or {}) do

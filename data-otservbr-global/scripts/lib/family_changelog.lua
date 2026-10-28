@@ -58,4 +58,5 @@ FamilyChangelog = {
 	{ "2026-10-27", "Raid bosses really come now: Orshabaal, Morgaroth, Ghazbaran and Ferumbras about every 20 hours of play, rarer bosses and the Ruthless Seven about every 8, common ones about every 3; other invasions come in random order." },
 	{ "2026-10-27", "22 rare bosses that never appeared now come too, on the same timers: among them Hairman the Huge, The Evil Eye, the Rotworm Queen, Willi Wasp, Xenia, Zarabustor, Morshabaal and The Abomination." },
 	{ "2026-10-27", "Morshabaal and The Abomination are made for two players: far less health, softer hits (none above 1,500) and much weaker healing." },
+	{ "2026-10-27", "Small bosses (20,000 health or less, like Hairman the Huge or the pharaohs) keep their full health; Feroxa's phases and Zamulosh's clones work again." },
 }
