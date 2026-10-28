@@ -146,7 +146,7 @@ function C.describe(player)
 				found = found + 1
 			end
 		end
-		return string.format("Milos thinks a ley line crossing Edron weakens the purple nightshade. Find his old notes about potentiating herbal substances somewhere in the academy and bring them to him. Notes found: %d of 4.", found)
+		return string.format("Milos thinks a ley line crossing Edron weakens the purple nightshade. Find his four old notes and bring them to him: three pieces of parchment in the bookcases of the library in the academy's central tower (one on floor +4, two on floor +3) and a hastily scribbled note in a box next to Puffels, in the cellar of the south tower. Notes found: %d of 4.", found)
 	elseif state == 3 then
 		return "Milos gave you crimson nightshade blossoms and a stone tablet with ley lines. Following his notes, you also need shadow bite berries (from the shadow bite plants underneath Edron), gold dust and silver dust (grind gold and silver nuggets from the Corym mines on the wooden grinder two floors below Milos). Then use the blossoms, the silver dust, the gold dust and the berries, in this order, on the apparatus in Sinclair's laboratory and bring the potion to Daniel Steelsoul."
 	elseif state == 4 then
@@ -318,7 +318,7 @@ function milos.notes(npc, creature, player, npcHandler)
 	for _, note in ipairs(C.notes) do
 		if player:getItemCount(note.item) < 1 then
 			-- ours
-			say(npcHandler, npc, creature, "I wrote my notes on three pieces of parchment and a hastily scribbled note. They must be somewhere in the academy... perhaps in a bookcase in the central tower. Or in a box downstairs? Bring me all four.")
+			say(npcHandler, npc, creature, "I wrote my notes on three pieces of parchment and a hastily scribbled note. The parchments must be in the library of the central tower, in the bookcases on the third and fourth floors. And the note... I think I left it in a box next to Puffels, down in the cellar of the south tower. Bring me all four.")
 			return true
 		end
 	end

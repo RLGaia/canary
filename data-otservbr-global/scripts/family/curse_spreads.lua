@@ -7,7 +7,7 @@
 --   * box with Milos' scribbled note 33266,31849,8 (next to Puffels)
 --   * dark stone totems at Krailos 33680,31630,7, Banuta 32809,32587,7 and
 --     Vengoth 32949,31489,6 (the sources of the ley lines)
--- Already on the map: the bookcases with the parchments, the shadow bite
+-- Already on the map: the library bookcases (central tower, floors +3/+4), the shadow bite
 -- plants, the gold/silver nuggets in the Corym mines, Sinclair's apparatus,
 -- the lever puzzle in the Grimvale ruins, the Last Sanctum basin and the two
 -- death portals (Edron 33064,31977,9 and Last Sanctum 33429,32083,9).
@@ -34,43 +34,72 @@ end
 
 -- Milos' notes ---------------------------------------------------------------
 
-local BOOKCASES = {
-	{ pos = Position(33263, 31834, 3), note = C.notes[1] }, -- gold parchment, central tower +4
-	{ pos = Position(33263, 31834, 4), note = C.notes[2] }, -- silver parchment, central tower +3
-	{ pos = Position(33264, 31837, 4), note = C.notes[3] }, -- shadow bite parchment, central tower +3
+-- The library in the central tower of the academy (TibiaWiki EN: gold
+-- parchment on floor +4, silver and shadow bite parchments on floor +3;
+-- TibiaWiki BR: "two on the third floor, one on the fourth"). Neither wiki
+-- says which bookcase, so every bookcase of that floor's library holds the
+-- notes of that floor (changed 2026-10-28 after Rodrigo searched the library
+-- in vain: only one fixed bookcase per note answered, all others said "You
+-- cannot use this object").
+local LIBRARY = { x1 = 33262, y1 = 31829, x2 = 33274, y2 = 31840 }
+local LIBRARY_NOTES = {
+	[3] = { C.notes[1] }, -- floor +4: gold
+	[4] = { C.notes[2], C.notes[3] }, -- floor +3: silver, shadow bite
 }
+local BOOKCASE_IDS = { 2435, 2436, 2437, 2438, 2439, 2440 }
 
-local function takeNote(player, note, where)
-	if not active() or C.state(player) ~= 2 then
-		return false
-	end
-	if player:getItemCount(note.item) > 0 then
-		msg(player, "You don't find anything else of interest here.") -- ours
-		return true
-	end
+local function giveNote(player, note, where)
 	player:addItem(note.item, 1)
 	C.addBit(player, S.Notes, note.bit)
 	msg(player, string.format("You find %s %s %s", ItemType(note.item):getArticle(), ItemType(note.item):getName(), where)) -- ours
-	return true
+end
+
+function C.inLibrary(pos)
+	return LIBRARY_NOTES[pos.z] ~= nil and pos.x >= LIBRARY.x1 and pos.x <= LIBRARY.x2 and pos.y >= LIBRARY.y1 and pos.y <= LIBRARY.y2
 end
 
 local bookcase = Action()
 function bookcase.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	for _, entry in ipairs(BOOKCASES) do
-		if entry.pos == item:getPosition() then
-			return takeNote(player, entry.note, "between the books.")
+	local pos = item:getPosition()
+	if not active() or not C.inLibrary(pos) then
+		return false
+	end
+	local state = C.state(player)
+	if state < 2 then
+		msg(player, "You browse the books: treatises on magic theory, nothing of use to you right now.") -- ours
+		return true
+	elseif state > 2 then
+		msg(player, "You don't find anything else of interest here.") -- ours
+		return true
+	end
+	for _, note in ipairs(LIBRARY_NOTES[pos.z]) do
+		if player:getItemCount(note.item) < 1 then
+			giveNote(player, note, "between the books.")
+			return true
 		end
 	end
-	return false
+	local allParchments = true
+	for _, notes in pairs(LIBRARY_NOTES) do
+		for _, note in ipairs(notes) do
+			if player:getItemCount(note.item) < 1 then
+				allParchments = false
+			end
+		end
+	end
+	if allParchments then
+		msg(player, "You already have Milos' three parchments. His last note is not among the books.") -- ours
+	else
+		msg(player, pos.z == 3 and "There is nothing else of Milos' here. His other notes must be on the floor below." or "There is nothing else of Milos' here. Another note must be on the floor above.") -- ours
+	end
+	return true
 end
-for _, entry in ipairs(BOOKCASES) do
-	bookcase:position(entry.pos)
-end
+bookcase:id(unpack(BOOKCASE_IDS))
 bookcase:register()
 
 local box = Action()
 function box.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if takeNote(player, C.notes[4], "in the box.") then
+	if active() and C.state(player) == 2 and player:getItemCount(C.notes[4].item) < 1 then
+		giveNote(player, C.notes[4], "in the box.")
 		return true
 	end
 	msg(player, "The box is empty.") -- ours
