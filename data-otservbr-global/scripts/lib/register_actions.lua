@@ -517,6 +517,10 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 	if FamilyCurseSpreads and FamilyCurseSpreads.onPick and FamilyCurseSpreads.onPick(player, target, toPosition) then
 		return true
 	end
+	-- FAMILY: The Curse of the Full Moon (scripts/family/full_moon.lua): liquid silver from the silver veins
+	if FamilyFullMoon and FamilyFullMoon.onPick and FamilyFullMoon.onPick(player, target, toPosition) then
+		return true
+	end
 	local stonePos = Position(32648, 32134, 10)
 	if toPosition == stonePos then
 		local tile = Tile(stonePos)

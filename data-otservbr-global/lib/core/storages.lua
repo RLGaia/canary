@@ -3056,6 +3056,18 @@ Storage = {
 			Kills = 48746, -- werehyaenas and werehyaena shamans killed during the mission (up to 300)
 			Phrase = 48747, -- 1 = the phrase was said at the door of the Lion Sanctum
 		},
+		-- FAMILY: Grimvale Quest, shared quest log start (set by any of its missions)
+		FamilyGrimvale = {
+			Questline = 48748,
+		},
+		-- FAMILY: Grimvale Quest, The Curse of the Full Moon (ours, 2026-10-28; lib/others/family_full_moon.lua)
+		FamilyFullMoon = {
+			Mission = 48749, -- 1 started with Maeryn, 2 blossoms and kills done (Feroxa's lair open), 3 entered the lair
+			Blossoms = 48750, -- purple nightshade blossoms delivered to Maeryn
+			Kills = 48751, -- were-creatures killed during the mission (up to 50)
+			PlantWait = { 48752, 48753, 48754 }, -- os.time() until each blooming nightshade can be harvested again
+			VeinWait = 48755, -- os.time() until the next try at a silver vein
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,

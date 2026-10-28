@@ -1475,6 +1475,10 @@
 	<npc centerx="33135" centery="32326" centerz="12" radius="1">
 		<npc name="Heliodor" x="0" y="0" z="12" spawntime="60" />
 	</npc>
+	<!-- FAMILY: Maeryn (Grimvale Quest, The Curse of the Full Moon), her house in the south-west of Grimvale; TibiaWiki EN position 33331,31686,7 -->
+	<npc centerx="33331" centery="31686" centerz="7" radius="1">
+		<npc name="Maeryn" x="0" y="0" z="7" spawntime="60" />
+	</npc>
 	<!-- FAMILY: Milos (Grimvale Quest, The Curse Spreads), north-western academy tower +4; TibiaWiki EN position -->
 	<npc centerx="33259" centery="31826" centerz="3" radius="1">
 		<npc name="Milos" x="0" y="0" z="3" spawntime="60" />

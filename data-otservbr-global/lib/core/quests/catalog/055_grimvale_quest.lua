@@ -2,12 +2,15 @@
 -- Mission "The Curse Spreads": lib/others/family_grimvale.lua and
 -- scripts/family/curse_spreads.lua; mission "An Ancient Feud" (starts after
 -- The Curse Spreads): lib/others/family_ancient_feud.lua and
--- scripts/family/ancient_feud.lua. Mission ids 11228 and 11229.
+-- scripts/family/ancient_feud.lua; mission "The Curse of the Full Moon"
+-- (Maeryn): lib/others/family_full_moon.lua and scripts/family/full_moon.lua.
+-- Mission ids 11228, 11229 and 11230. The quest starts with any of them
+-- (Storage.Quest.FamilyGrimvale.Questline).
 local S = Storage.Quest.FamilyCurseSpreads
 
 local quest = {
 	name = "Grimvale Quest",
-	startStorageId = S.Mission,
+	startStorageId = Storage.Quest.FamilyGrimvale.Questline,
 	startStorageValue = 1,
 	missions = {
 		[1] = {
@@ -34,6 +37,19 @@ local quest = {
 					return FamilyAncientFeud.describe(player)
 				end
 				return "Talk to Daniel Steelsoul in Edron about the lions."
+			end,
+		},
+		[3] = {
+			name = "The Curse of the Full Moon",
+			storageId = Storage.Quest.FamilyFullMoon.Mission,
+			missionId = 11230,
+			startValue = 1,
+			endValue = 3,
+			description = function(player)
+				if FamilyFullMoon then
+					return FamilyFullMoon.describe(player)
+				end
+				return "Talk to Maeryn on Grimvale."
 			end,
 		},
 	},

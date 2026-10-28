@@ -79,6 +79,9 @@ end
 
 function C.setState(player, value)
 	player:setStorageValue(S.Mission, value)
+	if FamilyGrimvaleStart then
+		FamilyGrimvaleStart(player)
+	end
 end
 
 local function hasBit(value, bit)

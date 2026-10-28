@@ -5,3 +5,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_venore_tasks.lua") -- FAMILY: Venor
 dofile(DATA_DIRECTORY .. "/lib/others/family_dragon_slayer.lua") -- FAMILY: Dragon Slayer Outfits (Big Ben)
 dofile(DATA_DIRECTORY .. "/lib/others/family_grimvale.lua") -- FAMILY: Grimvale Quest, The Curse Spreads (Daniel, Milos, Yoem)
 dofile(DATA_DIRECTORY .. "/lib/others/family_ancient_feud.lua") -- FAMILY: Grimvale Quest, An Ancient Feud (Domizian, a Skull, Rhargu, Heliodor)
+dofile(DATA_DIRECTORY .. "/lib/others/family_full_moon.lua") -- FAMILY: Grimvale Quest, The Curse of the Full Moon (Maeryn)

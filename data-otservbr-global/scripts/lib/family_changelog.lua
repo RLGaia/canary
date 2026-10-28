@@ -65,4 +65,5 @@ FamilyChangelog = {
 	{ "2026-10-28", "New quest: Grimvale Quest, An Ancient Feud (after The Curse Spreads, ask Daniel Steelsoul about the lions). The Lion Sanctum doors now open through this mission instead of at level 250." },
 	{ "2026-10-28", "The server now notes when the main backpack window or the Manage Containers choices get lost, to find out why they sometimes reset at login (nothing changes in the game)." },
 	{ "2026-10-28", "The Curse Spreads: Milos' parchments are in any bookcase of the central tower library (floor +4 one, floor +3 two); the bookcases now always answer, and Milos and the quest log say where to look." },
+	{ "2026-10-28", "New quest: Grimvale Quest, The Curse of the Full Moon (Maeryn is on Grimvale now): nightshade blossoms, silver veins and silvered traps; it opens Feroxa's lair, which could not be entered before." },
 }
