@@ -20,6 +20,9 @@
 --      the First Dragon): writing a future time to those storages stores the
 --      next midnight at most. The Last Lore Keeper (14 days in Tibia) is
 --      daily too.
+--      Also the Secret Library bosses with their own 20 h timers (Raxias,
+--      the three asura bosses, the Furious Scorpion) and Yakchal's
+--      server-wide 24 h (added the same day: "every boss").
 --   3. Daily tasks that read the boss default (Commander Stone's four
 --      Bigfoot's Burden tasks, the Bigfoot mouthpiece, Rottin Wood and the
 --      Married Men): the same midnight rule, so they do not jump from free to
@@ -40,12 +43,13 @@ function Family.nextMidnight(now)
 	return os.time({ year = d.year, month = d.month, day = d.day + 1, hour = 0, min = 0, sec = 0 })
 end
 
--- The end time actually kept when a script asks for `value`.
-function Family.bossWaitEnd(value)
+-- The end time actually kept when a script asks for `value` (`now` only
+-- for tests).
+function Family.bossWaitEnd(value, now)
 	if type(value) ~= "number" then
 		return value
 	end
-	local now = os.time()
+	now = now or os.time()
 	if value <= now then
 		return value
 	end
@@ -96,6 +100,12 @@ local TIMER_PATHS = {
 	{ "Quest", "U12_00", "TheDreamCourts", "DreamScarGlobal", "MalofurTimer" },
 	{ "Quest", "U12_00", "TheDreamCourts", "DreamScarGlobal", "NightmareTimer" },
 	{ "Quest", "U11_80", "TheSecretLibrary", "LiquidDeath", "BrokulTimer" },
+	-- Secret Library bosses with their own 20 h timers (added 2026-10-28)
+	{ "Quest", "U11_80", "TheSecretLibrary", "SmallIslands", "RaxiasTimer" },
+	{ "Quest", "U11_80", "TheSecretLibrary", "Asuras", "DiamondTimer" },
+	{ "Quest", "U11_80", "TheSecretLibrary", "Asuras", "DarkTimer" },
+	{ "Quest", "U11_80", "TheSecretLibrary", "Asuras", "BlazingTimer" },
+	{ "Quest", "U11_80", "TheSecretLibrary", "Darashia", "ScorpionTimer" },
 	-- 3. daily tasks that use the boss default time
 	{ "Quest", "U9_60", "BigfootsBurden", "CrystalKeeperTimout" },
 	{ "Quest", "U9_60", "BigfootsBurden", "RaidersOfTheLostSparkTimeout" },
@@ -145,6 +155,21 @@ function Family.bossTimerValue(key, value)
 		return Family.bossWaitEnd(value)
 	end
 	return value
+end
+
+-- Server-wide boss waits (one for everybody): Yakchal on the Ice Islands
+-- (24 h after someone wakes her in Tibia; "try again tomorrow").
+local GLOBAL_TIMER_KEYS = {}
+if GlobalStorage and GlobalStorage.Yakchal then
+	GLOBAL_TIMER_KEYS[GlobalStorage.Yakchal] = true
+end
+
+local originalGameSetStorageValue = Game.setStorageValue
+function Game.setStorageValue(key, value, ...)
+	if GLOBAL_TIMER_KEYS[key] then
+		value = Family.bossWaitEnd(value)
+	end
+	return originalGameSetStorageValue(key, value, ...)
 end
 
 local originalSetStorageValue = Player.setStorageValue

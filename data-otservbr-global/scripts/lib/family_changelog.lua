@@ -59,5 +59,5 @@ FamilyChangelog = {
 	{ "2026-10-27", "22 rare bosses that never appeared now come too, on the same timers: among them Hairman the Huge, The Evil Eye, the Rotworm Queen, Willi Wasp, Xenia, Zarabustor, Morshabaal and The Abomination." },
 	{ "2026-10-27", "Morshabaal and The Abomination are made for two players: far less health, softer hits (none above 1,500) and much weaker healing." },
 	{ "2026-10-27", "Small bosses (20,000 health or less, like Hairman the Huge or the pharaohs) keep their full health; Feroxa's phases and Zamulosh's clones work again." },
-	{ "2026-10-28", "Bosses have a cooldown again: once killed, a boss can be fought again after midnight (00:00), or sooner if its own Tibia cooldown is shorter." },
+	{ "2026-10-28", "Bosses have their Tibia cooldown again (20 hours for most), but every boss cooldown also ends at midnight: a boss killed at 23:00 can be fought again at 00:00." },
 }
