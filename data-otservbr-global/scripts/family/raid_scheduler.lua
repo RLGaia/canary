@@ -203,6 +203,83 @@ R.spawnBosses = {
 	},
 }
 
+-- World bosses for two players (2026-10-27, asked by Rodrigo). In Tibia
+-- Morshabaal and The Abomination are fought by dozens of players: here they
+-- had 500,000 / 375,000 health at our boss rate, Morshabaal hit up to 21,000
+-- with his ice attack and healed about 1,750 per second, The Abomination about
+-- 420. Now they sit just above our other legendary bosses (Ferumbras 45,000
+-- health, hits up to 1,000; Ghazbaran 38,500):
+--   health      the monster type's health; our boss rate (rateBossHealth 0.5)
+--               still applies, so 200,000 = 100,000 in game
+--   experience  scaled with the health (the type's experience x 0.2)
+--   damage      factor on everything the boss deals (after the boss damage
+--               rate), and no single hit above maxHit
+--   healing     factor on the boss's own healing
+-- Set Family.familyWorldBosses = false for the full Tibia versions.
+Family.familyWorldBosses = true
+R.bossScaling = {
+	["Morshabaal"] = { health = 200000, experience = 600000, damage = 0.5, maxHit = 1500, healing = 0.05 },
+	["The Abomination"] = { health = 150000, experience = 300000, damage = 1.0, maxHit = 1500, healing = 0.15 },
+}
+
+local function scaleValue(value, type, s, selfHeal)
+	if type == COMBAT_HEALING then
+		if selfHeal then
+			return math.floor(value * s.healing)
+		end
+		return value
+	end
+	if value >= 0 then
+		return value
+	end
+	return math.max(math.floor(value * s.damage), -s.maxHit)
+end
+
+local worldBossCombat = EventCallback("FamilyWorldBossCombat")
+
+-- Changes `damage` in place (also called by the self-test).
+function R.scaleCombat(caster, target, damage)
+	if not Family.familyWorldBosses or not caster or not caster:isMonster() then
+		return
+	end
+	local s = R.bossScaling[caster:getName()]
+	if not s then
+		return
+	end
+	local selfHeal = target and target:getId() == caster:getId()
+	damage.primary.value = scaleValue(damage.primary.value, damage.primary.type, s, selfHeal)
+	damage.secondary.value = scaleValue(damage.secondary.value, damage.secondary.type, s, selfHeal)
+end
+
+function worldBossCombat.creatureOnCombat(caster, target, damage)
+	R.scaleCombat(caster, target, damage)
+	return true
+end
+
+worldBossCombat:register()
+
+local worldBossTypes = GlobalEvent("FamilyWorldBossTypes")
+
+function worldBossTypes.onStartup()
+	if not Family.familyWorldBosses then
+		return true
+	end
+	for name, s in pairs(R.bossScaling) do
+		local mType = MonsterType(name)
+		if mType then
+			mType:maxHealth(s.health)
+			mType:health(s.health)
+			mType:experience(s.experience)
+		else
+			logger.error("[Family] world bosses: unknown monster {}", name)
+		end
+	end
+	logger.info("[Family] world bosses for two: Morshabaal and The Abomination scaled (health, experience, damage, healing)")
+	return true
+end
+
+worldBossTypes:register()
+
 local store = kv.scoped("family-raid-scheduler")
 
 local entries = {} -- every boss (raid or spawn), with .key, .label, .group
