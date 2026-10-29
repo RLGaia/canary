@@ -36,11 +36,10 @@ end
 
 -- The library in the central tower of the academy (TibiaWiki EN: gold
 -- parchment on floor +4, silver and shadow bite parchments on floor +3;
--- TibiaWiki BR: "two on the third floor, one on the fourth"). Neither wiki
--- says which bookcase, so every bookcase of that floor's library holds the
--- notes of that floor (changed 2026-10-28 after Rodrigo searched the library
--- in vain: only one fixed bookcase per note answered, all others said "You
--- cannot use this object").
+-- TibiaWiki BR: "two on the third floor, one on the fourth"). The wiki text
+-- we could read names no bookcase, so the first bookcase a player on the
+-- mission uses on that floor gives that floor's notes; every other use
+-- opens the bookcase as usual.
 local LIBRARY = { x1 = 33262, y1 = 31829, x2 = 33274, y2 = 31840 }
 local LIBRARY_NOTES = {
 	[3] = { C.notes[1] }, -- floor +4: gold
@@ -58,19 +57,14 @@ function C.inLibrary(pos)
 	return LIBRARY_NOTES[pos.z] ~= nil and pos.x >= LIBRARY.x1 and pos.x <= LIBRARY.x2 and pos.y >= LIBRARY.y1 and pos.y <= LIBRARY.y2
 end
 
+-- Bookcases are containers (books inside): a bookcase only answers when it
+-- has a note for this player; otherwise it opens as usual (2026-10-28, after
+-- Rodrigo found the library's bookcases would no longer open).
 local bookcase = Action()
 function bookcase.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local pos = item:getPosition()
-	if not active() or not C.inLibrary(pos) then
+	if not active() or not C.inLibrary(pos) or C.state(player) ~= 2 then
 		return false
-	end
-	local state = C.state(player)
-	if state < 2 then
-		msg(player, "You browse the books: treatises on magic theory, nothing of use to you right now.") -- ours
-		return true
-	elseif state > 2 then
-		msg(player, "You don't find anything else of interest here.") -- ours
-		return true
 	end
 	for _, note in ipairs(LIBRARY_NOTES[pos.z]) do
 		if player:getItemCount(note.item) < 1 then
@@ -78,20 +72,7 @@ function bookcase.onUse(player, item, fromPosition, target, toPosition, isHotkey
 			return true
 		end
 	end
-	local allParchments = true
-	for _, notes in pairs(LIBRARY_NOTES) do
-		for _, note in ipairs(notes) do
-			if player:getItemCount(note.item) < 1 then
-				allParchments = false
-			end
-		end
-	end
-	if allParchments then
-		msg(player, "You already have Milos' three parchments. His last note is not among the books.") -- ours
-	else
-		msg(player, pos.z == 3 and "There is nothing else of Milos' here. His other notes must be on the floor below." or "There is nothing else of Milos' here. Another note must be on the floor above.") -- ours
-	end
-	return true
+	return false
 end
 bookcase:id(unpack(BOOKCASE_IDS))
 bookcase:register()
