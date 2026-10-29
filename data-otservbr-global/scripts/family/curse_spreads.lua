@@ -4,10 +4,10 @@
 --
 -- Placed at startup (missing on our map; positions from TibiaWiki EN):
 --   * wooden grinder 33262,31824,5 (academy NW tower, two floors below Milos)
---   * box with Milos' scribbled note 33266,31849,8 (next to Puffels)
+--   * box with Milos' scribbled note 33269,31844,8 (Puffels' room, next to the ladder)
 --   * dark stone totems at Krailos 33680,31630,7, Banuta 32809,32587,7 and
 --     Vengoth 32949,31489,6 (the sources of the ley lines)
--- Already on the map: the library bookcases (central tower, floors +3/+4), the shadow bite
+-- Already on the map: the four library bookcases with the parchments, the shadow bite
 -- plants, the gold/silver nuggets in the Corym mines, Sinclair's apparatus,
 -- the lever puzzle in the Grimvale ruins, the Last Sanctum basin and the two
 -- death portals (Edron 33064,31977,9 and Last Sanctum 33429,32083,9).
@@ -21,7 +21,7 @@ local I = C.items
 local BOX_AID = 48743
 
 local GRINDER = { id = 21573, pos = Position(33262, 31824, 5) }
-local BOX = { id = 2469, pos = Position(33266, 31849, 8) }
+local BOX = { id = 2469, pos = Position(33269, 31844, 8) } -- top right corner of Puffels' room (TibiaWiki BR screenshot)
 local TOTEM_ID = 27323
 
 local function active()
@@ -34,45 +34,46 @@ end
 
 -- Milos' notes ---------------------------------------------------------------
 
--- The library in the central tower of the academy (TibiaWiki EN: gold
--- parchment on floor +4, silver and shadow bite parchments on floor +3;
--- TibiaWiki BR: "two on the third floor, one on the fourth"). The wiki text
--- we could read names no bookcase, so the first bookcase a player on the
--- mission uses on that floor gives that floor's notes; every other use
--- opens the bookcase as usual.
-local LIBRARY = { x1 = 33262, y1 = 31829, x2 = 33274, y2 = 31840 }
-local LIBRARY_NOTES = {
-	[3] = { C.notes[1] }, -- floor +4: gold
-	[4] = { C.notes[2], C.notes[3] }, -- floor +3: silver, shadow bite
+-- The library in the central tower of the academy. Exact bookcases from the
+-- TibiaWiki BR screenshots Rodrigo sent (2026-10-28; the character stands
+-- next to the bookcase with the message "You have found a piece of
+-- parchment."), matched square by square with our map (shelf rows, stairs
+-- and door positions): floor +3 (z4) beside 33270,31834 and 33268,31831,
+-- floor +4 (z3) at 33267,31837 between two shelves (either one counts).
+-- TibiaWiki EN: the gold parchment is on floor +4, silver and shadow bite on
+-- floor +3; which of the two floor +3 shelves holds which is not shown.
+-- Bookcases are containers: a bookcase only answers when it holds a note
+-- the player is still missing; otherwise it opens as usual.
+local NOTE_BOOKCASES = {
+	{ pos = Position(33267, 31836, 3), note = C.notes[1] }, -- gold, floor +4
+	{ pos = Position(33267, 31838, 3), note = C.notes[1] }, -- gold, floor +4 (the other side)
+	{ pos = Position(33270, 31833, 4), note = C.notes[2] }, -- silver, floor +3
+	{ pos = Position(33268, 31830, 4), note = C.notes[3] }, -- shadow bite, floor +3
 }
 local BOOKCASE_IDS = { 2435, 2436, 2437, 2438, 2439, 2440 }
 
-local function giveNote(player, note, where)
+local function giveNote(player, note, text)
 	player:addItem(note.item, 1)
 	C.addBit(player, S.Notes, note.bit)
-	msg(player, string.format("You find %s %s %s", ItemType(note.item):getArticle(), ItemType(note.item):getName(), where)) -- ours
+	msg(player, text)
 end
 
-function C.inLibrary(pos)
-	return LIBRARY_NOTES[pos.z] ~= nil and pos.x >= LIBRARY.x1 and pos.x <= LIBRARY.x2 and pos.y >= LIBRARY.y1 and pos.y <= LIBRARY.y2
-end
-
--- Bookcases are containers (books inside): a bookcase only answers when it
--- has a note for this player; otherwise it opens as usual (2026-10-28, after
--- Rodrigo found the library's bookcases would no longer open).
-local bookcase = Action()
-function bookcase.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	local pos = item:getPosition()
-	if not active() or not C.inLibrary(pos) or C.state(player) ~= 2 then
-		return false
-	end
-	for _, note in ipairs(LIBRARY_NOTES[pos.z]) do
-		if player:getItemCount(note.item) < 1 then
-			giveNote(player, note, "between the books.")
-			return true
+function C.noteBookcase(pos)
+	for _, entry in ipairs(NOTE_BOOKCASES) do
+		if entry.pos == pos then
+			return entry
 		end
 	end
-	return false
+end
+
+local bookcase = Action()
+function bookcase.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	local entry = C.noteBookcase(item:getPosition())
+	if not entry or not active() or C.state(player) ~= 2 or player:getItemCount(entry.note.item) > 0 then
+		return false
+	end
+	giveNote(player, entry.note, "You have found a piece of parchment.")
+	return true
 end
 bookcase:id(unpack(BOOKCASE_IDS))
 bookcase:register()
@@ -80,7 +81,7 @@ bookcase:register()
 local box = Action()
 function box.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if active() and C.state(player) == 2 and player:getItemCount(C.notes[4].item) < 1 then
-		giveNote(player, C.notes[4], "in the box.")
+		giveNote(player, C.notes[4], "You have found hastily scribbled note.")
 		return true
 	end
 	msg(player, "The box is empty.") -- ours
