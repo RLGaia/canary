@@ -187076,4 +187076,79 @@
 		<monster name="Mahrdis" x="1" y="4" z="15" spawntime="90" />
 		<monster name="Flamethrower" x="4" y="4" z="15" spawntime="90" />
 	</monster>
+	<!-- FAMILY: Edron Lycanthropes Cave, first floor (z8): extra were-creatures in the five rooms Rodrigo marked as too empty (2026-10-28); each room has twice as many or more. -->
+	<!-- FAMILY: north-west room -->
+	<monster centerx="33075" centery="31932" centerz="8" radius="2">
+		<monster name="Wereboar" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33076" centery="31938" centerz="8" radius="2">
+		<monster name="Werebadger" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33080" centery="31939" centerz="8" radius="2">
+		<monster name="Werefox" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33071" centery="31931" centerz="8" radius="2">
+		<monster name="Wereboar" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<!-- FAMILY: west junction -->
+	<monster centerx="33096" centery="31963" centerz="8" radius="2">
+		<monster name="Werebear" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33090" centery="31965" centerz="8" radius="2">
+		<monster name="Werebadger" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33093" centery="31964" centerz="8" radius="2">
+		<monster name="Werefox" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33089" centery="31962" centerz="8" radius="2">
+		<monster name="Werebear" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<!-- FAMILY: south-west room -->
+	<monster centerx="33072" centery="31991" centerz="8" radius="2">
+		<monster name="Werefox" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33073" centery="31988" centerz="8" radius="2">
+		<monster name="Werebear" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33069" centery="31991" centerz="8" radius="2">
+		<monster name="Wereboar" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33078" centery="31995" centerz="8" radius="2">
+		<monster name="Werebear" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33074" centery="31991" centerz="8" radius="2">
+		<monster name="Wereboar" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33073" centery="31993" centerz="8" radius="2">
+		<monster name="Werebadger" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33070" centery="31989" centerz="8" radius="2">
+		<monster name="Werefox" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<!-- FAMILY: east room -->
+	<monster centerx="33160" centery="31960" centerz="8" radius="2">
+		<monster name="Werefox" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33155" centery="31957" centerz="8" radius="2">
+		<monster name="Wereboar" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33152" centery="31952" centerz="8" radius="2">
+		<monster name="Werebadger" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33156" centery="31952" centerz="8" radius="2">
+		<monster name="Werebear" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<!-- FAMILY: south room -->
+	<monster centerx="33127" centery="31978" centerz="8" radius="2">
+		<monster name="Wereboar" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33131" centery="31978" centerz="8" radius="2">
+		<monster name="Werebear" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33132" centery="31982" centerz="8" radius="2">
+		<monster name="Werefox" x="0" y="0" z="8" spawntime="60" />
+	</monster>
+	<monster centerx="33123" centery="31983" centerz="8" radius="2">
+		<monster name="Wereboar" x="0" y="0" z="8" spawntime="60" />
+	</monster>
 </monsters>
