@@ -4,7 +4,10 @@
 #   - a character's name
 #   - a character's sex (the character gets the basic outfit of the new sex,
 #     as with the Store's sex change; outfits already earned are kept)
-# Levels, items, houses, guild and VIP lists stay as they are.
+#   - delete a character (2026-10-30): everything it owns goes with it (items,
+#     depot, quests, skills, market offers); a house it owned is emptied and
+#     free again; a guild it leads is deleted. To confirm, type its name.
+# For the first four, levels, items, houses, guild and VIP lists stay as they are.
 #
 # The server must be stopped. The database is backed up (backup-db.ps1)
 # before the first change.
@@ -87,6 +90,7 @@ while ($true) {
 	Write-Host '    2. Account password'
 	Write-Host "    3. A character's name"
 	Write-Host "    4. A character's sex"
+	Write-Host '    5. Delete a character'
 	Write-Host '    0. Nothing more (finish)'
 	$choice = (Read-Host -Prompt 'Choice').Trim()
 
@@ -142,6 +146,42 @@ while ($true) {
 			Show-Characters (Get-Characters $accountId)
 			exit 0
 		}
-		default { Write-Warn "Type 1, 2, 3, 4 or 0." }
+		'5' {
+			$char = Select-Character (Get-Characters $accountId)
+			if (-not $char) { break }
+			$id = $char.Id
+			$houses = @(Invoke-MariaDb -Cfg $cfg -Sql "SELECT name FROM houses WHERE owner = $id ORDER BY name;")
+			$guild = Get-SqlScalar $cfg "SELECT name FROM guilds WHERE ownerid = $id;"
+			Write-Host ''
+			Write-Host "    $($char.Name) (level $($char.Level)) will be deleted for good, with its items, depot," -ForegroundColor Yellow
+			Write-Host '    quests, skills and market offers. The other characters of this account stay.' -ForegroundColor Yellow
+			foreach ($h in $houses) { Write-Host "    House $h will be emptied (the items inside are lost) and become free." -ForegroundColor Yellow }
+			if ($guild) { Write-Host "    It leads the guild $guild, which will be deleted too." -ForegroundColor Yellow }
+			Write-Host '    The backup made before the first change can bring it back (family\restore-db.ps1).'
+			$typed = (Read-Host -Prompt "Type the name $($char.Name) to delete it, or press Enter to cancel").Trim()
+			if ($typed -cne $char.Name) { Write-Warn 'Not deleted.'; break }
+			Invoke-BackupOnce
+			# One transaction: the client stops at the first failing statement and the
+			# open transaction is rolled back. Upstream's ondelete_players trigger also
+			# sets houses.owner = 0; the cascades remove items, storages, skills, VIP
+			# lists, market offers and a guild it owns.
+			$houseIds = "SELECT id FROM houses WHERE owner = $id"
+			$sql = @(
+				'START TRANSACTION;',
+				"DELETE FROM tile_store WHERE house_id IN ($houseIds);",
+				"DELETE FROM house_lists WHERE house_id IN ($houseIds);",
+				"UPDATE houses SET owner = 0, new_owner = -1, paid = 0, warnings = 0, transfer_status = 0 WHERE owner = $id;",
+				"UPDATE houses SET new_owner = -1, transfer_status = 0 WHERE new_owner = $id;",
+				"UPDATE houses SET bidder = 0, bidder_name = '', highest_bid = 0, internal_bid = 0, bid_end_date = 0, state = 0 WHERE bidder = $id;",
+				"DELETE FROM players WHERE id = $id;",
+				'COMMIT;'
+			) -join "`n"
+			try { $null = Invoke-MariaDb -Cfg $cfg -Sql $sql }
+			catch { Stop-Family "Nothing was deleted. $($_.Exception.Message)" }
+			if (Get-SqlScalar $cfg "SELECT id FROM players WHERE id = $id;") { Stop-Family "$($char.Name) is still there; nothing was deleted." }
+			Write-Ok "$($char.Name) deleted"
+			Show-Characters (Get-Characters $accountId)
+		}
+		default { Write-Warn "Type 1, 2, 3, 4, 5 or 0." }
 	}
 }

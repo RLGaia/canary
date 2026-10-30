@@ -74,8 +74,11 @@ checksums live at the top of `family\lib.ps1`.
    ```
    Logins look like an email (`player1@server`); they don't need to be real.
    New characters start like real Tibia: no vocation, on the Dawnport tutorial island.
-   To change a login, a password, a character name or sex later (server stopped):
-   `powershell -ExecutionPolicy Bypass -File family\edit-account.ps1`.
+   To change a login, a password, a character name or sex, or to delete a character
+   later (server stopped):
+   `powershell -ExecutionPolicy Bypass -File family\edit-account.ps1`. Deleting asks you
+   to type the character's name; a house it owned is emptied and free again, a guild it
+   leads is deleted, and the backup taken first can bring it back (`restore-db.ps1`).
 7. **Game client 15.11** (on each PC that plays):
    - Download the tag's source archive:
      <https://github.com/dudantas/tibia-client/archive/refs/tags/15.11.c9d1cf.zip>
