@@ -7,8 +7,8 @@
 --   * box with Milos' scribbled note 33269,31844,8 (Puffels' room, next to the ladder)
 --   * dark stone totems at Krailos 33680,31630,7, Banuta 32809,32587,7 and
 --     Vengoth 32949,31489,6 (the sources of the ley lines)
--- Already on the map: the four library bookcases with the parchments, the shadow bite
--- plants, the gold/silver nuggets in the Corym mines, Sinclair's apparatus,
+-- Already on the map: the four library bookcases with the parchments, three shadow bite
+-- plants (the fourth, in the Edron Earth Elemental Cave, is placed), the gold/silver nuggets in the Corym mines, Sinclair's apparatus,
 -- the lever puzzle in the Grimvale ruins, the Last Sanctum basin and the two
 -- death portals (Edron 33064,31977,9 and Last Sanctum 33429,32083,9).
 -- Quest items lost on the way can be bought from Black Bert, as in Tibia.
@@ -23,6 +23,13 @@ local BOX_AID = 48743
 local GRINDER = { id = 21573, pos = Position(33262, 31824, 5) }
 local BOX = { id = 2469, pos = Position(33269, 31844, 8) } -- top right corner of Puffels' room (TibiaWiki BR screenshot)
 local TOTEM_ID = 27323
+-- The fourth shadow bite plant, in the Edron Earth Elemental Cave (TibiaWiki
+-- EN: "on the second floor of Edron Earth Elemental Cave", Mapper
+-- 129.133,123.227,9 = 33157,31715,9). Missing on our map, reported by
+-- Rodrigo 2026-10-30: the bush there was a plain "plants" decoration (1052).
+-- It replaces that bush at 33157,31714,9, next to the wiki square, so the
+-- passage stays as it is.
+local EARTH_CAVE_PLANT = { id = 27459, pos = Position(33157, 31714, 9), replaces = 1052 }
 
 local function active()
 	return Family.curseSpreads ~= false
@@ -405,6 +412,12 @@ end
 local startup = GlobalEvent("FamilyCurseSpreadsStartup")
 function startup.onStartup()
 	placeOnce(GRINDER.id, GRINDER.pos)
+	local plantTile = Tile(EARTH_CAVE_PLANT.pos)
+	local bush = plantTile and plantTile:getItemById(EARTH_CAVE_PLANT.replaces)
+	if bush then
+		bush:remove()
+	end
+	placeOnce(EARTH_CAVE_PLANT.id, EARTH_CAVE_PLANT.pos)
 	placeOnce(BOX.id, BOX.pos, BOX_AID)
 	for _, totem in ipairs(C.totems) do
 		placeOnce(TOTEM_ID, totem.pos)
