@@ -70,4 +70,5 @@ FamilyChangelog = {
 	{ "2026-10-28", "Milos' notes now lie in the same bookcases as in Tibia (two on the library's third floor, one on the fourth) and the scribbled note in a box in the corner of Puffels' room." },
 	{ "2026-10-28", "More were-creatures on the first floor of the Edron Lycanthropes Cave: its five quieter rooms now hold twice as many or more." },
 	{ "2026-10-30", "The shadow bite plant in the Edron Earth Elemental Cave (second floor) is there now, as in Tibia." },
+	{ "2026-10-30", "The Grimvale dock (pier and boat) is a protection zone, as in Tibia." },
 }
