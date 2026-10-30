@@ -76,7 +76,8 @@ function templeStairs.onStepIn(creature, item, position, fromPosition)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You cannot go upstairs. You have chosen a vocation and must now leave for the Mainlands.")
 		player:teleportTo({ x = 32063, y = 31891, z = 6 }, true)
 		player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-	elseif player:getLevel() >= 20 then
+	-- FAMILY: limit level from data-otservbr-global/scripts/family/dawnport_limits.lua (50; upstream 20)
+	elseif player:getLevel() >= ((Family and Family.dawnportLevelCap) or 20) then
 		player:teleportTo(fromPosition, true)
 		player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 	end

@@ -25,7 +25,8 @@ function dawnportAdvance.onAdvance(player, skill, oldLevel, newLevel)
 					You may now choose your vocation and leave Dawnport. Talk to Oressa in the temple."
 				)
 				-- Notify max level to stay in dawnport
-			elseif newLevel >= 20 then
+				-- FAMILY: limit level from data-otservbr-global/scripts/family/dawnport_limits.lua (50; upstream 20)
+			elseif newLevel >= ((Family and Family.dawnportLevelCap) or 20) then
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have reached the limit level and have to choose your vocation and leave Dawnport.")
 				if not dawnportEvents[player:getId()] then
 					-- Adds the event that teleports the player to the temple in five minutes after reaching level 20

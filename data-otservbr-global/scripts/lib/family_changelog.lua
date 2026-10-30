@@ -71,4 +71,5 @@ FamilyChangelog = {
 	{ "2026-10-28", "More were-creatures on the first floor of the Edron Lycanthropes Cave: its five quieter rooms now hold twice as many or more." },
 	{ "2026-10-30", "The shadow bite plant in the Edron Earth Elemental Cave (second floor) is there now, as in Tibia." },
 	{ "2026-10-30", "The Grimvale dock (pier and boat) is a protection zone, as in Tibia." },
+	{ "2026-10-30", "Dawnport: you can stay until level 50 (was 20) to finish its quests, and skills and magic level are no longer capped there." },
 }
