@@ -73,4 +73,5 @@ FamilyChangelog = {
 	{ "2026-10-30", "The Grimvale dock (pier and boat) is a protection zone, as in Tibia." },
 	{ "2026-10-30", "Dawnport: you can stay until level 50 (was 20) to finish its quests, and skills and magic level are no longer capped there." },
 	{ "2026-10-30", "A character can now be deleted with the account editor on the server PC (option 5, server stopped)." },
+	{ "2026-10-30", "To Outfox a Fox (Budrik's mining helmet) now shows in the Tibia Tales quest log, also for those who already finished it." },
 }

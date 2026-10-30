@@ -263,13 +263,14 @@ local quest = {
 		},
 		[14] = {
 			name = "To Outfox a Fox",
-			storageId = Storage.Quest.U8_1.ToOutfoxAFoxQuest,
+			-- FAMILY: was the storage table (ToOutfoxAFoxQuest), so the log never showed this mission (2026-10-30)
+			storageId = Storage.Quest.U8_1.ToOutfoxAFoxQuest.Questline,
 			missionId = 10432,
 			startValue = 1,
 			endValue = 2,
 			states = {
 				[1] = "Budrik asked you to look for the hideout of the Horned Fox and bring his stolen mining helmet back. The Fox's lair is presumed to be west of Kazordoon near the coast.",
-				[2] = "You succesfully helped Budrik in stealing back his old mining helemt.",
+				[2] = "You successfully helped Budrik in stealing back his old mining helmet.", -- FAMILY: typos fixed
 			},
 		},
 		[15] = {
