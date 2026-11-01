@@ -43,8 +43,8 @@ local UniqueTable = {
 		storageQuestlineValue = 48,
 	},
 	[14035] = {
-		-- Damage logbook
-		rewardItemId = 21378,
+		-- Damage logbook (FAMILY: was 21378, the Dawnport "torn log book"; 6124 is the damaged logbook, 2026-11-01)
+		rewardItemId = 6124,
 		storageMission = Storage.Quest.U7_6.ExplorerSociety.CalassaQuest,
 		storageMissionValue = 2,
 		storageQuestlineValue = 0,
@@ -65,8 +65,16 @@ function explorerSocietyFindings.onUse(player, item, fromPosition, target, toPos
 	if not uniqueItem then
 		return true
 	end
+	-- FAMILY: "itemId" did not exist (Lua error on a second use); and the chest only opens while its
+	-- mission runs (the step before storageMissionValue). Upstream also opened it before the mission and
+	-- then set the mission storage and the QuestLine, which could move the quest back and stall it (2026-11-01).
+	local emptyText = "The " .. ItemType(item.itemid):getName() .. " is empty."
 	if player:getStorageValue(item.uid) >= 1 then
-		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The " .. getItemName(uniqueItem.itemId) .. " is empty.")
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, emptyText)
+		return true
+	end
+	if player:getStorageValue(uniqueItem.storageMission) ~= uniqueItem.storageMissionValue - 1 then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, emptyText)
 		return true
 	end
 	if player:getStorageValue(uniqueItem.storageMission) ~= uniqueItem.storageMissionValue then

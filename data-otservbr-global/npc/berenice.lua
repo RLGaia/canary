@@ -62,9 +62,19 @@ local function creatureSayCallback(npc, creature, type, message)
 		if player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.CalassaQuest) == 2 then
 			npcHandler:say("OH! So you have safely returned from Calassa! Congratulations, were you able to retrieve the logbook?", npc, creature)
 			npcHandler:setTopic(playerId, 5)
+		-- FAMILY: answers while the mission runs and after it (2026-11-01, ours)
+		elseif player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.CalassaQuest) == 1 then
+			npcHandler:say("Captain Max will bring you to Calassa whenever you are ready. Please try to retrieve the missing logbook which must be in one of the sunken shipwrecks.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.CalassaQuest) >= 3 then
+			npcHandler:say("Thank you again for the logbook. Lurik in Svargrond might have a mission for an experienced undersea explorer like you.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.TheOrcPowder) > 34 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) > 44 then
 			npcHandler:say("The most important mission we currently have is an expedition to {Calassa}.", npc, creature)
 			npcHandler:setTopic(playerId, 1)
+		else
+			npcHandler:say("We need experienced members of the explorer society for our missions. Come back when you have a higher rank in our society.", npc, creature) -- FAMILY: ours
+			npcHandler:setTopic(playerId, 0)
 		end
 	elseif MsgContains(message, "calassa") then
 		if npcHandler:getTopic(playerId) == 1 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.CalassaQuest) < 1 then
@@ -76,6 +86,13 @@ local function creatureSayCallback(npc, creature, type, message)
 		elseif player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.CalassaQuest) == 2 then
 			npcHandler:say("OH! So you have safely returned from Calassa! Congratulations, were you able to retrieve the logbook?", npc, creature)
 			npcHandler:setTopic(playerId, 5)
+		-- FAMILY: "calassa" without asking for a mission first (BR: Hi - Mission - Calassa) and while it runs (2026-11-01)
+		elseif player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.CalassaQuest) < 1 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.TheOrcPowder) > 34 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) > 44 then
+			npcHandler:say("Ah! So you have heard about our special mission to investigate the Quara race in their natural surrounding! Would you like to know more about it?", npc, creature)
+			npcHandler:setTopic(playerId, 2)
+		elseif player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.CalassaQuest) == 1 then
+			npcHandler:say("Captain Max will bring you to Calassa whenever you are ready. Please try to retrieve the missing logbook which must be in one of the sunken shipwrecks.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
 		end
 	elseif MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 2 then
@@ -96,9 +113,13 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U7_6.ExplorerSociety.CalassaDoor, 1)
 			npcHandler:setTopic(playerId, 4)
 		elseif npcHandler:getTopic(playerId) == 5 then
-			if player:removeItem(21378, 1) then
+			-- FAMILY: the chest now gives the damaged logbook (6124); 21378 is still taken for logbooks found before (2026-11-01)
+			if player:removeItem(6124, 1) or player:removeItem(21378, 1) then
 				player:setStorageValue(Storage.Quest.U7_6.ExplorerSociety.CalassaQuest, 3)
 				npcHandler:say("Yes! That's the logbook! However... it seems that the water has already destroyed many of the pages. This is not your fault though, you did your best. Thank you!", npc, creature)
+				npcHandler:setTopic(playerId, 0)
+			else
+				npcHandler:say("You don't have the logbook with you. It must be in one of the sunken shipwrecks in Calassa.", npc, creature) -- FAMILY: ours
 				npcHandler:setTopic(playerId, 0)
 			end
 		end

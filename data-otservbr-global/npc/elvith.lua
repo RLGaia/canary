@@ -78,6 +78,17 @@ local function creatureSayCallback(npc, creature, type, message)
 			"The last issue I had was bought by Randor Swiftfinger. He was banished through the hellgate and probably took the book with him ...",
 			"I would not recommend seeking him or the book there, but of course it is possible.",
 		}, npc, creature)
+	-- FAMILY: a lost copy can be bought again (TibiaWiki BR: "Elven Poetry", 500 gold; EN: "elven poetry book"),
+	-- only after it was found in the Hellgate (The Explorer Society); lines ours (2026-11-01)
+	elseif MsgContains(message, "elven poetry") or MsgContains(message, "poetry book") then
+		local ES = Storage.Quest.U7_6.ExplorerSociety
+		if player:getStorageValue(ES.TheElvenPoetry) == 37 and player:getItemCount(4844) == 0 then
+			npcHandler:say("You lost your copy of 'Songs of the Forest'? I could sell you one of mine for 500 gold. Do you want it?", npc, creature)
+			npcHandler:setTopic(playerId, 2)
+		else
+			npcHandler:say("Elven poetry is the finest in the world. The 'Songs of the Forest' are a rare book, though.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		end
 	elseif MsgContains(message, "love poem") then
 		npcHandler:say("Do you want to buy a poem scroll for 200 gold?", npc, creature)
 		npcHandler:setTopic(playerId, 1)
@@ -92,6 +103,14 @@ local function creatureSayCallback(npc, creature, type, message)
 
 			player:addItem(6119, 1)
 			npcHandler:say("Here it is.", npc, creature)
+		elseif npcHandler:getTopic(playerId) == 2 then -- FAMILY: the elven poetry book
+			npcHandler:setTopic(playerId, 0)
+			if not player:removeMoneyBank(500) then
+				npcHandler:say("You don't have enough money.", npc, creature)
+				return true
+			end
+			player:addItem(4844, 1)
+			npcHandler:say("Here it is. Treat it with care.", npc, creature)
 		end
 	end
 	return true

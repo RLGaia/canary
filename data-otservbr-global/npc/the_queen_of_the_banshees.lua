@@ -74,6 +74,9 @@ local function creatureSayCallback(npc, creature, type, message)
 		if player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.TheSpectralDress) == 48 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) == 48 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.BansheeDoor) < 1 then
 			npcHandler:say("Your wish for a spectral dress is silly. Although I will grant you the permission to take one. My maidens left one in a box in a room, directly south of here.", npc, creature)
 			player:setStorageValue(Storage.Quest.U7_6.ExplorerSociety.BansheeDoor, 1)
+		-- FAMILY: she said nothing when asked again; same answer while the dress is still to be taken (2026-11-01)
+		elseif player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.TheSpectralDress) == 48 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.BansheeDoor) >= 1 then
+			npcHandler:say("I already granted you the permission to take one. My maidens left one in a box in a room, directly south of here.", npc, creature)
 		end
 	elseif MsgContains(message, "addon") then
 		if player:getStorageValue(Storage.Quest.U7_8.WizardOutfits) == 5 then

@@ -96,6 +96,7 @@ end
 T.startups = {}
 
 local items = {}
+getItemName = function(id) return items[id] or ("item " .. tostring(id)) end
 ItemType = function(id)
 	return setmetatable({ id = id }, { __index = function(_, k)
 		if k == "getId" then return function() return id end end

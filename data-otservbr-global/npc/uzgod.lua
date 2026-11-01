@@ -74,10 +74,22 @@ local function creatureSayCallback(npc, creature, type, message)
 		end
 	end
 
+	-- FAMILY: The Explorer Society, every step answers (2026-11-01). Upstream was silent about the
+	-- pickaxe and the brooch outside one exact step and when the brooch was missing. Lines marked ours.
+	local joining = player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers)
 	if MsgContains(message, "pickaxe") then
-		if player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers) == 1 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) == 1 then
+		if joining == 1 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) == 1 then
 			npcHandler:say("True dwarven pickaxes having to be maded by true weaponsmith! You wanting to get pickaxe for explorer society?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
+		elseif joining == 2 or joining == 3 then
+			npcHandler:say("Me pickaxe ready when you bringing me {brooch} from dwarven prison of dwacatra. Jawoll!", npc, creature) -- ours
+			npcHandler:setTopic(playerId, 0)
+		elseif joining >= 4 then
+			npcHandler:say("Me already gave you pickaxe. Bring it to explorer society!", npc, creature) -- ours
+			npcHandler:setTopic(playerId, 0)
+		else
+			npcHandler:say("Me pickaxes only for explorer society. You not member!", npc, creature) -- ours
+			npcHandler:setTopic(playerId, 0)
 		end
 	elseif MsgContains(message, "crimson sword") then
 		if player:getStorageValue(Storage.Quest.U8_1.TheTravellingTrader.Mission05) == 1 then
@@ -90,9 +102,18 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 6)
 		end
 	elseif MsgContains(message, "brooch") then
-		if player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers) == 3 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) == 3 then
+		if joining == 3 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) == 3 then
 			npcHandler:say("You got me brooch?", npc, creature)
 			npcHandler:setTopic(playerId, 3)
+		elseif joining == 2 then
+			npcHandler:say("Criminal now in dwarven prison of dwacatra is and must have taken brooch with him. Last key should be in the generals quarter near armory.", npc, creature) -- his words
+			npcHandler:setTopic(playerId, 0)
+		elseif joining >= 4 then
+			npcHandler:say("Thanking you again for brooch!", npc, creature) -- ours
+			npcHandler:setTopic(playerId, 0)
+		else
+			npcHandler:say("Brooch from my family was stolen! Valuable heirloom! But criminal was caught.", npc, creature) -- ours
+			npcHandler:setTopic(playerId, 0)
 		end
 	elseif MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 1 then
@@ -111,6 +132,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			if player:removeItem(4834, 1) then -----
 				npcHandler:say("Thanking you for brooch. Me guessing you now want your pickaxe?", npc, creature)
 				npcHandler:setTopic(playerId, 4)
+			else
+				npcHandler:say("You not having brooch! Me not stupid!", npc, creature) -- FAMILY: ours
+				npcHandler:setTopic(playerId, 0)
 			end
 		elseif npcHandler:getTopic(playerId) == 4 then
 			npcHandler:say("Here you have it.", npc, creature)

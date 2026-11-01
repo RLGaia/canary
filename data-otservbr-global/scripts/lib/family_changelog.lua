@@ -79,4 +79,7 @@ FamilyChangelog = {
 	{ "2026-11-01", "The Dorm Key works again: say key to Woblin, then reward. Mr Morris answers every Dawnport task at every step, and kill tasks start with the first kill." },
 	{ "2026-11-01", "Dawnport: Inigo buys creature products, gives his hints one by one and no longer sends you to Rookgaard when you say leave or sure." },
 	{ "2026-11-01", "Dawnport: Oressa heals when you say heal, Coltrayne sells weapons and armor behind his counter again, and the bankers answer more questions." },
+	{ "2026-11-01", "The Explorer Society: Angus and Mortimer answer every step and say what is missing (an ice pick is not the dwarven pickaxe). Black Bert's strange powder counts, and Elvith sells a lost poetry book." },
+	{ "2026-11-01", "The Explorer Society: the spectral stone step works (the essence was never given), and Lurik in Svargrond now gives his missions, which open the Liberty Bay - Svargrond portal." },
+	{ "2026-11-01", "New achievements: Just in Time (ice delivery or Rashid's cheese) and Explorer (spectral dress)." },
 }

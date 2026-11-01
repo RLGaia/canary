@@ -162,7 +162,7 @@ local function creatureSayCallback(npc, creature, type, message)
 
 		-- PICKAXE MISSION
 	elseif MsgContains(message, "pickaxe") then
-		if player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers) < 5 or player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers) > 1 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) < 1 or player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) > 1 then
+		if player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers) >= 1 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers) < 5 then -- FAMILY: only after join; upstream asked anyone, so "pickaxe", "yes" made a non-member a member (2026-11-01)
 			npcHandler:say("Did you get the requested pickaxe from Uzgod in Kazordoon?", npc, creature)
 			npcHandler:setTopic(playerId, 3)
 		end
@@ -677,7 +677,8 @@ local function onTradeRequest(npc, creature)
 end
 
 npcHandler:setCallback(CALLBACK_ON_TRADE_REQUEST, onTradeRequest)
-npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+-- FAMILY: every step answers (data-otservbr-global/lib/others/family_explorer_society.lua, 2026-11-01)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, FamilyExplorer and FamilyExplorer.wrap(npcHandler, creatureSayCallback, "Northport") or creatureSayCallback)
 -- Dialogue keywords the NPC answers on the official server
 keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "I am the local representative of the explorer society." })
 keywordHandler:addKeyword({ "explorer society" }, StdModule.say, { npcHandler = npcHandler, text = "Our noble society is dedicated to exploring the unknown. No location is too remote for our members to travel there ... No beast is too wild to be hunted. No treasure buried too deep to be unearthed ... Only the most dedicated and fearless adventurers may join our ranks." })

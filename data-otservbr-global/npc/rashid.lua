@@ -170,6 +170,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			if player:removeItem(169, 1) then
 				npcHandler:say("Mmmhh, the lovely odeur of scarab cheese! I really can't understand why most people can't stand it. Thanks, well done! ", npc, creature)
 				player:setStorageValue(Storage.Quest.U8_1.TheTravellingTrader.Mission03, 3)
+				player:addAchievement("Just in Time") -- FAMILY: TibiaWiki EN, the Wednesday mission gives it; upstream never did (2026-11-01)
 				npcHandler:setTopic(playerId, 0)
 			end
 		elseif npcHandler:getTopic(playerId) == 10 then

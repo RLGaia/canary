@@ -59,9 +59,28 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 
 	if MsgContains(message, "mission") then
-		if player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.TheAstralPortals) == 56 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) == 56 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.TheIslandofDragons) == 57 then --will need review in the future
+		-- FAMILY: upstream offered the mission only when it was already accepted (TheIslandofDragons == 57,
+		-- which only accepting sets), so The Island of Dragons and The Ice Music never started. Now offered
+		-- after The Astral Portals; every step answers (2026-11-01). Lines marked ours.
+		local ES = Storage.Quest.U7_6.ExplorerSociety
+		local esLine = player:getStorageValue(ES.QuestLine)
+		if player:getStorageValue(ES.TheAstralPortals) == 56 and esLine == 56 and player:getStorageValue(ES.TheIslandofDragons) < 57 then
 			npcHandler:say("Ah, you've just come in time. An experienced explorer is just what we need here! Would you like to go on a mission for us?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
+		elseif player:getStorageValue(ES.TheIslandofDragons) == 57 and esLine == 57 then
+			npcHandler:say("Travel to Okolnir and try to find a proof for the existence of dragon lords there in the old times. I think old Buddel might be able to bring you there.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(ES.TheIceMusic) == 60 and esLine == 60 then
+			if player:getItemCount(7242) == 0 then
+				player:addItem(7242, 1)
+				npcHandler:say("You lost the resonance crystal? Take another one and use it on the stalagmites in the cave on Hrodmir, north of Krimhorn, to record the sound of the wind.", npc, creature) -- ours
+			else
+				npcHandler:say("Please use the resonance crystal on the stalagmites in the cave on Hrodmir, north of the southernmost barbarian camp Krimhorn, to record the sound of the wind.", npc, creature)
+			end
+			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(ES.TheIceMusic) == 61 and esLine == 61 and player:getItemCount(7315) == 0 then
+			npcHandler:say("Where is the resonance crystal with the recorded ice music? Please bring it to me.", npc, creature) -- ours
+			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.TheIslandofDragons) == 58 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) == 58 then
 			if player:removeItem(7314, 1) then
 				npcHandler:say({
@@ -118,6 +137,12 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 35)
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission09, 1) -- Questlog The Ice Islands Quest, Formorgar Mines 1: The Mission
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.FormorgarMinesDoor, 1)
+		elseif player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.TheIceMusic) >= 62 then
+			npcHandler:say("You helped us so much already. Remember: for just one orichalcum pearl, you can travel between Liberty Bay and Svargrond. Thank you again!", npc, creature) -- FAMILY: ours
+			npcHandler:setTopic(playerId, 0)
+		else
+			npcHandler:say("Our missions here are for experienced members of the explorer society. Come back when you have proven yourself in our bases in Port Hope or Northport.", npc, creature) -- FAMILY: ours
+			npcHandler:setTopic(playerId, 0)
 		end
 	elseif MsgContains(message, "yes") then
 		-- ISLAND OF DRAGONS
@@ -151,6 +176,8 @@ local function creatureSayCallback(npc, creature, type, message)
 end
 
 npcHandler:setMessage(MESSAGE_GREET, "Welcome to the {explorer society} headquarter of Svargrond, |PLAYERNAME|!")
+-- FAMILY: his greeting offers {explorer society} but nothing answered it; our line (2026-11-01)
+keywordHandler:addKeyword({ "explorer society" }, StdModule.say, { npcHandler = npcHandler, text = "The explorer society explores all the lands of Tibia. Here in Svargrond we study the ice islands and the seas around them. If you are one of us, ask me for a {mission}." })
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

@@ -168,7 +168,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		-- Mission check
 		-- Pickaxe mission
 	elseif MsgContains(message, "pickaxe") then
-		if player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers) < 5 or player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers) > 1 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) < 1 or player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) > 1 then
+		if player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers) >= 1 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers) < 5 then -- FAMILY: only after join; upstream asked anyone, so "pickaxe", "yes" made a non-member a member (2026-11-01)
 			npcHandler:say("Did you get the requested pickaxe from Uzgod in Kazordoon?", npc, creature)
 			npcHandler:setTopic(playerId, 3)
 		end
@@ -547,7 +547,8 @@ local function creatureSayCallback(npc, creature, type, message)
 			-- Spectral Dress
 			-- Spectral Stone
 		elseif npcHandler:getTopic(playerId) == 32 then
-			npcHandler:say("Good, just take this spectral essence and use it on the strange carving in this building as well as on the corresponding tile in our base at Northport ...", "As soon as you have charged the portal tiles that way, report about the spectral portals.", npc, creature)
+			-- FAMILY: the two lines were passed as two arguments (Lua error: the essence was never given, 2026-11-01)
+			npcHandler:say({ "Good, just take this spectral essence and use it on the strange carving in this building as well as on the corresponding tile in our base at Northport ...", "As soon as you have charged the portal tiles that way, report about the spectral portals." }, npc, creature)
 			npcHandler:setTopic(playerId, 0)
 			player:setStorageValue(Storage.Quest.U7_6.ExplorerSociety.TheSpectralStone, 53)
 			player:setStorageValue(Storage.Quest.U7_6.ExplorerSociety.SpectralStoneDoor, 1)
@@ -632,7 +633,8 @@ end
 
 npcHandler:setMessage(MESSAGE_GREET, "Greetings, what can I do for you?")
 npcHandler:setCallback(CALLBACK_ON_TRADE_REQUEST, onTradeRequest)
-npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+-- FAMILY: every step answers (data-otservbr-global/lib/others/family_explorer_society.lua, 2026-11-01)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, FamilyExplorer and FamilyExplorer.wrap(npcHandler, creatureSayCallback, "Port Hope") or creatureSayCallback)
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 npcConfig.shop = {

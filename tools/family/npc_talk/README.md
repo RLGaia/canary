@@ -21,6 +21,10 @@ the `key` hints of the outpost NPCs, Inigo's and Oressa's fixes, every
 `{highlighted}` word of the 13 Dawnport NPCs, and (with the optional
 folder) every player line of `Inigo_Transcripts.txt`.
 
+`explorer_society.lua` is The Explorer Society check (2026-11-01, 124 checks):
+the whole quest through Angus and Mortimer with Uzgod, the Queen of the
+Banshees, Elvith, Berenice, Lurik and the real chest and item scripts.
+
 ## Writing a check
 
 ```lua
