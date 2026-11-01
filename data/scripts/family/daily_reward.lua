@@ -26,6 +26,10 @@
 --    adds them to the coin balance). Upstream an XP boost claim only tops the
 --    daily boost back up to its minutes (a second claim before using the first
 --    one adds nothing); here every claim adds its full time.
+--    Since 2026-11-01 (Rodrigo) Prey Wildcards cost as in Tibia again, so
+--    days 3 and 5 also give Tibia's Prey Wildcards (2 for premium, 1 free)
+--    on top of the XP boost and the Tibia Coins. The wall still shows only
+--    the XP boost and the coins; a message tells about the Wildcards.
 -- 6. Day 6 mixed pick (2026-10-24, chosen by Rodrigo): training weapons never
 --    run out here, so after the first ones day 6 gave nothing. Now day 6 lists
 --    the 8 training weapons, the vocation's potions and runes (the same list
@@ -41,6 +45,7 @@
 -- Switches: Family.dailyRewardNeverExpires (false = upstream rules 1 and 2),
 -- Family.dailyRewardWallCountdown (false = upstream wall after a claim),
 -- Family.dailyRewardNoPrey (false = upstream days 3 and 5 and XP top-up),
+-- Family.dailyRewardWildcards (empty = no Wildcards with days 3 and 5),
 -- Family.dailyRewardDay6Mix (false = upstream day 6: 2 training weapons).
 
 Family = Family or {}
@@ -56,6 +61,12 @@ local TIBIA_COIN = 22118
 Family.dailyRewardPreyReplacements = {
 	[3] = { type = REWARD_XP, systemType = 2, freeAccount = 10, premiumAccount = 30 },
 	[5] = { type = REWARD_ITEM, systemType = 1, items = { TIBIA_COIN }, freeAccount = 10, premiumAccount = 25 },
+}
+-- Prey Wildcards given with a claimed day (Tibia's day 3 and 5 amounts).
+-- Only while those days are replaced (with upstream days they come anyway).
+Family.dailyRewardWildcards = {
+	[3] = { freeAccount = 1, premiumAccount = 2 },
+	[5] = { freeAccount = 1, premiumAccount = 2 },
 }
 
 -- Replaces the Prey reroll days and makes XP boost claims add their full time.
@@ -406,8 +417,15 @@ function familyDailyReward.onStartup()
 	local originalProcess = DailyReward.processReward
 	DailyReward.processReward = function(playerId, target)
 		local player = Player(playerId)
-		local reward = player and DailyReward.rewards[player:getDayStreak() + 1]
+		local day = player and player:getDayStreak() + 1
+		local reward = player and DailyReward.rewards[day]
 		local result = originalProcess(playerId, target)
+		local wildcards = player and Family.dailyRewardNoPrey and Family.dailyRewardWildcards[day]
+		if wildcards and reward and reward.type ~= REWARD_PREY then
+			local count = player:isPremium() and wildcards.premiumAccount or wildcards.freeAccount
+			player:addPreyCards(count)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You also received %d Prey Wildcard%s (now %d).", count, count == 1 and "" or "s", player:getPreyCards()))
+		end
 		local day6 = Family.day6Claim
 		if player and reward and reward.type == 1 and not (day6 and day6.other == 0) then -- DAILY_REWARD_TYPE_ITEM; day 6 with only XP boost picks delivers nothing
 			if reward.items and reward.items[1] == TIBIA_COIN and #reward.items == 1 then
@@ -421,7 +439,7 @@ function familyDailyReward.onStartup()
 
 	local replaced = Family.applyDailyRewardNoPrey()
 	if replaced > 0 then
-		logger.info("[Family] daily reward: {} Prey reroll days replaced (day 3 XP boost, day 5 Tibia Coins)", replaced)
+		logger.info("[Family] daily reward: {} Prey reroll days replaced (day 3 XP boost, day 5 Tibia Coins, both with Prey Wildcards)", replaced)
 	end
 
 	if Family.applyDailyRewardDay6Mix() then
