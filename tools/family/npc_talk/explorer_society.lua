@@ -53,6 +53,7 @@ dofile("data-otservbr-global/scripts/quests/the_explorer_society/actions_finding
 dofile("data-otservbr-global/scripts/quests/the_explorer_society/actions_icicle.lua")
 dofile("data-otservbr-global/scripts/quests/the_explorer_society/actions_butterfly.lua")
 dofile("data-otservbr-global/scripts/quests/the_explorer_society/actions_tracing_paper.lua")
+dofile("data-otservbr-global/scripts/quests/the_explorer_society/actions_botanist.lua")
 local function openChest(p, uid, chestItem)
 	return useItem(p, chestItem or 2472, nil, uid)
 end
@@ -124,20 +125,32 @@ check("Angus takes the pickaxe", has(angus:say(p, "yes"), "officially welcome") 
 check("pickaxe afterwards", has(angus:say(p, "pickaxe"), "already brought"))
 check("join afterwards", has(angus:say(p, "join"), "already a member"))
 
--- Rank I: order and reminders
+-- Rank I: the three missions side by side (TibiaWiki BR; Family.explorerSocietyParallel)
 check("mission lists rank I", has(angus:say(p, "mission"), "{butterfly hunt}"))
-check("butterfly hunt before the ice: finish first", has(angus:say(p, "butterfly hunt"), "finish the {ice delivery} first"))
-check("plant collection before: finish first", has(angus:say(p, "plant collection"), "first"))
-angus:say(p, "ice delivery")
+check("rank II mission in rank I: not yet", has(angus:say(p, "lizard urn"), "can't do that mission yet"))
+check("butterfly hunt offered first (was: ice first)", has(angus:say(p, "butterfly hunt"), "collect some species of butterflies"))
 angus:say(p, "yes")
-check("ice delivery accepted, ice pick given", p.storage[ES.TheIceDelivery] == 6 and p.items[4872] == 1)
+check("butterfly hunt: first kit", p.items[4863] == 1 and p.storage[ES.TheButterflyHunt] == 9 and p.storage[ES.QuestLine] == 5)
+check("plant collection offered while the hunt runs", has(angus:say(p, "plant collection"), "plant samples"))
+check("plant collection: no", has(angus:say(p, "no"), "Come back when you are ready"))
+angus:say(p, "plant collection")
+angus:say(p, "yes")
+check("plant collection: container", p.items[4867] == 1 and p.storage[ES.ThePlantCollection] == 18)
+mortimer:say(p, "hi")
+check("ice delivery offered by Mortimer too", has(mortimer:say(p, "ice delivery"), "ancient"))
+mortimer:say(p, "yes")
+check("ice delivery accepted, ice pick given", p.storage[ES.TheIceDelivery] == 6 and p.items[4872] == 1 and p.storage[ES.QuestLine] == 5)
 check("ice delivery while running: reminder", has(angus:say(p, "ice delivery"), "Folda"))
+check("butterfly hunt while running: purple reminder", has(angus:say(p, "butterfly hunt"), "purple butterfly"))
+check("plants while running: jungle bells reminder", has(angus:say(p, "plant collection"), "jungle bells"))
+check("mission while all three run: the list", has(angus:say(p, "mission"), "{plant collection}"))
 useItem(p, 4872, { itemid = 4994 })
 check("ice pick on Folda ice gives an icicle", p.items[4837] == 1 and p.storage[ES.TheIceDelivery] == 7)
 angus:say(p, "ice delivery")
 check("ice delivered + Just in Time", has(angus:say(p, "yes"), "Just in time") and p.storage[ES.TheIceDelivery] == 8 and p.achievements["Just in Time"])
 check("ice delivery afterwards", has(angus:say(p, "ice delivery"), "already done"))
--- melted ice (another character): yes without ice, lost ice pick
+check("QuestLine stays at rank I", p.storage[ES.QuestLine] == 5)
+-- melted ice (another character, in the middle of the old chain): yes without ice, lost ice pick
 do
 	local m = player({ storage = { [ES.JoiningTheExplorers] = 5, [ES.QuestLine] = 7, [ES.TheIceDelivery] = 7 } })
 	angus:say(m, "hi")
@@ -149,13 +162,10 @@ do
 	angus:say(n, "ice delivery")
 	angus:say(n, "no")
 	check("ice: no - melted - yes (EN) still works", has(angus:say(n, "yes"), "another chance") and n.items[4872] == 1)
+	check("old chain: plant collection offered while the ice runs", has(angus:say(n, "plant collection"), "plant samples"))
 end
 
 -- butterflies
-angus:say(p, "butterfly hunt")
-angus:say(p, "yes")
-check("butterfly hunt: first kit", p.items[4863] == 1 and p.storage[ES.TheButterflyHunt] == 9)
-check("butterfly hunt while running: purple reminder", has(angus:say(p, "butterfly hunt"), "purple butterfly"))
 p.items[4863] = 0
 check("lost kit: offered for 250", has(angus:say(p, "preparation kit"), "250 gold"))
 angus:say(p, "yes")
@@ -168,71 +178,80 @@ check("purple: yes without it answers", has(angus:say(p, "yes"), "don't have the
 p.items[4864] = 1
 angus:say(p, "butterfly hunt")
 check("purple reported", has(angus:say(p, "yes"), "battered") and p.storage[ES.TheButterflyHunt] == 11)
-angus:say(p, "butterfly hunt")
+check("blue kit given", has(angus:say(p, "butterfly hunt"), "blue butterfly") and p.items[4863] == 1 and p.storage[ES.TheButterflyHunt] == 12)
 useItem(p, 4863, { itemid = 4993 })
 angus:say(p, "butterfly hunt")
 angus:say(p, "yes")
 angus:say(p, "butterfly hunt")
+check("red kit given", p.storage[ES.TheButterflyHunt] == 15)
+
+-- plants, with the real botanist's container script
+useItem(p, 4867, { itemid = 3874 })
+check("container on jungle bells", p.items[4868] == 1 and p.storage[ES.ThePlantCollection] == 19)
+angus:say(p, "plant collection")
+angus:say(p, "yes")
+angus:say(p, "plant collection")
+useItem(p, 4867, { itemid = 3885 })
+angus:say(p, "plant collection")
+angus:say(p, "yes")
+angus:say(p, "plant collection")
+p.items[4867] = 0
+check("lost container: a new one", has(angus:say(p, "plant collection"), "Here, take another one") and p.items[4867] == 1)
+useItem(p, 4867, { itemid = 3878 })
+angus:say(p, "plant collection")
+check("plants done, no promotion yet", has(angus:say(p, "yes"), "finished your plant collection") and not has(angus:say(p, "mission"), "promote") and p.storage[ES.QuestLine] == 5)
+-- the last butterfly is the third mission: promotion
 useItem(p, 4863, { itemid = 4991 })
 angus:say(p, "butterfly hunt")
-check("red reported, hunt done", has(angus:say(p, "yes"), "last butterfly") and p.storage[ES.TheButterflyHunt] == 17)
-
--- plants (samples set as the botanist script does)
-angus:say(p, "plant collection")
-angus:say(p, "yes")
-check("plant collection: container", p.items[4867] == 1 and p.storage[ES.ThePlantCollection] == 18)
-check("plants while running: jungle bells reminder", has(angus:say(p, "plant collection"), "jungle bells"))
-local function sample(state, item)
-	p.storage[ES.ThePlantCollection] = state
-	p.storage[ES.QuestLine] = state
-	p.items[4867] = 0
-	p.items[item] = 1
-end
-sample(19, 4868)
-angus:say(p, "plant collection")
-angus:say(p, "yes")
-angus:say(p, "plant collection")
-sample(22, 4869)
-angus:say(p, "plant collection")
-angus:say(p, "yes")
-angus:say(p, "plant collection")
-sample(25, 4870)
-angus:say(p, "plant collection")
-check("plants done", has(angus:say(p, "yes"), "finished your plant collection") and p.storage[ES.QuestLine] == 26)
+local last = angus:say(p, "yes")
+check("red reported, promoted to Journeyman", has(last, "last butterfly") and has(last, "Journeyman") and p.storage[ES.TheButterflyHunt] == 17 and p.storage[ES.QuestLine] == 26)
 
 -- Rank II
 check("mission lists rank II", has(angus:say(p, "mission"), "{lizard urn}"))
+check("rank I word in rank II: done", has(angus:say(p, "plant collection"), "already done"))
 check("chest before the mission: empty, nothing changes", (function()
 	openChest(p, 14030, 2469)
 	return p.storage[ES.TheBonelordSecret] == nil and p.items[173] == nil and p.storage[ES.QuestLine] == 26
 end)())
 angus:say(p, "lizard urn")
 angus:say(p, "yes")
-check("rank II mission while the urn runs (was silent)", has(angus:say(p, "mission"), "{lizard urn}"))
+angus:say(p, "bonelord secrets")
+angus:say(p, "yes")
+angus:say(p, "orc powder")
+angus:say(p, "yes")
+check("rank II: all three accepted, doors open", p.storage[ES.TheLizardUrn] == 27 and p.storage[ES.TheBonelordSecret] == 30 and p.storage[ES.TheOrcPowder] == 33
+	and p.storage[ES.ChorurnDoor] == 1 and p.storage[ES.BonelordsDoor] == 1 and p.storage[ES.OrcDoor] == 1)
 check("lizard urn while running: reminder", has(angus:say(p, "lizard urn"), "temple"))
-check("bonelord secrets before: finish first", has(angus:say(p, "bonelord secrets"), "first"))
+check("bonelord secrets while running: reminder", has(angus:say(p, "bonelord secret"), "Darashia"))
+check("orc powder while running: reminder", has(angus:say(p, "orc powder"), "north-east"))
 openChest(p, 40041, 2472)
+check("urn chest keeps the rank", p.items[4847] == 1 and p.storage[ES.TheLizardUrn] == 28 and p.storage[ES.QuestLine] == 26)
 angus:say(p, "lizard urn")
-check("urn reported", has(angus:say(p, "yes"), "prized relic") and p.storage[ES.QuestLine] == 29)
-angus:say(p, "bonelord secrets")
-angus:say(p, "yes")
+check("urn reported", has(angus:say(p, "yes"), "prized relic") and p.storage[ES.TheLizardUrn] == 29)
+p.items[4838] = 1 -- Black Bert's strange powder (TibiaWiki BR), before the chest
+check("Black Bert's powder: asked", has(angus:say(p, "orc powder"), "Did you acquire some of the orcish powder"))
+check("Black Bert's strange powder accepted (BR)", has(angus:say(p, "yes"), "Amazing") and p.items[4838] == 0 and p.storage[ES.TheOrcPowder] == 35)
 openChest(p, 14030, 2469)
+check("pyramid chest keeps the rank", p.items[173] == 1 and p.storage[ES.TheBonelordSecret] == 31 and p.storage[ES.QuestLine] == 26)
 angus:say(p, "bonelord secrets")
-check("parchment reported", has(angus:say(p, "yes"), "scientific world") and p.storage[ES.QuestLine] == 32)
-angus:say(p, "orc powder")
-angus:say(p, "yes")
-p.items[4838] = 1 -- Black Bert's strange powder (TibiaWiki BR)
-p.storage[ES.TheOrcPowder] = 34
-angus:say(p, "orc powder")
-check("Black Bert's strange powder accepted (BR)", has(angus:say(p, "yes"), "Amazing") and p.items[4838] == 0 and p.storage[ES.QuestLine] == 35)
+last = angus:say(p, "yes")
+check("parchment reported, promoted to Relic Hunter", has(last, "scientific world") and has(last, "Relic Hunter") and p.storage[ES.QuestLine] == 35)
 
 -- Rank III
 check("mission lists rank III", has(angus:say(p, "mission"), "{elven poetry}"))
+angus:say(p, "rune writings")
+angus:say(p, "yes")
+check("tracing paper given", p.items[4842] == 1 and p.storage[ES.TheRuneWritings] == 42)
+p.items[4842] = 0
+check("lost tracing paper: a new one", has(angus:say(p, "rune writings"), "Here, take another one") and p.items[4842] == 1)
+angus:say(p, "memory stone")
+angus:say(p, "yes")
 angus:say(p, "elven poetry")
 angus:say(p, "yes")
+check("rank III: all three accepted", p.storage[ES.TheElvenPoetry] == 36 and p.storage[ES.TheMemoryStone] == 39 and p.storage[ES.ElvenDoor] == 1 and p.storage[ES.MemoryStoneDoor] == 1)
 check("elven book while running: reminder", has(angus:say(p, "elven book"), "Songs of the Forest"))
 openChest(p, 14032, 2472)
-check("Hellgate chest gives the book", p.items[4844] == 1 and p.storage[ES.TheElvenPoetry] == 37)
+check("Hellgate chest gives the book", p.items[4844] == 1 and p.storage[ES.TheElvenPoetry] == 37 and p.storage[ES.QuestLine] == 35)
 p.items[4844] = 0
 angus:say(p, "elven book")
 check("book: yes without it points to Elvith", has(angus:say(p, "yes"), "Elvith"))
@@ -242,21 +261,32 @@ elvith:say(p, "yes")
 check("Elvith sells the book", p.items[4844] == 1 and p.money == 100000 - 250 - 500)
 angus:say(p, "hi")
 angus:say(p, "elven book")
-check("book reported", has(angus:say(p, "yes"), "bloodstains") and p.storage[ES.QuestLine] == 38)
-angus:say(p, "memory stone")
-angus:say(p, "yes")
+check("book reported", has(angus:say(p, "yes"), "bloodstains") and p.storage[ES.TheElvenPoetry] == 38)
 p.items[4841] = 1 -- bought from Black Bert
 check("bought memory stone refused (BR line)", has(angus:say(p, "memory stone"), "looks damaged"))
 p.items[4841] = 0
 openChest(p, 14033, 2469)
 angus:say(p, "memory stone")
-check("memory stone reported", has(angus:say(p, "yes"), "flawless") and p.storage[ES.QuestLine] == 41)
-angus:say(p, "rune writings")
-angus:say(p, "yes")
-check("tracing paper given", p.items[4842] == 1)
+check("memory stone reported", has(angus:say(p, "yes"), "flawless") and p.storage[ES.TheMemoryStone] == 41 and p.storage[ES.QuestLine] == 35)
 useItem(p, 4842, { itemid = 2199, uid = 3010 })
 angus:say(p, "rune writings")
-check("runes reported", has(angus:say(p, "yes"), "wrinkled") and p.storage[ES.QuestLine] == 44)
+last = angus:say(p, "yes")
+check("runes reported, promoted to Explorer", has(last, "wrinkled") and has(last, "Explorer") and p.storage[ES.QuestLine] == 44)
+check("rank III word afterwards: done", has(angus:say(p, "memory stone"), "already done"))
+
+-- the old order still works with the switch off
+do
+	Family.explorerSocietyParallel = false
+	local o = player({ storage = { [ES.JoiningTheExplorers] = 5, [ES.QuestLine] = 5 } })
+	angus:say(o, "hi")
+	check("switch off: butterfly hunt waits for the ice", has(angus:say(o, "butterfly hunt"), "finish the {ice delivery} first"))
+	angus:say(o, "ice delivery")
+	angus:say(o, "yes")
+	check("switch off: ice delivery moves the QuestLine", o.storage[ES.TheIceDelivery] == 6 and o.storage[ES.QuestLine] == 6)
+	useItem(o, 4872, { itemid = 4994 })
+	check("switch off: ice pick needs the QuestLine", o.storage[ES.QuestLine] == 7 and o.items[4837] == 1)
+	Family.explorerSocietyParallel = true
+end
 
 -- Rank IV
 angus:say(p, "mission")
@@ -338,6 +368,72 @@ check("Lurik without the recording answers", has(lurik:say(p, "mission"), "Where
 p.items[7315] = 1
 check("ice music reported", has(lurik:say(p, "mission"), "Liberty Bay and Svargrond") and p.storage[ES.QuestLine] == 62)
 check("Lurik afterwards answers", lurik:say(p, "mission") ~= "")
+
+-- The Frozen Trench (ours: Lurik, the dive and the frozen human, scripts/family/frozen_trench.lua)
+local moves = {}
+MoveEvent = function()
+	local e = { positions = {}, uids = {} }
+	function e:type() end
+	function e:position(p) self.positions[#self.positions + 1] = p end
+	function e:uid(u) self.uids[#self.uids + 1] = u end
+	function e:register() moves[#moves + 1] = self end
+	return e
+end
+Position = Position or function(x, y, z) return { x = x, y = y, z = z, sendMagicEffect = function() end } end
+CONST_SLOT_HEAD = CONST_SLOT_HEAD or 1
+CONST_ME_WATERSPLASH, CONST_ME_POFF, CONST_ME_ICEAREA = 1, 2, 3
+dofile("data-otservbr-global/scripts/family/frozen_trench.lua")
+local function stepOn(pl, x, y, z, uid)
+	for _, e in ipairs(moves) do
+		local hit = false
+		for _, ps in ipairs(e.positions) do hit = hit or (ps.x == x and ps.y == y and ps.z == z) end
+		for _, u in ipairs(e.uids) do hit = hit or (uid == u) end
+		if hit then
+			local from = Position(x, y - 1, z)
+			return e.onStepIn({ getPlayer = function() return pl end }, { uid = uid or 0 }, Position(x, y, z), from)
+		end
+	end
+	error("no move event at " .. x .. "," .. y .. "," .. z)
+end
+local FT = Storage.Quest.FamilyFrozenTrench.Mission
+local II = Storage.Quest.U8_0.TheIceIslands
+check("Frozen Trench not offered before Formorgar Mines 3", not has(lurik:say(p, "mission"), "underwater ice cave"))
+p.storage[II.Questline] = 39
+p.storage[II.Mission11] = 2
+check("Lurik offers The Frozen Trench (BR lines)", has(lurik:say(p, "mission"), "special mission in an underwater ice cave"))
+check("Frozen Trench: no", has(lurik:say(p, "no"), "change your mind") and p.storage[FT] == nil)
+lurik:say(p, "mission")
+check("Frozen Trench accepted", has(lurik:say(p, "yes"), "Buddel") and p.storage[FT] == 1)
+check("Lurik while it runs: reminder", has(lurik:say(p, "mission"), "Tyrsung"))
+-- dive from the planks
+stepOn(p, 32366, 31372, 6)
+check("dive without the helmet: back on the plank", p.teleported and p.teleported.y == 31371 and has(p.log[#p.log], "must wear"))
+p.getSlotItem = function(self, slot) return slot == CONST_SLOT_HEAD and { itemid = 5460 } or nil end
+stepOn(p, 32365, 31372, 6)
+check("dive with the helmet of the deep: under the ship", p.teleported and p.teleported.x == 32366 and p.teleported.y == 31372 and p.teleported.z == 11)
+-- the frozen human
+local q = player({})
+stepOn(q, 32358, 31393, 12, 15032)
+check("frozen human without the mission: nothing", q.storage[FT] == nil and #q.log == 0)
+stepOn(p, 32358, 31393, 12, 15032)
+check("frozen human found", p.storage[FT] == 2 and has(p.log[#p.log], "Report back to Lurik"))
+lurik:say(p, "hi")
+local report = lurik:say(p, "mission")
+check("Frozen Trench reported + Sea Scout (BR lines)", has(report, "horrible news") and has(report, "sea scout badge") and p.storage[FT] == 3 and p.achievements["Sea Scout"])
+check("Lurik afterwards answers", has(lurik:say(p, "mission"), "helped us so much"))
+-- offered before The Island of Dragons; the dragons come right after
+do
+	local r = player({ storage = { [ES.QuestLine] = 56, [ES.TheAstralPortals] = 56, [ES.CalassaQuest] = 3, [II.Questline] = 39, [II.Mission11] = 2 } })
+	lurik:say(r, "hi")
+	check("both ready: The Frozen Trench first", has(lurik:say(r, "mission"), "underwater ice cave"))
+	lurik:say(r, "yes")
+	check("then The Island of Dragons", has(lurik:say(r, "mission"), "Would you like to go on a mission for us"))
+	Family.frozenTrench = false
+	local s2 = player({ storage = { [ES.QuestLine] = 62, [ES.TheIceMusic] = 62, [ES.CalassaQuest] = 3, [II.Questline] = 40, [II.Mission11] = 2 } })
+	lurik:say(s2, "hi")
+	check("switch off: no Frozen Trench", not has(lurik:say(s2, "mission"), "underwater ice cave"))
+	Family.frozenTrench = true
+end
 
 -- every highlighted word answers
 local fresh = function() return player({ level = 50 }) end

@@ -13,6 +13,7 @@ local UniqueTable = {
 		storageMission = Storage.Quest.U7_6.ExplorerSociety.TheBonelordSecret,
 		storageMissionValue = 31,
 		storageQuestlineValue = 30,
+		rankMission = true, -- FAMILY: ranks II and III run side by side (Family.explorerSocietyParallel)
 	},
 	[14031] = {
 		-- Strange powder
@@ -20,6 +21,7 @@ local UniqueTable = {
 		storageMission = Storage.Quest.U7_6.ExplorerSociety.TheOrcPowder,
 		storageMissionValue = 34,
 		storageQuestlineValue = 33,
+		rankMission = true, -- FAMILY: ranks II and III run side by side (Family.explorerSocietyParallel)
 	},
 	[14032] = {
 		-- Elven poetry book
@@ -27,6 +29,7 @@ local UniqueTable = {
 		storageMission = Storage.Quest.U7_6.ExplorerSociety.TheElvenPoetry,
 		storageMissionValue = 37,
 		storageQuestlineValue = 36,
+		rankMission = true, -- FAMILY: ranks II and III run side by side (Family.explorerSocietyParallel)
 	},
 	[14033] = {
 		-- Memory stone
@@ -34,6 +37,7 @@ local UniqueTable = {
 		storageMission = Storage.Quest.U7_6.ExplorerSociety.TheMemoryStone,
 		storageMissionValue = 40,
 		storageQuestlineValue = 39,
+		rankMission = true, -- FAMILY: ranks II and III run side by side (Family.explorerSocietyParallel)
 	},
 	[14034] = {
 		-- Spectral dress
@@ -56,6 +60,7 @@ local UniqueTable = {
 		storageMission = Storage.Quest.U7_6.ExplorerSociety.TheLizardUrn,
 		storageMissionValue = 28,
 		storageQuestlineValue = 27,
+		rankMission = true, -- FAMILY: ranks II and III run side by side (Family.explorerSocietyParallel)
 	},
 }
 
@@ -83,7 +88,11 @@ function explorerSocietyFindings.onUse(player, item, fromPosition, target, toPos
 		player:setStorageValue(item.uid, 1)
 		player:setStorageValue(uniqueItem.storageMission, uniqueItem.storageMissionValue)
 		if uniqueItem.storageQuestlineValue > 0 then
-			player:setStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine, uniqueItem.storageQuestlineValue)
+			if uniqueItem.rankMission then
+				FamilyExplorer.setQuestLine(player, uniqueItem.storageQuestlineValue) -- FAMILY: not with parallel missions (2026-11-01)
+			else
+				player:setStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine, uniqueItem.storageQuestlineValue)
+			end
 		end
 		return true
 	end

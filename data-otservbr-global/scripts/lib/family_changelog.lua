@@ -82,4 +82,6 @@ FamilyChangelog = {
 	{ "2026-11-01", "The Explorer Society: Angus and Mortimer answer every step and say what is missing (an ice pick is not the dwarven pickaxe). Black Bert's strange powder counts, and Elvith sells a lost poetry book." },
 	{ "2026-11-01", "The Explorer Society: the spectral stone step works (the essence was never given), and Lurik in Svargrond now gives his missions, which open the Liberty Bay - Svargrond portal." },
 	{ "2026-11-01", "New achievements: Just in Time (ice delivery or Rashid's cheese) and Explorer (spectral dress)." },
+	{ "2026-11-01", "The Explorer Society: the three missions of each of the first three ranks can be taken together, in any order; after the third you are promoted." },
+	{ "2026-11-01", "New: The Frozen Trench. Lurik in Svargrond sends you to dive from the ship south of Tyrsung (helmet of the deep) and find a lost explorer; the trench is full of quara now. Achievement Sea Scout." },
 }

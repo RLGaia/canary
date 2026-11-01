@@ -187151,4 +187151,144 @@
 	<monster centerx="33123" centery="31983" centerz="8" radius="2">
 		<monster name="Wereboar" x="0" y="0" z="8" spawntime="60" />
 	</monster>
+	<!-- FAMILY: The Frozen Trench under Tyrsung (The Explorer Society Quest, Lurik's mission; TibiaWiki BR/EN: quara constrictors and mantassins on the first floor, also hydromancers and predators on the second, five pits with hydromancers, pinchers, predators and massive water elementals; a quara predator guards the frozen human). Our map had the trench but no creatures in it (2026-11-01). -->
+	<monster centerx="32360" centery="31394" centerz="11" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="11" spawntime="90" />
+		<monster name="Quara Mantassin" x="-1" y="-1" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32366" centery="31410" centerz="11" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32370" centery="31384" centerz="11" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32370" centery="31409" centerz="11" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32383" centery="31369" centerz="11" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32379" centery="31383" centerz="11" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="11" spawntime="90" />
+		<monster name="Quara Mantassin" x="-1" y="-1" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32387" centery="31393" centerz="11" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32379" centery="31406" centerz="11" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32388" centery="31418" centerz="11" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32395" centery="31376" centerz="11" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32388" centery="31406" centerz="11" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="11" spawntime="90" />
+		<monster name="Quara Mantassin" x="-1" y="-1" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32399" centery="31396" centerz="11" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32405" centery="31384" centerz="11" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32406" centery="31370" centerz="11" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32409" centery="31410" centerz="11" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="11" spawntime="90" />
+	</monster>
+	<monster centerx="32360" centery="31396" centerz="12" radius="3">
+		<monster name="Quara Predator" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32354" centery="31406" centerz="12" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="12" spawntime="90" />
+		<monster name="Quara Mantassin" x="-1" y="-1" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32342" centery="31410" centerz="12" radius="3">
+		<monster name="Quara Hydromancer" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32343" centery="31425" centerz="12" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32334" centery="31432" centerz="12" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="12" spawntime="90" />
+		<monster name="Quara Hydromancer" x="-1" y="-1" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32352" centery="31431" centerz="12" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32367" centery="31428" centerz="12" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32379" centery="31428" centerz="12" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="12" spawntime="90" />
+		<monster name="Quara Hydromancer" x="-1" y="-1" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32388" centery="31444" centerz="12" radius="3">
+		<monster name="Quara Predator" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32370" centery="31443" centerz="12" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32397" centery="31436" centerz="12" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32406" centery="31442" centerz="12" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="12" spawntime="90" />
+		<monster name="Quara Hydromancer" x="-1" y="-1" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32388" centery="31462" centerz="12" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32364" centery="31445" centerz="12" radius="3">
+		<monster name="Quara Hydromancer" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32423" centery="31402" centerz="12" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32425" centery="31414" centerz="12" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="12" spawntime="90" />
+		<monster name="Quara Hydromancer" x="-1" y="-1" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32424" centery="31429" centerz="12" radius="3">
+		<monster name="Quara Predator" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32433" centery="31446" centerz="12" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32442" centery="31426" centerz="12" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32415" centery="31456" centerz="12" radius="3">
+		<monster name="Quara Constrictor" x="0" y="0" z="12" spawntime="90" />
+		<monster name="Quara Hydromancer" x="-1" y="-1" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32355" centery="31453" centerz="12" radius="3">
+		<monster name="Quara Mantassin" x="0" y="0" z="12" spawntime="90" />
+	</monster>
+	<monster centerx="32352" centery="31441" centerz="13" radius="3">
+		<monster name="Quara Hydromancer" x="0" y="0" z="13" spawntime="90" />
+		<monster name="Quara Pincher" x="-1" y="-1" z="13" spawntime="90" />
+		<monster name="Quara Predator" x="-1" y="0" z="13" spawntime="90" />
+	</monster>
+	<monster centerx="32379" centery="31442" centerz="13" radius="3">
+		<monster name="Massive Water Elemental" x="-1" y="1" z="13" spawntime="90" />
+		<monster name="Massive Water Elemental" x="0" y="1" z="13" spawntime="90" />
+	</monster>
+	<monster centerx="32399" centery="31449" centerz="13" radius="3">
+		<monster name="Quara Predator" x="0" y="0" z="13" spawntime="90" />
+		<monster name="Quara Pincher" x="-1" y="-1" z="13" spawntime="90" />
+	</monster>
+	<monster centerx="32425" centery="31440" centerz="13" radius="3">
+		<monster name="Quara Hydromancer" x="-1" y="-1" z="13" spawntime="90" />
+		<monster name="Quara Pincher" x="-2" y="-2" z="13" spawntime="90" />
+		<monster name="Quara Predator" x="-2" y="-1" z="13" spawntime="90" />
+	</monster>
+	<monster centerx="32438" centery="31418" centerz="13" radius="3">
+		<monster name="Quara Hydromancer" x="0" y="0" z="13" spawntime="90" />
+		<monster name="Quara Hydromancer" x="-1" y="-1" z="13" spawntime="90" />
+	</monster>
 </monsters>

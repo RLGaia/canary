@@ -237,6 +237,21 @@ local quest = {
 				[3] = "Congratulations, you completed the remaining part of this mission!",
 			},
 		},
+		-- FAMILY: The Frozen Trench had no script upstream (Lurik never offered it); ours, from TibiaWiki BR/EN (2026-11-01)
+		[18] = {
+			name = "The Frozen Trench",
+			storageId = Storage.Quest.FamilyFrozenTrench.Mission,
+			missionId = 11231,
+			startValue = 1,
+			endValue = 3,
+			states = {
+				[1] = "Get old Buddel to bring you to Tyrsung and sneak to the southern coast, where the ship of the Venorean hunters anchors. \z
+					Wear your helmet of the deep, dive from the planks south of the ship and find out what happened to the explorer \z
+					who went down into the Frozen Trench.",
+				[2] = "You found the missing explorer, frozen in the ice of the trench. Report to Lurik in Svargrond.",
+				[3] = "You told Lurik about the frozen explorer and were granted the sea scout badge.",
+			},
+		},
 	},
 }
 

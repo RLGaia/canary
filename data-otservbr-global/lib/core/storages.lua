@@ -3068,6 +3068,10 @@ Storage = {
 			PlantWait = { 48752, 48753, 48754 }, -- os.time() until each blooming nightshade can be harvested again
 			VeinWait = 48755, -- os.time() until the next try at a silver vein
 		},
+		-- FAMILY: The Explorer Society, The Frozen Trench (2026-11-01; npc/lurik.lua, scripts/family/frozen_trench.lua)
+		FamilyFrozenTrench = {
+			Mission = 48756, -- 1 accepted with Lurik, 2 found the frozen human, 3 reported (Sea Scout)
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,

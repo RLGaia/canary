@@ -64,7 +64,33 @@ local function creatureSayCallback(npc, creature, type, message)
 		-- after The Astral Portals; every step answers (2026-11-01). Lines marked ours.
 		local ES = Storage.Quest.U7_6.ExplorerSociety
 		local esLine = player:getStorageValue(ES.QuestLine)
-		if player:getStorageValue(ES.TheAstralPortals) == 56 and esLine == 56 and player:getStorageValue(ES.TheIslandofDragons) < 57 then
+		-- FAMILY: The Frozen Trench (upstream had no script for it; scripts/family/frozen_trench.lua, 2026-11-01).
+		-- TibiaWiki BR: after The Undersea Kingdom and at least "Formorgar Mines 3" of The Ice Islands Quest.
+		local ft = Storage.Quest.FamilyFrozenTrench.Mission
+		local ftState = player:getStorageValue(ft)
+		local ftOn = Family and Family.frozenTrench
+		local ftReady = ftOn and ftState < 1 and player:getStorageValue(ES.CalassaQuest) >= 3 and (player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission11) >= 2 or player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) >= 39)
+		if ftOn and ftState == 2 then
+			npcHandler:say({
+				"These are horrible news. I wonder if there was a malfunction of the diving helmet ...",
+				"In any case, a horrible death for that poor explorer. ...",
+				"We will try to retrieve the frozen corpse to give him a proper burial. ...",
+				"Thank you very much for your help! You have completed two very difficult undersea missions for us and deserve a reward. ...",
+				"As token of our appreciation and with respect to your achievement, you are hereby granted the sea scout badge. ...",
+				"I will put the according stamp in your explorer log. Thank you again!",
+			}, npc, creature)
+			player:setStorageValue(ft, 3)
+			player:addAchievement("Sea Scout")
+			npcHandler:setTopic(playerId, 0)
+		elseif ftReady then
+			npcHandler:say({
+				"Ah, you've just come in time. An experienced explorer is just what we need here! ...",
+				"And as I heard from Berenice, you have also experience in undersea exploration. ...",
+				"Would you be willing to go on a special mission in an underwater ice cave? It's pretty risky, I know. ...",
+				"However, I think you have just what it takes! Do you agree?",
+			}, npc, creature)
+			npcHandler:setTopic(playerId, 4)
+		elseif player:getStorageValue(ES.TheAstralPortals) == 56 and esLine == 56 and player:getStorageValue(ES.TheIslandofDragons) < 57 then
 			npcHandler:say("Ah, you've just come in time. An experienced explorer is just what we need here! Would you like to go on a mission for us?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		elseif player:getStorageValue(ES.TheIslandofDragons) == 57 and esLine == 57 then
@@ -137,6 +163,10 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 35)
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission09, 1) -- Questlog The Ice Islands Quest, Formorgar Mines 1: The Mission
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.FormorgarMinesDoor, 1)
+		elseif ftOn and ftState == 1 then
+			-- ours: what to do while the mission runs
+			npcHandler:say("Get old Buddel to bring you to Tyrsung and sneak to the southern coast, where the ship of the Venorean hunters anchors. Wear your helmet of the deep, jump into the water from the planks south of the ship and find out what has happened to our explorer down in the Frozen Trench.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.TheIceMusic) >= 62 then
 			npcHandler:say("You helped us so much already. Remember: for just one orichalcum pearl, you can travel between Liberty Bay and Svargrond. Thank you again!", npc, creature) -- FAMILY: ours
 			npcHandler:setTopic(playerId, 0)
@@ -170,7 +200,20 @@ local function creatureSayCallback(npc, creature, type, message)
 				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.MemoryCrystal, os.time() + 5 * 60)
 				npcHandler:setTopic(playerId, 0)
 			end
+		elseif npcHandler:getTopic(playerId) == 4 then
+			-- FAMILY: The Frozen Trench accepted (2026-11-01)
+			npcHandler:say({
+				"Wonderful. I knew that I could count on you. Get old Buddel to bring you to Tyrsung and secretly sneak to the southern coast. ...",
+				"The ship of the Venorean hunters should anchor there. They have no idea that they stopped right over the Frozen Trench. ...",
+				"This ice cave is said to bear many secrets. We sent one of our best explorers to investigate what's going on down there. ...",
+				"However, he has not returned yet and we fear the worst. Please investigate the underwater cave and find out what has happened to him!",
+			}, npc, creature)
+			player:setStorageValue(Storage.Quest.FamilyFrozenTrench.Mission, 1)
+			npcHandler:setTopic(playerId, 0)
 		end
+	elseif MsgContains(message, "no") and npcHandler:getTopic(playerId) == 4 then
+		npcHandler:say("I understand. It is a dangerous mission. Come back if you change your mind.", npc, creature) -- FAMILY: ours
+		npcHandler:setTopic(playerId, 0)
 	end
 	return true
 end
