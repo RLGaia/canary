@@ -27,8 +27,8 @@
 --    daily boost back up to its minutes (a second claim before using the first
 --    one adds nothing); here every claim adds its full time.
 --    Since 2026-11-01 (Rodrigo) Prey Wildcards cost as in Tibia again, so
---    days 3 and 5 also give Tibia's Prey Wildcards (2 for premium, 1 free)
---    on top of the XP boost and the Tibia Coins. The wall still shows only
+--    days 3 and 5 also give 5 Prey Wildcards each (Rodrigo's number; Tibia's
+--    days give 2, free accounts 1) on top of the XP boost and the Tibia Coins. The wall still shows only
 --    the XP boost and the coins; a message tells about the Wildcards.
 -- 6. Day 6 mixed pick (2026-10-24, chosen by Rodrigo): training weapons never
 --    run out here, so after the first ones day 6 gave nothing. Now day 6 lists
@@ -62,11 +62,12 @@ Family.dailyRewardPreyReplacements = {
 	[3] = { type = REWARD_XP, systemType = 2, freeAccount = 10, premiumAccount = 30 },
 	[5] = { type = REWARD_ITEM, systemType = 1, items = { TIBIA_COIN }, freeAccount = 10, premiumAccount = 25 },
 }
--- Prey Wildcards given with a claimed day (Tibia's day 3 and 5 amounts).
--- Only while those days are replaced (with upstream days they come anyway).
+-- Prey Wildcards given with a claimed day (Tibia's days 3 and 5 give 2, free
+-- accounts 1; 5 chosen by Rodrigo). Only while those days are replaced (with
+-- upstream days they come anyway).
 Family.dailyRewardWildcards = {
-	[3] = { freeAccount = 1, premiumAccount = 2 },
-	[5] = { freeAccount = 1, premiumAccount = 2 },
+	[3] = { freeAccount = 5, premiumAccount = 5 },
+	[5] = { freeAccount = 5, premiumAccount = 5 },
 }
 
 -- Replaces the Prey reroll days and makes XP boost claims add their full time.

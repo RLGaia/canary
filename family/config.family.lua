@@ -52,21 +52,24 @@ autoBank = false                -- looted gold goes to the backpack (true until 
                                 -- themselves (data/scripts/family/coin_change.lua)
 preyFreeThirdSlot = true        -- third Prey slot without Tibia Coins
 taskHuntingFreeThirdSlot = true -- third Hunting Task slot without Tibia Coins
--- Since 2026-10-19 (asked by Rodrigo): rerolling the creature list is always
--- free (no gold, no 20-hour wait).
+-- Creature list rerolls (2026-11-01, Rodrigo; free from 2026-10-19): gold
+-- again (level x 200, as in Tibia), but one free reroll per slot each day,
+-- back at 00:00 like the boss cooldowns (Tibia: 20 hours after the last free
+-- one). The C++ timer is 24 hours here; data/scripts/family/prey_reroll.lua
+-- makes the free reroll come back at 00:00.
 -- Prey Wildcards cost as in Tibia again since 2026-11-01 (Rodrigo; from
 -- 2026-10-19 to 2026-11-01 they were 0): "choose from the full list" 5
 -- (also locking a Prey slot and cancelling a Hunting Task), rerolling a Prey
 -- bonus or a Hunting Task reward rarity 1 (also automatic bonus reroll).
--- Days 3 and 5 of the daily reward give Wildcards again
+-- Days 3 and 5 of the daily reward give 5 Wildcards each
 -- (data/scripts/family/daily_reward.lua, Family.dailyRewardWildcards).
 preyBonusRerollPrice = 1
 taskHuntingBonusRerollPrice = 1
-preyFreeRerollTime = 0
-preyRerollPricePerLevel = 0
+preyFreeRerollTime = 24 * 60 * 60
+preyRerollPricePerLevel = 200
 preySelectListPrice = 5
-taskHuntingFreeRerollTime = 0
-taskHuntingRerollPricePerLevel = 0
+taskHuntingFreeRerollTime = 24 * 60 * 60
+taskHuntingRerollPricePerLevel = 200
 taskHuntingSelectListPrice = 5
 -- Since 2026-10-21 (Rodrigo): after claiming a Hunting Task the slot can take
 -- a new creature at once (upstream waits 20 hours), and claimed Hunting Task

@@ -73,6 +73,9 @@ local function checkClaim(playerId, before, slot)
 	end
 	if slot and Family.huntingTaskSlotReadyAfterClaim and configManager.getNumber(configKeys.TASK_HUNTING_LIMIT_EXHAUST) == 0 then
 		Family.sendHuntingTaskSlotReady(player, slot)
+		if Family.markClaimFreeReroll then
+			Family.markClaimFreeReroll(player, slot) -- prey_reroll.lua: this reroll costs nothing
+		end
 		player:sendTextMessage(MESSAGE_STATUS, "Hunting task slot ready: press Reroll (free) for new creatures, or choose from the full list.")
 	end
 end
