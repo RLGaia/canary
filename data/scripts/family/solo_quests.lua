@@ -14,14 +14,16 @@
 --   * Soul War: the final reward chest can be opened again (see below).
 --   * Killing in the Name of (Grizzly Adams): no level ranges. Every hunting
 --     task, rank promotion, boss and special task is open at any level, and
---     points are never capped by level.
+--     points are never capped by level. Since 2026-11-01 also Budrik's 5,000
+--     minotaurs (Turmoil of War; upstream level 40 at most), in npc/budrik.lua.
 
 Family = Family or {}
 
 -- Set to false to restore the upstream "pick one side / one reward" rules.
 Family.unlockExclusiveQuests = true
 
--- Set to false to restore the upstream level ranges of Grizzly Adams' tasks.
+-- Set to false to restore the upstream level ranges of Grizzly Adams' tasks
+-- and Budrik's level 40 limit.
 Family.noTaskLevelCap = true
 
 -- ---------------------------------------------------------------------------

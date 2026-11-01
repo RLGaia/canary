@@ -72,7 +72,8 @@ local function creatureSayCallback(npc, creature, type, message)
 			else
 				npcHandler:say("We presume the hideout of The Horned Fox is somewhere in the south-west near the coast, good luck finding my mining helmet!", npc, creature)
 			end
-		elseif player:getStorageValue(Storage.Quest.U8_1.ToOutfoxAFoxQuest.Questline) == 2 and player:getLevel() <= 40 and player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.BudrikMinos) < 0 then
+		-- FAMILY: no level limit for the minotaur task (Turmoil of War; upstream level 40 at most), switch Family.noTaskLevelCap in data/scripts/family/solo_quests.lua (2026-11-01)
+		elseif player:getStorageValue(Storage.Quest.U8_1.ToOutfoxAFoxQuest.Questline) == 2 and ((Family and Family.noTaskLevelCap) or player:getLevel() <= 40) and player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.BudrikMinos) < 0 then
 			npcHandler:say({
 				"I am so angry I could spit grit! That damn {Horned Fox} and his attacks! Let's show those bull-heads that they have messed with the wrong people....",
 				"I want you to kill 5000 minotaurs - no matter where - for me and all the dwarfs of Kazordoon! Are you willing to do that?",
@@ -91,7 +92,8 @@ local function creatureSayCallback(npc, creature, type, message)
 			end
 		elseif player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.BudrikMinos) == 2 and player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.BossKillCount.FoxCount) == 1 then
 			npcHandler:say("It was very decent of you to help me, and I am thankful, really I am, but now I have to get back to my duties as a foreman.", npc, creature)
-		elseif player:getLevel() > 40 and player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.BudrikMinos) < 0 then
+		-- FAMILY: only when the level limit is on (see above)
+		elseif not (Family and Family.noTaskLevelCap) and player:getLevel() > 40 and player:getStorageValue(Storage.Quest.U8_5.KillingInTheNameOf.BudrikMinos) < 0 then
 			npcHandler:say("Well, I could need help with that damn Horned Fox and his gang, but I guess since you are rather experienced, killing minotaurs would bore you to death. I'll wait for someone else. But thanks!", npc, creature)
 		else
 			npcHandler:say("Hum... what, {task}?", npc, creature)
