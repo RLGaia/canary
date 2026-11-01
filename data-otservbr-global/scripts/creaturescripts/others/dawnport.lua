@@ -12,6 +12,16 @@ local function teleportToDawnportTemple(uid)
 	end
 end
 
+-- FAMILY: Dawnport limit level from data-otservbr-global/scripts/family/dawnport_limits.lua
+-- (false = no limit, the family setting since 2026-11-01; nil = upstream 20).
+local function dawnportCapReached(level)
+	local cap = 20
+	if Family and Family.dawnportLevelCap ~= nil then
+		cap = Family.dawnportLevelCap
+	end
+	return cap ~= false and level >= cap
+end
+
 function dawnportAdvance.onAdvance(player, skill, oldLevel, newLevel)
 	local town = player:getTown()
 	-- Check that resides on dawnport
@@ -25,8 +35,8 @@ function dawnportAdvance.onAdvance(player, skill, oldLevel, newLevel)
 					You may now choose your vocation and leave Dawnport. Talk to Oressa in the temple."
 				)
 				-- Notify max level to stay in dawnport
-				-- FAMILY: limit level from data-otservbr-global/scripts/family/dawnport_limits.lua (50; upstream 20)
-			elseif newLevel >= ((Family and Family.dawnportLevelCap) or 20) then
+				-- FAMILY: see dawnportCapReached (no limit on our server; upstream 20)
+			elseif dawnportCapReached(newLevel) then
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have reached the limit level and have to choose your vocation and leave Dawnport.")
 				if not dawnportEvents[player:getId()] then
 					-- Adds the event that teleports the player to the temple in five minutes after reaching level 20

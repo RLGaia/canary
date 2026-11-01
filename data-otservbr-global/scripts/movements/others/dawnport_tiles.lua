@@ -65,6 +65,16 @@ end
 chestRoomTile:register()
 
 -- Oressa stair, back if have reached level 20 or have chosen vocation
+-- FAMILY: Dawnport limit level from data-otservbr-global/scripts/family/dawnport_limits.lua
+-- (false = no limit, the family setting since 2026-11-01; nil = upstream 20).
+local function dawnportCapReached(level)
+	local cap = 20
+	if Family and Family.dawnportLevelCap ~= nil then
+		cap = Family.dawnportLevelCap
+	end
+	return cap ~= false and level >= cap
+end
+
 local templeStairs = MoveEvent()
 
 function templeStairs.onStepIn(creature, item, position, fromPosition)
@@ -76,8 +86,8 @@ function templeStairs.onStepIn(creature, item, position, fromPosition)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You cannot go upstairs. You have chosen a vocation and must now leave for the Mainlands.")
 		player:teleportTo({ x = 32063, y = 31891, z = 6 }, true)
 		player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-	-- FAMILY: limit level from data-otservbr-global/scripts/family/dawnport_limits.lua (50; upstream 20)
-	elseif player:getLevel() >= ((Family and Family.dawnportLevelCap) or 20) then
+	-- FAMILY: see dawnportCapReached (no limit on our server; upstream 20)
+	elseif dawnportCapReached(player:getLevel()) then
 		player:teleportTo(fromPosition, true)
 		player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 	end
