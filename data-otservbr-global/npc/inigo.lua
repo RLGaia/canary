@@ -130,6 +130,36 @@ end
 npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
+-- FAMILY: answers from the TibiaWiki EN transcript that were missing (2026-11-01)
+keywordHandler:addKeyword({ "inigo" }, StdModule.say, { npcHandler = npcHandler, text = "I was the first son and was given the traditional name. They expected much of me, but I disappointed them by becoming an adventurer. But I have never regretted this decision." })
+keywordHandler:addKeyword({ "hunt" }, StdModule.say, { npcHandler = npcHandler, text = { "You can leave through one of the four gates here, where you will be equipped with a specific {vocation}'s hunting gear, and go hunting {monsters} on the lower plains of {Dawnport}. ...", "But beware, you're not very strong at the beginning! Dying will cost you some of your items and skills, in Tibia. Here at Dawnport it's less harsh, but you better get used to being careful in Tibia!" } })
+keywordHandler:addKeyword({ "adventurer" }, StdModule.say, { npcHandler = npcHandler, text = { "We are all part of the Adventurers' Guild - a loose assembly of hardened explorers and adventurers that have set out to find adventure, and to pass on the secrets of the adventuring trade to new ones such as you! ...", "This here is just a small outpost, which was set up to explore the island and see if there is a major threat or treasure to be found. At least, that's what I was told. If you are looking for a {quest}, you should talk to {Morris} upstairs." } })
+keywordHandler:addKeyword({ "poison" }, StdModule.say, { npcHandler = npcHandler, text = "Poison is very dangerous! Don't ever drink green liquids, they are poisonous and will make you lose health!" })
+keywordHandler:addKeyword({ "spider" }, StdModule.say, { npcHandler = npcHandler, text = "If you face spiders, beware of the {poisonous} ones. If you are poisoned, you will constantly lose health. Come to {Oressa} the healer, and she'll heal you from poison." })
+keywordHandler:addAliasKeyword({ "spiders" })
+keywordHandler:addKeyword({ "poisonous" }, StdModule.say, { npcHandler = npcHandler, text = "Poison is very dangerous! Don't ever drink green liquids, they are poisonous and will make you lose health!" })
+keywordHandler:addKeyword({ "shop" }, StdModule.say, { npcHandler = npcHandler, text = { "These lads here are retired adventurers and don't like to be called shopkeepers, but yes - you can buy and sell goods from them. ...", "To do so, simply talk to them and ask them for a {trade}. They will gladly show you their offers and also the things they buy from you." } })
+keywordHandler:addKeyword({ "mana" }, StdModule.say, { npcHandler = npcHandler, text = "Mana is your magic resource. You need it if you want to cast spells or make runes. If your mana is used up, drink a mana potion to refill it or eat some {food} to regenerate it." })
+keywordHandler:addKeyword({ "death" }, StdModule.say, { npcHandler = npcHandler, text = { "Don't be deceived by its sweet looks - Tibia is a rough world. If you die, you will lose skill and experience and perhaps even some items, and other players can rob your corpse. ...", "On the Mainland, you can buy {blessings} from {temple} NPCs to prevent item loss, but you will always lose some skills and experience, so be careful. ...", "Always have a {rope} with you, for a start. A {rope} is essential." } })
+keywordHandler:addKeyword({ "die" }, StdModule.say, { npcHandler = npcHandler, text = { "Tibia is a harsh world. If you die, you lose some of your items - and your skills! And any passerby can rob your corpse before you come back. So be careful. ...", "Many an adventurer died simply because he did not have a {rope} with him when he went down a hole full of monsters. Always make sure you have a {rope} with you to get out of caves quickly!" } })
+keywordHandler:addKeyword({ "blessings" }, StdModule.say, { npcHandler = npcHandler, text = "On the Mainland, you can buy blessings from {temple} NPCs to prevent item loss, but you will always lose some skills and experience, so be careful." })
+keywordHandler:addKeyword({ "travel" }, StdModule.say, { npcHandler = npcHandler, text = { "Ships are a comfortable way of travelling to distant cities. At any harbour, you can board the ship and ask its captain where he sails to. ...", "Travelling by ship will cost you some gold, though, so be sure to have money with you." } })
+keywordHandler:addAliasKeyword({ "ship" })
+keywordHandler:addKeyword({ "creature" }, StdModule.say, { npcHandler = npcHandler, text = "Oh, you have some creature products you want to sell? Let me see... just ask me for a {trade}." })
+keywordHandler:addAliasKeyword({ "product" })
+keywordHandler:addAliasKeyword({ "sell" })
+keywordHandler:addKeyword({ "armor" }, StdModule.say, { npcHandler = npcHandler, text = "To defend yourself against enemies, you will need armor and shields. You can purchase both at {Coltrayne}'s shop." })
+keywordHandler:addAliasKeyword({ "shield" })
+keywordHandler:addKeyword({ "gold" }, StdModule.say, { npcHandler = npcHandler, text = "Gold is important, as you will need to resupply. You can earn a fair amount of gold by fighting {monsters} and picking up the things they carry. On {Dawnport}, I am buying some of that loot, simply ask me for a {trade} to see for yourself." })
+keywordHandler:addAliasKeyword({ "money" })
+keywordHandler:addKeyword({ "gods" }, StdModule.say, { npcHandler = npcHandler, text = "Haven't seen one so far, but I was told they created {Tibia} and all life on it. Well. Perhaps some priest on the {Mainland} can tell you more about them." })
+keywordHandler:addKeyword({ "offer" }, StdModule.say, { npcHandler = npcHandler, text = "Naturally! Ask me for a {trade} to see my stock." })
+keywordHandler:addAliasKeyword({ "buy" })
+keywordHandler:addKeyword({ "time" }, StdModule.say, { npcHandler = npcHandler, text = "Now it is |TIME| - a good time for a {trade}!" })
+keywordHandler:addKeyword({ "vocation" }, StdModule.say, { npcHandler = npcHandler, text = "There are four vocations in Tibia: {knight}, {druid}, {paladin} and {sorcerer}. Each one has its unique abilities, strengths and weaknesses. Just try them out to see which one suits you best." })
+
+npcHandler:setMessage(MESSAGE_SENDTRADE, "Let me see what you have.") -- FAMILY: ours
+
 npcHandler:setMessage(
 	MESSAGE_GREET,
 	"You came through the {portal}! \z
@@ -157,6 +187,7 @@ keywordHandler:addKeyword({ "questing" }, StdModule.say, {
 		If you are looking for something to do, you should go to Morris and ask him for quests. \z
 		You can also help us fight {monsters}.",
 })
+keywordHandler:addAliasKeyword({ "quest" }) -- FAMILY: he says {quest} (TibiaWiki EN), same answer (2026-11-01)
 keywordHandler:addKeyword({ "people" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "Well, the other fellows you see here, selling stuff and so forth. \z
@@ -231,6 +262,8 @@ keywordHandler:addKeyword({ "key" }, StdModule.say, {
 		Woblin sometimes visits the outpost for a trade. Something of a loner, not like your usual goblin. ... \z
 		He lives in a cave somewhere to the west of the isle. On a map, that would be on the left-hand side.",
 })
+
+local familyHintIndex = {} -- FAMILY: next hint per player
 
 local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
@@ -352,7 +385,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			"Premium adventurers can also sail to the many islands that surround the mainland, which offer many more dangers \z
 					and mysteries to be explored; and you can do quests to ride mounts, and dress in a variety of new outfits.",
 		}, npc, creature, 10)
-	elseif MsgContains(message, "figthing") then
+	elseif MsgContains(message, "fighting") or MsgContains(message, "figthing") then -- FAMILY: was only the misspelling "figthing" (2026-11-01)
 		npcHandler:say({
 			"Go through one of the open gates on this floor and you will be equipped with \z
 					training weapons and {spells} of a specific vocation. ...",
@@ -521,14 +554,11 @@ local function creatureSayCallback(npc, creature, type, message)
 			"Here on {Dawnport}, you are protected from losses in a PvP fight by the Adventurer's Blessing - \z
 					unless you attack another player. If you attack another player or reach level 20, you will lose this blessing.",
 		}, npc, creature, 10)
-	elseif MsgContains(message, "hints") then
-		for i = 0, 35, 1 do
-			if i <= 35 then
-				npcHandler:say({ hints[i] })
-			elseif i == 35 then
-				i = 0
-			end
-		end
+	elseif MsgContains(message, "hints") or MsgContains(message, "hint") then
+		-- FAMILY: one hint per "hints", in order, then from the start again (TibiaWiki EN); upstream
+		-- called say without the NPC and player in a loop over all of them, so nothing was said (2026-11-01)
+		familyHintIndex[playerId] = ((familyHintIndex[playerId] or 0) % #hints) + 1
+		npcHandler:say(hints[familyHintIndex[playerId]], npc, creature)
 	elseif MsgContains(message, "rookgaard") and player:getLevel() <= 9 then
 		if Player.getAccountStorage(player, Storage.Dawnport.Mainland, true) == 1 then
 			npcHandler:say(
@@ -549,7 +579,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			"Are you {SURE} you want to {LEAVE} Dawnport for ROOKGAARD?",
 		}, npc, creature, 10)
 		npcHandler:setTopic(playerId, 2)
-	elseif npcHandler:getTopic(playerId) == 2 and MsgContains(message, "yes") or MsgContains(message, "sure") or MsgContains(message, "leave") then
+	-- FAMILY: "sure" or "leave" alone sent any character to Rookgaard (and removed vocation and items): Lua reads
+	-- "a and b or c or d" as "(a and b) or c or d". Now only in the confirmation step (2026-11-01).
+	elseif npcHandler:getTopic(playerId) == 2 and (MsgContains(message, "yes") or MsgContains(message, "sure") or MsgContains(message, "leave")) then
 		local town = Town(TOWNS_LIST.ROOKGAARD)
 		player:setTown(town)
 		-- Change to none vocation, convert magic level and skills and set proper stats
@@ -628,6 +660,55 @@ npcHandler:setMessage(MESSAGE_FAREWELL, "Good hunting!")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Good bye!")
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+
+-- FAMILY: Inigo buys creature products (TibiaWiki EN item pages, "sold to Inigo"; voice "Buying all
+-- sorts of creature products!"); upstream gave him no shop (2026-11-01)
+npcConfig.shop = {
+	{ itemName = "acorn", clientId = 10296, sell = 10 },
+	{ itemName = "antlers", clientId = 10297, sell = 50 },
+	{ itemName = "badger fur", clientId = 10299, sell = 15 },
+	{ itemName = "bat wing", clientId = 5894, sell = 50 },
+	{ itemName = "bear paw", clientId = 5896, sell = 100 },
+	{ itemName = "broken crossbow", clientId = 11451, sell = 30 },
+	{ itemName = "broken helmet", clientId = 11453, sell = 20 },
+	{ itemName = "broken shamanic staff", clientId = 11452, sell = 35 },
+	{ itemName = "bunch of troll hair", clientId = 9689, sell = 30 },
+	{ itemName = "carrion worm fang", clientId = 10275, sell = 35 },
+	{ itemName = "cyclops toe", clientId = 9657, sell = 55 },
+	{ itemName = "damselfly eye", clientId = 17463, sell = 25 },
+	{ itemName = "damselfly wing", clientId = 17458, sell = 20 },
+	{ itemName = "goblin ear", clientId = 11539, sell = 20 },
+	{ itemName = "honeycomb", clientId = 5902, sell = 40 },
+	{ itemName = "lump of dirt", clientId = 9692, sell = 10 },
+	{ itemName = "marsh stalker beak", clientId = 17461, sell = 65 },
+	{ itemName = "marsh stalker feather", clientId = 17462, sell = 50 },
+	{ itemName = "minotaur horn", clientId = 11472, sell = 75 },
+	{ itemName = "minotaur leather", clientId = 5878, sell = 80 },
+	{ itemName = "orc leather", clientId = 11479, sell = 30 },
+	{ itemName = "orc tooth", clientId = 10196, sell = 150 },
+	{ itemName = "pelvis bone", clientId = 11481, sell = 30 },
+	{ itemName = "piece of archer armor", clientId = 11483, sell = 20 },
+	{ itemName = "piece of swampling wood", clientId = 17823, sell = 30 },
+	{ itemName = "poison spider shell", clientId = 11485, sell = 10 },
+	{ itemName = "purple robe", clientId = 11473, sell = 110 },
+	{ itemName = "scorpion tail", clientId = 9651, sell = 25 },
+	{ itemName = "shamanic hood", clientId = 11478, sell = 45 },
+	{ itemName = "skull belt", clientId = 11480, sell = 80 },
+	{ itemName = "small pitchfork", clientId = 11513, sell = 70 },
+	{ itemName = "spider fangs", clientId = 8031, sell = 10 },
+	{ itemName = "swampling moss", clientId = 17822, sell = 20 },
+	{ itemName = "wolf paw", clientId = 5897, sell = 70 },
+}
+
+npcType.onBuyItem = function(npc, player, itemId, subType, amount, ignore, inBackpacks, totalCost)
+	npc:sellItem(player, itemId, amount, subType, 0, ignore, inBackpacks)
+end
+
+npcType.onSellItem = function(npc, player, itemId, subtype, amount, ignore, name, totalCost)
+	player:sendTextMessage(MESSAGE_TRADE, string.format("Sold %ix %s for %i gold.", amount, name, totalCost))
+end
+
+npcType.onCheckItem = function(npc, player, clientId, subType) end
 
 -- npcType registering the npcConfig table
 npcType:register(npcConfig)

@@ -82,7 +82,9 @@ function fishing.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 
 	if useWorms and targetId == 21414 and player:removeItem("worm", 1) then
-		if player:getStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey) == 2 then
+		-- FAMILY: Old Nasty can be fished again when it was lost before Woblin got it (2026-11-01)
+		local dormKey = player:getStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey)
+		if dormKey == 2 or (dormKey == 3 and player:getItemCount(21402) == 0) then
 			if math.random(100) >= 97 then
 				player:addItem(21402, 1)
 				player:setStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey, 3)

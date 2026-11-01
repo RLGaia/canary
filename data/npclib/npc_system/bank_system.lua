@@ -12,6 +12,9 @@ end
 function Npc:parseBankMessages(message, npc, creature, npcHandler)
 	local messagesTable = {
 		["money"] = "We can {change} money for you. You can also access your {bank account}",
+		-- FAMILY: {rent} and {market} are offered in "advanced" but had no answer; our lines (2026-11-01)
+		["rent"] = "Houses are paid from your bank account. Have a look at the free houses in the Cyclopedia, or say !house in a city to learn more.",
+		["market"] = "When you place an offer on the market, the gold is taken from your bank account, and the gold of what you sell is paid into it.",
 		["change"] = "There are three different coin types in Tibia: \z
                         100 gold coins equal 1 platinum coin, 100 platinum coins equal 1 crystal coin. \z
                         So if you'd like to change 100 gold into 1 platinum, \z

@@ -112,12 +112,13 @@ keywordHandler:addKeyword({ "menesto" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "He is injured? Then I should see to his wounds. I will pack some herbs and be off presently. Thank you.",
 })
+-- FAMILY: "World" was highlighted (in braces) but nothing answers it; plain text now (2026-11-01)
 keywordHandler:addKeyword({ "dawnport" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
 		"This is a strange place. Many beings are called to it. I dreamed of it long before I came here. ...",
 		"Something spoke to me, telling me I had to be its voice; a voice of the Oracle here for the sake of \z
-			the adventurers that would come to defend {World} against evil and need to {choose} their destiny.",
+			the adventurers that would come to defend World against evil and need to {choose} their destiny.",
 	},
 })
 keywordHandler:addKeyword({ "rookgaard" }, StdModule.say, {
@@ -168,45 +169,35 @@ local function creatureSayCallback(npc, creature, type, message)
 	}
 
 	-- Heal and help dialog
-	if MsgContains(message, "healing") and npcHandler:getTopic(playerId) == 0 then
-		if player:getLevel() < 8 then
-			if health < 40 or player:getCondition(CONDITION_POISON) then
-				if health < 40 then
-					player:addHealth(40 - health)
-					player:getPosition():sendMagicEffect(CONST_ME_MAGIC_RED)
-				end
-				if player:getCondition(CONDITION_POISON) then
-					player:removeCondition(CONDITION_POISON)
-					player:getPosition():sendMagicEffect(CONST_ME_MAGIC_RED)
-				end
-				npcHandler:say("You are hurt, my child. I will heal your wounds.", npc, creature)
-				npcHandler:setTopic(playerId, 0)
-			else
-				return npcHandler:say("You do not need any healing right now.", npc, creature)
-			end
-		end
-	elseif MsgContains(message, "help") and npcHandler:getTopic(playerId) == 0 then
-		if player:getCondition(CONDITION_POISON) == nil or health > 40 then
-			return npcHandler:say("You do not need any healing right now.", npc, creature)
-		end
-		if health < 40 or player:getCondition(CONDITION_POISON) then
+	-- FAMILY: "heal" works too (she, Inigo and Coltrayne tell players to say "heal" or "help"),
+	-- at any level, and like the other temple healers she heals fully (Family.templeFullHeal,
+	-- data/scripts/family/temple_healing.lua). Upstream answered only "healing" below level 8 and
+	-- "help" refused poisoned players above 40 health and wounded players without poison (2026-11-01).
+	if (MsgContains(message, "heal") or MsgContains(message, "healing") or MsgContains(message, "help")) and npcHandler:getTopic(playerId) == 0 then
+		local healed = false
+		if Family and Family.templeFullHeal and Family.templeHeal then
+			healed = Family.templeHeal(player)
+		elseif health < 40 or player:getCondition(CONDITION_POISON) then
 			if health < 40 then
 				player:addHealth(40 - health)
-				player:getPosition():sendMagicEffect(CONST_ME_MAGIC_RED)
 			end
-			if player:getCondition(CONDITION_POISON) then
-				player:removeCondition(CONDITION_POISON)
-				player:getPosition():sendMagicEffect(CONST_ME_MAGIC_RED)
-			end
-			npcHandler:say("You are hurt, my child. I will heal your wounds.", npc, creature)
-			npcHandler:setTopic(playerId, 0)
+			player:removeCondition(CONDITION_POISON)
+			player:getPosition():sendMagicEffect(CONST_ME_MAGIC_RED)
+			healed = true
 		end
+		if healed then
+			npcHandler:say("You are hurt, my child. I will heal your wounds.", npc, creature)
+		else
+			npcHandler:say("You do not need any healing right now.", npc, creature)
+		end
+		npcHandler:setTopic(playerId, 0)
 		-- Vocation dialog
 	elseif npcHandler:getTopic(playerId) == 0 and MsgContains(message, "vocation") then
 		npcHandler:say(vocationDefaultMessages, npc, creature, 10)
 		npcHandler:setTopic(playerId, 0)
 		-- Choosing dialog start
-	elseif MsgContains(message, "choosing") or MsgContains(message, "choose") and npcHandler:getTopic(playerId) == 0 then
+	-- FAMILY: parentheses; "a or b and c" let "choosing" restart the choice in any step (2026-11-01)
+	elseif (MsgContains(message, "choosing") or MsgContains(message, "choose")) and npcHandler:getTopic(playerId) == 0 then
 		if player:getLevel() >= 8 then
 			npcHandler:say(
 				"I'll help you decide. \z
@@ -234,7 +225,9 @@ local function creatureSayCallback(npc, creature, type, message)
 		}, npc, creature, 10)
 		npcHandler:setTopic(playerId, 5)
 		-- Paladin
-	elseif MsgContains(message, "bow") or MsgContains(message, "spear") and npcHandler:getTopic(playerId) == 3 then
+	-- FAMILY: parentheses; "bow" alone offered the paladin vocation at any step and level, so "bow", "yes"
+	-- made a level 1 character a paladin (2026-11-01)
+	elseif (MsgContains(message, "bow") or MsgContains(message, "spear")) and npcHandler:getTopic(playerId) == 3 then
 		npcHandler:say({
 			"Then you should join the ranks of the paladins, noble hunters and rangers of the wild, who rely on the \z
 					swiftness of movement and ranged attacks. ...",

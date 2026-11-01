@@ -76,4 +76,7 @@ FamilyChangelog = {
 	{ "2026-10-30", "To Outfox a Fox (Budrik's mining helmet) now shows in the Tibia Tales quest log, also for those who already finished it." },
 	{ "2026-11-01", "Dawnport has no level limit any more: you can stay as long as you like and leave when you choose your vocation." },
 	{ "2026-11-01", "Budrik's minotaur task (Turmoil of War, then The Horned Fox) can be taken at any level, not only up to level 40." },
+	{ "2026-11-01", "The Dorm Key works again: say key to Woblin, then reward. Mr Morris answers every Dawnport task at every step, and kill tasks start with the first kill." },
+	{ "2026-11-01", "Dawnport: Inigo buys creature products, gives his hints one by one and no longer sends you to Rookgaard when you say leave or sure." },
+	{ "2026-11-01", "Dawnport: Oressa heals when you say heal, Coltrayne sells weapons and armor behind his counter again, and the bankers answer more questions." },
 }

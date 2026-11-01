@@ -21,7 +21,7 @@ local quest = {
 			states = {
 				[1] = "Mr Morris tasked you to find an ancient amulet that was lost somewhere on Dawnport - probably next to a corpse somewhere.",
 				[2] = "Come back to Mr Morris.",
-				[3] = "Mr Morris thanks for you the help.",
+				[3] = "Mr Morris thanks you for the help.", -- FAMILY: typo fixed (2026-11-01)
 			},
 		},
 		[3] = {
@@ -56,9 +56,9 @@ local quest = {
 			states = {
 				[1] = "The key to the adventurer's dormitory has disappeared. Maybe you can find it. Ask around to find out who was the last to have seen it.",
 				[2] = "Use the fishing rod in the nearby lake to fish Old Nasty.",
-				[3] = "Come back to Woblin with Old Nasty",
-				[4] = "Come back to Mr Morris with Key 0010",
-				[5] = "Mr Morris thanks for the help",
+				[3] = "Come back to Woblin with Old Nasty.", -- FAMILY: full stops (2026-11-01)
+				[4] = "Come back to Mr Morris with Key 0010.",
+				[5] = "Mr Morris thanks you for the help.",
 			},
 		},
 		[6] = {

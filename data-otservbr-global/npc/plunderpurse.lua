@@ -361,6 +361,8 @@ keywordHandler:addKeyword({ "functions" }, StdModule.say, {
 			so you can't lose it when you're out fighting or dying, heh. \z
 			Ask me for your balance to learn how much money you've already saved",
 })
+-- FAMILY: he offers the {basic} functions but did not answer "basic"; same answer as "functions" (2026-11-01)
+keywordHandler:addAliasKeyword({ "basic" })
 keywordHandler:addKeyword({ "rookgaard" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "Arrr. Not a very profitable place.",

@@ -60,12 +60,19 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	if MsgContains(message, "precious") then
-		if player:getStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey) < 1 then
+	-- FAMILY: The Dorm Key reworked (2026-11-01, reported by Rodrigo's father: "key" did nothing).
+	-- TibiaWiki BR: Hi - Key - Reward, then Old Nasty - Yes. Upstream only opened the step with
+	-- "precious" (TibiaWiki EN) and its static "key" keyword ("Lost what? Key?") answered first.
+	-- Now key and precious both work, every step answers in every state, and "no" answers as in
+	-- the EN transcript. Lines marked "ours" are not in either wiki.
+	local DORM_KEY = Storage.Quest.U10_55.Dawnport.TheDormKey
+	local state = player:getStorageValue(DORM_KEY)
+	local askedKey = MsgContains(message, "key")
+	if askedKey or MsgContains(message, "precious") then
+		if state < 1 then
 			npcHandler:say("Me not give key! Key my precious now!", npc, creature)
 			npcHandler:setTopic(playerId, 0)
-		end
-		if player:getStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey) == 1 then
+		elseif state == 1 then
 			npcHandler:say(
 				"Me not give key! Key my precious now! \z
 				By old goblin law all that one has in his pockets for two days is family heirloom! \z
@@ -74,47 +81,63 @@ local function creatureSayCallback(npc, creature, type, message)
 				creature
 			)
 			npcHandler:setTopic(playerId, 1)
-		end
-		if player:getStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey) >= 4 then
+		elseif state == 2 or state == 3 then
+			npcHandler:say("Me no part with my precious! Bring me {Old Nasty} and I'll give you key!", npc, creature) -- ours
+			npcHandler:setTopic(playerId, 0)
+		elseif askedKey then
+			npcHandler:say("Lost what? Key?", npc, creature) -- TibiaWiki EN, after the key was handed over
+			npcHandler:setTopic(playerId, 0)
+		else
 			npcHandler:say("You can keep lousy key! Didn't like it anymore anyway.", npc, creature)
 			npcHandler:setTopic(playerId, 0)
 		end
-	end
-
-	if MsgContains(message, "reward") then
-		if npcHandler:getTopic(playerId) == 1 then
+	elseif MsgContains(message, "reward") then
+		if state >= 1 and state <= 3 then
+			-- also without asking about the key first, and again later as a reminder
 			npcHandler:say(
 				"Me good angler but one fish eludes me since many many weeks. I call fish ''Old Nasty''. \z
 				You might catch him in this cave, in that pond there. Bring me {Old Nasty} and I'll give you key!",
 				npc,
 				creature
 			)
-			player:setStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey, 2)
-			npcHandler:setTopic(playerId, 0)
+			if state == 1 then
+				player:setStorageValue(DORM_KEY, 2)
+			end
+		elseif state >= 4 then
+			npcHandler:say("You got lousy key already! Woblin happy, Old Nasty gone!", npc, creature) -- ours
+		else
+			npcHandler:say("Reward? Woblin give reward when Woblin need something. Not now!", npc, creature) -- ours
 		end
-	end
-
-	if MsgContains(message, "old nasty") then
-		if player:getStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey) >= 2 then
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "old nasty") or MsgContains(message, "nasty") then
+		if state == 2 or state == 3 then
 			npcHandler:say("You bring me Old Nasty?", npc, creature)
 			npcHandler:setTopic(playerId, 2)
+		elseif state >= 4 then
+			npcHandler:say("Old Nasty gone! You did it! Woblin happy.", npc, creature) -- ours
+			npcHandler:setTopic(playerId, 0)
+		else
+			npcHandler:say("Stinky Old Nasty! Him my arch enemy. Him swim in pond there.", npc, creature) -- ours
+			npcHandler:setTopic(playerId, 0)
 		end
-	end
-
-	if MsgContains(message, "yes") then
+	elseif MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 2 then
-			if player:getItemCount(21402) >= 1 then
-				if player:removeItem(21402, 1) then
-					npcHandler:say("You did it! That's my old arch enemy! Here take lousy key. Didn't like it anymore anyway.", npc, creature)
-					local TheDormKey = player:addItem(21392, 1)
+			if player:getItemCount(21402) >= 1 and player:removeItem(21402, 1) then
+				npcHandler:say("You did it! That's my old arch enemy! Here take lousy key. Didn't like it anymore anyway.", npc, creature)
+				local TheDormKey = player:addItem(21392, 1)
+				if TheDormKey then
 					TheDormKey:setActionId(103)
-					player:setStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey, 4)
-					npcHandler:setTopic(playerId, 0)
 				end
+				player:setStorageValue(DORM_KEY, 4)
 			else
 				npcHandler:say("You have not Old Nasty! Odd, you stink just like him though!", npc, creature)
-				npcHandler:setTopic(playerId, 0)
 			end
+			npcHandler:setTopic(playerId, 0)
+		end
+	elseif MsgContains(message, "no") then
+		if npcHandler:getTopic(playerId) == 2 then
+			npcHandler:say("No waste time of Woblin, foolish human!", npc, creature) -- TibiaWiki EN
+			npcHandler:setTopic(playerId, 0)
 		end
 	end
 
@@ -157,10 +180,7 @@ keywordHandler:addKeyword({ "trade" }, StdModule.say, {
 	text = "Me not trade! Goods my precious now! By old goblin law all that one has in his pockets for two days is family heirloom! Me no part with my goods ... hm unless you provide Woblin with some {reward}!",
 })
 keywordHandler:addAliasKeyword({ "offer" })
-keywordHandler:addKeyword({ "key" }, StdModule.say, {
-	npcHandler = npcHandler,
-	text = "Lost what? Key?",
-})
+-- FAMILY: the static "key" keyword ("Lost what? Key?") answered before the quest step; "key" is in the callback now
 
 npcHandler:setMessage(MESSAGE_GREET, "Hi there human!")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Bye, bye!")

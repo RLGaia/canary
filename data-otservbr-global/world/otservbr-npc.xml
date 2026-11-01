@@ -279,6 +279,10 @@
 	<npc centerx="33662" centery="31878" centerz="5" radius="1">
 		<npc name="Marvin" x="0" y="0" z="5" spawntime="60" />
 	</npc>
+	<!-- FAMILY: Coltrayne (Dawnport weapons and armor) was not placed upstream; TibiaWiki EN position (2026-11-01) -->
+	<npc centerx="32060" centery="31881" centerz="5" radius="1">
+		<npc name="Coltrayne" x="0" y="0" z="5" spawntime="60" />
+	</npc>
 	<npc centerx="32056" centery="31881" centerz="5" radius="1">
 		<npc name="Richard" x="0" y="0" z="5" spawntime="60" />
 	</npc>
