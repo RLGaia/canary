@@ -60,8 +60,9 @@ local quest = {
 			startValue = 1,
 			endValue = 8,
 			states = {
-				[1] = "You have to find all 7 guards and give a report to them. \z
-					You should start by Foreign Quarter or by Trade Quarter and follow the order of the path..",
+				-- FAMILY: the guards report in any order now
+				[1] = "You have to find all 7 guards at the gates between the quarters and ask them for their report, in any order. \z
+					The Foreigner Quarter and the Magician Quarter can be entered without a gate mechanism.",
 				[2] = "You reported to 1 of 7 guards",
 				[3] = "You reported to 2 of 7 guards",
 				[4] = "You reported to 3 of 7 guards",

@@ -58,7 +58,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	if MsgContains(message, "mission") then
+	if MsgContains(message, "mission") or MsgContains(message, "missions") then -- FAMILY: his own {missions} did nothing
 		if player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 17 then
 			npcHandler:say({
 				"With all the coming and going of strangers here, it would be quite tedious to explain everything again and again. So we have written a manifesto. ...",
@@ -69,6 +69,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.NotesAzerus, 1)
 			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.NotesAzerus) == 1 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 18 then
+			-- FAMILY: the manifesto comes from the chest in the room behind him first (upstream skipped it)
+			npcHandler:say("Grab a copy from the room behind me. Let's talk about your further career in our ranks once you've read it.", npc, creature)
+		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.NotesAzerus) == 2 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 18 then
 			npcHandler:say({
 				"I'm mildly impressed by your previous deeds in our service. So I'm willing to grant you some more important {missions}. ...",
 				"If you please us, a life of luxury as an important person in our city is ensured. If you fail, you will be replaced by someone more capable than you. ...",
@@ -79,8 +82,8 @@ local function creatureSayCallback(npc, creature, type, message)
 		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 19 then
 			npcHandler:say({
 				"The former alchemist quarter was struck by even more disasters than the rest of the city. Fires, explosions, poisonous fumes - all sorts of catastrophes. ...",
-				"The worst plague, however, are unknown diseases that have spread in this quarter and eradicated any human population. We must stop it before other quarters areafflicted. We already identified certain carriers responsible for spreading the plague. ...",
-				"It will be your task to eliminate them. This spell will protect you from becoming infected yourself. Enter the alchemist quarter and kill the three plague carriers, and atbest anything else you might find there. ...",
+				"The worst plague, however, are unknown diseases that have spread in this quarter and eradicated any human population. We must stop it before other quarters are afflicted. We already identified certain carriers responsible for spreading the plague. ...",
+				"It will be your task to eliminate them. This spell will protect you from becoming infected yourself. Enter the alchemist quarter and kill the three plague carriers, and at best anything else you might find there. ...",
 				"Even more important, retrieve the last research notes that the local alchemists made before the plague killed them. They might be the key for a cure or something else. ...",
 				"At least we have to make sure that these scientists did not die in vain, and honour their researches. So please bring us these research notes. ...",
 				"Also, I will inform the guards that you are allowed to pass the centre gate to the alchemist quarter. Just use the gate mechanism to pass.",
@@ -93,8 +96,8 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 1)
 		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 22 then
 			npcHandler:say({
-				"We surely cannot allow some underworld kingpin to rule a significant part of the city. Although, I have to admit that his firm grip on the former trade quarter might be useful....",
-				"I expect you to fight your way through his minions and to show him that we are determined and powerful enough to retake the quarter, if necessary by force. Talk to himafter killing some of his henchmen. ...",
+				"We surely cannot allow some underworld kingpin to rule a significant part of the city. Although, I have to admit that his firm grip on the former trade quarter might be useful. ...",
+				"I expect you to fight your way through his minions and to show him that we are determined and powerful enough to retake the quarter, if necessary by force. Talk to him after killing some of his henchmen. ...",
 				"I'm sure he'll understand that he will succumb to a greater power. That's how his little empire has worked after all. ...",
 				"Also, I will inform the guards that you are allowed to pass the centre gate to the trade quarter now. Just use the gate mechanism to pass.",
 			}, npc, creature)
@@ -116,6 +119,7 @@ local function creatureSayCallback(npc, creature, type, message)
 				"Just ask me for more missions and we will see what you are capable of!",
 			}, npc, creature)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide, player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide) >= 0 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide) + 1 or 0) -- Side Storage
+			FamilyYalahar.setSide(player, 4, FamilyYalahar.AZERUS) -- FAMILY
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 27)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission04, 6) -- StorageValue for Questlog "Mission 04: Good to be Kingpin"
 			npcHandler:setTopic(playerId, 0)
@@ -123,10 +127,10 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say({
 				"As you probably noticed, once our city had a park and a zoo around a grand arena. It was a favourite pastime of our citizens to visit this quarter in their spare time. ...",
 				"Nowadays, the quarter is lost. The animals are on the loose, and an attempt to revitalise the city with new arena games resulted in a revolt of the foreign gladiators. ...",
-				"Now all kinds of beasts roam the park, and gladiators challenge them and visitors to test their skills. One of the residents is an ancient druid that rather cares foranimals than for people. ...",
+				"Now all kinds of beasts roam the park, and gladiators challenge them and visitors to test their skills. One of the residents is an ancient druid that rather cares for animals than for people. ...",
 				"It is said that he is able to use magic to breed animals with changed abilities and appearances. Such skills are of course quite useful for us. ...",
-				"We lack the manpower to retake all quarters, or just to defend ourselves adequately. If he bred us some guards and warbeasts, we could strengthen our positionconsiderably. ...",
-				"Travel to the arena quarter and gain his assistance for us. I will inform the guards that you are allowed to pass the centre gate to the arena quarter now. Just use thegate mechanism to pass.",
+				"We lack the manpower to retake all quarters, or just to defend ourselves adequately. If he bred us some guards and warbeasts, we could strengthen our position considerably. ...",
+				"Travel to the arena quarter and gain his assistance for us. I will inform the guards that you are allowed to pass the centre gate to the arena quarter now. Just use the gate mechanism to pass.",
 			}, npc, creature)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 28)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission05, 1) -- StorageValue for Questlog "Mission 05: Food or Fight"
@@ -146,6 +150,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide, player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide) >= 0 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide) + 1 or 0) -- Side Storage
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 34)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission05, 8) -- StorageValue for Questlog "Mission 05: Food or Fight"
+			FamilyYalahar.setSide(player, 5, FamilyYalahar.AZERUS) -- FAMILY
 			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 34 then
 			npcHandler:say({
@@ -158,6 +163,15 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 35)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission06, 1) -- StorageValue for Questlog "Mission 06: Frightening Fuel"
 			player:addItem(8822, 1)
+			npcHandler:setTopic(playerId, 0)
+		elseif Family.inServiceOfYalahar and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) >= 35 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) <= 37 and not FamilyYalahar.hasGhostCharm(player) then
+			-- FAMILY: the charm was lost (a charm left on the carving is gone after a restart); line ours
+			npcHandler:say("You lost the ghost charm? How careless! Take this one, place it on the strange carving in the cemetery and do not dare to lose it again.", npc, creature)
+			player:addItem(8822, 1)
+			if player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 37 then
+				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 36)
+				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission06, 2) -- StorageValue for Questlog "Mission 06: Frightening Fuel"
+			end
 			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 38 then
 			npcHandler:say({
@@ -176,6 +190,7 @@ local function creatureSayCallback(npc, creature, type, message)
 				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 39)
 				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission06, 5) -- StorageValue for Questlog "Mission 06: Frightening Fuel"
 				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.QuaraState, 2)
+				FamilyYalahar.setSide(player, 6, FamilyYalahar.AZERUS) -- FAMILY
 				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide, player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide) >= 0 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide) + 1 or 0) -- Side Storage
 				npcHandler:setTopic(playerId, 0)
 			end
@@ -198,7 +213,16 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("This will teach these fishmen who is the ruler of that area. You have earned yourself a special privilege. But we will talk about that when we speak about your next mission. ", npc, creature)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 43)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission07, 5) -- StorageValue for Questlog "Mission 07: A Fishy Mission"
+			FamilyYalahar.setSide(player, 7, FamilyYalahar.AZERUS) -- FAMILY
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide, player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide) >= 0 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide) + 1 or 0) -- Side Storage
+			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 43 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.QuaraState) == 1 and not FamilyYalahar.told(player, 1) then
+			-- FAMILY: Palimuth's side of Mission 07 (TibiaWiki BR/EN); upstream went straight to Mission 08
+			npcHandler:say({
+				"Those cowards have evaded your efforts? Well, hopefully you at least scared them enough to prevent further attacks. ...",
+				"But your efforts, as futile as they might have been, are an example for our helpers. We will talk about that when we speak about your next {mission}.",
+			}, npc, creature)
+			FamilyYalahar.setTold(player, 1)
 			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 43 then
 			npcHandler:say({
@@ -212,14 +236,23 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 46 then
 			if player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.MatrixState) == 1 then
-				npcHandler:say("Your failure is an outrage! I think we have to talk about the missions you have accomplished so far. ", npc, creature)
+				npcHandler:say("Your failure is an outrage! I think we have to talk about the missions you have accomplished so far.", npc, creature)
+				FamilyYalahar.setSide(player, 8, FamilyYalahar.PALIMUTH) -- FAMILY
 				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.GoodSide, player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.GoodSide) >= 0 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.GoodSide) + 1 or 0) -- Side Storage
 			elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.MatrixState) == 2 then
-				npcHandler:say("Now we will have power we truly deserve!...", npc, creature)
+				-- FAMILY: line from TibiaWiki BR/EN (upstream: "Now we will have power we truly deserve!...")
+				npcHandler:say("Excellent! This weapons are vital for our cause! Soon, you will witness the return of our greatness! Let's talk about your next {missions}.", npc, creature)
+				FamilyYalahar.setSide(player, 8, FamilyYalahar.AZERUS) -- FAMILY
 				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide, player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide) >= 0 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide) + 1 or 0) -- Side Storage
 			end
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 47)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission08, 4) -- StorageValue for Questlog "Mission 08: Dangerous Machinations"
+			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 47 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.MatrixState) == 1 then
+			-- FAMILY: after the food matrix (TibiaWiki EN); the line below is upstream's (no wiki source)
+			npcHandler:say("I'm quite aware of your connection to this manipulative Palimuth. Still, I see your potential. So I ask you to rethink your loyalties. Come back if you have decided to which side you want to belong.", npc, creature)
+			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 48)
+			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission09, 1) -- StorageValue for Questlog "Mission 09: Decision"
 			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 47 then
 			npcHandler:say({
@@ -235,7 +268,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 50 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.SideDecision) == 2 then
 			npcHandler:say({
 				"For your noble deeds, we would like to invite you to a special celebration ceremony. ...",
-				"Only the most prominent Yalahari are allowed to join the festivities. I assume you can imagine what honour it is that you'vebeen invited to join us. Meet us in the inner city's centre. ...",
+				"Only the most prominent Yalahari are allowed to join the festivities. I assume you can imagine what honour it is that you've been invited to join us. Meet us in the inner city's centre. ...",
 				"As our most trusted ally, you may pass all doors to reach the festivity hall. There you will receive your reward for the achievements you have gained so far. ...",
 				"I'm convinced your reward will be beyond your wildest dreams. And that is just the beginning!",
 			}, npc, creature)
@@ -257,21 +290,24 @@ local function creatureSayCallback(npc, creature, type, message)
 		if npcHandler:getTopic(playerId) == 1 then
 			if player:removeItem(8818, 1) then
 				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.BadSide, 1)
+				FamilyYalahar.setSide(player, 3, FamilyYalahar.AZERUS) -- FAMILY
 				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 22)
 				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission03, 6) -- StorageValue for Questlog "Mission 03: Death to the Deathbringer"
-				npcHandler:say("Impressive indeed! Someone with your skills will quickly raise in our ranks of helpers. You have great potential, and if you are upfor further missions, just ask for them. ", npc, creature)
+				npcHandler:say("Impressive indeed! Someone with your skills will quickly raise in our ranks of helpers. You have great potential, and if you are up for further missions, just ask for them. ", npc, creature)
 				npcHandler:setTopic(playerId, 0)
 			end
 		elseif npcHandler:getTopic(playerId) == 2 then
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 50)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.SideDecision, 2)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission09, 2) -- StorageValue for Questlog "Mission 09: Decision"
-			npcHandler:say("I knew that you were smart enough to make the right decision! Your next mission will be a special one! ", npc, creature)
+			npcHandler:say("I knew that you were smart enough to make the right decision! Your next {mission} will be a special one!", npc, creature)
+			FamilyYalahar.decisionAchievement(player, FamilyYalahar.AZERUS) -- FAMILY: TibiaWiki EN
 			npcHandler:setTopic(playerId, 0)
 		end
 	elseif MsgContains(message, "no") then
 		if npcHandler:getTopic(playerId) == 1 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.GoodSide) == 0 then
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.GoodSide, 1)
+			FamilyYalahar.setSide(player, 3, FamilyYalahar.PALIMUTH) -- FAMILY
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 22)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission03, 6) -- StorageValue for Questlog "Mission 03: Death to the Deathbringer"
 			npcHandler:say({
@@ -284,6 +320,7 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
+npcHandler:setMessage(MESSAGE_GREET, "Greetings.") -- FAMILY: as in TibiaWiki BR/EN (upstream: "Greetings, <name>.")
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

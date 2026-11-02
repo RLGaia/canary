@@ -8,3 +8,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_ancient_feud.lua") -- FAMILY: Grimv
 dofile(DATA_DIRECTORY .. "/lib/others/family_full_moon.lua") -- FAMILY: Grimvale Quest, The Curse of the Full Moon (Maeryn)
 dofile(DATA_DIRECTORY .. "/lib/others/family_blood_brothers.lua") -- FAMILY: Blood Brothers Quest, missions 4-10 (Julius)
 dofile(DATA_DIRECTORY .. "/lib/others/family_explorer_society.lua") -- FAMILY: The Explorer Society, every step answers (Angus, Mortimer)
+dofile(DATA_DIRECTORY .. "/lib/others/family_in_service_of_yalahar.lua") -- FAMILY: In Service of Yalahar fixes (guards, sides, achievements)

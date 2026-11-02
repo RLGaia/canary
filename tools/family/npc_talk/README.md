@@ -35,6 +35,12 @@ wikis do not show, the shop rules and every `{highlighted}` word. Give it
 the EN spoiler wikitext, the BR page as text and the EN transcript:
 `luajit tools/family/npc_talk/ape_city.lua spoiler.txt br.txt Hairycles_Transcripts.txt`.
 
+`in_service_of_yalahar.lua` is the In Service of Yalahar check (2026-11-02, 354 checks): the
+quest from Palimuth's first mission to the reward on Palimuth's side, on Azerus' side and mixed
+(Turncoat, and no achievement when the other side is chosen), the guards in any order, the notes,
+the lost ghost charm and the TibiaWiki BR/EN lines of Palimuth, Azerus, Tamerin, Mr. West and
+Maritima: `luajit tools/family/npc_talk/in_service_of_yalahar.lua`.
+
 ## Writing a check
 
 ```lua

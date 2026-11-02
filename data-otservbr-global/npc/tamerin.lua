@@ -54,13 +54,9 @@ local function greetCallback(npc, creature)
 	local player = Player(creature)
 	local playerId = player:getId()
 
-	if player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 30 then
-		npcHandler:setMessage(MESSAGE_GREET, "Have you the {animal cure}?")
-	elseif player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 31 then
-		npcHandler:setMessage(MESSAGE_GREET, "Have you killed {morik}?")
-	else
-		npcHandler:setMessage(MESSAGE_GREET, "Hello, what brings you here?")
-	end
+	-- FAMILY: always "Hello, what brings you here?" as in TibiaWiki BR/EN (upstream asked
+	-- "Have you the animal cure?" / "Have you killed morik?" during the mission)
+	npcHandler:setMessage(MESSAGE_GREET, "Hello, what brings you here?")
 	return true
 end
 
@@ -88,7 +84,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 31)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.MorikSummon, 0)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission05, 4) -- StorageValue for Questlog "Mission 05: Food or Fight"
-			npcHandler:say("Thank you very much. As I said, as soon as you have helped me to solve both of my problems, we will talk about your mission. Have you killed {morik}?", npc, creature)
+			npcHandler:say("Thank you very much. As I said, as soon as you have helped me to solve both of my problems, we will talk about your {mission}.", npc, creature) -- FAMILY: without "Have you killed morik?" (BR/EN)
 			npcHandler:setTopic(playerId, 0)
 		else
 			npcHandler:say("Come back when you have the cure.", npc, creature)
@@ -100,7 +96,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("So be it!", npc, creature)
 			npcHandler:setTopic(playerId, 0)
 		end
-	elseif MsgContains(message, "warbeast") then
+	elseif MsgContains(message, "warbeast") or MsgContains(message, "warbeasts") then -- FAMILY: "warbeasts" (EN, his own {Warbeasts}) did nothing
 		if npcHandler:getTopic(playerId) == 2 then
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.TamerinStatus, 2)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission05, 7) -- StorageValue for Questlog "Mission 05: Food or Fight"

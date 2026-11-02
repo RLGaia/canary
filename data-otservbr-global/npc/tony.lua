@@ -59,7 +59,8 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 
 	if MsgContains(message, "report") then
-		if player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 7 or player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 13 then
+		-- FAMILY: the guards take their report in any order (upstream: one fixed order)
+		if FamilyYalahar.guardCanReport(player, "tony", player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 7 or player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 13) then
 			npcHandler:say("Uhm, report, eh? <slowly gives a clumsy description of recent problems>. ", npc, creature)
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, math.max(1, player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) + 1))
 			player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission02, math.max(1, player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Mission02) + 1)) -- StorageValue for Questlog "Mission 02: Watching the Watchmen"

@@ -3094,6 +3094,17 @@ Storage = {
 			-- 256 blood goblet, 512 ghost's tear, 1024-32768 pages delivered to Julius (II-VII), 65536 garden door,
 			-- 131072 a crystal was charged by A Wandering Soul
 		},
+		-- FAMILY: In Service of Yalahar fixes (lib/others/family_in_service_of_yalahar.lua)
+		FamilyInServiceOfYalahar = {
+			Side03 = 48780, -- side taken in Mission 03: 1 Palimuth, 2 Azerus
+			Side04 = 48781,
+			Side05 = 48782,
+			Side06 = 48783,
+			Side07 = 48784,
+			Side08 = 48785,
+			Guards = 48786, -- Mission 02 bit mask: 1 Tony, 2 Hal, 4 Bruce, 8 Reed, 16 Barry, 32 Oliver, 64 Peter
+			Told = 48787, -- bit mask: 1 Azerus heard the Mission 07 report of Palimuth's side
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,
