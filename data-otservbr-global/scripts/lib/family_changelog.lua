@@ -97,4 +97,5 @@ FamilyChangelog = {
 	{ "2026-11-02", "Triangle Tower Quest: the lever in the rubble by the river (desert side, east of the tower) now opens and closes the tower entrance every time; before, once closed, the entrance stayed shut until the server restarted." },
 	{ "2026-11-02", "Adventurers' Guild: two new magic forcefields beside the exit take you back to the last two places where you used your adventurer's stone (right = the last one, left = the one before); look at the sign above each field to see where it leads you." },
 	{ "2026-11-02", "The Ape City Quest: in deeper Banuta the four canopic jars now break with any melee weapon or a crowbar, and once all four are broken the teleport takes everyone for 5 minutes. Hairycles, Brewster, Ustan and Dermot now say exactly what the wikis show, Hairycles has more to talk about and sells bananas from mission 6 on (statue kits after mission 9)." },
+	{ "2026-11-02", "The Dorm Key (Dawnport): Old Nasty bites much more often now. Once Woblin has asked you for the fish, each cast with a worm in his pond has a 1 in 4 chance to catch it." },
 }

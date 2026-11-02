@@ -85,7 +85,8 @@ function fishing.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		-- FAMILY: Old Nasty can be fished again when it was lost before Woblin got it (2026-11-01)
 		local dormKey = player:getStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey)
 		if dormKey == 2 or (dormKey == 3 and player:getItemCount(21402) == 0) then
-			if math.random(100) >= 97 then
+			-- FAMILY: 25% per cast instead of upstream's 4% (2026-11-02, Rodrigo's father used 100+ worms)
+			if math.random(100) <= 25 then
 				player:addItem(21402, 1)
 				player:setStorageValue(Storage.Quest.U10_55.Dawnport.TheDormKey, 3)
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "With a giant splash, you heave an enormous fish out of the water.")
