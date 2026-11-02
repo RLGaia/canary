@@ -136,6 +136,11 @@ function callback.playerOnLook(player, inspectedThing, inspectedPosition, lookDi
 
 	if inspectedThing:isItem() then
 		descriptionText = handleItemDescription(inspectedThing, lookDistance, player)
+		-- FAMILY: the Adventurers' Guild return fields and their signs show each
+		-- player his own places (data-otservbr-global/scripts/family/adventurer_return.lua).
+		if Family and Family.adventurerReturnLookText then
+			descriptionText = Family.adventurerReturnLookText(player, inspectedThing, descriptionText)
+		end
 	elseif inspectedThing:isCreature() then
 		descriptionText = handleCreatureDescription(inspectedThing, lookDistance)
 	end

@@ -95,4 +95,5 @@ FamilyChangelog = {
 	{ "2026-11-02", "Grave Danger: the quest log shows the graves correctly (visited ones were shown as still to find), Jack Springer takes your report at any time, King Zelos' sealed door opens after his briefing, holy water works on both halves of a grave, the emptied graves count when you reach them, and only those who really fought the Custodian pass his flames." },
 	{ "2026-11-02", "Grimvale Quest: the three dark stone totems at the sources of the ley lines (Krailos, Banuta, Vengoth) now stand on the same squares as in Tibia, and the stone tablet with ley lines tells you when you are at a source." },
 	{ "2026-11-02", "Triangle Tower Quest: the lever in the rubble by the river (desert side, east of the tower) now opens and closes the tower entrance every time; before, once closed, the entrance stayed shut until the server restarted." },
+	{ "2026-11-02", "Adventurers' Guild: two new magic forcefields beside the exit take you back to the last two places where you used your adventurer's stone (right = the last one, left = the one before); look at the sign above each field to see where it leads you." },
 }

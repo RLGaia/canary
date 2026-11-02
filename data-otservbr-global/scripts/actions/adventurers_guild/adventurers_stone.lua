@@ -85,6 +85,11 @@ local function familyStoneAnywhere(player)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The spiritual energy of this place is too strong. You cannot use the adventurer's stone here.")
 		return false
 	end
+	-- FAMILY: remember this place for the guild's return fields (2026-11-02;
+	-- switch Family.adventurerReturn in data-otservbr-global/scripts/family/adventurer_return.lua).
+	if Family.adventurerReturnRecord then
+		Family.adventurerReturnRecord(player, playerPos)
+	end
 	playerPos:sendMagicEffect(CONST_ME_TELEPORT)
 	local destination = Position(32210, 32300, 6)
 	player:teleportTo(destination)
@@ -128,6 +133,10 @@ function adventurersStone.onUse(player, item, fromPosition, target, toPosition, 
 	end
 
 	player:setStorageValue(Storage.Quest.U9_80.AdventurersGuild.Stone, townId)
+	-- FAMILY: remember this place for the guild's return fields (2026-11-02).
+	if Family and Family.adventurerReturnRecord then
+		Family.adventurerReturnRecord(player, playerPos)
+	end
 	playerPos:sendMagicEffect(CONST_ME_TELEPORT)
 
 	local destination = Position(32210, 32300, 6)
