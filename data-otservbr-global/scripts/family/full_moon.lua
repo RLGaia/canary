@@ -15,9 +15,11 @@
 -- upstream's full-moon event (globalevents_grimvale_feroxa.lua, now off)
 -- rebuilt the hall before it and turned its teleport into the entrance. The
 -- raid scheduler spawns Feroxa in the lair; while she is there the hall's
--- teleport (33430,31537,11) takes players who finished Maeryn's part to
--- 33419,31539,10, the stairs room above the lair (way out: the teleport
--- there, as before). Otherwise it keeps its old destination.
+-- teleport (33430,31537,11) takes players who did the Were-Creatures and
+-- Moonshadow tasks (TibiaWiki BR) to 33419,31539,10, the stairs room above
+-- the lair (way out: the teleport there, as before). Otherwise it keeps its
+-- old destination. Feroxa's last form (Feroxa5) completes the mission for
+-- the players who hurt her and uses both tasks up.
 
 local M = FamilyFullMoon
 local S = Storage.Quest.FamilyFullMoon
@@ -112,15 +114,9 @@ function hall.onStepIn(creature, item, position, fromPosition)
 		if M.canEnterLair(player) then
 			player:teleportTo(M.lairEntry)
 			M.lairEntry:sendMagicEffect(CONST_ME_TELEPORT)
-			if M.state(player) == 2 then
-				M.setState(player, 3)
-				if FamilyGrimvaleOverTheMoon then
-					FamilyGrimvaleOverTheMoon(player) -- with The Curse Spreads done
-				end
-			end
 			return true
 		end
-		msg(player, "Only those who helped Maeryn against the Curse of the Full Moon may face Feroxa.") -- ours
+		msg(player, "Only those who slew fifty were-creatures and performed the ritual in the Moonshadow Temple may face Feroxa.") -- ours
 	end
 	player:teleportTo(M.hallExit)
 	M.hallExit:sendMagicEffect(CONST_ME_TELEPORT)
@@ -135,17 +131,32 @@ hall:register()
 local death = CreatureEvent("FamilyFullMoonKill")
 function death.onDeath(creature)
 	onDeathForDamagingPlayers(creature, function(_, player)
-		if active() and M.state(player) == 1 then
+		-- TibiaWiki BR: no NPC needed, the first kill starts the mission;
+		-- after Feroxa, Maeryn has to be asked again first
+		if active() and M.state(player) ~= 3 then
 			local kills = M.kills(player)
 			if kills < M.killsNeeded then
+				M.begin(player)
 				player:setStorageValue(S.Kills, kills + 1)
-				M.checkDone(player)
+				M.checkReady(player)
 			end
 		end
 	end)
 	return true
 end
 death:register()
+
+-- Feroxa's last form
+local feroxa = CreatureEvent("FamilyFullMoonFeroxa")
+function feroxa.onDeath(creature)
+	onDeathForDamagingPlayers(creature, function(_, player)
+		if active() then
+			M.onFeroxaDefeated(player)
+		end
+	end)
+	return true
+end
+feroxa:register()
 
 -- Login: the Grimvale Quest entry for characters who started a mission before
 -- the shared start storage existed
@@ -192,6 +203,12 @@ function startup.onStartup()
 	local teleport = tile and tile:getItemById(1949)
 	if teleport and teleport.setDestination then
 		teleport:setDestination(Position(0, 0, 0)) -- the MoveEvent above does the moving
+	end
+	local lastForm = MonsterType("Feroxa5")
+	if lastForm then
+		lastForm:registerEvent("FamilyFullMoonFeroxa")
+	else
+		logger.error("[Family] Full Moon: no monster type Feroxa5")
 	end
 	for _, name in ipairs(M.wereCreatures) do
 		local mType = MonsterType(name)

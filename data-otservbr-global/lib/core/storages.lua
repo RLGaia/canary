@@ -3062,9 +3062,9 @@ Storage = {
 		},
 		-- FAMILY: Grimvale Quest, The Curse of the Full Moon (ours, 2026-10-28; lib/others/family_full_moon.lua)
 		FamilyFullMoon = {
-			Mission = 48749, -- 1 started with Maeryn, 2 blossoms and kills done (Feroxa's lair open), 3 entered the lair
-			Blossoms = 48750, -- purple nightshade blossoms delivered to Maeryn
-			Kills = 48751, -- were-creatures killed during the mission (up to 50)
+			Mission = 48749, -- 1 in progress, 2 Were-Creatures and Moonshadow done (Feroxa's lair open), 3 Feroxa defeated
+			Blossoms = 48750, -- purple nightshade blossoms delivered to Maeryn (-1: not asked yet)
+			Kills = 48751, -- were-creatures killed (up to 50; back to 0 when Feroxa is defeated)
 			PlantWait = { 48752, 48753, 48754 }, -- os.time() until each blooming nightshade can be harvested again
 			VeinWait = 48755, -- os.time() until the next try at a silver vein
 		},

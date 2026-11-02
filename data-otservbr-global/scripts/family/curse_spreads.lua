@@ -299,7 +299,11 @@ function lever.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		C.resetRitual()
 		if active() and player:getStorageValue(S.Ritual) < 1 then
 			player:setStorageValue(S.Ritual, 1)
-			msg(player, "An array of light shoots down from the roof. Something has changed in the depths of Cormaya.") -- ours
+			msg(player, "An array of light shoots down from the roof. You proved worthy in the Moonshadow Temple.") -- ours
+			-- the Moonshadow task of The Curse of the Full Moon (TibiaWiki BR)
+			if FamilyFullMoon and FamilyFullMoon.onRitual then
+				FamilyFullMoon.onRitual(player)
+			end
 		end
 		return true
 	end
