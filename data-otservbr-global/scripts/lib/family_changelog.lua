@@ -86,4 +86,5 @@ FamilyChangelog = {
 	{ "2026-11-01", "New: The Frozen Trench. Lurik in Svargrond sends you to dive from the ship south of Tyrsung (helmet of the deep) and find a lost explorer; the trench is full of quara now. Achievement Sea Scout." },
 	{ "2026-11-01", "Prey and Hunting Tasks cost Prey Wildcards again, as in Tibia (5 to choose from the full list, lock a slot or cancel a task, 1 to reroll a bonus); list rerolls stay free and the third slot stays open. Daily reward days 3 and 5 give 2 Prey Wildcards too." },
 	{ "2026-11-01", "Rerolling a Prey or Hunting Task list costs gold again (level x 200), but each slot has one free reroll a day, back at midnight, and the list after claiming a Hunting Task is free. Daily reward days 3 and 5 now give 5 Prey Wildcards each." },
+	{ "2026-11-01", "Grimvale Quest, The Curse Spreads: the alchemical apparatus is back on the north counter of Sinclair's laboratory, so the nightshade distillate can be brewed." },
 }

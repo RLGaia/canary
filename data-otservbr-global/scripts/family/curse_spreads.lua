@@ -4,11 +4,12 @@
 --
 -- Placed at startup (missing on our map; positions from TibiaWiki EN):
 --   * wooden grinder 33262,31824,5 (academy NW tower, two floors below Milos)
+--   * alchemical apparatus 33269,31830,2 (north counter of Sinclair's lab)
 --   * box with Milos' scribbled note 33269,31844,8 (Puffels' room, next to the ladder)
 --   * dark stone totems at Krailos 33680,31630,7, Banuta 32809,32587,7 and
 --     Vengoth 32949,31489,6 (the sources of the ley lines)
 -- Already on the map: the four library bookcases with the parchments, three shadow bite
--- plants (the fourth, in the Edron Earth Elemental Cave, is placed), the gold/silver nuggets in the Corym mines, Sinclair's apparatus,
+-- plants (the fourth, in the Edron Earth Elemental Cave, is placed), the gold/silver nuggets in the Corym mines,
 -- the lever puzzle in the Grimvale ruins, the Last Sanctum basin and the two
 -- death portals (Edron 33064,31977,9 and Last Sanctum 33429,32083,9).
 -- Quest items lost on the way can be bought from Black Bert, as in Tibia.
@@ -21,6 +22,13 @@ local I = C.items
 local BOX_AID = 48743
 
 local GRINDER = { id = 21573, pos = Position(33262, 31824, 5) }
+-- The alchemical apparatus (TibiaWiki EN "Alchemical Apparatus": ids 8995
+-- horizontal, 8996 vertical) in Sinclair's laboratory. TibiaWiki EN: "use the
+-- one in the north of the room". Missing on our map, reported by Rodrigo
+-- 2026-11-01: the global screenshots he sent show the golden still on the
+-- north counter (33267-33269,31830), right of the weird machine (8993 at
+-- 33268); matched square by square with his screenshot of our map.
+local APPARATUS_SPOT = { id = 8995, pos = Position(33269, 31830, 2) }
 local BOX = { id = 2469, pos = Position(33269, 31844, 8) } -- top right corner of Puffels' room (TibiaWiki BR screenshot)
 local TOTEM_ID = 27323
 -- The fourth shadow bite plant, in the Edron Earth Elemental Cave (TibiaWiki
@@ -157,9 +165,16 @@ grind:id(I.goldNuggets, I.silverNuggets)
 grind:register()
 
 -- the apparatus in Sinclair's laboratory: blossoms, silver dust, gold dust,
--- shadow bite berries (TibiaWiki EN), each used on it in this order
-local APPARATUS = { [8974] = true, [8975] = true }
+-- shadow bite berries (TibiaWiki EN/BR), each used on it in this order.
+-- Messages from Rodrigo's global screenshots (2026-11-01).
+local APPARATUS = { [8995] = true, [8996] = true }
 local ORDER = { I.blossoms, I.silverDust, I.goldDust, I.berries }
+local BREW_MESSAGES = {
+	"With the aid of the alchemical devices you create a distillate of the crimson nightshade. You can add the silver dust now.",
+	"With the aid of the alchemical devices you add silver dust to the distillate. You can add the gold dust now.",
+	"With the aid of the alchemical devices you add gold dust to the distillate. You can add the shadow bite berries now.",
+	"With the aid of the alchemical devices you add the shadow bite berries to the distillate. The cure is complete!",
+}
 
 local brew = Action()
 function brew.onUse(player, item, fromPosition, target, toPosition, isHotkey)
@@ -183,13 +198,13 @@ function brew.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if step + 1 < #ORDER then
 		player:setStorageValue(S.Brew, step + 1)
 		pos:sendMagicEffect(CONST_ME_MAGIC_GREEN)
-		msg(player, string.format("You put the %s into the apparatus.", ItemType(ORDER[step + 1]):getName())) -- ours
+		msg(player, BREW_MESSAGES[step + 1])
 		return true
 	end
 	player:setStorageValue(S.Brew, 0)
 	player:addItem(I.distillate, 1)
 	pos:sendMagicEffect(CONST_ME_MAGIC_RED)
-	msg(player, "The apparatus bubbles and hisses. Finally a few drops of a dark liquid drip out: you obtain a nightshade distillate.") -- ours
+	msg(player, BREW_MESSAGES[#ORDER])
 	return true
 end
 brew:id(I.blossoms, I.silverDust, I.goldDust, I.berries)
@@ -412,6 +427,7 @@ end
 local startup = GlobalEvent("FamilyCurseSpreadsStartup")
 function startup.onStartup()
 	placeOnce(GRINDER.id, GRINDER.pos)
+	placeOnce(APPARATUS_SPOT.id, APPARATUS_SPOT.pos)
 	local plantTile = Tile(EARTH_CAVE_PLANT.pos)
 	local bush = plantTile and plantTile:getItemById(EARTH_CAVE_PLANT.replaces)
 	if bush then
@@ -437,7 +453,7 @@ function startup.onStartup()
 			break
 		end
 	end
-	logger.info("[Family] The Curse Spreads: grinder, box and totems placed, ritual field ground {}", tostring(plainGround))
+	logger.info("[Family] The Curse Spreads: grinder, apparatus, box and totems placed, ritual field ground {}", tostring(plainGround))
 	return true
 end
 startup:register()
