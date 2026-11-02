@@ -61,6 +61,18 @@ function grave_danger_death.onDeath(creature, corpse, killer, mostDamageKiller)
 	end
 
 	local attackers = creature:getDamageMap()
+	-- FAMILY: the Custodian's death gives one pass through his fire wall and a Cart Packed with Gold
+	-- (scripts/family/cobra_bastion_secrets.lua)
+	if creature:getName():lower() == "custodian" and FamilyCobra and FamilyCobra.onCustodianDeath then
+		local fought = {}
+		for attackerId, _ in pairs(attackers) do
+			local player = Player(attackerId)
+			if player then
+				fought[#fought + 1] = player
+			end
+		end
+		FamilyCobra.onCustodianDeath(fought)
+	end
 	for attackerId, _ in pairs(attackers) do
 		local player = Player(attackerId)
 		if player and player:getStorageValue(bossConfig.stor) < 1 then

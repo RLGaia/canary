@@ -15,6 +15,10 @@ local config = {
 		createFunction = function()
 			local scarlett = Game.createMonster("Scarlett Etzel", Position(33396, 32643, 6), true, true)
 			scarlett:setStorageValue(Storage.Quest.U12_20.GraveDanger.CobraBastion.Questline, 1)
+			-- FAMILY: Scarlett's messages to everyone in the Bastion (scripts/family/cobra_bastion_secrets.lua)
+			if FamilyCobra and FamilyCobra.startTaunts then
+				FamilyCobra.startTaunts(scarlett)
+			end
 			return scarlett
 		end,
 	},

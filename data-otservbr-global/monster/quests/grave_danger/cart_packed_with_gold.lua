@@ -59,9 +59,9 @@ monster.voices = {
 	chance = 10,
 }
 
-monster.loot = {
-	{ name = "Small Diamond", chance = 100000 },
-}
+-- FAMILY: loot only when the cart reached the end of its tunnel, added by
+-- scripts/family/cobra_bastion_secrets.lua (TibiaWiki EN)
+monster.loot = {}
 
 monster.defenses = {
 	defense = 25,

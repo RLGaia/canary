@@ -3077,6 +3077,8 @@ Storage = {
 		FamilyCobraBastion = {
 			Chess = 48757, -- 1 = solved the chess riddle (may pass Scarlett's metal wall)
 			KeyBag = 48758, -- 1 = took the bag with Key 0303 from the pile of bones
+			CurseLifted = 48760, -- 1 = tossed a coin in the treasure room (2026-11-02; scripts/family/cobra_bastion_secrets.lua)
+			FirePass = 48761, -- 1 = may pass the fire wall east of the Custodian once (set by his death)
 		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {

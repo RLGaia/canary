@@ -65,7 +65,7 @@ local S = Storage.Quest.FamilyCobraBastion
 
 M.area = {
 	{ Position(33355, 32612, 0), Position(33420, 32705, 7) }, -- the island, all floors
-	{ Position(33350, 32775, 8), Position(33395, 32835, 8) }, -- basement (grave, Custodian)
+	{ Position(33350, 32675, 8), Position(33400, 32835, 8) }, -- basement (grave, Custodian, cart corridor)
 }
 
 function M.start(player)
