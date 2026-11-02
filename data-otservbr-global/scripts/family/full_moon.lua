@@ -7,10 +7,17 @@
 --     nearest free square against a wall): 33352,31688,8 / 33314,31638,9 /
 --     33385,31635,9. Always blooming (Rodrigo's choice); each one can be
 --     harvested by a character every 30 minutes (TibiaWiki EN).
---   * 6 silver veins on the walls of the dungeon's third floor (z10). A pick
---     on one: about 27% chance of a vial of liquid silver (TibiaWiki EN
---     statistics: 16 of 60), one try every 2 minutes. Called from onUsePick
---     (scripts/lib/register_actions.lua).
+--   * 6 silver veins in the mountain walls of the dungeon's third floor (z10).
+--     The silver vein (22075) is the same wall piece as mountain 4464 (same
+--     sprite layout and size) with silver in it, so a vein is made by turning
+--     a 4464 into 22075 in place: it then looks complete and is the thing a
+--     pick hits. Each one has floor south of it that players can walk to
+--     from the dungeon entrance. Until 2026-11-02 the veins were added on top
+--     of other wall pieces (and two on earth and a ruin wall): they looked
+--     broken and the pick hit the stone ("Sorry, not possible."), reported by
+--     Rodrigo. A pick on one: about 27% chance of a vial of liquid silver
+--     (TibiaWiki EN statistics: 16 of 60), one try every 2 minutes. Called
+--     from onUsePick (scripts/lib/register_actions.lua).
 -- Feroxa's lair (33377-33405, 31525-31556, z11) has no way in on our map:
 -- upstream's full-moon event (globalevents_grimvale_feroxa.lua, now off)
 -- rebuilt the hall before it and turned its teleport into the entrance. The
@@ -33,12 +40,14 @@ local function msg(player, text)
 end
 
 M.plants = { Position(33352, 31688, 8), Position(33314, 31638, 9), Position(33385, 31635, 9) }
-M.veins = { Position(33438, 31625, 10), Position(33437, 31570, 10), Position(33397, 31588, 10), Position(33433, 31597, 10), Position(33417, 31617, 10), Position(33415, 31584, 10) }
+-- walls with mountain piece 4464 and reachable floor to the south (map walk
+-- from the Grimvale village); spread over the cave
+M.veins = { Position(33397, 31584, 10), Position(33420, 31583, 10), Position(33444, 31590, 10), Position(33412, 31597, 10), Position(33440, 31604, 10), Position(33406, 31608, 10) }
 M.plantWait = 30 * 60
 M.veinWait = 2 * 60
 M.veinChance = 27
 
-local BLOOMING, VEIN = 22064, 22075
+local BLOOMING, VEIN, VEIN_WALL = 22064, 22075, 4464
 
 -- Blooming purple nightshades ------------------------------------------------------
 
@@ -68,8 +77,16 @@ plant:register()
 
 -- Silver veins: called from onUsePick
 function M.onPick(player, target, toPosition)
-	if not active() or not target or not target.isItem or not target:isItem() or target:getId() ~= VEIN then
+	if not active() or not toPosition then
 		return false
+	end
+	-- the vein itself, or anything lying on its square (withered plants)
+	local isVein = target and target.isItem and target:isItem() and target:getId() == VEIN
+	if not isVein then
+		local tile = Tile(toPosition)
+		if not tile or not tile:getItemById(VEIN) then
+			return false
+		end
 	end
 	if player:getStorageValue(S.VeinWait) > os.time() then
 		msg(player, "You are still exhausted from earlier attempts. Getting liquid silver out of the mountain needs concentration and a steady hand.")
@@ -195,8 +212,15 @@ function startup.onStartup()
 		end
 	end
 	for _, p in ipairs(M.veins) do
-		if placeOnce(VEIN, p) then
+		local tile = Tile(p)
+		local wall = tile and (tile:getItemById(VEIN) or tile:getItemById(VEIN_WALL))
+		if wall then
+			if wall:getId() ~= VEIN then
+				wall:transform(VEIN)
+			end
 			placed = placed + 1
+		else
+			logger.error("[Family] Full Moon: no mountain wall for a silver vein at {},{},{}", p.x, p.y, p.z)
 		end
 	end
 	local tile = Tile(M.hallTeleport)
