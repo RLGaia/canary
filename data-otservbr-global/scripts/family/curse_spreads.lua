@@ -3,7 +3,8 @@
 -- dialogue: lib/others/family_grimvale.lua (FamilyCurseSpreads).
 --
 -- Placed at startup (missing on our map; positions from TibiaWiki EN):
---   * wooden grinder 33262,31824,5 (academy NW tower, two floors below Milos)
+--   * wooden grinder 33259,31826,5 with its four treadmill arms (academy NW
+--     tower, two floors below Milos)
 --   * alchemical apparatus 33269,31830,2 (north counter of Sinclair's lab)
 --   * box with Milos' scribbled note 33269,31844,8 (Puffels' room, next to the ladder)
 --   * dark stone totems at Krailos 33680,31630,7, Banuta 32809,32587,7 and
@@ -21,7 +22,19 @@ local I = C.items
 
 local BOX_AID = 48743
 
-local GRINDER = { id = 21573, pos = Position(33262, 31824, 5) }
+-- The wooden grinder in the middle of the gravel room, with its four
+-- "wooden treadmill" arms (17515 north/south, 17228 west/east), the same set
+-- and layout as the grinder of the Crystal Gardens on our map (32012,32908,7).
+-- Square from Rodrigo's global screenshot (2026-11-01), matched with his
+-- screenshot of our map (fence posts at 33258-33261,31823 and the gravel
+-- edge); it used to stand at 33262,31824, half under the east wall.
+local GRINDER = { id = 21573, pos = Position(33259, 31826, 5) }
+local GRINDER_ARMS = {
+	{ id = 17515, pos = Position(33259, 31825, 5) },
+	{ id = 17515, pos = Position(33259, 31827, 5) },
+	{ id = 17228, pos = Position(33258, 31826, 5) },
+	{ id = 17228, pos = Position(33260, 31826, 5) },
+}
 -- The alchemical apparatus (TibiaWiki EN "Alchemical Apparatus": ids 8995
 -- horizontal, 8996 vertical) in Sinclair's laboratory. TibiaWiki EN: "use the
 -- one in the north of the room". Missing on our map, reported by Rodrigo
@@ -427,6 +440,9 @@ end
 local startup = GlobalEvent("FamilyCurseSpreadsStartup")
 function startup.onStartup()
 	placeOnce(GRINDER.id, GRINDER.pos)
+	for _, arm in ipairs(GRINDER_ARMS) do
+		placeOnce(arm.id, arm.pos)
+	end
 	placeOnce(APPARATUS_SPOT.id, APPARATUS_SPOT.pos)
 	local plantTile = Tile(EARTH_CAVE_PLANT.pos)
 	local bush = plantTile and plantTile:getItemById(EARTH_CAVE_PLANT.replaces)
