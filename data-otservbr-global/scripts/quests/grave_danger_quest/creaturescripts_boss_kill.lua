@@ -15,35 +15,35 @@ local config = {
 		stor = Storage.Quest.U12_20.GraveDanger.Bosses.EarlOsam.Killed,
 		extra = {
 			stor = Storage.Quest.U12_20.GraveDanger.Graves.Cormaya,
-			value = 1,
+			value = 2, -- FAMILY: 2 = visited (1 = to find), as the quest log reads it; was 1
 		},
 	},
 	["count vlarkorth"] = {
 		stor = Storage.Quest.U12_20.GraveDanger.Bosses.CountVlarkorth.Killed,
 		extra = {
 			stor = Storage.Quest.U12_20.GraveDanger.Graves.Edron,
-			value = 1,
+			value = 2, -- FAMILY: 2 = visited (1 = to find), as the quest log reads it; was 1
 		},
 	},
 	["sir baeloc"] = {
 		stor = Storage.Quest.U12_20.GraveDanger.Bosses.BaelocNictros.Killed,
 		extra = {
 			stor = Storage.Quest.U12_20.GraveDanger.Graves.Darashia,
-			value = 1,
+			value = 2, -- FAMILY: 2 = visited (1 = to find), as the quest log reads it; was 1
 		},
 	},
 	["duke krule"] = {
 		stor = Storage.Quest.U12_20.GraveDanger.Bosses.DukeKrule.Killed,
 		extra = {
 			stor = Storage.Quest.U12_20.GraveDanger.Graves.Thais,
-			value = 1,
+			value = 2, -- FAMILY: 2 = visited (1 = to find), as the quest log reads it; was 1
 		},
 	},
 	["lord azaram"] = {
 		stor = Storage.Quest.U12_20.GraveDanger.Bosses.LordAzaram.Killed,
 		extra = {
 			stor = Storage.Quest.U12_20.GraveDanger.Graves.Ghostlands,
-			value = 1,
+			value = 2, -- FAMILY: 2 = visited (1 = to find), as the quest log reads it; was 1
 		},
 	},
 	["king zelos"] = {
@@ -63,18 +63,35 @@ function grave_danger_death.onDeath(creature, corpse, killer, mostDamageKiller)
 	local attackers = creature:getDamageMap()
 	-- FAMILY: the Custodian's death gives one pass through his fire wall and a Cart Packed with Gold
 	-- (scripts/family/cobra_bastion_secrets.lua)
-	if creature:getName():lower() == "custodian" and FamilyCobra and FamilyCobra.onCustodianDeath then
+	-- TibiaWiki BR: only those who dealt a good part of the damage get his passages (ours: 10%)
+	local custodian = creature:getName():lower() == "custodian" and Family and Family.cobraBastion
+	local earned = {}
+	if custodian then
+		local total = 0
+		for _, entry in pairs(attackers) do
+			total = total + (entry.total or 0)
+		end
+		for attackerId, entry in pairs(attackers) do
+			earned[attackerId] = total <= 0 or (entry.total or 0) >= total * (Family.custodianShare or 0.1)
+		end
+	end
+	if custodian and FamilyCobra and FamilyCobra.onCustodianDeath then
 		local fought = {}
 		for attackerId, _ in pairs(attackers) do
 			local player = Player(attackerId)
-			if player then
+			if player and earned[attackerId] then
 				fought[#fought + 1] = player
+			elseif player then
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You did too little against the Custodian to pass his flames.") -- ours
 			end
 		end
 		FamilyCobra.onCustodianDeath(fought)
 	end
 	for attackerId, _ in pairs(attackers) do
 		local player = Player(attackerId)
+		if player and custodian and not earned[attackerId] then
+			player = nil
+		end
 		if player and player:getStorageValue(bossConfig.stor) < 1 then
 			player:setStorageValue(bossConfig.stor, 1)
 

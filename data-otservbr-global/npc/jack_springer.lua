@@ -81,9 +81,7 @@ local function greetCallback(npc, creature)
 		if player:getLevel() >= 250 then
 			if player:getStorageValue(Storage.Quest.U12_20.GraveDanger.Questline) < 1 then
 				npcHandler:setMessage(MESSAGE_GREET, "Welcome, |PLAYERNAME|! There is much we have to {discuss}.")
-			elseif player:getStorageValue(Storage.Quest.U12_20.GraveDanger.Questline) >= 3 then
-				npcHandler:setMessage(MESSAGE_GREET, "Hello, stranger! You look suspicious to me. I don't think we have anything to discuss.")
-			else
+			else -- FAMILY: also after the quest (addon reports); upstream called a finished hand of the inquisition a suspicious stranger
 				npcHandler:setMessage(MESSAGE_GREET, "Welcome, |PLAYERNAME|! Is there anything to {report}?")
 			end
 		else
@@ -119,14 +117,27 @@ local function creatureSayCallback(npc, creature, type, message)
 		Storage.Quest.U12_20.GraveDanger.Graves.IceIslands,
 	}
 
+	-- FAMILY: Grave Danger needs level 250 (TibiaWiki BR), as the greeting says
+	if player:getLevel() < 250 and (MsgContains(message, "late") or MsgContains(message, "report")) then
+		npcHandler:say("Sorry, but I never heard about you. I'm looking for more experienced help.", npc, creature) -- greeting line
+		return true
+	end
+
 	if MsgContains(message, "late") then
 		if player:getStorageValue(Storage.Quest.U12_20.GraveDanger.Questline) < 1 then
 			npcHandler:say({
 				"While you travel and fight the threat where it arises, we will put all our resources into researching the ultimate plans of the legion. Perhaps I can tell you more when you {report} back. ...",
 				"Don't forget that you'll need very potent holy water for your task. If you need some, just ask me for a {trade}.",
 			}, npc, creature)
-			for _, stor in pairs(storages) do
-				player:setStorageValue(stor, 0)
+			-- FAMILY: the twelve graves start at 1 (to find) and are 2 when visited, as the quest log
+			-- reads them; graves visited and Scarlett killed before this talk are kept (upstream set
+			-- everything to 0, so the quest log showed visited graves as "Find ..." and counted -12)
+			if FamilyGrave then
+				FamilyGrave.start(player)
+			else
+				for _, stor in pairs(storages) do
+					player:setStorageValue(stor, 0)
+				end
 			end
 			player:setStorageValue(Storage.Quest.U12_20.GraveDanger.Stage, 0)
 			player:setStorageValue(Storage.Quest.U12_20.GraveDanger.Questline, 1)
@@ -138,9 +149,11 @@ local function creatureSayCallback(npc, creature, type, message)
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 2)
 		end
-	elseif MsgContains(message, "report") and npcHandler:getTopic(playerId) == 2 then
+	-- FAMILY: "report" works whenever the quest runs (TibiaWiki BR: hi, report); upstream only right after "late"
+	elseif MsgContains(message, "report") and (npcHandler:getTopic(playerId) == 2 or player:getStorageValue(Storage.Quest.U12_20.GraveDanger.Questline) >= 1) then
 		if player:getStorageValue(Storage.Quest.U12_20.GraveDanger.Stage) < 1 then
-			if player:getStorageValue(Storage.Quest.U12_20.GraveDanger.Graves.Progress) >= 12 then
+			local visited = FamilyGrave and FamilyGrave.count(player) or player:getStorageValue(Storage.Quest.U12_20.GraveDanger.Graves.Progress)
+			if visited >= 12 then
 				npcHandler:say("By now the cultists of the Shiron'Fal seem to have abandoned their search. But this is sadly no good news. It seems they gathered enough lich-knights to proceed with their {ultimate} plan.", npc, creature)
 				npcHandler:setTopic(playerId, 3)
 			else
@@ -163,7 +176,8 @@ local function creatureSayCallback(npc, creature, type, message)
 					player:setStorageValue(Storage.Quest.U12_20.GraveDanger.Questline, 3)
 					player:setStorageValue(Storage.Quest.U12_20.HandOfTheInquisitionOutfits.Addon1, 1)
 				elseif player:getStorageValue(Storage.Quest.U12_20.GraveDanger.Questline) < 3 and player:getStorageValue(Storage.Quest.U12_20.HandOfTheInquisitionOutfits.Outfits) < 1 then
-					npcHandler:say("Incredible! You averted a crisis that would have utterly crippled our defences aganist any other threat that is arising. Let me grant you the honor to be one of the hands of the inquisition alongside with the according outfit as a reward.", npc, creature)
+					-- FAMILY: TibiaWiki BR text (upstream "defences aganist")
+					npcHandler:say("Incredible! You averted a crisis that would have utterly crippled our defenses against any other threat that is arising. Let me grant you the honor to be one of the hands of the inquisition alongside with the according outfit as a reward.", npc, creature)
 					player:addOutfit(1243, 0)
 					player:addOutfit(1244, 0)
 					player:addAchievement("Inquisition's Hand")
@@ -180,7 +194,7 @@ local function creatureSayCallback(npc, creature, type, message)
 	elseif MsgContains(message, "ultimate") and npcHandler:getTopic(playerId) == 3 then
 		npcHandler:say({
 			"It became obvious that their goal is to raise an ancient and fallen king, to lead their lich-knights and raise even more of them. ...",
-			" With each lich-knight being able to raise and control lesser undead, this would lead to a chain-reaction. If they succeed, we might face an undead {threat} not seen since the corpse wars.",
+			"With each lich-knight being able to raise and control lesser undead, this would lead to a chain-reaction. If they succeed, we might face an undead {threat} not seen since the corpse wars.",
 		}, npc, creature)
 		npcHandler:setTopic(playerId, 4)
 	elseif MsgContains(message, "threat") and npcHandler:getTopic(playerId) == 4 then
@@ -194,6 +208,8 @@ local function creatureSayCallback(npc, creature, type, message)
 		}, npc, creature)
 		player:setStorageValue(Storage.Quest.U12_20.GraveDanger.Stage, 1)
 		player:setStorageValue(Storage.Quest.U12_20.GraveDanger.Questline, 2)
+		-- FAMILY: opens the sealed door to King Zelos' vortex (32173,31922,8); nothing set it upstream
+		player:setStorageValue(Storage.Quest.U12_20.GraveDanger.Bosses.KingZelos.Room, 1)
 	end
 
 	return true
@@ -204,6 +220,8 @@ npcHandler:setMessage(MESSAGE_SENDTRADE, "Of course, my friend.")
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
+-- FAMILY: "mission" as in the TibiaWiki EN transcript
+keywordHandler:addKeyword({ "mission" }, StdModule.say, { npcHandler = npcHandler, text = "I need your help in a matter of utmost {urgency}." })
 keywordHandler:addKeyword({ "discuss" }, StdModule.say, { npcHandler = npcHandler, text = "I need your help in a matter of utmost {urgency}." })
 keywordHandler:addKeyword({ "urgency" }, StdModule.say, { npcHandler = npcHandler, text = "The situation is complicated and it's even hard to say where to {start} best, just to describe it to you." })
 keywordHandler:addKeyword({ "start" }, StdModule.say, { npcHandler = npcHandler, text = "You see, several incidents in history can be traced back to a single {source}." })
@@ -213,7 +231,7 @@ keywordHandler:addKeyword({ "events" }, StdModule.say, { npcHandler = npcHandler
 	"To cover its escape the creature left another creature, known as the ravager to cover his tracks. But there is {more}.",
 } })
 keywordHandler:addKeyword({ "more" }, StdModule.say, { npcHandler = npcHandler, text = {
-	"Only recently someone was trying to manipulate the elven dream courts into releasing a monstrosity of nightmares, probably planning to control or recruit this creature. ....",
+	"Only recently someone was trying to manipulate the elven dream courts into releasing a monstrosity of nightmares, probably planning to control or recruit this creature. ...",
 	"But those incidents were just some of {many}.",
 } })
 keywordHandler:addKeyword({ "many" }, StdModule.say, { npcHandler = npcHandler, text = "The recent rise of lycanthropy, the robbery of certain forbidden arcane texts and the vanishing of at least three dangerous individuals, targeted by the inquisition are just the tip of the {iceberg}." })
