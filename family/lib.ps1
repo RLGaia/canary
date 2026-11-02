@@ -164,6 +164,33 @@ function Read-NewPassword([string]$Prompt) {
 	}
 }
 
+# Character names: 1-3 words, each a capital letter followed by lowercase letters.
+$Script:CharNamePattern = '^[A-Z][a-z]+( [A-Z][a-z]+){0,2}$'
+
+# Returns '' when Name can be used for a new character, otherwise why not.
+function Test-NewCharacterName([hashtable]$Cfg, [string]$Name) {
+	if ($Name -cnotmatch $CharNamePattern -or $Name.Length -lt 3 -or $Name.Length -gt 25) {
+		return 'Use 1-3 words, each starting with a capital letter followed by lowercase letters (3-25 characters).'
+	}
+	if (Get-SqlScalar $Cfg ("SELECT id FROM players WHERE name = " + (ConvertTo-SqlString $Name) + ";")) {
+		return "A character named $Name already exists."
+	}
+	return ''
+}
+
+# Adds a character to an account as a copy of the server's "Rook Sample" (no
+# vocation, Dawnport tutorial island), the template the MyAAC website uses.
+# Sex: 0 female, 1 male. Throws when the character was not created.
+function Add-RookCharacter([hashtable]$Cfg, [int]$AccountId, [string]$Name, [int]$Sex) {
+	$lookType = if ($Sex -eq 1) { 128 } else { 136 }
+	$nameSql = ConvertTo-SqlString $Name
+	$copyCols = 'group_id, level, vocation, health, healthmax, experience, lookbody, lookfeet, lookhead, looklegs, maglevel, mana, manamax, manaspent, town_id, conditions, cap, skill_club, skill_club_tries, skill_sword, skill_sword_tries, skill_axe, skill_axe_tries, skill_dist, skill_dist_tries'
+	$null = Invoke-MariaDb -Cfg $Cfg -Sql "INSERT INTO players (name, account_id, sex, looktype, $copyCols) SELECT $nameSql, $AccountId, $Sex, $lookType, $copyCols FROM players WHERE name = 'Rook Sample' LIMIT 1;"
+	if (-not (Get-SqlScalar $Cfg "SELECT id FROM players WHERE name = $nameSql;")) {
+		throw 'Character was not created (the "Rook Sample" template is missing from the database).'
+	}
+}
+
 function Write-Utf8NoBom([string]$Path, [string]$Text) {
 	[System.IO.File]::WriteAllText($Path, $Text, (New-Object System.Text.UTF8Encoding($false)))
 }

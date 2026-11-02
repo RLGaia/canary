@@ -7,6 +7,8 @@
 #   - delete a character (2026-10-30): everything it owns goes with it (items,
 #     depot, quests, skills, market offers); a house it owned is emptied and
 #     free again; a guild it leads is deleted. To confirm, type its name.
+#   - create a character (2026-11-02): like new-account.ps1 -AddCharacter, a
+#     copy of "Rook Sample" (no vocation, Dawnport tutorial island).
 # For the first four, levels, items, houses, guild and VIP lists stay as they are.
 #
 # The server must be stopped. The database is backed up (backup-db.ps1)
@@ -19,7 +21,7 @@
 $cfg = Read-LocalEnv
 
 $loginPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+$'
-$namePattern = '^[A-Z][a-z]+( [A-Z][a-z]+){0,2}$'
+$namePattern = $CharNamePattern
 
 function Confirm-Change([string]$Text) {
 	Write-Host "    $Text"
@@ -91,6 +93,7 @@ while ($true) {
 	Write-Host "    3. A character's name"
 	Write-Host "    4. A character's sex"
 	Write-Host '    5. Delete a character'
+	Write-Host '    6. Create a character'
 	Write-Host '    0. Nothing more (finish)'
 	$choice = (Read-Host -Prompt 'Choice').Trim()
 
@@ -182,6 +185,19 @@ while ($true) {
 			Write-Ok "$($char.Name) deleted"
 			Show-Characters (Get-Characters $accountId)
 		}
-		default { Write-Warn "Type 1, 2, 3, 4, 5 or 0." }
+		'6' {
+			$new = (Read-Host -Prompt 'Name of the new character (e.g. Ana Silva)').Trim() -replace '\s+', ' '
+			$problem = Test-NewCharacterName $cfg $new
+			if ($problem) { Write-Warn $problem; break }
+			$sexAnswer = (Read-Host -Prompt 'Sex: (M)ale or (F)emale').Trim().ToUpperInvariant()
+			if ($sexAnswer -eq 'F') { $sex = 0; $sexText = 'female' } elseif ($sexAnswer -eq 'M') { $sex = 1; $sexText = 'male' } else { Write-Warn 'Answer M or F.'; break }
+			if (-not (Confirm-Change "New character $new ($sexText): no vocation, starts on the Dawnport tutorial island (as a new account does)")) { Write-Warn 'Not created.'; break }
+			Invoke-BackupOnce
+			try { Add-RookCharacter $cfg $accountId $new $sex }
+			catch { Write-Warn "Not created. $($_.Exception.Message)"; break }
+			Write-Ok "$new created"
+			Show-Characters (Get-Characters $accountId)
+		}
+		default { Write-Warn "Type 1, 2, 3, 4, 5, 6 or 0." }
 	}
 }

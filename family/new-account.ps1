@@ -40,21 +40,12 @@ if ($AddCharacter) {
 
 # --- character ---------------------------------------------------------------
 $charName = (Read-Host -Prompt 'Character name (e.g. Ana Silva)').Trim() -replace '\s+', ' '
-if ($charName -cnotmatch '^[A-Z][a-z]+( [A-Z][a-z]+){0,2}$' -or $charName.Length -lt 3 -or $charName.Length -gt 25) {
-	Stop-Family 'Use 1-3 words, each starting with a capital letter followed by lowercase letters (3-25 characters).'
-}
-$charSql = ConvertTo-SqlString $charName
-if (Get-SqlScalar $cfg "SELECT id FROM players WHERE name = $charSql;") {
-	Stop-Family "A character named $charName already exists."
-}
+$problem = Test-NewCharacterName $cfg $charName
+if ($problem) { Stop-Family $problem }
 $sexAnswer = (Read-Host -Prompt 'Sex: (M)ale or (F)emale').Trim().ToUpperInvariant()
-if ($sexAnswer -eq 'F') { $sex = 0; $lookType = 136 } elseif ($sexAnswer -eq 'M') { $sex = 1; $lookType = 128 } else { Stop-Family 'Answer M or F.' }
+if ($sexAnswer -eq 'F') { $sex = 0 } elseif ($sexAnswer -eq 'M') { $sex = 1 } else { Stop-Family 'Answer M or F.' }
 
-$copyCols = 'group_id, level, vocation, health, healthmax, experience, lookbody, lookfeet, lookhead, looklegs, maglevel, mana, manamax, manaspent, town_id, conditions, cap, skill_club, skill_club_tries, skill_sword, skill_sword_tries, skill_axe, skill_axe_tries, skill_dist, skill_dist_tries'
-$sql = "INSERT INTO players (name, account_id, sex, looktype, $copyCols) SELECT $charSql, $accountId, $sex, $lookType, $copyCols FROM players WHERE name = 'Rook Sample' LIMIT 1;"
-$null = Invoke-MariaDb -Cfg $cfg -Sql $sql
-if (-not (Get-SqlScalar $cfg "SELECT id FROM players WHERE name = $charSql;")) {
-	Stop-Family 'Character was not created (the "Rook Sample" template is missing from the database).'
-}
+try { Add-RookCharacter $cfg $accountId $charName $sex }
+catch { Stop-Family $_.Exception.Message }
 Write-Ok "character '$charName' created on Dawnport tutorial island"
 Write-Host "Log in with: $email + your password." -ForegroundColor Green
