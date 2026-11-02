@@ -23,6 +23,19 @@ npcConfig.flags = {
 	floorchange = false,
 }
 
+-- FAMILY: The Ape City Quest review (2026-11-02, asked by Rodrigo). Mission
+-- lines now match TibiaWiki BR and EN word for word ("You may fight it in
+-- lair of Hydra", "witches cap" without apostrophe, " ..." line ends); his
+-- sound, the small-talk keywords and the "trade" answer before mission 6
+-- come from TibiaWiki EN's Hairycles transcript (BR has none); bananas from
+-- mission 6 on, the statue kits after mission 9 (EN; BR only says "trade
+-- after mission 9"). No switch (NPC lines and shop only).
+npcConfig.voices = {
+	interval = 15000,
+	chance = 50,
+	{ text = "Uh, uh." },
+}
+
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 
@@ -53,7 +66,8 @@ end
 local function greetCallback(npc, creature)
 	local playerId = creature:getId()
 	if Player(creature):getStorageValue(Storage.Quest.U7_6.TheApeCity.Questline) < 12 then
-		npcHandler:setMessage(MESSAGE_GREET, "Oh! Hello! Hello! Did not notice!")
+		-- FAMILY: "So {busy}." from TibiaWiki EN's Hairycles transcript (2026-11-02).
+		npcHandler:setMessage(MESSAGE_GREET, "Oh! Hello! Hello! Did not notice! So {busy}.")
 	else
 		npcHandler:setMessage(MESSAGE_GREET, "Be greeted, friend of the ape people. If you want to {trade}, just ask for my offers. If you are injured, ask for healing.")
 	end
@@ -106,10 +120,10 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 7)
 		elseif questProgress == 6 then
 			npcHandler:say({
-				"Ah yes that scroll. Sadly me not could read it yet. But the holy banana me insight gave! In dreams Hairycles saw where to find solution. ...",
-				"Me saw a stone with lizard signs and other signs at once. If you read signs and tell Hairycles, me will know how to read signs. ...",
-				"You go east to big desert. In desert there city. East of city under sand hidden tomb is. You will have to dig until you find it, so take shovel. ...",
-				"Go down in tomb until come to big level and then go down another. There you find a stone with signs between two huge red stones. ...",
+				"Ah yes that scroll. Sadly me not could read it yet. But the holy banana me insight gave! In dreams Hairycles saw where to find solution ...",
+				"Me saw a stone with lizard signs and other signs at once. If you read signs and tell Hairycles, me will know how to read signs ...",
+				"You go east to big desert. In desert there city. East of city under sand hidden tomb is. You will have to dig until you find it, so take shovel ...",
+				"Go down in tomb until come to big level and then go down another. There you find a stone with signs between two huge red stones ...",
 				"Read it and return to me. Are you up to that challenge?",
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 8)
@@ -122,9 +136,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			end
 		elseif questProgress == 8 then
 			npcHandler:say({
-				"So much there is to do for Hairycles to prepare charm that will protect all ape people. ...",
-				"You can help more. To create charm of life me need mighty token of life! Best is egg of a regenerating beast as a hydra is. ...",
-				"Bring me egg of hydra please. You may find it in lair of Hydra at little lake south east of our lovely city Banuta! You think you can do?",
+				"So much there is to do for Hairycles to prepare charm that will protect all ape people ...",
+				"You can help more. To create charm of life me need mighty token of life! Best is egg of a regenerating beast as a hydra is ...",
+				"Bring me egg of hydra please. You may fight it in lair of Hydra at little lake south east of our lovely city Banuta! You think you can do?",
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 10)
 		elseif questProgress == 9 then
@@ -132,17 +146,17 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 11)
 		elseif questProgress == 10 then
 			npcHandler:say({
-				"Last ingredient for charm of life is thing to lure magic. Only thing me know like that is mushroom called witches' cap. Me was told it be found in isle called Fibula, where humans live. ...",
-				"Hidden under Fibula is a secret dungeon. There you will find witches' cap. Are you willing to go there for good ape people?",
+				"Last ingredient for charm of life is thing to lure magic. Only thing me know like that is mushroom called witches cap. Me was told it be found in isle called Fibula, where humans live ...",
+				"Hidden under Fibula is a secret dungeon. There you will find witches cap. Are you willing to go there for good ape people?",
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 12)
 		elseif questProgress == 11 then
-			npcHandler:say("You brought Hairycles witches' cap from Fibula?", npc, creature)
+			npcHandler:say("You brought Hairycles witches cap from Fibula?", npc, creature)
 			npcHandler:setTopic(playerId, 13)
 		elseif questProgress == 12 then
 			npcHandler:say({
-				"Mighty life charm is protecting us now! But my people are still in danger. Danger from within. ...",
-				"Some of my people try to mimic lizards to become strong. Like lizards did before, this cult drinks strange fluid that lizards left when fled. ...",
+				"Mighty life charm is protecting us now! But my people are still in danger. Danger from within ...",
+				"Some of my people try to mimic lizards to become strong. Like lizards did before, this cult drinks strange fluid that lizards left when fled ...",
 				"Under the city still the underground temple of lizards is. There you find casks with red fluid. Take crowbar and destroy three of them to stop this madness. Are you willing to do that?",
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 14)
@@ -155,12 +169,12 @@ local function creatureSayCallback(npc, creature, type, message)
 			end
 		elseif questProgress == 14 then
 			npcHandler:say({
-				"Now that the false cult was stopped, we need to strengthen the spirit of my people. We need a symbol of our faith that ape people can see and touch. ...",
-				"Since you have proven a friend of the ape people I will grant you permission to enter the forbidden land. ...",
-				"To enter the forbidden land in the north-east of the jungle, look for a cave in the mountains east of it. There you will find the blind prophet. ...",
-				"Tell him Hairycles you sent and he will grant you entrance. ...",
-				"Forbidden land is home of Bong. Holy giant ape big as mountain. Don't annoy him in any way but look for a hair of holy ape. ...",
-				"You might find at places he has been, should be easy to see them since Bong is big. ...",
+				"Now that the false cult was stopped, we need to strengthen the spirit of my people. We need a symbol of our faith that ape people can see and touch ...",
+				"Since you have proven a friend of the ape people I will grant you permission to enter the forbidden land ...",
+				"To enter the forbidden land in the north-east of the jungle, look for a cave in the mountains east of it. There you will find the blind prophet ...",
+				"Tell him Hairycles you sent and he will grant you entrance ...",
+				"Forbidden land is home of Bong. Holy giant ape big as mountain. Don't annoy him in any way but look for a hair of holy ape ...",
+				"You might find at places he has been, should be easy to see them since Bong is big ...",
 				"Return a hair of the holy ape to me. Will you do this for Hairycles?",
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 15)
@@ -173,17 +187,17 @@ local function creatureSayCallback(npc, creature, type, message)
 			end
 		elseif questProgress == 16 then
 			npcHandler:say({
-				"You have proven yourself a friend, me will grant you permission to enter the deepest catacombs under Banuta which we have sealed in the past. ...",
-				"Me still can sense the evil presence there. We did not dare to go deeper and fight creatures of evil there. ...",
-				"You may go there, fight the evil and find the monument of the serpent god and destroy it with hammer me give to you. ...",
+				"You have proven yourself a friend, me will grant you permission to enter the deepest catacombs under Banuta which we have sealed in the past ...",
+				"Me still can sense the evil presence there. We did not dare to go deeper and fight creatures of evil there ...",
+				"You may go there, fight the evil and find the monument of the serpent god and destroy it with hammer me give to you ...",
 				"Only then my people will be safe. Please tell Hairycles, will you go there?",
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 17)
 		elseif questProgress == 17 then
 			if player:getStorageValue(Storage.Quest.U7_6.TheApeCity.SnakeDestroyer) == 1 then
 				npcHandler:say({
-					"Finally my people are safe! You have done incredible good for ape people and one day even me brethren will recognise that. ...",
-					"I wish I could speak for all when me call you true friend but my people need time to get accustomed to change. ...",
+					"Finally my people are safe! You have done incredible good for ape people and one day even me brethren will recognise that ...",
+					"I wish I could speak for all when me call you true friend but my people need time to get accustomed to change ...",
 					"Let us hope one day whole Banuta will greet you as a friend. Perhaps you want to check me offers for special friends... or shamanic powers.",
 				}, npc, creature)
 				player:setStorageValue(Storage.Quest.U7_6.TheApeCity.Questline, 18)
@@ -394,15 +408,15 @@ local function creatureSayCallback(npc, creature, type, message)
 	elseif npcHandler:getTopic(playerId) == 13 then
 		if MsgContains(message, "yes") then
 			if not player:removeItem(4829, 1) then
-				npcHandler:say("Not right mushroom you have. Find me a witches' cap on Fibula!", npc, creature)
+				npcHandler:say("Not right mushroom you have. Find me a witches cap on Fibula!", npc, creature)
 				return true
 			end
 
-			npcHandler:say("Incredible, you brought a witches' cap! Now me can prepare mighty charm of life. Yet still other {missions} will await you, friend.", npc, creature)
+			npcHandler:say("Incredible, you brought a witches cap! Now me can prepare mighty charm of life. Yet still other {missions} will await you, friend.", npc, creature)
 			player:setStorageValue(Storage.Quest.U7_6.TheApeCity.Questline, 12)
 			player:setStorageValue(Storage.Quest.U7_6.TheApeCity.FibulaDoor, -1)
 		elseif MsgContains(message, "no") then
-			npcHandler:say("Please try to find me a witches' cap on Fibula.", npc, creature)
+			npcHandler:say("Please try to find me a witches cap on Fibula.", npc, creature)
 			addEvent(function()
 				releasePlayer(npc, creature)
 			end, 1000)
@@ -493,9 +507,31 @@ keywordHandler:addKeyword({ "sibang" }, StdModule.say, { npcHandler = npcHandler
 keywordHandler:addKeyword({ "merlkin" }, StdModule.say, { npcHandler = npcHandler, text = "Merlkin we are. Merlkin verry wise, merlkin learn many things quick. Teach other apes things a lot. Making {heal} and making {magic}." })
 keywordHandler:addKeyword({ "magic" }, StdModule.say, { npcHandler = npcHandler, text = "We see many things and learning quick. Merlkin magic learn quick, quick. We just watch and learn. Sometimes we try and learn." })
 keywordHandler:addKeyword({ "jungle" }, StdModule.say, { npcHandler = npcHandler, text = "Jungle is dangerous. Jungle also provides us food. Take care when in jungle and safe you be." })
+-- FAMILY: the rest of TibiaWiki EN's Hairycles transcript (2026-11-02).
+keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "Me is Hairycles." })
+keywordHandler:addKeyword({ "how are you" }, StdModule.say, { npcHandler = npcHandler, text = "Me fine, me fine." })
+keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "Me great {wizard}. Me great doctor of {ape people}. Me know many plants. Me old and me have seen many {things}." })
+keywordHandler:addKeyword({ "doctor" }, StdModule.say, { npcHandler = npcHandler, text = "Me can {heal}." })
+keywordHandler:addKeyword({ "port hope" }, StdModule.say, { npcHandler = npcHandler, text = "Strange hairless ape people there live. We go and get funny things from strange people." })
+keywordHandler:addKeyword({ "city" }, StdModule.say, { npcHandler = npcHandler, text = "City now our is. Chasing away evil {snakemen}." })
+keywordHandler:addKeyword({ "help" }, StdModule.say, { npcHandler = npcHandler, text = "Me not help you can. Other apes would get mad at me." })
+keywordHandler:addKeyword({ "snakemen" }, StdModule.say, { npcHandler = npcHandler, text = "Evil snakemen mean to apes and making them work and holding them captive since apes can think. But then {Spartaky} came." })
+keywordHandler:addKeyword({ "spartaky" }, StdModule.say, { npcHandler = npcHandler, text = "He great ape was. He fled to {jungle}, taught other apes of snakemen secrets. Came back with other apes and together we chased snake people away. Made city our home." })
+keywordHandler:addKeyword({ "weapon" }, StdModule.say, { npcHandler = npcHandler, text = "We weapons not need much. Take what is around we do. {Tools} we more need." })
+keywordHandler:addKeyword({ "tools" }, StdModule.say, { npcHandler = npcHandler, text = "Lot of tools snakemen left when run away. But tools go break. New tools we get where we find. Like taking {banana}." })
+keywordHandler:addKeyword({ "banana" }, StdModule.say, { npcHandler = npcHandler, text = "Banana is good. Is magic fruit. Banana makes happy. Banana means life. Banana is everything." })
+keywordHandler:addKeyword({ "language" }, StdModule.say, { npcHandler = npcHandler, text = "Strange hairless ape in loincloth came here. Zantar his name was. Brought many banana. We him liked. He here lived. Taught Hairycles funny language." })
+keywordHandler:addKeyword({ "holy serpent" }, StdModule.say, { npcHandler = npcHandler, text = "Ugly beasts that are holy to lizard people. Only found in ancient temple under Banuta. But me can not allow you to go there." })
+keywordHandler:addKeyword({ "advice" }, StdModule.say, { npcHandler = npcHandler, text = "You stay away from other apes. We not like foreigners. Especially with so little hair." })
+keywordHandler:addKeyword({ "time" }, StdModule.say, { npcHandler = npcHandler, text = "You look to suns or moon and time you know." })
+keywordHandler:addKeyword({ "tibia" }, StdModule.say, { npcHandler = npcHandler, text = "Me know Tibia is all we see." })
 
 local function onTradeRequest(npc, creature)
-	if Player(creature):getStorageValue(Storage.Quest.U7_6.TheApeCity.Questline) < 18 then
+	-- FAMILY: bananas from mission 6 on (the statue kits stay hidden until
+	-- mission 9, storageValue in npcConfig.shop); before, his line from
+	-- TibiaWiki EN (2026-11-02). Upstream: no trade before mission 9.
+	if Player(creature):getStorageValue(Storage.Quest.U7_6.TheApeCity.Questline) < 12 then
+		npcHandler:say("Me nothing have to offer you now. Perhaps ask later, when we know better.", npc, creature)
 		return false
 	end
 
@@ -504,14 +540,17 @@ end
 
 npcHandler:setCallback(CALLBACK_ON_TRADE_REQUEST, onTradeRequest)
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+-- FAMILY: farewell from TibiaWiki EN (2026-11-02).
+npcHandler:setMessage(MESSAGE_FAREWELL, "Bye, bye.")
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 npcConfig.shop = {
 	{ itemName = "banana", clientId = 3587, buy = 2 },
-	{ itemName = "monkey statue 'hear' kit", clientId = 5055, buy = 65 },
-	{ itemName = "monkey statue 'see' kit", clientId = 5046, buy = 65 },
-	{ itemName = "monkey statue 'speak' kit", clientId = 5056, buy = 65 },
+	-- FAMILY: statue kits only after mission 9 (2026-11-02).
+	{ itemName = "monkey statue 'hear' kit", clientId = 5055, buy = 65, storageKey = Storage.Quest.U7_6.TheApeCity.Questline, storageValue = 18 },
+	{ itemName = "monkey statue 'see' kit", clientId = 5046, buy = 65, storageKey = Storage.Quest.U7_6.TheApeCity.Questline, storageValue = 18 },
+	{ itemName = "monkey statue 'speak' kit", clientId = 5056, buy = 65, storageKey = Storage.Quest.U7_6.TheApeCity.Questline, storageValue = 18 },
 }
 -- On buy npc shop message
 npcType.onBuyItem = function(npc, player, itemId, subType, amount, ignore, inBackpacks, totalCost)

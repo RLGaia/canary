@@ -27,6 +27,14 @@ Banshees, Elvith, Berenice, Lurik and the real chest and item scripts, the
 parallel missions of ranks I to III (and the old order with the switch off),
 and The Frozen Trench (Lurik, the dive and the frozen human).
 
+`ape_city.lua` is The Ape City Quest check (2026-11-02, 258 checks): it
+replays every transcript of the TibiaWiki EN spoiler and the TibiaWiki BR
+page in order with one character (Hairycles, Brewster, Ustan, Padreia,
+Dermot, The Blind Prophet), the EN Hairycles transcript, the states the
+wikis do not show, the shop rules and every `{highlighted}` word. Give it
+the EN spoiler wikitext, the BR page as text and the EN transcript:
+`luajit tools/family/npc_talk/ape_city.lua spoiler.txt br.txt Hairycles_Transcripts.txt`.
+
 ## Writing a check
 
 ```lua

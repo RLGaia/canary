@@ -96,4 +96,5 @@ FamilyChangelog = {
 	{ "2026-11-02", "Grimvale Quest: the three dark stone totems at the sources of the ley lines (Krailos, Banuta, Vengoth) now stand on the same squares as in Tibia, and the stone tablet with ley lines tells you when you are at a source." },
 	{ "2026-11-02", "Triangle Tower Quest: the lever in the rubble by the river (desert side, east of the tower) now opens and closes the tower entrance every time; before, once closed, the entrance stayed shut until the server restarted." },
 	{ "2026-11-02", "Adventurers' Guild: two new magic forcefields beside the exit take you back to the last two places where you used your adventurer's stone (right = the last one, left = the one before); look at the sign above each field to see where it leads you." },
+	{ "2026-11-02", "The Ape City Quest: in deeper Banuta the four canopic jars now break with any melee weapon or a crowbar, and once all four are broken the teleport takes everyone for 5 minutes. Hairycles, Brewster, Ustan and Dermot now say exactly what the wikis show, Hairycles has more to talk about and sells bananas from mission 6 on (statue kits after mission 9)." },
 }

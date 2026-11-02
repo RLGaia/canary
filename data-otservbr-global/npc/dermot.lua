@@ -75,7 +75,8 @@ local function creatureSayCallback(npc, creature, type, message)
 			end
 		elseif npcHandler:getTopic(playerId) == 2 then
 			if player:removeMoneyBank(2000) then
-				npcHandler:say("Here it is.", npc, creature)
+				-- FAMILY: line from TibiaWiki BR (The Ape City Quest, 2026-11-02; EN has none).
+				npcHandler:say("Now you own the key to the dungeon.", npc, creature)
 				local key = player:addItem(2968, 1)
 				if key then
 					key:setActionId(3940)

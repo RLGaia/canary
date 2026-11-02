@@ -362,6 +362,8 @@ nodeLevels:addChildKeyword({ "8" }, StdModule.say, { npcHandler = npcHandler, on
 nodeLevels:addChildKeyword({ "1" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "For level 1 I have {Chill Out} for free, {Magic Patch} for free and {Mud Attack} for free." })
 
 npcHandler:setMessage(MESSAGE_GREET, "Crunor's blessing, traveller.")
+-- FAMILY: farewell from TibiaWiki EN (The Ape City Quest transcript, 2026-11-02).
+npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye, traveller.")
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)

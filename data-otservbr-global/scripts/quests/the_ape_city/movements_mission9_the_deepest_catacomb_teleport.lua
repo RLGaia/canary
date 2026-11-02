@@ -20,6 +20,19 @@ function mission9TheDeepestCatacombTeleport.onStepIn(creature, item, position, f
 		player:teleportTo(Position(32749, 32536, 10))
 		position:sendMagicEffect(CONST_ME_TELEPORT)
 		player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+	elseif item.uid == 9258 and Family and Family.apeCityJars and FamilyApeJars then
+		-- FAMILY: open for everyone while all four jars are broken, as in Tibia
+		-- (2026-11-02; data-otservbr-global/scripts/family/ape_city_jars.lua).
+		if FamilyApeJars.allBroken() then
+			player:teleportTo(Position(32885, 32632, 11))
+			player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+		else
+			player:teleportTo(fromPosition)
+			position:sendMagicEffect(CONST_ME_TELEPORT)
+			player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You need to break all 4 large amphoras to use this teleporter.")
+		end
+		return true
 	elseif item.uid == 9258 then
 		local cooldownStart = player:getStorageValue(cooldownStorage)
 		if cooldownStart > 0 and (os.time() - cooldownStart) > cooldownTime then

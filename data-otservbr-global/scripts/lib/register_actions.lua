@@ -253,6 +253,15 @@ function onDestroyItem(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
+	-- FAMILY: The Ape City Quest jars break with weapons and crowbars (2026-11-02;
+	-- data-otservbr-global/scripts/family/ape_city_jars.lua, switch Family.apeCityJars).
+	if FamilyApeJars then
+		local handled = FamilyApeJars.onDestroy(player, item, target, toPosition)
+		if handled ~= nil then
+			return handled
+		end
+	end
+
 	if target:hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) or target:hasAttribute(ITEM_ATTRIBUTE_ACTIONID) then
 		return false
 	end

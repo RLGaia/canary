@@ -23,6 +23,14 @@ npcConfig.flags = {
 	floorchange = false,
 }
 
+-- FAMILY: his sounds from TibiaWiki EN (2026-11-02).
+npcConfig.voices = {
+	interval = 15000,
+	chance = 50,
+	{ text = "<hicks>" },
+	{ text = "Nobody knows the <hicks> trouble I've seen, la la la..." },
+}
+
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 
@@ -173,9 +181,12 @@ keywordHandler:addAliasKeyword({ "spark" })
 keywordHandler:addKeyword({ "solitude" }, StdModule.say, { npcHandler = npcHandler, text = "Talk to the hermit Eremo on the isle of Cormaya about this blessing." })
 keywordHandler:addAliasKeyword({ "wisdom" })
 
-npcHandler:setMessage(MESSAGE_GREET, "Welcome, young |PLAYERNAME|! If you are heavily wounded or poisoned, I can {heal} you for free.")
+-- FAMILY: Brewster is drunk; greeting from TibiaWiki BR and EN, farewell from
+-- EN (The Ape City Quest transcripts, 2026-11-02). Upstream used the generic
+-- temple healer lines.
+npcHandler:setMessage(MESSAGE_GREET, "G...greetings <hicks>.")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Remember: If you are heavily wounded or poisoned, I can heal you for free.")
-npcHandler:setMessage(MESSAGE_FAREWELL, "May the gods bless you, |PLAYERNAME|!")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Exactly! <hicks>")
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
