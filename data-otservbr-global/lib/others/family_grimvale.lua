@@ -59,10 +59,16 @@ C.notes = { -- bit in S.Notes
 	{ bit = 8, item = 27370 },
 }
 
+-- The dark stone totems at the sources of the three ley lines. Squares from
+-- Rodrigo's global screenshots (2026-11-02), matched with our map: Banuta in
+-- the middle of the cross-shaped pool (TibiaWiki EN's square); Vengoth on the
+-- gravel west of the castle gate (the totem's black square on his minimap);
+-- Krailos north-east of the village (his minimap and the plants around).
+-- Before, Krailos stood 5 squares off, Banuta 4 and Vengoth 1.
 C.totems = {
-	{ bit = 1, name = "Krailos", pos = Position(33680, 31630, 7) },
-	{ bit = 2, name = "Banuta", pos = Position(32809, 32587, 7) },
-	{ bit = 4, name = "Vengoth", pos = Position(32949, 31489, 6) },
+	{ bit = 1, name = "Krailos", pos = Position(33675, 31625, 7) },
+	{ bit = 2, name = "Banuta", pos = Position(32809, 32583, 7) },
+	{ bit = 4, name = "Vengoth", pos = Position(32949, 31488, 6) },
 }
 
 C.leaders = {

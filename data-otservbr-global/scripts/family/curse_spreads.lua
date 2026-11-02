@@ -7,8 +7,9 @@
 --     tower, two floors below Milos)
 --   * alchemical apparatus 33269,31830,2 (north counter of Sinclair's lab)
 --   * box with Milos' scribbled note 33269,31844,8 (Puffels' room, next to the ladder)
---   * dark stone totems at Krailos 33680,31630,7, Banuta 32809,32587,7 and
---     Vengoth 32949,31489,6 (the sources of the ley lines)
+--   * dark stone totems at Krailos 33675,31625,7, Banuta 32809,32583,7 and
+--     Vengoth 32949,31488,6 (the sources of the ley lines; squares from
+--     Rodrigo's global screenshots, 2026-11-02)
 -- Already on the map: the four library bookcases with the parchments, three shadow bite
 -- plants (the fourth, in the Edron Earth Elemental Cave, is placed), the gold/silver nuggets in the Corym mines,
 -- the lever puzzle in the Grimvale ruins, the Last Sanctum basin and the two
@@ -338,6 +339,30 @@ local function totemNear(player, target)
 		end
 	end
 end
+
+-- The stone tablet with ley lines (Milos): TibiaWiki BR, used near the
+-- stones it tells whether something is there. Message at a source from
+-- Rodrigo's global screenshots (2026-11-02). The small dark stone piles
+-- along the lines are not on our map, so only the sources answer.
+local TABLET_RANGE = 3
+
+local tablet = Action()
+function tablet.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not active() then
+		return false
+	end
+	local p = player:getPosition()
+	for _, totem in ipairs(C.totems) do
+		if p.z == totem.pos.z and math.abs(p.x - totem.pos.x) <= TABLET_RANGE and math.abs(p.y - totem.pos.y) <= TABLET_RANGE then
+			msg(player, "This location is the source of a ley line.")
+			return true
+		end
+	end
+	msg(player, "The tablet shows the known ley lines and where they begin, but nothing marks this place.") -- ours
+	return true
+end
+tablet:id(I.tablet)
+tablet:register()
 
 local symbol = Action()
 function symbol.onUse(player, item, fromPosition, target, toPosition, isHotkey)
