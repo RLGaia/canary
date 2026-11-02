@@ -6,7 +6,12 @@ function sacrificeTeleport.onStepIn(creature, item, position, fromPosition)
 		return true
 	end
 
-	if player:getStorageValue(Storage.Quest.U10_55.SanctuaryOfTheLizardGod.LizardGodTeleport) == 1 then
+	-- FAMILY: also accept the KV the egg action sets, so players who offered an egg before the fix pass (2026-11-02)
+	local teleportStorage = Storage.Quest.U10_55.SanctuaryOfTheLizardGod.LizardGodTeleport
+	if player:getStorageValue(teleportStorage) ~= 1 and player:kv():scoped("lizard-god-teleport"):get("discovered") then
+		player:setStorageValue(teleportStorage, 1)
+	end
+	if player:getStorageValue(teleportStorage) == 1 then
 		player:teleportTo({ x = 32124, y = 31938, z = 8 })
 		player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 	else
