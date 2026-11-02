@@ -4,6 +4,11 @@ function cobraBastion.onUse(player, item, fromPosition, target, toPosition, isHo
 	if not player then
 		return false
 	end
+	-- FAMILY: the chess floor opens after Guard Captain Quaid (TibiaWiki EN; scripts/family/cobra_bastion.lua)
+	if Family and Family.cobraBastion and player:getStorageValue(Storage.Quest.U12_20.GraveDanger.QuaidKilled) < 1 then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Guard Captain Quaid's men still guard the way down.") -- ours
+		return true
+	end
 	player:teleportTo(Position(33394, 32650, 2))
 end
 

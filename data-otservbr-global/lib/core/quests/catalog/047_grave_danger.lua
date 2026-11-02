@@ -169,7 +169,10 @@ local quest = {
 			startValue = 1,
 			endValue = 2,
 			states = {
-				[1] = "", --
+				-- FAMILY: progress text (ours), scripts/family/cobra_bastion.lua
+				[1] = function(player)
+					return FamilyCobra and FamilyCobra.missionText(player) or ""
+				end,
 				[2] = "Scarlett Etzel once stood proud and righteous. The assassins she rallied around her under the Order of the Cobra, however, were of ill repute and had to be vanquished. And so did she, you prevailed.",
 			},
 		},

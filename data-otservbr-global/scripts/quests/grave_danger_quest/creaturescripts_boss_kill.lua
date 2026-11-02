@@ -68,6 +68,8 @@ function grave_danger_death.onDeath(creature, corpse, killer, mostDamageKiller)
 
 			if creature:getName():lower() == "scarlett etzel" then
 				player:addAchievement("A Study in Scarlett")
+				-- FAMILY: the quest log mission "The Order of the Cobra" is done (scripts/family/cobra_bastion.lua)
+				player:setStorageValue(Storage.Quest.U12_20.GraveDanger.Cobra, 2)
 			end
 
 			if bossConfig.extra then

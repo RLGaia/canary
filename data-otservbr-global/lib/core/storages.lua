@@ -3072,6 +3072,12 @@ Storage = {
 		FamilyFrozenTrench = {
 			Mission = 48756, -- 1 accepted with Lurik, 2 found the frozen human, 3 reported (Sea Scout)
 		},
+		-- FAMILY: The Order of the Cobra, completed (2026-11-01; scripts/family/cobra_bastion.lua)
+		-- (48759 is the action id of Greig's ledger, kept free here)
+		FamilyCobraBastion = {
+			Chess = 48757, -- 1 = solved the chess riddle (may pass Scarlett's metal wall)
+			KeyBag = 48758, -- 1 = took the bag with Key 0303 from the pile of bones
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,

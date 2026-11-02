@@ -73,6 +73,21 @@ end
 local graveScarlettAid = Action()
 
 function graveScarlettAid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: the metal wall into Scarlett's antechamber needs the chess riddle (TibiaWiki BR/EN);
+	-- leaving is always possible (scripts/family/cobra_bastion.lua)
+	if Family and Family.cobraBastion and item.itemid == metalWallId then
+		if player:getPosition().y ~= 32666 and player:getStorageValue(Storage.Quest.FamilyCobraBastion.Chess) < 1 then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The metal wall does not move.") -- ours
+			return true
+		end
+		if player:getPosition().y == 32666 then
+			player:teleportTo(Position(33395, 32668, 6))
+		else
+			player:teleportTo(Position(33395, 32666, 6))
+		end
+		return true
+	end
+
 	if player:getStorageValue(Storage.Quest.U12_20.GraveDanger.GaffirKilled) ~= 1 and player:getStorageValue(Storage.Quest.U12_20.GraveDanger.CustodianKilled) ~= 1 and player:getStorageValue(Storage.Quest.U12_20.GraveDanger.QuaidKilled) ~= 1 then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You are not allowed to use this yet.")
 		return true
