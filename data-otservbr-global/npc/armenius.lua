@@ -68,20 +68,43 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_4.BloodBrothers.Cookies.Armenius, 1)
 			npcHandler:setTopic(playerId, 0)
 		end
-	elseif message:lower() == "alori mort" and player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.Mission03) == 1 then
+	-- FAMILY: both wikis: the first "alori mort" makes him laugh, the second ends with one of two lines
+	-- (sewers or "Sod off"); upstream said "Sod off" first and then sent everyone to the sewers without a
+	-- word, changing his goodbye line for every player. His True Face: a small chance of the basement
+	-- fight (scripts/family/blood_brothers.lua), also after the mission (TibiaWiki EN).
+	elseif message:lower() == "alori mort" and player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.Mission03) >= 1 then
 		if npcHandler:getTopic(playerId) == 2 then
-			local rand = math.random(2)
-			npcHandler:setMessage(MESSAGE_WALKAWAY, "Oh, the nerve. Go to the rats which raised you.")
-			player:teleportTo(Position(32759, 31241, 9))
-			player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-			player:setStorageValue(Storage.Quest.U8_4.BloodBrothers.Mission03, 2)
+			npcHandler:setTopic(playerId, 0)
+			if player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.Mission03) == 1 then
+				player:setStorageValue(Storage.Quest.U8_4.BloodBrothers.Mission03, 2)
+			end
+			if FamilyBloodBrothers and FamilyBloodBrothers.trueFace and FamilyBloodBrothers.trueFace(npc, player, npcHandler) then
+				return true
+			end
+			if math.random(2) == 1 then
+				npcHandler:say("Oh, the nerve. Go to the rats which raised you.", npc, creature)
+				local sewers = Position(32759, 31241, 9)
+				addEvent(function(playerId)
+					local p = Player(playerId)
+					if p then
+						p:teleportTo(sewers)
+						sewers:sendMagicEffect(CONST_ME_TELEPORT)
+					end
+				end, 1000, playerId)
+			else
+				npcHandler:say("Oh, the nerve. Sod off.", npc, creature)
+			end
 		else
-			npcHandler:say("Oh, the nerve. Sod off.", npc, creature)
+			npcHandler:say({
+				"...... ...... ...",
+				"HAHAHAHAHA! What the... HAHAHAHA! Come on, say it again, just because it's so funny - and then I'll get rid of you, little mouse!",
+			}, npc, creature)
 			npcHandler:setTopic(playerId, 2)
 		end
 	end
 end
 -- Basic
+keywordHandler:addKeyword({ "blood crystal" }, StdModule.say, { npcHandler = npcHandler, text = "If you want blood, go kill a pig." }) -- FAMILY: TibiaWiki EN (Blood Brothers spoiler)
 
 npcHandler:setMessage(MESSAGE_GREET, "Ah, an adventurer. Be greeted and have a seat. How may I {serve} you?")
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)

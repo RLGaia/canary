@@ -66,6 +66,12 @@ local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	local playerId = player:getId()
 
+	-- FAMILY: Blood Brothers missions 4-10, the diary pages, a new map, the Inquisition shortcut and
+	-- the garlic bread check (lib/others/family_blood_brothers.lua); upstream stopped at Mission 04
+	if FamilyBloodBrothers and FamilyBloodBrothers.julius(npc, creature, message, npcHandler) then
+		return true
+	end
+
 	if table.contains({ "mission", "note", "vampire" }, message:lower()) then
 		if player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.QuestLine) < 0 then
 			npcHandler:say("Our nightly blood-sucking visitors put the inhabitants of Yalahar in constant danger. The worst thing is that anyone in this city could be a vampire. Maybe an outsider like you could help us. Would you try?", npc, creature)
@@ -118,6 +124,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		elseif npcHandler:getTopic(playerId) == 3 then
 			npcHandler:say("Fine then. Talk to me again about your mission once you have the garlic bread. You can get holy water from a member of the inquisition.", npc, creature)
 			player:setStorageValue(Storage.Quest.U8_4.BloodBrothers.Mission01, 3)
+			npcHandler:setTopic(playerId, 0) -- FAMILY: upstream kept the topic
 		elseif npcHandler:getTopic(playerId) == 5 and player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.Mission01) == 4 then
 			npcHandler:say({
 				"As I already told you, anyone in this city could really be a vampire, even the most unsuspicious citizen. I want you to find that brood. ...",

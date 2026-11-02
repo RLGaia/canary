@@ -60,7 +60,12 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("Oh, no I don't sell cookies. Or, do you mean you'd like to give me one?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		else
-			npcHandler:say("It'd be better for you to leave now.", npc, creature)
+			-- FAMILY: TibiaWiki EN transcript for a player who did not give him a cookie (upstream: always the angry line)
+			if player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.Cookies.Serafin) >= 1 then
+				npcHandler:say("It'd be better for you to leave now.", npc, creature)
+			else
+				npcHandler:say("Oh, no I don't sell cookies.", npc, creature)
+			end
 		end
 	elseif message == "yes" then
 		if npcHandler:getTopic(playerId) == 1 and player:removeItem(8199, 1) then -- garlic cookie
@@ -71,6 +76,23 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 end
 --Basic
+-- FAMILY: TibiaWiki EN transcript (upstream had only "alori mort")
+keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "I'm Serafin, pleased to meet you." })
+keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "Oh, I'm selling fruits and veggies as you can see. If you want to have a closer look, ask me for a {trade}." })
+keywordHandler:addKeyword({ "quest" }, StdModule.say, { npcHandler = npcHandler, text = "Sorry, but I already have a delivery boy." })
+keywordHandler:addKeyword({ "mission" }, StdModule.say, { npcHandler = npcHandler, text = "Sorry, but I already have a delivery boy." })
+keywordHandler:addKeyword({ "quarter" }, StdModule.say, { npcHandler = npcHandler, text = "Well, actually this is not a quarter but the city centre." })
+keywordHandler:addKeyword({ "blood" }, StdModule.say, { npcHandler = npcHandler, text = "This is a fruit store. No slaughterhouse." })
+keywordHandler:addKeyword({ "garlic" }, StdModule.say, { npcHandler = npcHandler, text = "I'm so sorry, but I don't sell garlic." })
+keywordHandler:addKeyword({ "vampire" }, StdModule.say, { npcHandler = npcHandler, text = "I don't know what you're talking about." })
+keywordHandler:addKeyword({ "augur" }, StdModule.say, { npcHandler = npcHandler, text = "They are desperately trying to get the city under control. I don't envy them." })
+keywordHandler:addKeyword({ "armenius" }, StdModule.say, { npcHandler = npcHandler, text = "I think he runs a bar in the former trade quarter." })
+keywordHandler:addKeyword({ "julius" }, StdModule.say, { npcHandler = npcHandler, text = "I think that poor guy has serious trust issues... must be hard if you are obsessed with the idea that everyone is your enemy or a monster." })
+keywordHandler:addKeyword({ "lisander" }, StdModule.say, { npcHandler = npcHandler, text = "Oh yes, I see him often. Nice guy." })
+keywordHandler:addKeyword({ "maris" }, StdModule.say, { npcHandler = npcHandler, text = "A man of the seas." })
+keywordHandler:addKeyword({ "ortheus" }, StdModule.say, { npcHandler = npcHandler, text = "I like him, but unfortunately I don't have much time to chat with him anymore." })
+keywordHandler:addKeyword({ "yalahar" }, StdModule.say, { npcHandler = npcHandler, text = "Oh, this lovely city is a great place to live and to do business." })
+npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye, my dear customer.")
 keywordHandler:addKeyword({ "alori mort" }, StdModule.say, { npcHandler = npcHandler, text = "There's something about these words which makes me feel awkward. Or maybe it's you who causes that feeling. You better get lost." }, function(player)
 	return player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.Mission03) == 1
 end)

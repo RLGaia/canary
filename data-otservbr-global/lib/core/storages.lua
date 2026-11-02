@@ -3080,6 +3080,20 @@ Storage = {
 			CurseLifted = 48760, -- 1 = tossed a coin in the treasure room (2026-11-02; scripts/family/cobra_bastion_secrets.lua)
 			FirePass = 48761, -- 1 = may pass the fire wall east of the Custodian once (set by his death)
 		},
+		-- FAMILY: Blood Brothers Quest, missions 5-10 and extras (2026-11-02; lib/others/family_blood_brothers.lua)
+		-- (missions 1-4 keep the upstream Storage.Quest.U8_4.BloodBrothers storages)
+		FamilyBloodBrothers = {
+			Mission05 = 48762, -- 1 find a blood crystal, 2 charge it, 3 go to the castle spots, 4 attuned (inside), 5 reported
+			Mission06 = 48763, -- 1 find the diary, 2 reported
+			Mission07 = 48764, -- 1 Boreth, 2 reported
+			Mission08 = 48765, -- 1 Lersatio, 2 reported
+			Mission09 = 48766, -- 1 Marziel, 2 reported
+			Mission10 = 48767, -- 1 Arthei, 2 reported (vampiric crest)
+			Marks = 48768, -- bit mask of the 8 spots on Julius' map (bits 0-7); bits 8-11 = spots already paid for
+			Finds = 48769, -- bit mask: 1-32 diary pages found (II-VII), 64 blood crystal chest, 128 diary book,
+			-- 256 blood goblet, 512 ghost's tear, 1024-32768 pages delivered to Julius (II-VII), 65536 garden door,
+			-- 131072 a crystal was charged by A Wandering Soul
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,

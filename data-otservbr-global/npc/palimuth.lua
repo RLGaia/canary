@@ -25,6 +25,8 @@ npcConfig.flags = {
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
+-- FAMILY: Blood Brothers Quest, Mission 05 (TibiaWiki EN "blood crystal" answers)
+keywordHandler:addKeyword({ "blood crystal" }, StdModule.say, { npcHandler = npcHandler, text = "What would you need a blood crystal for? Maybe a magician knows where to find one." })
 
 npcType.onThink = function(npc, interval)
 	npcHandler:onThink(npc, interval)
@@ -64,7 +66,7 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	if MsgContains(message, "job") and not player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 54 then
 		npcHandler:say("I'm an Augur of the city of Yalahar. My special duty consists of coordinating the efforts to keep the city and its services running.", npc, creature)
-	elseif MsgContains(message, "job") then
+	elseif MsgContains(message, "job") or MsgContains(message, "addon") or MsgContains(message, "addons") then -- FAMILY: "addons" as in TibiaWiki BR
 		if player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 54 then
 			npcHandler:say("Did you bring me the vampiric crest?", npc, creature)
 			npcHandler:setTopic(playerId, 6)
@@ -303,6 +305,9 @@ local function creatureSayCallback(npc, creature, type, message)
 		elseif npcHandler:getTopic(playerId) == 6 then
 			if player:getItemCount(9041) > 0 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline) == 54 then
 				player:setStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.Questline, 55)
+				-- FAMILY: he takes the crest in exchange and the side's achievement follows (TibiaWiki BR/EN); upstream kept both out
+				player:removeItem(9041, 1)
+				player:addAchievement(player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.SideDecision) == 1 and "Yalahari of Wisdom" or "Yalahari of Power")
 				npcHandler:say("Great! Here, take this yalaharian addon in a return.", npc, creature)
 				player:addOutfitAddon(325, player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.SideDecision) == 1 and 1 or 2)
 				player:addOutfitAddon(324, player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.SideDecision) == 1 and 1 or 2)

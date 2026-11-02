@@ -3077,4 +3077,12 @@
 	<npc centerx="33587" centery="32966" centerz="15" radius="1">
 		<npc name="Gnomish Operative (Raiders)" x="0" y="0" z="15" spawntime="60" />
 	</npc>
+	<!-- FAMILY: Blood Brothers Quest (2026-11-02): A Wandering Soul in the haunted ruin of north-western Vengoth (TibiaWiki EN position) -->
+	<npc centerx="32915" centery="31490" centerz="7" radius="1">
+		<npc name="A Wandering Soul" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<!-- FAMILY: Blood Brothers Quest (2026-11-02): A Fading Memory at the top of the northern castle tower (TibiaWiki BR position); upstream had no spawn -->
+	<npc centerx="32952" centery="31441" centerz="3" radius="1">
+		<npc name="A Fading Memory" x="0" y="0" z="3" spawntime="60" />
+	</npc>
 </npcs>

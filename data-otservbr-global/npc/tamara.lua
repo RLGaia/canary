@@ -25,6 +25,8 @@ npcConfig.flags = {
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
+-- FAMILY: Blood Brothers Quest, Mission 05 (TibiaWiki EN "blood crystal" answers)
+keywordHandler:addKeyword({ "blood crystal" }, StdModule.say, { npcHandler = npcHandler, text = "Oh! That cursed stone! I know about it, but I can't tell you anything. Evil gems like that shouldn't be passed around, only a crazy fool would do that." })
 
 npcType.onThink = function(npc, interval)
 	npcHandler:onThink(npc, interval)

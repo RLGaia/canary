@@ -59,7 +59,12 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("A cookie? Sure, is it for free?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		else
-			npcHandler:say("Whatever you have there, I think I don't want it.", npc, creature)
+			-- FAMILY: TibiaWiki EN transcript for a player who did not give him a cookie
+			if player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.Cookies.Lisander) >= 1 then
+				npcHandler:say("Whatever you have there, I think I don't want it.", npc, creature)
+			else
+				npcHandler:say("I'm not hungry.", npc, creature)
+			end
 		end
 	elseif message == "yes" then
 		if npcHandler:getTopic(playerId) == 1 and player:removeItem(8199, 1) then -- garlic cookie
@@ -70,6 +75,23 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 end
 --Basic
+-- FAMILY: TibiaWiki EN transcript (upstream had only "alori mort")
+keywordHandler:addKeyword({ "peace" }, StdModule.say, { npcHandler = npcHandler, text = "Listen, I'm not a big small talker. Why don't you do us both a favour and leave me alone?" })
+keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "Listen, I'm not a big small talker. Why don't you do us both a favour and leave me alone?" })
+keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "Lisander. Couldn't say 'nice to meet you' though. Are you done?" })
+keywordHandler:addKeyword({ "blood" }, StdModule.say, { npcHandler = npcHandler, text = "No, that's wine I'm drinking." })
+keywordHandler:addKeyword({ "vampire" }, StdModule.say, { npcHandler = npcHandler, text = "Ooooh. <makes a dramatic gesture> Daaaaaaaangerous creatures of the night! If that's what you wanted to hear." })
+keywordHandler:addKeyword({ "quarter" }, StdModule.say, { npcHandler = npcHandler, text = "I like it here, though that's obviously not a quarter." })
+keywordHandler:addKeyword({ "quest" }, StdModule.say, { npcHandler = npcHandler, text = "Yes, I have one. Mission 1: Try to keep your mouth shut for at least two hours!" })
+keywordHandler:addKeyword({ "mission" }, StdModule.say, { npcHandler = npcHandler, text = "Yes, I have one. Mission 1: Try to keep your mouth shut for at least two hours!" })
+keywordHandler:addKeyword({ "augur" }, StdModule.say, { npcHandler = npcHandler, text = "They can be a pain in the neck." })
+keywordHandler:addKeyword({ "armenius" }, StdModule.say, { npcHandler = npcHandler, text = "His bar is a little too dirty for my taste." })
+keywordHandler:addKeyword({ "julius" }, StdModule.say, { npcHandler = npcHandler, text = "Nosy little wannabe." })
+keywordHandler:addKeyword({ "maris" }, StdModule.say, { npcHandler = npcHandler, text = "Good man." })
+keywordHandler:addKeyword({ "ortheus" }, StdModule.say, { npcHandler = npcHandler, text = "He's not the type to hang out in taverns, so I rarely see him." })
+keywordHandler:addKeyword({ "serafin" }, StdModule.say, { npcHandler = npcHandler, text = "That guy should become a bit tougher. He's a little too mellow." })
+keywordHandler:addKeyword({ "yalahar" }, StdModule.say, { npcHandler = npcHandler, text = "This city has a lot more to offer than other cities." })
+npcHandler:setMessage(MESSAGE_FAREWELL, "Finally.")
 keywordHandler:addKeyword({ "alori mort" }, StdModule.say, { npcHandler = npcHandler, text = "Hold your tongue." }, function(player)
 	return player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.Mission03) == 1
 end)

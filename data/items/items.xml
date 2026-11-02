@@ -22920,6 +22920,8 @@
 		<attribute key="primarytype" value="windows"/>
 	</item>
 	<item id="8275" article="a" name="torn book">
+		<!-- FAMILY: Blood Brothers Quest, Marziel's diary can be read (TibiaWiki EN text) -->
+		<attribute key="readable" value="1"/>
 		<attribute key="primarytype" value="rubbish"/>
 		<attribute key="description" value="It seems to be an old diary written by someone called Marziel, but a lot of pages are ripped out"/>
 		<attribute key="weight" value="1100"/>
@@ -23287,7 +23289,9 @@
 		<attribute key="maxtextlen" value="511"/>
 		<attribute key="weight" value="200"/>
 	</item>
-	<item fromid="8749" toid="8752" article="an" name="old piece of paper">
+	<!-- FAMILY: Blood Brothers Quest, Marziel's diary pages (8747-8752, TibiaWiki EN): readable, 8748 was missing -->
+	<item fromid="8748" toid="8752" article="an" name="old piece of paper">
+		<attribute key="readable" value="1"/>
 		<attribute key="weight" value="200"/>
 	</item>
 	<item fromid="8753" toid="8754" article="a" name="wall mirror">

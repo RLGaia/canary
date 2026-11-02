@@ -59,7 +59,12 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("A cookie? Well... I have to admit I haven't had one for ages. Can I have it?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		else
-			npcHandler:say("It'd be better for you to leave now.", npc, creature)
+			-- FAMILY: TibiaWiki EN transcript for a player who did not give him a cookie
+			if player:getStorageValue(Storage.Quest.U8_4.BloodBrothers.Cookies.Ortheus) >= 1 then
+				npcHandler:say("It'd be better for you to leave now.", npc, creature)
+			else
+				npcHandler:say("I'm not hungry.", npc, creature)
+			end
 		end
 	elseif message == "yes" then
 		if npcHandler:getTopic(playerId) == 1 and player:removeItem(8199, 1) then -- garlic cookie

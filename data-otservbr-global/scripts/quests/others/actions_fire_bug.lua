@@ -28,6 +28,10 @@ local positions = {
 
 local othersFireBug = Action()
 function othersFireBug.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: Blood Brothers, Mission 07: three times on Boreth's twines (scripts/family/blood_brothers.lua)
+	if FamilyBloodBrothers and FamilyBloodBrothers.onFireBug and FamilyBloodBrothers.onFireBug(player, item, target, toPosition) then
+		return true
+	end
 	if target.actionid == 54387 and target.itemid == 22875 then
 		if player:getStorageValue(Storage.Quest.U10_90.FerumbrasAscension.BasinCounter) >= 8 or player:getStorageValue(Storage.Quest.U10_90.FerumbrasAscension.BoneFlute) < 1 then
 			return false
