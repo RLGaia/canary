@@ -3,14 +3,18 @@
 -- mission (no dialogue, no storages), and the five were-beast leaders could be
 -- fought by anyone. World objects and events: scripts/family/curse_spreads.lua.
 --
--- Story as in Tibia (TibiaWiki EN "Grimvale Quest/Spoiler", NPC transcripts):
+-- Story as in Tibia (TibiaWiki EN "Grimvale Quest/Spoiler"; NPC lines from
+-- the TibiaWiki BR transcripts, checked 2026-11-01):
+--   0 Maeryn (Grimvale) `the curse spreads`, `yes`         -> talk to Daniel
 --   1 Daniel Steelsoul (Edron castle) asks for help         -> talk to Milos
 --   2 Milos (academy, NW tower +4): find his four notes
 --   3 Milos gets the notes: crimson nightshade blossoms and the ley line
 --     tablet; brew the nightshade distillate at the apparatus in Sinclair's
 --     lab (blossoms, silver dust, gold dust, shadow bite berries)
 --   4 Daniel takes the potion                              -> Yoem on Cormaya
---   5 Yoem: investigate the water (ritual in the Grimvale ruins first)
+--   5 Yoem: investigate the water. The Mystic Flame into the Last Sanctum
+--     lets in only those who did the Moonshadow ritual (the V of white tiles
+--     in the Grimvale ruins); both wikis, fixed 2026-11-01
 --   6 the tainted basin found in the Last Sanctum           -> Yoem
 --   7 Yoem                                                 -> Milos
 --   8 Milos gives the golden symbol of Suon: lift the curse from the dark
@@ -156,9 +160,9 @@ function C.describe(player)
 		return "Daniel Steelsoul has the potion for Edron's citizens. The curse also reached Cormaya: talk to Yoem there about the curse."
 	elseif state == 5 then
 		if get(player, S.Ritual) >= 1 then
-			return "Yoem thinks the ground water of Cormaya is tainted. You performed the ritual in the Grimvale ruins; now search the Last Sanctum, in the tunnels in the east of Cormaya, for the place where the water gets tainted."
+			return "Yoem thinks the ground water of Cormaya is tainted. Search the Last Sanctum, behind the Mystic Flame at the end of the tunnels in the east of Cormaya, for the place where the water gets tainted: follow the cave to the south-west and go down."
 		end
-		return "Yoem thinks the ground water of Cormaya is tainted. To find out where, first perform the ritual in the ruins deep underneath Grimvale (Cornell in Edron brings you there): form a V with the white tiles using the levers, then pull any lever. Then search the Last Sanctum, in the tunnels in the east of Cormaya."
+		return "Yoem thinks the ground water of Cormaya is tainted. Search the Last Sanctum, behind the Mystic Flame at the end of the tunnels in the east of Cormaya, for the place where the water gets tainted. The flame lets in only those who proved worthy in the Moonshadow Temple: in the ruins deep underneath Grimvale (Cornell in Edron brings you there) form a V with the white tiles using the levers, then pull any lever."
 	elseif state == 6 then
 		return "In the Last Sanctum you found the basin where Cormaya's water gets tainted. Tell Yoem about it."
 	elseif state == 7 then
@@ -212,11 +216,9 @@ function daniel.curse(npc, creature, player, npcHandler)
 		-- ours
 		say(npcHandler, npc, creature, "The potion works! But please help Yoem on Cormaya, the curse must not spread any further.")
 	elseif state == 10 then
-		-- ours: the wiki transcript of this moment is empty
 		say(npcHandler, npc, creature, {
-			"Yoem sent word that Cormaya's water is clean again. Well done! But my scouts discovered who is spreading the curse: the leaders of the were-beasts. ...",
-			"Bloodback, Darkfang and Sharpclaw hide in the caves underneath Edron, Shadowpelt and Black Vixen in the tunnels underneath Cormaya. Magical gates guard their lairs, but they will let you pass now. ...",
-			"Defeat all five of them and come back to me.",
+			"I'm very happy that you could help the people of Cormaya. May Banor bless you. But I have one last request: The were-beasts are led by alpha leaders. ...",
+			"Please seek out the subterranean caves of the lycanthropes on Edron and Cormaya and kill the alpha leader of each kind of were-beast, five altogether. This should weaken them enough to hold them at bay for quite a while.",
 		})
 		C.setState(player, 11)
 	elseif state == 11 then
@@ -226,13 +228,14 @@ function daniel.curse(npc, creature, player, npcHandler)
 			say(npcHandler, npc, creature, string.format("The curse will keep spreading as long as its leaders are alive. Still to defeat: %s.", joinNames(missing)))
 			return
 		end
-		-- ours: the wiki transcript of this moment is empty
 		say(npcHandler, npc, creature, {
-			"You defeated the leaders of the were-beasts! Edron owes you a great deal. Take this foxtail amulet as a sign of our gratitude. ...",
-			"From now on the death portals in the caves underneath Edron and in the Last Sanctum on Cormaya will carry you. Banor be with you!",
+			"You defeated the five alpha leaders! Well done, this should weaken them enough to hold them at bay for quite a while. Please take this pendant in return, it may be of use for you. ...",
+			"The were-sickness won't disappear completely but it will be easier for us now. At least I hope so! Yesterday a travelling salesman told me that he spotted a feral creature in the Darama desert that looked like half man and half lion. ...",
+			"Banor grant that this is just unfounded gossip and that the curse didn't spread further. Well, I guess, we will find out soon. Edron, for the time being, is a safer place now, thanks to you.",
 		})
 		player:addItem(C.items.amulet, 1)
 		C.setState(player, 12)
+		FamilyGrimvaleOverTheMoon(player)
 	else
 		-- ours
 		say(npcHandler, npc, creature, "Thanks to you the curse is under control, at least for now. PRAISE TO BANOR!")
@@ -275,6 +278,8 @@ function milos.curse(npc, creature, player, npcHandler)
 	if state < 1 then
 		-- ours
 		say(npcHandler, npc, creature, "The curse? I've heard rumours. Daniel Steelsoul is the one dealing with it, as far as I know.")
+	elseif state == 2 and milos.hasNotes(player) then
+		milos.deliverNotes(npc, creature, player, npcHandler)
 	elseif state == 1 or state == 2 then
 		say(npcHandler, npc, creature, {
 			"I heard about this problem. It is, indeed, very strange that only the people who live inside the town cannot be healed by purple nightshade blossoms. But I have a theory: I have done some research on {ley} lines. ...",
@@ -284,8 +289,10 @@ function milos.curse(npc, creature, player, npcHandler)
 		})
 		C.setState(player, 2)
 	elseif state == 3 then
-		-- ours
-		say(npcHandler, npc, creature, "Follow my notes: crimson nightshade, silver dust, gold dust and shadow bite berries, in this order, at the apparatus in Sinclair's laboratory. The metals have to be ground to dust first, the wooden grinder two floors below will do.")
+		say(npcHandler, npc, creature, {
+			"Now you can brew a potion that might cure the ley line enhanced form of the curse. You have to distil the crimson nightshade first. You can use the alchemical devices in Sinclair's laboratory, here in the Academy. ...",
+			"Then you have to add the silver and gold powder, in this order! At last you add the Shadow Bite Berries.",
+		})
 	elseif state <= 6 then
 		-- ours
 		say(npcHandler, npc, creature, "Did the potion work? I'm really curious whether my ley line theory holds.")
@@ -313,18 +320,30 @@ function milos.curse(npc, creature, player, npcHandler)
 	end
 end
 
+function milos.hasNotes(player)
+	for _, note in ipairs(C.notes) do
+		if player:getItemCount(note.item) < 1 then
+			return false
+		end
+	end
+	return true
+end
+
 function milos.notes(npc, creature, player, npcHandler)
 	local state = C.state(player)
 	if state ~= 2 then
 		return false
 	end
-	for _, note in ipairs(C.notes) do
-		if player:getItemCount(note.item) < 1 then
-			-- ours
-			say(npcHandler, npc, creature, "I wrote my notes on three pieces of parchment and a hastily scribbled note. The parchments must be in the library of the central tower, in the bookcases on the third and fourth floors. And the note... I think I left it in a box next to Puffels, down in the cellar of the south tower. Bring me all four.")
-			return true
-		end
+	if not milos.hasNotes(player) then
+		-- ours
+		say(npcHandler, npc, creature, "I wrote my notes on three pieces of parchment and a hastily scribbled note. The parchments must be in the library of the central tower, in the bookcases on the third and fourth floors. And the note... I think I left it in a box next to Puffels, down in the cellar of the south tower. Bring me all four.")
+		return true
 	end
+	return milos.deliverNotes(npc, creature, player, npcHandler)
+end
+
+-- TibiaWiki BR: with the four notes, `the curse spreads` (or `notes`) hands them over
+function milos.deliverNotes(npc, creature, player, npcHandler)
 	for _, note in ipairs(C.notes) do
 		player:removeItem(note.item, 1)
 	end
@@ -369,6 +388,46 @@ function yoem.curse(npc, creature, player, npcHandler)
 	end
 end
 
+-- Maeryn (Grimvale) starts the mission in TibiaWiki BR: `the curse spreads`, `yes`.
+-- She only sends you to Daniel Steelsoul, who starts the quest log.
+local TOPIC_MAERYN = 302
+local function maerynSay(npc, creature, player, message, npcHandler)
+	if npcHandler:getTopic(player:getId()) == TOPIC_MAERYN then
+		npcHandler:setTopic(player:getId(), 0)
+		if MsgContains(message, "yes") then
+			say(npcHandler, npc, creature, "Thank you so much! Please travel to Edron and talk to Daniel Steelsoul. I'm sure he can tell you more about the spreading of the curse.")
+			return true
+		elseif MsgContains(message, "no") then
+			say(npcHandler, npc, creature, "I understand. Should you change your mind, Edron needs every help it can get.") -- ours
+			return true
+		end
+	end
+	if not MsgContains(message, "spreads") then
+		return false
+	end
+	if C.state(player) >= 1 then
+		-- ours
+		say(npcHandler, npc, creature, "Daniel Steelsoul told me you are helping Edron and Cormaya against the curse. Thank you, my friend.")
+		return true
+	end
+	say(npcHandler, npc, creature, {
+		"We tried to prevent this really hard. Cornell won't ferry anyone affected by the curse back to Edron. But somehow one or more cursed people must have slipped through the cracks. Now the curse reached Edron, maybe even Cormaya! ...",
+		"This is a catastrophe. I'm sure they need help in Edron but I can't leave Grimvale. The curse is very strong here and my people need me. Would you be willing to travel to Edron and aid them there?",
+	})
+	npcHandler:setTopic(player:getId(), TOPIC_MAERYN)
+	return true
+end
+
+-- Achievement "Over the Moon" (TibiaWiki BR): The Curse of the Full Moon and
+-- The Curse Spreads both done. Called when either of them is completed.
+function FamilyGrimvaleOverTheMoon(player)
+	local spreads = C.state(player) >= 12
+	local fullMoon = FamilyFullMoon and FamilyFullMoon.state(player) >= 3
+	if spreads and fullMoon and not player:hasAchievement("Over the Moon") then
+		player:addAchievement("Over the Moon")
+	end
+end
+
 -- Called from the NPCs' default message callback. Returns true when handled.
 function C.onSay(who, npc, creature, player, message, npcHandler)
 	if not Family.curseSpreads then
@@ -398,14 +457,27 @@ function C.onSay(who, npc, creature, player, message, npcHandler)
 		elseif MsgContains(message, "notes") then
 			return milos.notes(npc, creature, player, npcHandler)
 		elseif MsgContains(message, "ley") then
-			-- ours
-			say(npcHandler, npc, creature, "Ley lines are ancient, straight paths in the landscape with arcane significance. Where they meet, strange things may happen.")
+			say(npcHandler, npc, creature, {
+				"Most Tibian cultures have some knowledge about those straight lines that run across the landscape, connecting both, natural and sacred sites. Some also call them 'fairy paths' or 'spirit lines'. ...",
+				"As far as I know, in Zao they are called 'dragon lines'. Markers connecting the ley lines can be mounds, cairns, standing stones, stone circles, ponds, wells, shrines, temples or cross-roads.",
+			})
+			return true
+		elseif MsgContains(message, "ingredients") and C.state(player) >= 3 then
+			say(npcHandler, npc, creature, "Just have a look at my notes. The required components are listed there.")
+			return true
+		elseif MsgContains(message, "crimson") and C.state(player) >= 3 then
+			say(npcHandler, npc, creature, {
+				"This is a very rare subspecies of the purple nightshade. It grows exclusively on the small island Grimvale, and even there it is anything but common. In fact, it is so rare, it didn't even have a scientific name as of yet. ...",
+				"So, with becoming modesty, I called it 'solanacea coccinea'.",
+			})
 			return true
 		elseif MsgContains(message, "distracted") then
 			-- ours
 			say(npcHandler, npc, creature, "Oh, I'm pondering the strangest theory about the paths of magical energy through our world. Never mind.")
 			return true
 		end
+	elseif who == "maeryn" then
+		return maerynSay(npc, creature, player, message, npcHandler)
 	elseif who == "yoem" then
 		if MsgContains(message, "curse") then
 			yoem.curse(npc, creature, player, npcHandler)

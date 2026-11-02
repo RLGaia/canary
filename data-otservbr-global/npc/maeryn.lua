@@ -82,6 +82,10 @@ local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	local playerId = player:getId()
 
+	-- FAMILY: The Curse Spreads starts here in TibiaWiki BR (lib/others/family_grimvale.lua): "the curse spreads"
+	if FamilyCurseSpreads and FamilyCurseSpreads.onSay("maeryn", npc, creature, player, message, npcHandler) then
+		return true
+	end
 	-- FAMILY: The Curse of the Full Moon (lib/others/family_full_moon.lua): quest, nightshade, trap
 	if FamilyFullMoon and FamilyFullMoon.onSay(npc, creature, player, message, npcHandler) then
 		return true

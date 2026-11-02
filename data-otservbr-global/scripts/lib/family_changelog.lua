@@ -88,4 +88,5 @@ FamilyChangelog = {
 	{ "2026-11-01", "Rerolling a Prey or Hunting Task list costs gold again (level x 200), but each slot has one free reroll a day, back at midnight, and the list after claiming a Hunting Task is free. Daily reward days 3 and 5 now give 5 Prey Wildcards each." },
 	{ "2026-11-01", "Grimvale Quest, The Curse Spreads: the alchemical apparatus is back on the north counter of Sinclair's laboratory, so the nightshade distillate can be brewed." },
 	{ "2026-11-01", "Grimvale Quest: the wooden grinder in the academy now stands in the middle of its room, complete with its four wooden arms, as in Tibia." },
+	{ "2026-11-01", "Grimvale Quest, The Curse Spreads: the basin in the Last Sanctum now moves the quest on; the Moonshadow ritual (the V of white tiles under Grimvale) is what opens the Mystic Flame into the Last Sanctum, as in Tibia. The basin looks tainted until someone lifts the curse, Maeryn can start the mission, NPCs use the Tibia lines, the symbol of Suon also works next to a totem, and finishing it together with The Curse of the Full Moon gives Over the Moon." },
 }

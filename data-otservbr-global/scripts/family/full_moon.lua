@@ -114,6 +114,9 @@ function hall.onStepIn(creature, item, position, fromPosition)
 			M.lairEntry:sendMagicEffect(CONST_ME_TELEPORT)
 			if M.state(player) == 2 then
 				M.setState(player, 3)
+				if FamilyGrimvaleOverTheMoon then
+					FamilyGrimvaleOverTheMoon(player) -- with The Curse Spreads done
+				end
 			end
 			return true
 		end

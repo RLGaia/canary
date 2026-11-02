@@ -13,6 +13,9 @@
 -- plants (the fourth, in the Edron Earth Elemental Cave, is placed), the gold/silver nuggets in the Corym mines,
 -- the lever puzzle in the Grimvale ruins, the Last Sanctum basin and the two
 -- death portals (Edron 33064,31977,9 and Last Sanctum 33429,32083,9).
+-- The basin looks tainted (big dark stone piles) and turns clean for ten
+-- minutes when a player lifts the curse. The Mystic Flame into the Last
+-- Sanctum asks for the Moonshadow ritual (2026-11-01).
 -- Quest items lost on the way can be bought from Black Bert, as in Tibia.
 -- Switch: Family.curseSpreads (lib/others/family_grimvale.lua).
 
@@ -311,26 +314,43 @@ lever:register()
 
 -- Dark stone totems: the golden symbol of Suon -----------------------------------
 
-local symbol = Action()
-function symbol.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if not target or not target.isItem or not target:isItem() or target:getId() ~= TOTEM_ID then
-		return false
-	end
-	local pos = target:getPosition()
-	for _, totem in ipairs(C.totems) do
-		if totem.pos == pos then
-			if not active() or C.state(player) ~= 8 then
-				msg(player, "Nothing happens.") -- ours
-			elseif C.addBit(player, S.Totems, totem.bit) then
-				pos:sendMagicEffect(CONST_ME_HOLYAREA)
-				msg(player, "You remove the curse that was put on this statue.")
-			else
-				msg(player, "You already removed the curse from this statue.") -- ours
+-- TibiaWiki BR: use the symbol near the totem (a holy cross appears on you);
+-- TibiaWiki EN: use it on the totem. Both work here.
+local SYMBOL_RANGE = 3
+
+local function totemNear(player, target)
+	if target and target.isItem and target:isItem() and target:getId() == TOTEM_ID then
+		local pos = target:getPosition()
+		for _, totem in ipairs(C.totems) do
+			if totem.pos == pos then
+				return totem
 			end
-			return true
 		end
 	end
-	return false
+	local p = player:getPosition()
+	for _, totem in ipairs(C.totems) do
+		if p.z == totem.pos.z and math.abs(p.x - totem.pos.x) <= SYMBOL_RANGE and math.abs(p.y - totem.pos.y) <= SYMBOL_RANGE then
+			return totem
+		end
+	end
+end
+
+local symbol = Action()
+function symbol.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	local totem = totemNear(player, target)
+	if not totem then
+		return false
+	end
+	if not active() or C.state(player) ~= 8 then
+		msg(player, "Nothing happens.") -- ours
+	elseif C.addBit(player, S.Totems, totem.bit) then
+		totem.pos:sendMagicEffect(CONST_ME_HOLYAREA)
+		player:getPosition():sendMagicEffect(CONST_ME_HOLYDAMAGE)
+		msg(player, "You remove the curse that was put on this statue.")
+	else
+		msg(player, "You already removed the curse from this statue.") -- ours
+	end
+	return true
 end
 symbol:id(I.symbol)
 symbol:register()
@@ -338,7 +358,37 @@ symbol:register()
 -- The Last Sanctum basin ---------------------------------------------------------
 
 local BASIN = { x1 = 33338, y1 = 32055, x2 = 33360, y2 = 32075, z = 10 }
-local hinted = {}
+
+-- The basin's look. Our map has it clean (small dark stone piles 27329 on
+-- the three pedestals, TibiaWiki EN "Grimvale Last Sanctum Clean"). In
+-- Rodrigo's global screenshot (2026-11-01) the tainted basin has the big
+-- dark stone piles (27325) on them. The map is shared, so the basin is
+-- tainted, and turns clean for a while when a player lifts the curse.
+local BASIN_PILES = { Position(33346, 32073, 10), Position(33349, 32073, 10), Position(33352, 32073, 10) }
+local PILE_CLEAN, PILE_TAINTED = 27329, 27325
+local CLEAN_SECONDS = 10 * 60
+local cleanUntil = 0
+
+local function setBasinLook(clean)
+	local from, to = clean and PILE_TAINTED or PILE_CLEAN, clean and PILE_CLEAN or PILE_TAINTED
+	for _, pos in ipairs(BASIN_PILES) do
+		local tile = Tile(pos)
+		local pile = tile and tile:getItemById(from)
+		if pile then
+			pile:transform(to)
+		end
+	end
+end
+
+function C.basinClean()
+	cleanUntil = os.time() + CLEAN_SECONDS
+	setBasinLook(true)
+	addEvent(function()
+		if os.time() >= cleanUntil then
+			setBasinLook(false)
+		end
+	end, CLEAN_SECONDS * 1000 + 500)
+end
 
 local basin = GlobalEvent("FamilyCurseSpreadsBasin")
 function basin.onThink(interval)
@@ -350,15 +400,11 @@ function basin.onThink(interval)
 		if p.z == BASIN.z and p.x >= BASIN.x1 and p.x <= BASIN.x2 and p.y >= BASIN.y1 and p.y <= BASIN.y2 then
 			local state = C.state(player)
 			if state == 5 then
-				if player:getStorageValue(S.Ritual) >= 1 then
-					C.setState(player, 6)
-					msg(player, "The clean water changes as soon as it flows into the basin. Obviously this is the spot where Cormaya's water gets tainted.")
-				elseif (hinted[player:getId()] or 0) < os.time() then
-					hinted[player:getId()] = os.time() + 300
-					msg(player, "The water flowing into the basin looks strange, but you cannot tell why. Perhaps the ancient ritual in the ruins underneath Grimvale would reveal more.") -- ours
-				end
+				C.setState(player, 6)
+				msg(player, "The clean water changes as soon as it flows into the basin. Obviously this is the spot where Cormaya's water gets tainted.")
 			elseif state == 8 and C.allTotems(player) then
 				C.setState(player, 9)
+				C.basinClean()
 				msg(player, "The water that flows into the basin stays fresh and clean now. Obviously the curse is lifted.")
 			end
 		end
@@ -367,6 +413,38 @@ function basin.onThink(interval)
 end
 basin:interval(1000)
 basin:register()
+
+-- The Mystic Flame into the Last Sanctum ------------------------------------------
+-- Both wikis: only those who did the Moonshadow ritual (the V of white tiles
+-- in the Grimvale ruins, S.Ritual) may enter. Upstream let everyone in, and
+-- our first version asked for the ritual at the basin instead (reported by
+-- Rodrigo 2026-11-01). The flame at 33399,32025,9 (map destination
+-- 33407,32020,9) leads in; the one at 33405,32020,9 leads out and stays as is.
+local FLAME_IN = { id = 1959, pos = Position(33399, 32025, 9), dest = Position(33407, 32020, 9) }
+
+local flame = MoveEvent()
+function flame.onStepIn(creature, item, position, fromPosition)
+	local player = creature:getPlayer()
+	if not player then
+		creature:teleportTo(FLAME_IN.dest)
+		return true
+	end
+	if active() and player:getStorageValue(S.Ritual) < 1 then
+		player:teleportTo(fromPosition, true)
+		fromPosition:sendMagicEffect(CONST_ME_POFF)
+		msg(player, "The mystic flame does not let you pass. Only those who proved worthy in the Moonshadow Temple deep underneath Grimvale may enter.") -- ours
+		return true
+	end
+	player:teleportTo(FLAME_IN.dest)
+	FLAME_IN.dest:sendMagicEffect(CONST_ME_TELEPORT)
+	if active() then
+		msg(player, "In the Moonshadow Temple you proved to be worthy. As you enter each wall mirror shows the reflection of a different were-beast.")
+	end
+	return true
+end
+flame:type("stepin")
+flame:position(FLAME_IN.pos)
+flame:register()
 
 -- Death portals between Edron and the Last Sanctum ---------------------------------
 
@@ -440,6 +518,14 @@ end
 local startup = GlobalEvent("FamilyCurseSpreadsStartup")
 function startup.onStartup()
 	placeOnce(GRINDER.id, GRINDER.pos)
+	setBasinLook(false)
+	local flameTile = Tile(FLAME_IN.pos)
+	local flameItem = flameTile and flameTile:getItemById(FLAME_IN.id)
+	if flameItem and flameItem.setDestination then
+		flameItem:setDestination(Position(0, 0, 0)) -- the MoveEvent above does the moving
+	else
+		logger.error("[Family] The Curse Spreads: no mystic flame at 33399,32025,9")
+	end
 	for _, arm in ipairs(GRINDER_ARMS) do
 		placeOnce(arm.id, arm.pos)
 	end
