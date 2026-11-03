@@ -1,6 +1,11 @@
 local commands = TalkAction("!commands")
 
 function commands.onSay(player, words, param)
+	-- FAMILY: explanations and examples, !commands <name> (data/scripts/family/commands_help.lua).
+	if Family and Family.commandsHelp and Family.showCommands then
+		return Family.showCommands(player, param)
+	end
+
 	local allTalkActions = Game.getTalkActions()
 	local playerGroupId = player:getGroup():getId()
 
@@ -28,5 +33,6 @@ function commands.onSay(player, words, param)
 end
 
 commands:setDescription("[Usage]: !commands to see each command with its description")
+commands:separator(" ") -- FAMILY: so "!commands deposit" reaches the script
 commands:groupType("normal")
 commands:register()
