@@ -293,9 +293,9 @@ function Family.newspaperText(key)
 		line("  A Nightmare Isle has risen " .. isle .. ".")
 		changes = changes + 1
 	end
-	-- the surface stays quiet with Family.grimvaleQuietSurface (lib/others/family_full_moon.lua)
-	if tonumber(os.date("%d", dayStart())) == 13 and not Family.grimvaleQuietSurface then
-		line("  Full moon over Grimvale: wereboars and werebadgers roam.")
+	-- the full moon is every Saturday (FamilyFullMoon.isFullMoon, lib/others/family_full_moon.lua)
+	if FamilyFullMoon and FamilyFullMoon.isFullMoon(dayStart() + 12 * 3600) then
+		line("  Full moon over Grimvale: were-creatures roam the island, the nightshades bloom, the silver veins soften and Feroxa returns.")
 		changes = changes + 1
 	end
 	if theirMastersVoice() then

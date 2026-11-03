@@ -20,8 +20,9 @@
 -- mission and uses both up: to face her again, ask Maeryn for the mission
 -- again and do both once more (TibiaWiki BR).
 -- States (S.Mission): 1 in progress, 2 ready for Feroxa, 3 Feroxa defeated.
--- Rodrigo's choices (2026-10-28): the nightshades bloom and the silver
--- veins can be mined every day (Tibia: only at full moon, 12th-14th).
+-- Rodrigo's choices: the full moon is every Saturday (2026-11-03; Tibia:
+-- 12th-14th); the nightshades bloom and the silver veins can be mined only
+-- then, as in Tibia (every day from 2026-10-28 to 2026-11-03).
 -- Lines marked "ours" are not from the wiki transcripts.
 -- Switch: Family.curseOfTheFullMoon.
 
@@ -33,6 +34,15 @@ Family.curseOfTheFullMoon = true
 -- added bandits, badgers and butterflies at startup (wereboars and werebadgers
 -- on the 13th).
 Family.grimvaleQuietSurface = true
+
+-- The full moon (Rodrigo, 2026-11-03): every Saturday, 00:00-23:59 by the
+-- server PC's clock, instead of Tibia's 12th-14th. While it lasts: six
+-- were-creatures on the Grimvale surface, the purple nightshades bloom, the
+-- silver veins can be mined, and Feroxa comes once, after
+-- M.feroxaAfterMinutes minutes of play that day (scripts/family/full_moon.lua).
+-- GOD: /fullmoon on | off | auto (auto = by the weekday).
+Family.fullMoonWeekday = 7 -- os.date("*t").wday: 1 Sunday ... 7 Saturday
+Family.fullMoonForced = nil -- set by /fullmoon: true, false or nil (auto)
 
 FamilyFullMoon = {}
 local M = FamilyFullMoon
@@ -46,6 +56,15 @@ M.closedTrap = 3481
 M.silveredTrap = 22074
 
 M.wereCreatures = { "Werewolf", "Werebear", "Wereboar", "Werebadger", "Werefox", "Werehyaena", "Werehyaena Shaman", "Werelion", "Werelioness" }
+
+M.feroxaAfterMinutes = 60
+
+function M.isFullMoon(time)
+	if Family.fullMoonForced ~= nil then
+		return Family.fullMoonForced
+	end
+	return os.date("*t", time or os.time()).wday == Family.fullMoonWeekday
+end
 
 local function get(player, key)
 	return math.max(0, player:getStorageValue(key))
@@ -141,7 +160,7 @@ function M.describe(player)
 	if not M.blossomsAsked(player) then
 		lines[#lines + 1] = "Nightshades: Maeryn on Grimvale needs help (ask her for a mission)."
 	elseif M.blossoms(player) < M.blossomsNeeded then
-		lines[#lines + 1] = string.format("Nightshades: bring Maeryn three purple nightshade blossoms (delivered: %d). They grow on blooming purple nightshades in the dungeon underneath Grimvale (hole in the north-east of the island): one on the first floor, two on the second.", M.blossoms(player))
+		lines[#lines + 1] = string.format("Nightshades: bring Maeryn three purple nightshade blossoms (delivered: %d). They grow on purple nightshades in the dungeon underneath Grimvale (hole in the north-east of the island): one on the first floor, two on the second; they bloom only under the full moon, on Saturdays.", M.blossoms(player))
 	else
 		lines[#lines + 1] = "Nightshades: you brought Maeryn the purple nightshade blossoms."
 	end
@@ -151,9 +170,9 @@ function M.describe(player)
 	else
 		lines[#lines + 1] = "Moonshadow: in the ruins at the bottom of the dungeon underneath Grimvale, form a V with the white tiles using the five levers, then pull any lever."
 	end
-	lines[#lines + 1] = "Silver Traps: a closed trap (Gladys) and a vial of liquid silver (silver veins, third floor underground) - Maeryn silvers it. Only silver hurts Feroxa's beast form."
+	lines[#lines + 1] = "Silver Traps: a closed trap (Gladys) and a vial of liquid silver (silver veins, third floor underground; they can be mined only under the full moon, on Saturdays) - Maeryn silvers it. Only silver hurts Feroxa's beast form."
 	if M.canEnterLair(player) then
-		lines[#lines + 1] = "Feroxa: her lair is open to you while she is there; the teleport in the hall before it takes you in."
+		lines[#lines + 1] = "Feroxa: she returns once every full moon (Saturday). Her lair is open to you while she is there; the teleport in the hall before it takes you in."
 	else
 		lines[#lines + 1] = "Feroxa: her lair opens to you once Were-Creatures and Moonshadow are done."
 	end

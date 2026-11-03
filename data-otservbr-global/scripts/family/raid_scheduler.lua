@@ -79,7 +79,7 @@ R.bossRaids = {
 	-- medium
 	{ raid = "Chayenne", group = "medium", bosses = { "Chayenne" } },
 	{ raid = "Necropharus", group = "medium", bosses = { "Necropharus" } },
-	{ raid = "Feroxa", group = "medium", bosses = { "Feroxa" } },
+	-- FAMILY: Feroxa comes with the Saturday full moon since 2026-11-03 (scripts/family/full_moon.lua)
 	{ raid = "Zulazza the Corruptor", group = "medium", bosses = { "Zulazza the Corruptor", "Chizzoron the Distorter" } },
 	{ raid = "Horned Fox", group = "medium", bosses = { "The Horned Fox" } },
 	{ raid = "Gaz", group = "medium", bosses = { "Gaz'Haragoth" } },
