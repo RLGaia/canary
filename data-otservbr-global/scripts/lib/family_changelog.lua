@@ -104,4 +104,5 @@ FamilyChangelog = {
 	{ "2026-11-02", "In Service of Yalahar: the city guards take their reports in any order, the notes of Palimuth and Azerus can be read, the weapon crystal really helps Azerus, three ghost residues fill the charm, Morik and the ghost charm come back if lost, Tamerin understands 'warbeasts', and choosing a side gives Follower of Palimuth, Follower of Azerus or Turncoat. The treasure room has a fourth chest with the Yalahari Footwraps." },
 	{ "2026-11-02", "Accounts: the account editing tool on the server PC can now create a new character on an account (no vocation, on Dawnport), next to renaming, changing sex and deleting." },
 	{ "2026-11-02", "Spells are free now: every spell the spell teachers sell is learned by itself as soon as you reach its level (you get a message for each one), and at login you get all the ones you already have the level for. Quest spells (monk shrines) and Wheel of Destiny spells are still earned as before." },
+	{ "2026-11-02", "Sap Strength (sorcerers) can now be cast from level 175, as in Tibia (it needed level 275 before)." },
 }
