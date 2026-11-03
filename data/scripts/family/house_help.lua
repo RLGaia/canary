@@ -1,6 +1,7 @@
 -- Gaia Family server: !house, a short guide to houses (2026-10-13).
--- Ours, not upstream. The rules are in family/config.family.lua and
--- data/scripts/lib/family_houses.lua.
+-- Ours, not upstream. The rules are in family/config.family.lua,
+-- data/scripts/lib/family_houses.lua and (rent, since 2026-11-02)
+-- data/scripts/family/house_rent.lua.
 
 local HELP_ITEM = 2821 -- book shown as the dialog icon
 
@@ -16,19 +17,32 @@ local function guide(player)
 		if house:getOwnerGuid() == player:getGuid() then
 			local town = house:getTown()
 			own[#own + 1] = string.format("  %s (%s)", house:getName(), town and town:getName() or "?")
+			local rent = Family.houseRentRules and Family.houseRentRules.statusLine(house)
+			if rent then
+				own[#own + 1] = "    " .. rent
+			end
 		end
 	end
 	local lines = {
 		"HOUSES ON THE GAIA FAMILY SERVER",
 		"",
-		"Pay once: no rent, never lost, no level, no limit.",
+		"Pay the price once, then the same amount as rent",
+		"every 30 days from your bank (the first 30 days are",
+		"included in the price). No level, no limit.",
 		"Guildhalls too, no guild needed.",
+		"",
+		"RENT",
+		"Keep the rent in your BANK (deposit at any banker):",
+		"it is taken by itself when due. Without it you get a",
+		"warning every day for 7 days; then the house is taken",
+		"back at the next server start and its items go to",
+		"your depot.",
 		"",
 		"BUY IN CYCLOPEDIA",
 		"Cyclopedia > Houses > town > house > Bid.",
 		"The house is yours at once. You pay the price shown",
-		"as rent, once, from your bank (any bid amount works;",
-		"only the price is charged).",
+		"as rent, from your bank (any bid amount works; only",
+		"the price is charged).",
 		"",
 		"BUY AT ONCE",
 		"Stand in front of the house door, face it and say",

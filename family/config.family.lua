@@ -111,13 +111,16 @@ rateSpawn = 1
 -- at the next server save time and the house is handed over at the next start.
 toggleCyclopediaHouseAuction = true
 daysToCloseBid = 0
--- Price: the house's rent, paid once from the bank. houseRentRate scales every
--- rent; 0.65 makes ordinary houses cost about 2,000 gold per square meter.
-houseRentRate = 0.65
--- !buyhouse charges the same: 0 per square meter + 1x the (scaled) rent.
+-- Price: the house's rent, paid once from the bank when buying; then the same
+-- rent every 30 days from the bank (since 2026-11-02). houseRentRate scales
+-- every rent; 1.0 = Tibia's rents (was 0.65 while houses had no rent).
+houseRentRate = 1.0
+-- !buyhouse charges the same: 0 per square meter + 1x the rent.
 housePriceEachSQM = 0
 housePriceRentMultiplier = 1.0
--- No rent after buying, and a house is never lost for not logging in.
+-- The monthly rent is charged by data/scripts/family/house_rent.lua, not by
+-- Canary: v3.6.1 marks every house as paid again at each start, so with
+-- "monthly" here it would never charge. Keep "never". A house is never lost for not logging in.
 houseRentPeriod = "never"
 houseLoseAfterInactivity = 0
 -- No minimum level for !buyhouse (Cyclopedia has none).

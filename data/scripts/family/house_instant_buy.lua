@@ -106,7 +106,7 @@ function Family.cyclopediaInstantBuy(player, msg)
 		end
 	end
 	sendBidSuccess(player, clientId)
-	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You bought the house '%s' for %s gold from your bank. It is yours now: no rent, never lost. Say !house for help.", house:getName(), formatGold(price)))
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You bought the house '%s' for %s gold from your bank. It is yours now. Rent: %s gold every 30 days from your bank, the first 30 days are paid. Say !house for help.", house:getName(), formatGold(price), formatGold(house:getRent())))
 	player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
 	logger.info("[Family] {} bought the house '{}' in Cyclopedia for {} gold", player:getName(), house:getName(), price)
 

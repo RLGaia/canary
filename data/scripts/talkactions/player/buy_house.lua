@@ -63,8 +63,8 @@ function buyHouse.onSay(player, words, param)
 	})
 
 	house:setHouseOwner(player:getGuid())
-	-- FAMILY: no rent on this server (houseRentPeriod = "never").
-	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You have successfully bought the house '%s' for %d gold. There is no rent: it is yours until you leave it. Type !house for help.", house:getName(), price))
+	-- FAMILY: rent every 30 days from the bank (data/scripts/family/house_rent.lua).
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You have successfully bought the house '%s' for %d gold. Rent: %d gold every 30 days from your bank, the first 30 days are paid. Type !house for help.", house:getName(), price, house:getRent()))
 	local houseSpells = { "House Door List", "House Guest List", "House Kick", "House Subowner List" }
 	local learnedSpells = {}
 

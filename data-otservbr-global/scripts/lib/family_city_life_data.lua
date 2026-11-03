@@ -278,7 +278,7 @@ FamilyCityLife.serverTips = {
 	"The market in every depot always has offers, at prices like on the real worlds.",
 	"Rashid buys almost any loot. Ask me for {news} to know where he is today.",
 	"Yasir, the oriental trader, visits every day: Ankrahmun, Carlin or Liberty Bay. Ask me for {news}.",
-	"Houses are paid once here, no rent. Guildhalls too, no guild needed. Say !house to learn how.",
+	"Houses are bought at once here, no auction; then keep the monthly rent in your bank. Guildhalls too, no guild needed. Say !house to learn how.",
 	"Forgot a command? Say !house for the house commands, or !commands for all of them.",
 }
 

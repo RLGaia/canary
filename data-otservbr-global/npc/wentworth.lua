@@ -360,8 +360,8 @@ keywordHandler:addKeyword({ "advanced" }, StdModule.say, {
 	text = "Your bank account will be used automatically when you want to {rent} a house or place an offer \z
 			on an item on the {market}. Let me know if you want to know about how either one works.",
 })
--- FAMILY: {rent} and {market} were offered in "advanced" but had no answer; our lines for this server (2026-11-01)
-keywordHandler:addKeyword({ "rent" }, StdModule.say, { npcHandler = npcHandler, text = "Houses are paid from your bank account. Have a look at the free houses in the Cyclopedia, or say !house in a city to learn more." })
+-- FAMILY: {rent} and {market} were offered in "advanced" but had no answer; our lines for this server (2026-11-01, rent line 2026-11-02)
+keywordHandler:addKeyword({ "rent" }, StdModule.say, { npcHandler = npcHandler, text = "Houses are bought and their monthly rent is paid from your bank account, so keep the rent there. Have a look at the free houses in the Cyclopedia, or say !house in a city to learn more." })
 keywordHandler:addKeyword({ "market" }, StdModule.say, { npcHandler = npcHandler, text = "When you place an offer on the market, the gold is taken from your bank account, and the gold of what you sell is paid into it." })
 keywordHandler:addKeyword({ "help" }, StdModule.say, {
 	npcHandler = npcHandler,
