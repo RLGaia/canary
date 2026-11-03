@@ -93,7 +93,8 @@ monster.loot = {
 	{ id = 3098, chance = 430 }, -- ring of healing
 	{ id = 8082, chance = 220 }, -- underworld rod
 	{ id = 8094, chance = 200 }, -- wand of voodoo
-	{ id = 22083, chance = 150 }, -- moonlight crystals
+	-- FAMILY: moonlight crystals at TibiaWiki EN loot statistics (287 of 12,878 kills, 2026-11-02; ours drops them all month, Tibia only at full moon)
+	{ id = 22083, chance = 2230 }, -- moonlight crystals
 	{ id = 22060, chance = 200 }, -- werewolf amulet
 	{ id = 22101, chance = 100 }, -- werebadger trophy
 }

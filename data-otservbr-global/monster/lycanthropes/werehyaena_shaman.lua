@@ -87,7 +87,8 @@ monster.loot = {
 	{ name = "wand of voodoo", chance = 3990 },
 	{ name = "protection amulet", chance = 2660 },
 	{ name = "werehyaena talisman", chance = 650 },
-	{ name = "moonlight crystals", chance = 610 },
+	-- FAMILY: moonlight crystals at TibiaWiki EN loot statistics (67 of 5,174 kills, 2026-11-02; ours drops them all month, Tibia only at full moon)
+	{ id = 22083, chance = 1290 }, -- moonlight crystals
 	{ name = "werehyaena trophy", chance = 140 },
 }
 

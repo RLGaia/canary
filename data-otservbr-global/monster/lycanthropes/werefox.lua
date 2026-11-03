@@ -85,6 +85,8 @@ monster.voices = {
 }
 
 monster.loot = {
+	-- FAMILY: moonlight crystals at TibiaWiki EN loot statistics (120 of 10,985 kills, 2026-11-02; ours drops them all month, Tibia only at full moon)
+	{ id = 22083, chance = 1090 }, -- moonlight crystals
 	{ name = "gold coin", chance = 405000, maxCount = 200 },
 	{ name = "platinum coin", chance = 4050, maxCount = 2 },
 	{ name = "fox paw", chance = 4050, maxCount = 2 },

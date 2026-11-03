@@ -93,7 +93,8 @@ monster.loot = {
 	{ id = 22085, chance = 200 }, -- fur armor
 	{ id = 22102, chance = 200 }, -- wereboar trophy
 	{ id = 22060, chance = 200 }, -- werewolf amulet
-	{ id = 22083, chance = 200 }, -- moonlight crystals
+	-- FAMILY: moonlight crystals at TibiaWiki EN loot statistics (220 of 9,121 kills, 2026-11-02; ours drops them all month, Tibia only at full moon)
+	{ id = 22083, chance = 2410 }, -- moonlight crystals
 }
 
 monster.attacks = {

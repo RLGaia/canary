@@ -82,6 +82,8 @@ monster.loot = {
 	{ id = 22085, chance = 1500 }, -- fur armor
 	{ id = 22086, chance = 1500 }, -- badger boots
 	{ id = 22104, chance = 12000 }, -- trophy of feroxa
+	-- FAMILY: TibiaWiki EN loot statistics: moonlight crystals in all 60 kills, 1-9 (2026-11-02)
+	{ id = 22083, chance = 100000, maxCount = 9 }, -- moonlight crystals
 }
 
 monster.attacks = {

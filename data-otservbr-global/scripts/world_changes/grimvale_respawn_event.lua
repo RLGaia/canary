@@ -33,6 +33,11 @@ end
 local grimvaleRespawnEvent = GlobalEvent("GrimvaleRespawnEvent")
 
 function grimvaleRespawnEvent.onStartup()
+	-- FAMILY: no extra creatures on the Grimvale surface (Family.grimvaleQuietSurface,
+	-- lib/others/family_full_moon.lua; asked by Rodrigo 2026-11-02)
+	if Family and Family.grimvaleQuietSurface then
+		return true
+	end
 	spawnMonsters(grimvaleConfig.spawnDay == tonumber(os.date("%d")) and { "wereboar", "werebadger" } or { "bandit", "badger", "blue butterfly", "yellow butterfly" })
 	return true
 end

@@ -27,6 +27,12 @@
 
 Family = Family or {}
 Family.curseOfTheFullMoon = true
+-- No creatures on the Grimvale island surface except butterflies (Rodrigo,
+-- 2026-11-02): the surface spawns were taken out of world/otservbr-monster.xml,
+-- and this switch stops scripts/world_changes/grimvale_respawn_event.lua, which
+-- added bandits, badgers and butterflies at startup (wereboars and werebadgers
+-- on the 13th).
+Family.grimvaleQuietSurface = true
 
 FamilyFullMoon = {}
 local M = FamilyFullMoon

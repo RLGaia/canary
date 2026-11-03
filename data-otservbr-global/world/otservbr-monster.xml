@@ -31642,17 +31642,9 @@
 	<monster centerx="33218" centery="31671" centerz="7" radius="3">
 		<monster name="Deer" x="-1" y="3" z="7" spawntime="90" />
 	</monster>
-	<monster centerx="33337" centery="31671" centerz="7" radius="3">
-		<monster name="Wereboar" x="-2" y="-1" z="7" spawntime="90" />
-		<monster name="Bandit" x="0" y="-1" z="7" spawntime="90" />
-		<monster name="Bandit" x="-3" y="0" z="7" spawntime="90" />
-		<monster name="Werebadger" x="-1" y="3" z="7" spawntime="90" />
-	</monster>
-	<monster centerx="33351" centery="31671" centerz="7" radius="3">
-		<monster name="Werebadger" x="0" y="-2" z="7" spawntime="90" />
-		<monster name="Wereboar" x="-2" y="0" z="7" spawntime="90" />
-		<monster name="Badger" x="1" y="0" z="7" spawntime="90" />
-	</monster>
+	<!-- FAMILY: Grimvale island surface (2026-11-02, asked by Rodrigo: too many creatures): the wereboars, werebadgers, bandits and badgers spawned here were removed; the butterflies stay. TibiaWiki EN: the were-creatures are on the surface only at full moon. scripts/world_changes/grimvale_respawn_event.lua (extra surface creatures at startup) is off too. -->
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
 	<monster centerx="33540" centery="31671" centerz="7" radius="3">
 		<monster name="Ogre Shaman" x="3" y="3" z="7" spawntime="90" />
 	</monster>
@@ -31735,9 +31727,7 @@
 	<monster centerx="33139" centery="31676" centerz="7" radius="1">
 		<monster name="Poacher" x="1" y="1" z="7" spawntime="90" />
 	</monster>
-	<monster centerx="33349" centery="31676" centerz="7" radius="1">
-		<monster name="Werebadger" x="0" y="0" z="7" spawntime="90" />
-	</monster>
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
 	<monster centerx="31980" centery="31677" centerz="7" radius="3">
 		<monster name="Winter Wolf" x="1" y="-2" z="7" spawntime="90" />
 		<monster name="Winter Wolf" x="-2" y="1" z="7" spawntime="90" />
@@ -31755,16 +31745,9 @@
 	<monster centerx="33159" centery="31678" centerz="7" radius="1">
 		<monster name="Wolf" x="-1" y="1" z="7" spawntime="90" />
 	</monster>
-	<monster centerx="33330" centery="31678" centerz="7" radius="3">
-		<monster name="Badger" x="-2" y="-2" z="7" spawntime="90" />
-		<monster name="Wereboar" x="-2" y="-1" z="7" spawntime="90" />
-	</monster>
-	<monster centerx="33338" centery="31678" centerz="7" radius="1">
-		<monster name="Wereboar" x="0" y="0" z="7" spawntime="90" />
-	</monster>
-	<monster centerx="33344" centery="31678" centerz="7" radius="3">
-		<monster name="Werebadger" x="0" y="-1" z="7" spawntime="90" />
-	</monster>
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
 	<monster centerx="33526" centery="31678" centerz="7" radius="3">
 		<monster name="Clomp" x="0" y="0" z="7" spawntime="90" />
 	</monster>
@@ -31850,13 +31833,8 @@
 		<monster name="Skeleton" x="0" y="-1" z="7" spawntime="90" />
 		<monster name="Wisp" x="1" y="2" z="7" spawntime="90" />
 	</monster>
-	<monster centerx="33337" centery="31683" centerz="7" radius="1">
-		<monster name="Werebadger" x="0" y="0" z="7" spawntime="90" />
-	</monster>
-	<monster centerx="33351" centery="31683" centerz="7" radius="1">
-		<monster name="Werebadger" x="0" y="0" z="7" spawntime="90" />
-		<monster name="Wereboar" x="1" y="1" z="7" spawntime="90" />
-	</monster>
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
 	<monster centerx="33869" centery="31683" centerz="7" radius="1">
 		<monster name="Manticore" x="0" y="0" z="7" spawntime="60" />
 	</monster>
@@ -31876,12 +31854,9 @@
 		<monster name="Winter Wolf" x="2" y="1" z="7" spawntime="90" />
 	</monster>
 	<monster centerx="33330" centery="31685" centerz="7" radius="3">
-		<monster name="Werebadger" x="-2" y="-3" z="7" spawntime="90" />
 		<monster name="Butterfly" x="-1" y="-3" z="7" spawntime="90" />
 	</monster>
-	<monster centerx="33344" centery="31685" centerz="7" radius="3">
-		<monster name="Werebadger" x="-3" y="0" z="7" spawntime="90" />
-	</monster>
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
 	<monster centerx="33526" centery="31685" centerz="7" radius="3">
 		<monster name="Clomp" x="3" y="1" z="7" spawntime="90" />
 	</monster>
@@ -31981,9 +31956,7 @@
 	<monster centerx="33115" centery="31689" centerz="7" radius="1">
 		<monster name="Wolf" x="0" y="0" z="7" spawntime="90" />
 	</monster>
-	<monster centerx="33327" centery="31689" centerz="7" radius="1">
-		<monster name="Wereboar" x="0" y="0" z="7" spawntime="90" />
-	</monster>
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
 	<monster centerx="33817" centery="31689" centerz="7" radius="1">
 		<monster name="Lamassu" x="0" y="0" z="7" spawntime="60" />
 	</monster>
@@ -31996,9 +31969,7 @@
 	<monster centerx="33221" centery="31690" centerz="7" radius="2">
 		<monster name="Skeleton" x="2" y="0" z="7" spawntime="90" />
 	</monster>
-	<monster centerx="33331" centery="31690" centerz="7" radius="1">
-		<monster name="Werebadger" x="0" y="0" z="7" spawntime="90" />
-	</monster>
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
 	<monster centerx="33729" centery="31690" centerz="7" radius="1">
 		<monster name="Ogre Brute" x="0" y="0" z="7" spawntime="90" />
 	</monster>
@@ -32036,9 +32007,7 @@
 		<monster name="Orc Berserker" x="2" y="-1" z="7" spawntime="90" />
 		<monster name="Orc Spearman" x="0" y="2" z="7" spawntime="90" />
 	</monster>
-	<monster centerx="33326" centery="31692" centerz="7" radius="1">
-		<monster name="Wereboar" x="0" y="0" z="7" spawntime="90" />
-	</monster>
+	<!-- FAMILY: Grimvale surface spawn removed (see the note at the first Grimvale surface spawn) -->
 	<monster centerx="33554" centery="31692" centerz="7" radius="3">
 		<monster name="Clomp" x="1" y="-3" z="7" spawntime="90" />
 	</monster>
