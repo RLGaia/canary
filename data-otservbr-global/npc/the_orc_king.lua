@@ -155,7 +155,13 @@ keywordHandler:addKeyword({ "third" }, StdModule.say, { npcHandler = npcHandler,
 keywordHandler:addKeyword({ "deathwish" }, StdModule.say, { npcHandler = npcHandler, text = "His ancient fortress on Darama was deserted as the evil Djinn fled this world after his imprisonment. Now the time has come for the evil Djinns to return to their master although this will certainly awaken the {good Djinn} too." })
 keywordHandler:addKeyword({ "good djinn" }, StdModule.say, { npcHandler = npcHandler, text = "I will not share anything more about that topic with you {paleskins}." })
 keywordHandler:addKeyword({ "paleskins" }, StdModule.say, { npcHandler = npcHandler, text = "You are as ugly as maggots, although not quite as as tasty." })
+-- FAMILY: keywords answer before creatureSayCallback, so after the first faction's lamp
+-- (RecievedLamp = 1) this reply swallowed "malor" in the second faction's lamp dialog.
+-- Skip it while the lamp question (topic 1) is open (solo_quests.lua).
 keywordHandler:addKeyword({ "malor" }, StdModule.say, { npcHandler = npcHandler, text = "This cursed djinn king! I set him free from an enchanted lamp, and he cheated me!" }, function(player)
+	if Family.unlockExclusiveQuests and npcHandler:getTopic(player:getId()) == 1 then
+		return false
+	end
 	return player:getStorageValue(Storage.Quest.U7_4.DjinnWar.RecievedLamp) == 1
 end)
 

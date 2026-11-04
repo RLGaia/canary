@@ -109,4 +109,5 @@ FamilyChangelog = {
 	{ "2026-11-02", "Grimvale: the island surface is quiet now, no were-creatures, bandits or badgers (only butterflies). Moonlight crystals drop much more often from all were-creatures, at the rates players recorded in Tibia, and Feroxa always gives some." },
 	{ "2026-11-03", "Grimvale: the full moon is back, every Saturday. That day six were-creatures roam the island surface, the purple nightshades bloom, the silver veins can be mined, and Feroxa returns once after an hour of play. On other days the island is quiet and the nightshades and veins rest." },
 	{ "2026-11-03", "Commands now explain themselves: say !commands (or !help) for the list, then !commands and a name for how to use one, with examples, e.g. !commands deposit or !commands transfer. !commands gold lists every command about gold." },
+	{ "2026-11-04", "The Djinn War: after finishing one faction, the Orc King now gives you the lamp for the other one too ('hi', 'lamp', 'Malor'). Before, he only answered 'This cursed djinn king!' and kept the lamp." },
 }
