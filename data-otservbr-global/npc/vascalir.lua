@@ -1,3 +1,10 @@
+-- FAMILY: The Rookie Guard Quest can be started at any level (Rodrigo, 2026-11-06). Upstream refuses
+-- it above level 5, which our 50x experience reaches after a few rats. The level 8 warning (finish
+-- before level 9 or delete the quest) is skipped too: nothing stops the quest at level 9.
+-- false = upstream rules.
+Family = Family or {}
+Family.rookieGuardNoLevelLimit = true
+
 local internalNpcName = "Vascalir"
 local npcType = Game.createNpcType(internalNpcName)
 local npcConfig = {}
@@ -61,11 +68,11 @@ local function greetCallback(npc, creature)
 	local playerId = creature:getId()
 	local player = Player(creature)
 	-- Reject to start missions
-	if player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Questline) == -1 and player:getLevel() > 5 then
+	if player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Questline) == -1 and player:getLevel() > 5 and not Family.rookieGuardNoLevelLimit then
 		npcHandler:say("Welcome, adventurer |PLAYERNAME|. Thank you for offering your help - but you are already too experienced to start this quest. Just go on hunting monsters, you'll be better off that way.", npc, creature)
 		return false
 		-- Warn if started missions and reached level 8
-	elseif player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Questline) == 1 and player:getLevel() == 8 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Level8Warning) == -1 then
+	elseif player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Questline) == 1 and player:getLevel() == 8 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Level8Warning) == -1 and not Family.rookieGuardNoLevelLimit then
 		npcHandler:setMessage(MESSAGE_GREET, {
 			"|PLAYERNAME| - a small word of advice before we continue this mission. You are level 8 now, while it is possible to reach higher levels while still on Rookgaard, you should consider leaving Rookgaard at about level 9. ...",
 			"You can still go on with this mission, but you won't be able to finish the quest once you've reached level 9. So only kill the monsters you absolutely have to kill - if you want to finish this quest! ...",
@@ -956,7 +963,7 @@ keywordHandler:addKeyword({ "continue" }, StdModule.say, {
 	text = "Alright. Talk to me again to continue with your mission, but heed my words!",
 	ungreet = true,
 }, function(player)
-	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Questline) == 1 and player:getLevel() == 8 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Level8Warning) == -1
+	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Questline) == 1 and player:getLevel() == 8 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Level8Warning) == -1 and not Family.rookieGuardNoLevelLimit
 end, function(player)
 	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Level8Warning, 1)
 end)
@@ -967,7 +974,7 @@ keywordHandler:addKeyword({ "delete" }, StdModule.say, {
 	text = "Alright.",
 	ungreet = true,
 }, function(player)
-	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Questline) == 1 and player:getLevel() == 8 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Level8Warning) == -1
+	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Questline) == 1 and player:getLevel() == 8 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Level8Warning) == -1 and not Family.rookieGuardNoLevelLimit
 end, function(player)
 	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Questline, -1)
 	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission01, -1)

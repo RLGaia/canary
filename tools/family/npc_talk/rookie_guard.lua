@@ -270,8 +270,22 @@ check("M12 finished at level 9 without the level 8 line", has(a, "talk to the or
 say("vascalir", q, "bye")
 
 -- Level gates
+q = rookie({ level = 60 })
+check("level 60 can start (no level limit)", has(say("vascalir", q, "hi"), "have you come to help in our mission"))
+say("vascalir", q, "mission")
+check("level 60 starts Mission 2", has(say("vascalir", q, "yes"), "Have you understood all of that?") and st(q, "Mission02") == 1)
+say("vascalir", q, "bye")
+q = rookie({ level = 8, storage = { [RG.Questline] = 1, [RG.Mission02] = 5, [RG.Mission03] = 1, [RG.RatKills] = 2 } })
+local greet = say("vascalir", q, "hi")
+check("no level 8 warning", not has(greet, "small word of advice") and has(greet, "Are you done with the 5 rats"), greet:sub(1, 60))
+say("vascalir", q, "bye")
+Family.rookieGuardNoLevelLimit = false
 q = rookie({ level = 6 })
-check("too experienced at level 6 (upstream rule)", has(say("vascalir", q, "hi"), "already too experienced"))
+check("switch off: too experienced at level 6 (upstream)", has(say("vascalir", q, "hi"), "already too experienced"))
+q = rookie({ level = 8, storage = { [RG.Questline] = 1, [RG.Mission02] = 5, [RG.Mission03] = 1 } })
+check("switch off: level 8 warning (upstream)", has(say("vascalir", q, "hi"), "small word of advice"))
+check("switch off: continue", has(say("vascalir", q, "continue"), "heed my words"))
+Family.rookieGuardNoLevelLimit = true
 
 -- every {highlighted} word answers (quest words are checked in their steps above)
 local QUEST_WORDS = { mission = true, help = true, herbs = true, continue = true, delete = true, yes = true, ["deposit all"] = true,
