@@ -177,11 +177,15 @@ function poacherCorpse.onUse(player, item, frompos, itemEx, topos)
 	if missionState == -1 then
 		return true
 	end
-	if missionState == 2 then
+	-- FAMILY: the landing square under the den hole (uid 25025) already sets state 3
+	-- ("The poacher ... is dead" in the quest log), so upstream's check for state 2
+	-- made the body do nothing. Accept 2 and 3; at 3 a lost knife can be taken again (ours).
+	if missionState == 2 or missionState == 3 then
 		local corpseState = player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.PoacherCorpse)
-		if corpseState == -1 then
+		if corpseState == -1 or (missionState == 3 and player:getItemCount(12672) == 0) then
 			local reward = Game.createItem(12672, 1)
-			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have found " .. reward:getArticle() .. " " .. reward:getName() .. ".")
+			local article = reward:getArticle() ~= "" and reward:getArticle() or "a" -- FAMILY: the knife has no article in items.xml
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have found " .. article .. " " .. reward:getName() .. ".")
 			player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.PoacherCorpse, 1)
 			player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06, 3)
 			player:addItemEx(reward, true, CONST_SLOT_WHEREEVER)

@@ -110,4 +110,5 @@ FamilyChangelog = {
 	{ "2026-11-03", "Grimvale: the full moon is back, every Saturday. That day six were-creatures roam the island surface, the purple nightshades bloom, the silver veins can be mined, and Feroxa returns once after an hour of play. On other days the island is quiet and the nightshades and veins rest." },
 	{ "2026-11-03", "Commands now explain themselves: say !commands (or !help) for the list, then !commands and a name for how to use one, with examples, e.g. !commands deposit or !commands transfer. !commands gold lists every command about gold." },
 	{ "2026-11-04", "The Djinn War: after finishing one faction, the Orc King now gives you the lamp for the other one too ('hi', 'lamp', 'Malor'). Before, he only answered 'This cursed djinn king!' and kept the lamp." },
+	{ "2026-11-06", "The Rookie Guard, Mission 06: the dead poacher in the wolf den gives you the skinning knife again when you use him (before, nothing happened). If you lose the knife before skinning the war wolf, use the body again for a new one." },
 }
