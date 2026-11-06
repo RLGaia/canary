@@ -102,7 +102,8 @@ local function greetCallback(npc, creature)
 	elseif player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission04) == 6 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) == -1 then
 		npcHandler:setMessage(MESSAGE_GREET, "Oh, hello |PLAYERNAME|! Have you made up your mind about sneaking into the tarantula's lair and retrieving a sample of her web? Are you up for it?")
 		-- Started but not finished mission 5
-	elseif player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) >= 1 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) <= 2 then
+	elseif player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) >= 1 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) <= 2 or player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) == 4 then
+		-- FAMILY: also state 4 (caught by the spider queen); before, he greeted with the last greeting he had used for anyone
 		npcHandler:setMessage(MESSAGE_GREET, "Do you need the instruction for the tarantula's lair again?")
 		-- Finishing mission 5
 	elseif player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) == 3 then
@@ -196,7 +197,8 @@ local mission2 = keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 }, function(player)
 	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission02) == -1
 end)
-keywordHandler:addAliasKeyword({ "mission" })
+-- FAMILY: kept to give it the "yes" step's answers below (see after mission2Accept)
+local mission2Alias = keywordHandler:addAliasKeyword({ "mission" })
 
 -- Mission 2: Decline
 keywordHandler:addKeyword({ "no" }, StdModule.say, {
@@ -250,6 +252,33 @@ mission2Accept:addChildKeyword({ "no" }, StdModule.say, {
 	},
 	moveup = 1,
 })
+
+-- FAMILY: the "mission" alias was made before the "yes" step had its answers, and an alias only
+-- copies the answers that exist at that moment, so "hi, mission, yes" (the wikis' order) repeated
+-- the introduction instead of starting the mission. Give the alias the same answers now.
+for _, child in ipairs(mission2.children) do
+	mission2Alias:addChildKeywordNode(child)
+end
+
+-- FAMILY: while the stones are carried his greeting asks "do you remember everything you need to
+-- do?", but nothing answered yes or no. "No" explains the task again (his own words), "yes" is ours.
+local function mission2Running(player)
+	local state = player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission02)
+	return state >= 1 and state <= 3
+end
+keywordHandler:addKeyword({ "yes" }, StdModule.say, {
+	npcHandler = npcHandler,
+	text = "Good. Then off to work with you - load at least two of the catapults with stones from the barn and come back to me.",
+	ungreet = true,
+}, mission2Running)
+keywordHandler:addKeyword({ "no" }, StdModule.say, {
+	npcHandler = npcHandler,
+	text = {
+		"Let me explain again then. Go into the barn just a few steps to the north-west of here and down the ladder into the cellar. You'll find a huge stone pile down there. Use it to pick up one of the big stones. ...",
+		"Carry one stone to at least two of the four catapults located on Norma's roof to the north, this academy and Obi's roof to the south. ...",
+		"Use the stone on the catapult to load it. You can load each catapult only once, so try spotting two different catapults. Good luck!",
+	},
+}, mission2Running)
 
 -- Mission 2: Finish - Confirm
 keywordHandler:addKeyword({ "yes" }, StdModule.say, {
@@ -331,11 +360,14 @@ mission3:addChildKeyword({ "no" }, StdModule.say, {
 })
 
 -- Mission 3: Complain not finished
-keywordHandler:addKeyword({ "yes" }, nil, {}, function(player)
+-- FAMILY: upstream said this from the node's action with the player's id where the NPC belongs,
+-- so nothing was said; now the callback says it
+keywordHandler:addKeyword({ "yes" }, function(npc, player)
+	local ratKills = math.max(player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.RatKills), 0)
+	npcHandler:say("You still need to kill " .. (5 - ratKills) .. " more rats. Come back once you've killed enough for some experience and equipment!", npc, player)
+	return true
+end, { npcHandler = npcHandler }, function(player)
 	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission03) == 1 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.RatKills) < 5
-end, function(player)
-	local ratKills = player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.RatKills)
-	npcHandler:say("You still need to kill " .. (5 - ratKills) .. " more rats. Come back once you've killed enough for some experience and equipment!", player.uid)
 end)
 keywordHandler:addAliasKeyword({ "no" })
 
@@ -402,7 +434,7 @@ keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 		"If you run into her lair, you should have enough time to retrieve a sample of her web before she catches you. Just USE one of her intact cobwebs in her lair. Good luck!",
 	},
 }, function(player)
-	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission04) == 6 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) == -1 or (player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) >= 1 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) <= 2)
+	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission04) == 6 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) == -1 or (player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) >= 1 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) <= 2) or player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) == 4 -- FAMILY: also caught (4)
 end, function(player)
 	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05, 1)
 	player:addMapMark({ x = 32051, y = 32110, z = 7 }, MAPMARK_GREENSOUTH, "Spider Lair")
@@ -414,7 +446,7 @@ keywordHandler:addKeyword({ "no" }, StdModule.say, {
 	text = "Well, if you change your mind, let me know.",
 	ungreet = true,
 }, function(player)
-	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission04) == 6 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) == -1 or (player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) >= 1 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) <= 2)
+	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission04) == 6 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) == -1 or (player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) >= 1 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) <= 2) or player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission05) == 4 -- FAMILY: also caught (4)
 end)
 
 -- Mission 5: Finish - Accept Reward (Studded armor)
@@ -883,6 +915,28 @@ keywordHandler:addKeyword({ "no" }, StdModule.say, {
 end)
 
 -- Mission 12: Finish - Confirm/Decline
+local function finishMission12(player)
+	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission12, 15)
+	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Questline, 2)
+	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.AcademyDoor, -1)
+end
+
+-- FAMILY: below level 8 he says what both wikis show (reach level 8 first); the upstream text
+-- below is kept for characters who already are level 8 or more
+keywordHandler:addKeyword({ "yes" }, StdModule.say, {
+	npcHandler = npcHandler,
+	text = {
+		"You DID kill him indeed! Incredible! This little village can finally live in peace again - and you've grown so strong, too. I'm proud of you, |PLAYERNAME|. My work here is done - but you are not quite finished yet. ...",
+		"You have to reach level 8 by hunting some monsters, but that's something you should have grown accustomed to by now. ...",
+		"Afterwards, talk to the oracle over the academy and travel to the Isle of Destiny. There, you will determine your future - which I'm sure is a bright one. ...",
+		"What will become of you? A mighty sorcerer? A fierce knight? A skilled paladin? Or a powerful druid? Only you can decide. ...",
+		"Rookgaard will miss you, but the whole world of Tibia is open to you now. Take care, |PLAYERNAME|. It's good to know you.",
+	},
+}, function(player)
+	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission12) == 14 and player:getLevel() < 8
+end, finishMission12)
+keywordHandler:addAliasKeyword({ "no" })
+
 keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
@@ -893,11 +947,7 @@ keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	},
 }, function(player)
 	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission12) == 14
-end, function(player)
-	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission12, 15)
-	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Questline, 2)
-	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.AcademyDoor, -1)
-end)
+end, finishMission12)
 keywordHandler:addAliasKeyword({ "no" })
 
 -- Missions: Confirm - Continue (Level 8)

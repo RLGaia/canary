@@ -88,7 +88,8 @@ local mission4 = keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 }, function(player)
 	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission04) == 1
 end)
-keywordHandler:addAliasKeyword({ "mission" })
+-- FAMILY: kept to give it the "yes" step's answers (see below)
+local mission4Alias = keywordHandler:addAliasKeyword({ "mission" })
 
 -- Mission 4: Decline
 keywordHandler:addKeyword({ "no" }, StdModule.say, {
@@ -125,6 +126,12 @@ mission4:addChildKeyword({ "no" }, StdModule.say, {
 	text = "Oh. Well, if you change your mind, let me know.",
 	reset = true,
 })
+
+-- FAMILY: the "mission" alias was made before the "yes" step had its answers, so "hi, mission,
+-- yes" (the wikis' order) repeated the first answer instead of going on. Give it the same answers.
+for _, child in ipairs(mission4.children) do
+	mission4Alias:addChildKeywordNode(child)
+end
 
 -- Mission 4: Confirm Delivered (Without)
 keywordHandler:addKeyword({ "yes" }, StdModule.say, {

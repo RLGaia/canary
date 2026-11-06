@@ -41,6 +41,12 @@ quest from Palimuth's first mission to the reward on Palimuth's side, on Azerus'
 the lost ghost charm and the TibiaWiki BR/EN lines of Palimuth, Azerus, Tamerin, Mr. West and
 Maritima: `luajit tools/family/npc_talk/in_service_of_yalahar.lua`.
 
+`rookie_guard.lua` is The Rookie Guard Quest check (2026-11-06, 422 checks): one character plays
+missions 2-12 with Vascalir, Lily, Hyacinth, Tom and Paulie (world steps set as storages), the
+states the wikis do not show (stones carried, rats missing, herbs or skin lost, deposit without gold),
+every `{highlighted}` word and every NPC line of both wikis (lines kept different are listed with the
+reason): `luajit tools/family/npc_talk/rookie_guard.lua spoiler.txt br.txt`.
+
 ## Writing a check
 
 ```lua

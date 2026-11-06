@@ -55,7 +55,11 @@ local specialFlask = Action()
 
 function specialFlask.onUse(player, item, frompos, item2, topos)
 	local missionState = player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission11)
-	if missionState == 2 and item2.itemid == 5989 then
+	-- FAMILY: also 4080, the next look of a dead wasp: our movable corpses (data/scripts/family/
+	-- movable_corpses.lua) turn the fresh corpse 5989 into it right after the kill, so 5989 alone
+	-- never matched and the poison could not be taken. State 1 too: state 2 is set by one square
+	-- in front of the tower, and a wasp killed before stepping on it should count as well.
+	if (missionState == 1 or missionState == 2) and item2 and (item2.itemid == 5989 or item2.itemid == 4080) then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You carefully gather some of the wasp poison. Bring it back to Vascalir.")
 		player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission11, 3)
 		player:removeItem(12785, 1)

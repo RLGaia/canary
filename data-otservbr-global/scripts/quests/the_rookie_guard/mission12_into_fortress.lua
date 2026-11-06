@@ -324,8 +324,11 @@ local taranturaTrap = Action()
 
 function taranturaTrap.onUse(player, item, frompos, itemEx, topos)
 	local missionState = player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission12)
-	target = Tile(topos):getTopCreature()
-	if missionState >= 8 and target:getName() == "Furious Orc Berserker" then
+	-- FAMILY: upstream read the creature into a global and called it without a check, so using the
+	-- trap on an empty square or in the backpack raised a Lua error
+	local tile = topos and Tile(topos)
+	local target = tile and tile:getTopCreature()
+	if missionState >= 8 and target and target:getName() == "Furious Orc Berserker" then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The berserker can't catch you anymore - but only for 20 seconds. You need to lure him away from the teleporter!")
 		if missionState == 8 then
 			player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission12, 9)
@@ -512,10 +515,16 @@ local boss = {
 	roomCenter = { x = 31937, y = 32170, z = 10 },
 }
 
+-- FAMILY: inside the throne room (the area the entry teleport checks for players)
+local function inBossRoom(position)
+	return position.z == boss.roomCenter.z and math.abs(position.x - boss.roomCenter.x) <= 8 and math.abs(position.y - boss.roomCenter.y) <= 5
+end
+
 local function finishBossFight(playerUid, bossUid)
 	local player = Player(playerUid)
 	-- Kick out the player
-	if player then
+	-- FAMILY: only while still in the room; a player who died or left was pulled back into the lair
+	if player and inBossRoom(player:getPosition()) then
 		local roomExitPosition = Position(31980, 32173, 10)
 		player:teleportTo(roomExitPosition, false)
 		roomExitPosition:sendMagicEffect(CONST_ME_TELEPORT)
@@ -555,6 +564,13 @@ function enterBossRoomTeleport.onStepIn(creature, item, position, fromPosition)
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "A player is already inside the boss room.")
 			player:teleportTo(fromPosition, false)
 			return true
+		end
+		-- FAMILY: a Kraknaknork left from a fight whose player died is removed with its timer,
+		-- so the new fight has one Kraknaknork and one timer
+		stopEvent(boss.fight)
+		local oldBoss = boss.uid and Creature(boss.uid)
+		if oldBoss then
+			oldBoss:remove()
 		end
 		-- Spawn the boss
 		local bossCreature = Game.createMonster("Kraknaknork", Position(31930, 32170, 10))

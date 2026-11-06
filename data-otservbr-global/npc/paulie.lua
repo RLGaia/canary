@@ -88,6 +88,15 @@ local function creatureSayCallback(npc, creature, type, message)
 		}, npc, creature, 10)
 		npcHandler:setTopic(playerId, 0)
 		return true
+	-- FAMILY: {basic} and {advanced} were offered above but had no answer; the other bankers' lines
+	elseif MsgContains(message, "basic") then
+		npcHandler:say("You can check the {balance} of your bank account, {deposit} money or {withdraw} it.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+		return true
+	elseif MsgContains(message, "advanced") then
+		npcHandler:say("Your bank account will be used automatically when you want to rent a house or place an offer on an item on the market.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+		return true
 		--Balance
 	elseif MsgContains(message, "balance") then
 		npcHandler:setTopic(playerId, 0)
@@ -158,14 +167,15 @@ local function creatureSayCallback(npc, creature, type, message)
 		end
 	elseif npcHandler:getTopic(playerId) == 2 then
 		if MsgContains(message, "yes") then
-			if player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission08) == 1 then
-				player:depositMoney(count[playerId])
+			-- FAMILY: the bonus only after a deposit that worked (upstream paid it even when the gold was
+			-- gone), and the total in one number as on both wikis ("added the amount of 150 gold")
+			if player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission08) == 1 and player:depositMoney(count[playerId]) then
 				Bank.credit(player, 50)
-				npcHandler:say("Alright, we have added the amount of " .. count[playerId] .. " +50 gold to your {balance} - that is the money you deposited plus a bonus of 50 gold. \z
+				npcHandler:say("Alright, we have added the amount of " .. (count[playerId] + 50) .. " gold to your {balance} - that is the money you deposited plus a bonus of 50 gold. \z
 				Thank you! You can withdraw your money anytime.", npc, creature)
 				player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission08, 2)
 				npcHandler:setTopic(playerId, 0)
-				return false
+				return true
 			end
 			if player:depositMoney(count[playerId]) then
 				npcHandler:say("Alright, we have added the amount of " .. count[playerId] .. " gold to your {balance}. \z
@@ -342,7 +352,8 @@ local function creatureSayCallback(npc, creature, type, message)
 end
 
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
-npcHandler:setMessage(MESSAGE_FAREWELL, "Have a nice day.")
+-- FAMILY: his farewell on both wikis (upstream "Have a nice day.")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye, and remember: entrusting us with your gold is the safest way of storing it!")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Have a nice day.")
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)

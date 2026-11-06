@@ -103,7 +103,8 @@ local mission6 = keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 }, function(player)
 	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06) == 1
 end)
-keywordHandler:addAliasKeyword({ "mission" })
+-- FAMILY: kept to give it the "yes" step's answers (see below)
+local mission6Alias = keywordHandler:addAliasKeyword({ "mission" })
 
 -- Mission 6: Decline start
 keywordHandler:addKeyword({ "no" }, StdModule.say, {
@@ -136,11 +137,17 @@ mission6:addChildKeyword({ "no" }, StdModule.say, {
 	reset = true,
 })
 
+-- FAMILY: the "mission" alias was made before the "yes" step had its answers, so "hi, mission,
+-- yes" (the wikis' order) repeated the first answer instead of going on. Give it the same answers.
+for _, child in ipairs(mission6.children) do
+	mission6Alias:addChildKeywordNode(child)
+end
+
 -- Mission 6: Finish - Confirm (Give skin)
 keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
-		"Hmm... unfortunately the skin is damaged too badly. Whoever skinned this wolf wasn't very skilled at it. Hmm. ...",
+		"Hmmmm... unfortunately the skin is damaged too badly. Whoever skinned this wolf wasn't very skilled at it. Hmmm. ...",
 		"Ah, no need to fret. Tell you what kid, I'm gonna give you some normal leather boots instead. They should keep your feet warm as well. Here you go. ...",
 		"By the way... that running you did to get out of the cave will be your normal walking speed when you are several levels higher. With each level you gain, you'll also become a little faster. ...",
 		"There are also other items, spells and equipment that increase your speed. ...",
@@ -161,6 +168,26 @@ keywordHandler:addKeyword({ "no" }, StdModule.say, {
 }, function(player)
 	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06) == 6 and player:getItemCount(12740) >= 1
 end)
+
+-- FAMILY: "Hmmmm..." and "Hmmm." above as on both wikis (upstream "Hmm...", "Hmm."). A character who lost the skin after
+-- the run (state 6) could never finish: the den is closed by then and Tom said nothing. He gives the
+-- boots anyway, since the skin was useless (first line ours, the rest his).
+keywordHandler:addKeyword({ "yes" }, StdModule.say, {
+	npcHandler = npcHandler,
+	text = {
+		"No leather on you? Hmmmm... well, whatever skin you got out of there would have been damaged too badly anyway. ...",
+		"Ah, no need to fret. Tell you what kid, I'm gonna give you some normal leather boots instead. They should keep your feet warm as well. Here you go. ...",
+		"By the way... that running you did to get out of the cave will be your normal walking speed when you are several levels higher. With each level you gain, you'll also become a little faster. ...",
+		"There are also other items, spells and equipment that increase your speed. ...",
+		"You can also tame creatures to ride on that will also increase your speed. So don't worry if you're out of breath now - you won't always be that slow. Now off with you and back to Vascalir, I have work to do.",
+	},
+}, function(player)
+	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06) == 6 and player:getItemCount(12740) == 0
+end, function(player)
+	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06, 7)
+	player:addItemEx(Game.createItem(3552, 1), true, CONST_SLOT_WHEREEVER)
+end)
+keywordHandler:addAliasKeyword({ "no" })
 
 -- Basic keywords
 keywordHandler:addKeyword({ "hint" }, StdModule.rookgaardHints, { npcHandler = npcHandler })

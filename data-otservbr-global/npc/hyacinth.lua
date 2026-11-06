@@ -100,6 +100,19 @@ mission4LostHerbs:addChildKeyword({ "no" }, StdModule.say, {
 	ungreet = true,
 })
 
+-- FAMILY: "yes" or "herbs" without the herbs got no answer at all; now he asks whether they were
+-- lost, with the same answers as after "no" (line ours)
+local mission4NoHerbs = keywordHandler:addKeyword({ "yes" }, StdModule.say, {
+	npcHandler = npcHandler,
+	text = "Hmm, I don't see any herbs on you. Did you lose them on the way?",
+}, function(player)
+	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission04) == 2 and player:getItemCount(12671) == 0
+end)
+for _, child in ipairs(mission4LostHerbs.children) do
+	mission4NoHerbs:addChildKeywordNode(child)
+end
+keywordHandler:addAliasKeyword({ "herbs" })
+
 -- Mission 4: Accept (First reward)
 keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	npcHandler = npcHandler,

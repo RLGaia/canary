@@ -111,4 +111,5 @@ FamilyChangelog = {
 	{ "2026-11-03", "Commands now explain themselves: say !commands (or !help) for the list, then !commands and a name for how to use one, with examples, e.g. !commands deposit or !commands transfer. !commands gold lists every command about gold." },
 	{ "2026-11-04", "The Djinn War: after finishing one faction, the Orc King now gives you the lamp for the other one too ('hi', 'lamp', 'Malor'). Before, he only answered 'This cursed djinn king!' and kept the lamp." },
 	{ "2026-11-06", "The Rookie Guard, Mission 06: the dead poacher in the wolf den gives you the skinning knife again when you use him (before, nothing happened). If you lose the knife before skinning the war wolf, use the body again for a new one." },
+	{ "2026-11-06", "The Rookie Guard Quest: saying hi, mission, yes to Vascalir, Lily and Tom now starts their missions (it repeated the first answer). The wasp poison can be taken from a dead wasp again, Tom gives the boots even if the skin was lost after the run, Paulie only pays the bonus for a real deposit, and dying against Kraknaknork no longer pulls you back into his lair." },
 }
