@@ -17,6 +17,13 @@ local NPC = "data-otservbr-global/npc/"
 
 -- engine bits the Rookgaard NPCs use
 IsRunningGlobalDatapack = IsRunningGlobalDatapack or function() return true end
+RETURNVALUE_NOERROR = RETURNVALUE_NOERROR or 0
+MESSAGE_EVENT_ADVANCE = MESSAGE_EVENT_ADVANCE or 19
+local ITEMS = { [3083] = { "garlic necklace", 150 }, [3054] = { "silver amulet", 200 } }
+ItemType = function(id)
+	local d = ITEMS[id] or { "item " .. id, 0 }
+	return { getCharges = function() return d[2] end, getName = function() return d[1] end }
+end
 Game.createItem = function(id, count)
 	return { itemId = id, count = count or 1, getId = function(self) return self.itemId end }
 end
@@ -38,8 +45,15 @@ local function rookie(o)
 	p.exp = 0
 	p.marks = 0
 	rawset(p, "addItemEx", function(self, item)
-		self:addItem(item.itemId, item.count)
-		return true
+		-- an item with charges is one item; its count is the charges
+		self:addItem(item.itemId, ITEMS[item.itemId] and 1 or item.count)
+		self.charges = self.charges or {}
+		self.charges[item.itemId] = item.count
+		return RETURNVALUE_NOERROR
+	end)
+	rawset(p, "sendTextMessage", function(self, _, text)
+		self.messages = self.messages or {}
+		self.messages[#self.messages + 1] = text
 	end)
 	rawset(p, "addExperience", function(self, n) self.exp = self.exp + n end)
 	rawset(p, "addMapMark", function(self) self.marks = self.marks + 1 end)
@@ -236,6 +250,17 @@ say("vascalir", p, "bye")
 check("M10 greeting", has(say("vascalir", p, "hi"), "Are you ready for your next mission?"))
 a = say("vascalir", p, "yes")
 check("M10 garlic necklace", has(a, "Take this garlic necklace") and p.items[3083] == 1 and st(p, "Mission10") == 1)
+check("M10 garlic necklace with 150 charges", p.charges[3083] == 150, p.charges[3083])
+say("vascalir", p, "bye")
+-- explanations again: a lost necklace is given again, a kept one is not
+check("M10 explain-again greeting", has(say("vascalir", p, "hi"), "do you need explanations again?"))
+say("vascalir", p, "yes")
+check("M10 explain again: necklace kept, none added", p.items[3083] == 1)
+say("vascalir", p, "bye")
+p.items[3083] = 0
+say("vascalir", p, "hi")
+a = say("vascalir", p, "yes")
+check("M10 explain again: lost necklace given again", p.items[3083] == 1 and has(a, "Undead monsters tend to drain your life") and p.messages[#p.messages] == "Vascalir gives you a new garlic necklace.")
 say("vascalir", p, "bye")
 p.storage[RG.Sarcophagus] = 1
 p.items[12674] = 1
@@ -251,6 +276,15 @@ check("M11 greeting", has(say("vascalir", p, "hi"), "I'm in a really good mood")
 check("M11 explained", has(say("vascalir", p, "yes"), "Are you prepared for that mission?"))
 a = say("vascalir", p, "yes")
 check("M11 flask and silver amulet", has(a, "Here is the empty flask") and p.items[12785] == 1 and p.items[3054] == 1 and st(p, "Mission11") == 1)
+check("M11 silver amulet with 200 charges", p.charges[3054] == 200, p.charges[3054])
+-- lost flask and amulet: both given again
+say("vascalir", p, "bye")
+p.items[12785] = 0
+p.items[3054] = 0
+check("M11 lost flask greeting", has(say("vascalir", p, "hi"), "lose"))
+a = say("vascalir", p, "yes")
+check("M11 lost flask: new flask and amulet", has(a, "Here's a new one") and p.items[12785] == 1 and p.items[3054] == 1, a:sub(1, 60))
+say("vascalir", p, "bye")
 say("vascalir", p, "bye")
 p.storage[RG.Mission11] = 3
 p.items[12785] = 0

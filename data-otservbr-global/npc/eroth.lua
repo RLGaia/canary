@@ -63,7 +63,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		-- Check if player has completed certain objectives
 		elseif player:getStorageValue(Storage.Quest.U8_1.ToBlindTheEnemy.Questline) == 2 and player:getStorageValue(Storage.Quest.U8_1.ToBlindTheEnemy.DwarvenShield) == 1 and player:getStorageValue(Storage.Quest.U8_1.ToBlindTheEnemy.MorningStar) == 1 and player:getStorageValue(Storage.Quest.U8_1.ToBlindTheEnemy.BP1) == 1 and player:getStorageValue(Storage.Quest.U8_1.ToBlindTheEnemy.BP2) == 1 then
 			npcHandler:say("I heard the blow! The reflection must have caused a overcharge of magical energy leading to the contraction and the implosion. Just like I hoped! Please take this as a reward. Thank you very much.", npc, creature)
-			player:addItem(3082, 1)
+			player:addItem(3082, 50) -- FAMILY: count = charges for an elven amulet (1 gave a one-charge amulet)
 			player:addItem(3035, 10)
 			player:setStorageValue(Storage.Quest.U8_1.ToBlindTheEnemy.Questline, 3)
 			npcHandler:setTopic(playerId, 0)

@@ -149,7 +149,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		elseif player:getStorageValue(Storage.Quest.U8_1.TibiaTales.AgainstTheSpiderCult) == 5 then
 			player:setStorageValue(Storage.Quest.U8_1.TibiaTales.AgainstTheSpiderCult, 6)
 			npcHandler:setTopic(playerId, 0)
-			player:addItem(814, 1)
+			player:addItem(814, 200) -- FAMILY: count = charges for a terra amulet (1 gave a one-charge amulet)
 			npcHandler:say("What? YOU DID IT?!?! That's...that's...er....<drops a piece of paper. You see the headline 'death certificate'> like I expected!! Here is your reward.", npc, creature)
 		end
 	-- FAMILY: Edron City Tasks (data-otservbr-global/scripts/family/edron_tasks.lua): no level

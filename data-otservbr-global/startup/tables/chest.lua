@@ -362,7 +362,8 @@ ChestUnique = {
 		useKV = true,
 		itemId = 4025,
 		itemPos = { x = 32245, y = 32492, z = 10 },
-		reward = { { 3082, 1 } }, -- Elven aulet
+		-- FAMILY: for an item with charges the count is its charges (1 gave a one-charge item); full charges
+		reward = { { 3082, 50 } }, -- Elven aulet
 		questName = "deeperfibula4",
 	},
 	[6012] = {
@@ -701,7 +702,8 @@ ChestUnique = {
 	[6056] = {
 		itemId = 2472,
 		itemPos = { x = 32212, y = 31896, z = 15 },
-		reward = { { 3081, 1 } },
+		-- FAMILY: for an item with charges the count is its charges (1 gave a one-charge item); full charges
+		reward = { { 3081, 5 } },
 		storage = Storage.Quest.U7_2.TheQueenOfTheBanshees.Reward.StoneSkinAmulet,
 	},
 	-- Stone skin amulet
@@ -745,7 +747,8 @@ ChestUnique = {
 		itemPos = { x = 32778, y = 32282, z = 11 },
 		container = 2853,
 		keyAction = Storage.Quest.Key.ID3702,
-		reward = { { 2971, 1 }, { 3509, 1 }, { 3351, 1 }, { 3424, 1 }, { 2821, 1 }, { 3271, 1 }, { 3085, 1 }, { 3048, 1 } },
+		-- FAMILY: for an item with charges the count is its charges (1 gave a one-charge item); full charges
+		reward = { { 2971, 1 }, { 3509, 1 }, { 3351, 1 }, { 3424, 1 }, { 2821, 1 }, { 3271, 1 }, { 3085, 200 }, { 3048, 20 } },
 		weight = 195.00,
 		storage = Storage.Quest.PreU6_0.OrnamentedShield.Rewards.OrnamentedShield,
 	},
@@ -754,7 +757,8 @@ ChestUnique = {
 		itemId = 2480,
 		itemPos = { x = 32769, y = 32302, z = 10 },
 		container = 2859,
-		reward = { { 2949, 1 }, { 3059, 1 }, { 3083, 1 }, { 3035, 5 }, { 3053, 1 } },
+		-- FAMILY: for an item with charges the count is its charges (1 gave a one-charge item); full charges
+		reward = { { 2949, 1 }, { 3059, 1 }, { 3083, 150 }, { 3035, 5 }, { 3053, 1 } },
 		weight = 44.00,
 		questName = "ornamentedshield",
 	},

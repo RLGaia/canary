@@ -642,6 +642,25 @@ keywordHandler:addKeyword({ "no" }, StdModule.say, {
 	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission09) == 9
 end)
 
+-- FAMILY: Game.createItem(id, 1) reads the 1 as charges for items that have charges, so the garlic
+-- necklace came with 1 of 150 and the silver amulet with 1 of 200 charges; an empty necklace slot
+-- also took them at once, so the player never saw them, and the first absorbed hit used them up.
+-- Now full charges, into the backpack first (anywhere else, or on the floor, if it does not fit).
+local function giveCharged(player, itemId)
+	local item = Game.createItem(itemId, math.max(ItemType(itemId):getCharges(), 1))
+	if player:addItemEx(item, false, CONST_SLOT_BACKPACK) ~= RETURNVALUE_NOERROR then
+		player:addItemEx(item, true, CONST_SLOT_WHEREEVER)
+	end
+end
+
+-- FAMILY: a lost (or used up) necklace or amulet is given again while its mission runs (ours)
+local function giveAgainIfMissing(player, itemId)
+	if player:getItemCount(itemId) == 0 then
+		giveCharged(player, itemId)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Vascalir gives you a new " .. ItemType(itemId):getName() .. ".")
+	end
+end
+
 -- Mission 10: Accept
 keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	npcHandler = npcHandler,
@@ -658,7 +677,7 @@ end, function(player)
 	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission10, 1)
 	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.UnholyCryptDoor, 1)
 	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.UnholyCryptChests, 0)
-	player:addItemEx(Game.createItem(3083, 1), true, CONST_SLOT_WHEREEVER)
+	giveCharged(player, 3083) -- FAMILY: full charges, see giveCharged
 	player:addMapMark({ x = 32131, y = 32201, z = 7 }, MAPMARK_GREENSOUTH, "Unholy Crypt")
 end)
 
@@ -681,6 +700,8 @@ keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	},
 }, function(player)
 	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission10) == 1 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Sarcophagus) == -1
+end, function(player)
+	giveAgainIfMissing(player, 3083) -- FAMILY
 end)
 
 -- Mission 10: Decline (Explain again)
@@ -771,7 +792,7 @@ mission11:addChildKeyword(
 	nil,
 	function(player)
 		player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission11, 1)
-		player:addItemEx(Game.createItem(3054, 1), true, CONST_SLOT_WHEREEVER)
+		giveCharged(player, 3054) -- FAMILY: full charges, see giveCharged
 		player:addItemEx(Game.createItem(12785, 1), true, CONST_SLOT_WHEREEVER)
 		player:addMapMark({ x = 32000, y = 32139, z = 7 }, MAPMARK_GREENSOUTH, "Wasps' Nest")
 	end
@@ -791,6 +812,8 @@ keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	ungreet = true,
 }, function(player)
 	return (player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission11) == 1 or player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission11) == 2) and player:getItemCount(12785) > 0
+end, function(player)
+	giveAgainIfMissing(player, 3054) -- FAMILY
 end)
 
 -- Mission 11: Confirm - Lost Flask (Without having it)
@@ -802,6 +825,7 @@ keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	return (player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission11) == 1 or player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission11) == 2) and player:getItemCount(12785) == 0
 end, function(player)
 	player:addItemEx(Game.createItem(12785, 1), true, CONST_SLOT_WHEREEVER)
+	giveAgainIfMissing(player, 3054) -- FAMILY
 end)
 
 -- Mission 11: Decline - Lost Flask
@@ -861,6 +885,7 @@ mission11Reset:addChildKeyword(
 	function(player)
 		player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission11, 1)
 		player:addItemEx(Game.createItem(12785, 1), true, CONST_SLOT_WHEREEVER)
+		giveAgainIfMissing(player, 3054) -- FAMILY
 	end
 )
 
