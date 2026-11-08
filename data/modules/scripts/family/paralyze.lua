@@ -25,6 +25,13 @@ local function isRuneOrPotion(itemId)
 end
 
 function onRecvbyte(player, msg, byte)
+	-- Byte 132 is shared with "area runes on your own familiar's square"
+	-- (data/scripts/lib/family_familiar_runes.lua): only one module can hold a
+	-- byte. It reads the packet and puts the read position back.
+	if byte == 132 and FamilyFamiliarRunes then
+		FamilyFamiliarRunes.beforeUseOnCreature(player, msg)
+	end
+
 	if not FamilyParalyze or not Family or not Family.paralyzeOnlySlows then
 		return
 	end

@@ -35,6 +35,7 @@
 	<!-- FAMILY: one free Prey list reroll per slot and day, back at 00:00 (data/scripts/family/prey_reroll.lua) -->
 	<module type="recvbyte" byte="235" script="family/prey_actions.lua" />
 	<!-- FAMILY: paralysis only slows walking; spells, runes and potions work while paralyzed (data/scripts/lib/family_paralyze.lua) -->
+	<!-- FAMILY: byte 132 also lets area runes be aimed at your own familiar's square (data/scripts/lib/family_familiar_runes.lua) -->
 	<module type="recvbyte" byte="150" script="family/paralyze.lua" />
 	<module type="recvbyte" byte="130" script="family/paralyze.lua" />
 	<module type="recvbyte" byte="131" script="family/paralyze.lua" />
