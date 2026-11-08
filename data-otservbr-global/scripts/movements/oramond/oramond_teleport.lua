@@ -17,6 +17,11 @@ function oramondTeleport.onStepIn(creature, item, position, fromPosition)
 
 	local teleport = config[item.actionid]
 	if teleport then
+		-- FAMILY: City Access, the slide back to the boat and the Glooth Factory are for citizens
+		-- of Rathleton only (lib/others/family_rathleton.lua)
+		if FamilyRathleton and FamilyRathleton.refuseSlide(player, item.actionid, position, fromPosition) then
+			return true
+		end
 		player:teleportTo(teleport)
 		fromPosition:sendMagicEffect(CONST_ME_GREEN_RINGS)
 		teleport:sendMagicEffect(CONST_ME_GREEN_RINGS)

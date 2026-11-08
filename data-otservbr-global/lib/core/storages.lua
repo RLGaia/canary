@@ -3094,6 +3094,14 @@ Storage = {
 			-- 256 blood goblet, 512 ghost's tear, 1024-32768 pages delivered to Julius (II-VII), 65536 garden door,
 			-- 131072 a crystal was charged by A Wandering Soul
 		},
+		-- FAMILY: Rathleton Quest, Marvin's voting and citizen ranks (2026-11-08; lib/others/family_rathleton.lua)
+		-- (the votes still to cast stay in the upstream Storage.Quest.U10_50.OramondQuest.VotingPoints)
+		FamilyRathleton = {
+			VotesCast = 48770, -- votes cast at Marvin in total (topics and the Dark Trails funding vote)
+			Rank = 48771, -- 1 commoner, 2 inhabitant, 3 citizen, 4 squire
+			StatusLog = 48772, -- 1 = Marvin put the citizen status in the quest log
+			Voted = 48773, -- bit mask of the options voted at least once (FamilyRathleton.topics, bits 0-11)
+		},
 		-- FAMILY: In Service of Yalahar fixes (lib/others/family_in_service_of_yalahar.lua)
 		FamilyInServiceOfYalahar = {
 			Side03 = 48780, -- side taken in Mission 03: 1 Palimuth, 2 Azerus

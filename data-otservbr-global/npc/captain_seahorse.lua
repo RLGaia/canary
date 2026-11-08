@@ -71,7 +71,12 @@ addTravelKeyword("port hope", 150, Position(32527, 32784, 6))
 addTravelKeyword("liberty bay", 170, Position(32285, 32892, 6))
 addTravelKeyword("ankrahmun", 160, Position(33092, 32883, 6))
 addTravelKeyword("cormaya", 20, Position(33288, 31956, 6))
-addTravelKeyword("oramond", 200, Position(33479, 31985, 7))
+-- FAMILY: Oramond only for citizens of Rathleton, 110 gold (TibiaWiki EN Captain Seahorse)
+if FamilyRathleton and FamilyRathleton.on() then
+	FamilyRathleton.addCitizenTravel(keywordHandler, npcHandler, "oramond", 110, Position(33479, 31985, 7))
+else
+	addTravelKeyword("oramond", 200, Position(33479, 31985, 7))
+end
 
 -- Kick
 keywordHandler:addKeyword({ "kick" }, StdModule.kick, { npcHandler = npcHandler, destination = { Position(33174, 31773, 6), Position(33175, 31771, 6), Position(33177, 31772, 6) } })

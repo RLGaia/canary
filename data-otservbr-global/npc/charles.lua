@@ -130,6 +130,11 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 end
 
+-- FAMILY: Oramond for citizens of Rathleton, 200 gold (TibiaWiki EN Charles)
+if FamilyRathleton and FamilyRathleton.on() then
+	FamilyRathleton.addCitizenTravel(keywordHandler, npcHandler, "oramond", 200, Position(33479, 31985, 7))
+end
+
 keywordHandler:addKeyword({ "kick" }, StdModule.kick, { npcHandler = npcHandler, destination = { Position(32535, 32792, 6), Position(32536, 32778, 6) } })
 keywordHandler:addKeyword({ "sail" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go - {Thais}, {Darashia}, {Venore}, {Liberty Bay}, {Ankrahmun}, {Yalahar} or {Edron?}" })
 keywordHandler:addKeyword({ "passage" }, StdModule.say, { npcHandler = npcHandler, text = "Where do you want to go - {Thais}, {Darashia}, {Venore}, {Liberty Bay}, {Ankrahmun}, {Yalahar} or {Edron?}" })

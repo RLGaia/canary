@@ -67,6 +67,10 @@ local function addTravelKeyword(keyword, cost, destination, condition)
 	travelKeyword:addChildKeyword({ "no" }, StdModule.say, { npcHandler = npcHandler, text = "We would like to serve you some time.", reset = true })
 end
 
+-- FAMILY: Oramond for citizens of Rathleton, 130 gold (TibiaWiki EN Captain Fearless)
+if FamilyRathleton and FamilyRathleton.on() then
+	FamilyRathleton.addCitizenTravel(keywordHandler, npcHandler, "oramond", 130, Position(33479, 31985, 7))
+end
 addTravelKeyword("thais", 170, Position(32310, 32210, 6))
 addTravelKeyword("krailos", 185, Position(33493, 31712, 6)) -- {x = 33493, y = 31712, z = 6}
 addTravelKeyword("carlin", 130, Position(32387, 31820, 6))

@@ -26,7 +26,9 @@ npcConfig.flags = {
 npcConfig.voices = {
 	interval = 15000,
 	chance = 50,
-	{ text = "Passages to Thais and Krailos! Visit the strange lands!" },
+	{ text = "Passages to Thais! Visit the strange lands!" }, -- FAMILY: TibiaWiki EN sounds
+	{ text = "Special passages to Edron, Venore, Port Hope or Krailos for citizens!" },
+	{ text = "Passages to Kilmaresh! Visit the city of Issavi and its architectural wonders!" },
 }
 
 local keywordHandler = KeywordHandler:new()
@@ -63,8 +65,17 @@ local function addTravelKeyword(keyword, cost, destination, action)
 	travelKeyword:addChildKeyword({ "no" }, StdModule.say, { npcHandler = npcHandler, text = "We would like to serve you some time.", reset = true })
 end
 
+-- FAMILY: Edron, Venore, Port Hope and Krailos only for citizens of Rathleton, prices from
+-- TibiaWiki EN Captain Gulliver (upstream: Krailos for everyone at 180, no Edron/Venore/Port Hope)
+if FamilyRathleton and FamilyRathleton.on() then
+	FamilyRathleton.addCitizenTravel(keywordHandler, npcHandler, "edron", 110, Position(33175, 31764, 6))
+	FamilyRathleton.addCitizenTravel(keywordHandler, npcHandler, "venore", 130, Position(32954, 32022, 6))
+	FamilyRathleton.addCitizenTravel(keywordHandler, npcHandler, "port hope", 200, Position(32527, 32784, 6))
+	FamilyRathleton.addCitizenTravel(keywordHandler, npcHandler, "krailos", 60, Position(33493, 31712, 6))
+else
+	addTravelKeyword("krailos", 180, Position(33493, 31712, 6))
+end
 addTravelKeyword("thais", 150, Position(32311, 32210, 6))
-addTravelKeyword("krailos", 180, Position(33493, 31712, 6))
 addTravelKeyword("issavi", 130, Position(33902, 31462, 6))
 
 -- Kick
@@ -79,13 +90,13 @@ keywordHandler:addKeyword({ "tibia" }, StdModule.say, { npcHandler = npcHandler,
 keywordHandler:addKeyword({ "good" }, StdModule.say, { npcHandler = npcHandler, text = "I will gladly take on board everything you wish to transport. No pets, though." })
 keywordHandler:addKeyword({ "passenger" }, StdModule.say, { npcHandler = npcHandler, text = "<bows> I would be delighted to have you on board." })
 
-keywordHandler:addKeyword({ "sail" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Krailos}?" })
-keywordHandler:addKeyword({ "route" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Krailos}?" })
-keywordHandler:addKeyword({ "trip" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Krailos}?" })
-keywordHandler:addKeyword({ "passage" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Krailos}?" })
-keywordHandler:addKeyword({ "town" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Krailos}?" })
-keywordHandler:addKeyword({ "destination" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Krailos}?" })
-keywordHandler:addKeyword({ "go" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Krailos}?" })
+keywordHandler:addKeyword({ "sail" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Issavi}? Citizens of Rathleton may also sail to {Edron}, {Venore}, {Port Hope} or {Krailos}." }) -- FAMILY
+keywordHandler:addKeyword({ "route" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Issavi}? Citizens of Rathleton may also sail to {Edron}, {Venore}, {Port Hope} or {Krailos}." }) -- FAMILY
+keywordHandler:addKeyword({ "trip" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Issavi}? Citizens of Rathleton may also sail to {Edron}, {Venore}, {Port Hope} or {Krailos}." }) -- FAMILY
+keywordHandler:addKeyword({ "passage" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Issavi}? Citizens of Rathleton may also sail to {Edron}, {Venore}, {Port Hope} or {Krailos}." }) -- FAMILY
+keywordHandler:addKeyword({ "town" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Issavi}? Citizens of Rathleton may also sail to {Edron}, {Venore}, {Port Hope} or {Krailos}." }) -- FAMILY
+keywordHandler:addKeyword({ "destination" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Issavi}? Citizens of Rathleton may also sail to {Edron}, {Venore}, {Port Hope} or {Krailos}." }) -- FAMILY
+keywordHandler:addKeyword({ "go" }, StdModule.say, { npcHandler = npcHandler, text = "You would like to book a passage for {Thais} or {Issavi}? Citizens of Rathleton may also sail to {Edron}, {Venore}, {Port Hope} or {Krailos}." }) -- FAMILY
 
 keywordHandler:addKeyword({ "oramond" }, StdModule.say, { npcHandler = npcHandler, text = "This is the only safe landing place on Oramond. The cliffs surrounding the isle are too dangerous, you see." })
 

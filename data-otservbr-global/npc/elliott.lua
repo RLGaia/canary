@@ -80,6 +80,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		if player:getStorageValue(Storage.Quest.U10_50.OramondQuest.TheAncientSewers.Mission) < 1 then
 			npcHandler:say("The sewers need repair. You in?", npc, creature)
 			npcHandler:setTopic(playerId, 2)
+		elseif player:getStorageValue(Storage.Quest.U10_50.OramondQuest.TheAncientSewers.Mission) < 21 then
+			-- FAMILY: no vote before the 20 repairs (upstream gave it right after taking the job; our line)
+			local fixed = player:getStorageValue(Storage.Quest.U10_50.OramondQuest.TheAncientSewers.Mission) - 1
+			npcHandler:say(string.format("You fixed %d of the twenty broken pipes and generators so far. Look for the smoke down there and fix the rest with your hands.", fixed), npc, creature)
+			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U10_50.OramondQuest.TheAncientSewers.Mission) < 22 then
 			npcHandler:say("Elliott's keeps calling it that. It's just another job! You fixed some broken pipes and stuff? Let me check, {ok}?", npc, creature)
 			npcHandler:setTopic(playerId, 3)
@@ -97,7 +102,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 0)
 		end
 	elseif MsgContains(message, "ok") then
-		if npcHandler:getTopic(playerId) == 3 then
+		if npcHandler:getTopic(playerId) == 3 and player:getStorageValue(Storage.Quest.U10_50.OramondQuest.TheAncientSewers.Mission) == 21 then -- FAMILY: 20 repairs done
 			npcHandler:say("Good. Thanks, man. That's one vote you got for helping us with this. If you want to redo this task just say {abandoned sewers} to repeat it.", npc, creature)
 			player:setStorageValue(Storage.Quest.U10_50.OramondQuest.TheAncientSewers.Mission, 22)
 			local currentVotingPoints = player:getStorageValue(Storage.Quest.U10_50.OramondQuest.VotingPoints)

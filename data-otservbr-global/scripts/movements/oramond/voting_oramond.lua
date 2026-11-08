@@ -17,6 +17,10 @@ function votingOramond.onStepIn(creature, item, position, fromPosition)
 	end
 
 	local teleport = setting[os.date("%A")]
+	-- FAMILY: the dungeon the citizens voted for at Marvin, not the weekday (lib/others/family_rathleton.lua)
+	if FamilyRathleton and FamilyRathleton.on() then
+		teleport = FamilyRathleton.dungeonPositions[FamilyRathleton.result("dungeon")] or teleport
+	end
 	if teleport then
 		player:teleportTo(teleport)
 		fromPosition:sendMagicEffect(CONST_ME_TELEPORT)

@@ -89,7 +89,37 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 0)
 		end
 	elseif MsgContains(message, "addon") then
-		if player:getStorageValue(Storage.Quest.U10_50.DarkTrails.Outfit) == 1 then
+		-- FAMILY: the addons follow the options voted at Marvin (each shortcut and dungeon / each boss,
+		-- TibiaWiki BR Rathleton Quest and Ezebeth's own words), not the votes left unspent
+		local R = FamilyRathleton and FamilyRathleton.on() and FamilyRathleton
+		local Addon1 = Storage.Quest.U10_50.GloothEngineerOutfits.Addon1
+		local Addon2 = Storage.Quest.U10_50.GloothEngineerOutfits.Addon2
+		local firstReady = R and R.hasVotedAll(player, "shortcut") and R.hasVotedAll(player, "dungeon")
+		local secondReady = R and R.hasVotedAll(player, "boss")
+		if R and player:getStorageValue(Storage.Quest.U10_50.DarkTrails.Outfit) == 1 then
+			if firstReady and player:getStorageValue(Addon1) < 1 then
+				npcHandler:say("Receive the first addon.", npc, creature)
+				player:addOutfit(610, 1)
+				player:addOutfit(618, 1)
+				player:setStorageValue(Addon1, 1)
+			elseif secondReady and player:getStorageValue(Addon2) < 1 then
+				npcHandler:say("Receive the second addon.", npc, creature)
+				player:addOutfit(610, 2)
+				player:addOutfit(618, 2)
+				player:setStorageValue(Addon2, 1)
+			elseif player:getStorageValue(Addon1) == 1 and player:getStorageValue(Addon2) == 1 then
+				npcHandler:say("You already have both addons. Rathleton thanks you for your dedication.", npc, creature) -- ours
+			else
+				npcHandler:say({
+					"We provide addons to people dedicated to our city. So the first addon is granted to someone who has voted for each of the available shortcuts and each dungeon at least once. ...",
+					"The second addon is granted to someone who has voted for each bossfight at least once.",
+				}, npc, creature)
+			end
+			if player:getStorageValue(Addon1) == 1 and player:getStorageValue(Addon2) == 1 and not player:hasAchievement("Glooth Engineer") then
+				player:addAchievement("Glooth Engineer")
+			end
+			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(Storage.Quest.U10_50.DarkTrails.Outfit) == 1 then
 			if player:getStorageValue(Storage.Quest.U10_50.OramondQuest.VotingPoints) >= 6 and player:getStorageValue(Storage.Quest.U10_50.GloothEngineerOutfits.Addon2) < 1 then
 				npcHandler:say("Receive the second addon.", npc, creature)
 				player:addOutfit(610, 2)

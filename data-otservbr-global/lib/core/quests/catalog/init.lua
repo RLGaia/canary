@@ -54,6 +54,7 @@ local questModules = {
 	"053_edron_city_tasks", -- FAMILY: Daniel Steelsoul's tasks
 	"054_venore_daily_tasks", -- FAMILY: Norman the Foreman's daily tasks
 	"055_grimvale_quest", -- FAMILY: Grimvale Quest (The Curse Spreads)
+	"056_rathleton", -- FAMILY: Rathleton Quest (citizen status from Marvin)
 }
 
 local catalog = dofile(CORE_DIRECTORY .. "/lib/core/quests/catalog.lua")

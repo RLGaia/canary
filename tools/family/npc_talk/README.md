@@ -47,6 +47,11 @@ states the wikis do not show (stones carried, rats missing, herbs or skin lost, 
 every `{highlighted}` word and every NPC line of both wikis (lines kept different are listed with the
 reason): `luajit tools/family/npc_talk/rookie_guard.lua spoiler.txt br.txt`.
 
+`rathleton.lua` is the Rathleton ranks check (2026-11-08, 92 checks): Marvin's voting, status,
+quest log and promotions to squire, the Dark Trails funding vote, the 14-day count, the
+citizen-only ships (Gulliver, Fearless, Charles, Seahorse), Elliott/Jacob's repairs, Sholley and
+Ezebeth: `luajit tools/family/npc_talk/rathleton.lua`.
+
 ## Writing a check
 
 ```lua
