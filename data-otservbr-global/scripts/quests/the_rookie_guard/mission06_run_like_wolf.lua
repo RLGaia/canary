@@ -134,9 +134,15 @@ warWolfDenTiles:register()
 
 -- War wolf den boost tiles
 
+-- FAMILY: the den's floors below the hole; the 25 s check only pulls back a player still in it
+-- (one who left with an adventurer's stone was taken back into the den)
+local function inWolfDen(position)
+	return position.x >= 32095 and position.x <= 32160 and position.y >= 32110 and position.y <= 32150 and position.z >= 8 and position.z <= 11
+end
+
 local function teleportBack(uid)
 	local player = Player(uid)
-	if player and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06) == 5 then
+	if player and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06) == 5 and inWolfDen(player:getPosition()) then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Oh no... you were too slow and the wolves caught up with you. You may try again.")
 		player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06, 4)
 		player:teleportTo({ x = 32109, y = 32131, z = 11 })
@@ -155,9 +161,13 @@ function warWolfDenBoostTiles.onStepIn(creature, item, position, fromPosition)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "RUUUUUUUUUUUUUUUUUN!")
 		player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06, 5)
 		player:getPosition():sendMagicEffect(CONST_ME_POFF)
+		-- FAMILY: "hasted by 90 levels" (TibiaWiki EN) = +180 speed. Upstream used the old formula
+		-- setFormula(0.3, -24, ...), which this Canary reads as new speed = 0.3 x (base - 40) - 24:
+		-- it slowed the player to almost nothing (below zero at low levels), an "invisible wall"
+		-- in every direction. A fixed +180 like the haste spells give.
 		local conditionHaste = Condition(CONDITION_HASTE)
 		conditionHaste:setParameter(CONDITION_PARAM_TICKS, 25000)
-		conditionHaste:setFormula(0.3, -24, 0.3, -24)
+		conditionHaste:setParameter(CONDITION_PARAM_SPEED, 180)
 		player:addCondition(conditionHaste)
 		addEvent(teleportBack, 25000, player:getId())
 	end

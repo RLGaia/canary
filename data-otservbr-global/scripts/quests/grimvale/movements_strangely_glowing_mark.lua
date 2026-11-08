@@ -1,6 +1,8 @@
 local condition = Condition(CONDITION_HASTE)
 condition:setParameter(CONDITION_PARAM_TICKS, 22000)
-condition:setFormula(0.7, -56, 0.7, -56)
+-- FAMILY: old formula (speed + 0.7 x base - 56) written for the old engine; this Canary reads it as
+-- new speed = 0.7 x (base - 40) - 56, which slowed the player. Same haste in the new form.
+condition:setFormula(1.7, 12, 1.7, 12)
 
 local strangelyGlowingMark = MoveEvent()
 

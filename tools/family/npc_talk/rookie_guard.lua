@@ -178,6 +178,18 @@ a = say("tom", q, "yes")
 check("M6 Tom: lost skin does not get stuck", (q.items[3552] or 0) == 1 or st(q, "Mission06") ~= 6, a:sub(1, 80))
 say("tom", q, "bye")
 
+-- left the den another way (adventurer's stone) with the skin: state 4 or 5
+for _, state in ipairs({ 4, 5 }) do
+	q = rookie({ storage = { [RG.Mission06] = state }, items = { [12740] = 1 } })
+	check("M6 Tom: skin brought at state " .. state .. " (left without the ramp)", has(say("tom", q, "hi"), "were you able to find some war wolf leather?"))
+	a = say("tom", q, "yes")
+	check("M6 Tom: boots at state " .. state, has(a, "unfortunately the skin is damaged too badly") and q.items[3552] == 1 and q.items[12740] == 0 and st(q, "Mission06") == 7)
+	say("tom", q, "bye")
+end
+q = rookie({ storage = { [RG.Mission06] = 4 } })
+check("M6 Tom: state 4 without the skin is sent back", has(say("tom", q, "hi"), "Go back to that wolf den"))
+say("tom", q, "bye")
+
 -- Mission 7: Attack!
 say("vascalir", p, "bye")
 check("M7 greeting", has(say("vascalir", p, "hi"), "Do you smell the fire?"))

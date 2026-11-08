@@ -113,4 +113,5 @@ FamilyChangelog = {
 	{ "2026-11-06", "The Rookie Guard, Mission 06: the dead poacher in the wolf den gives you the skinning knife again when you use him (before, nothing happened). If you lose the knife before skinning the war wolf, use the body again for a new one." },
 	{ "2026-11-06", "The Rookie Guard Quest: saying hi, mission, yes to Vascalir, Lily and Tom now starts their missions (it repeated the first answer). The wasp poison can be taken from a dead wasp again, Tom gives the boots even if the skin was lost after the run, Paulie only pays the bonus for a real deposit, and dying against Kraknaknork no longer pulls you back into his lair." },
 	{ "2026-11-06", "The Rookie Guard Quest can now be started at any level: Vascalir no longer turns away characters above level 5, and he no longer stops you at level 8 to warn about level 9." },
+	{ "2026-11-08", "The Rookie Guard, Mission 06: the RUUUUN! after skinning the war wolf really makes you faster now (it froze you in place, like an invisible wall), and Tom takes the skin even if you left the den another way. The mythic fire in Grimvale speeds you up too instead of slowing you down." },
 }

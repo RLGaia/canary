@@ -58,6 +58,12 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: back from the den with the war wolf skin: state 4 (skinned), 5 (running) or 6 (out)
+local function hasSkinBack(player)
+	local state = player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06)
+	return state >= 4 and state <= 6 and player:getItemCount(12740) >= 1
+end
+
 local function greetCallback(npc, creature)
 	local playerId = creature:getId()
 	local player = Player(creature)
@@ -65,6 +71,10 @@ local function greetCallback(npc, creature)
 	if player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06) == 1 then
 		npcHandler:setMessage(MESSAGE_GREET, "Hey there, |PLAYERNAME|. Did Vascalir send you to me for a {mission}?")
 		-- Not finished mission 6
+	-- FAMILY: someone who leaves the den another way (adventurer's stone, a ladder...) with the skin
+	-- never steps on the exit ramp (state 6), and Tom kept sending him back; the skin is what counts
+	elseif hasSkinBack(player) then
+		npcHandler:setMessage(MESSAGE_GREET, "Hey there, |PLAYERNAME|. You look... exhausted. Did you run a lot? And more importantly, were you able to find some war wolf leather?")
 	elseif player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06) > 1 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06) < 6 then
 		npcHandler:setMessage(MESSAGE_GREET, "Now, now - we can't work with that. Go back to that wolf den and fulfil your mission! Unless there is anything else I can help you with.")
 		-- Finishing mission 6
@@ -154,7 +164,7 @@ keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 		"You can also tame creatures to ride on that will also increase your speed. So don't worry if you're out of breath now - you won't always be that slow. Now off with you and back to Vascalir, I have work to do.",
 	},
 }, function(player)
-	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06) == 6 and player:getItemCount(12740) >= 1
+	return hasSkinBack(player) -- FAMILY: was state 6 only
 end, function(player)
 	player:setStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06, 7)
 	player:removeItem(12740, 1)
@@ -166,7 +176,7 @@ keywordHandler:addKeyword({ "no" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "Are you sure? I think I see some war wolf leather on you. You should reply with {yes}.",
 }, function(player)
-	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06) == 6 and player:getItemCount(12740) >= 1
+	return hasSkinBack(player) -- FAMILY: was state 6 only
 end)
 
 -- FAMILY: "Hmmmm..." and "Hmmm." above as on both wikis (upstream "Hmm...", "Hmm."). A character who lost the skin after
