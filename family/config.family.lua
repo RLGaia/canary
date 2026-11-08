@@ -52,6 +52,13 @@ autoBank = false                -- looted gold goes to the backpack (true until 
                                 -- themselves (data/scripts/family/coin_change.lua)
 preyFreeThirdSlot = true        -- third Prey slot without Tibia Coins
 taskHuntingFreeThirdSlot = true -- third Hunting Task slot without Tibia Coins
+-- No AFK kick (2026-11-08, Rodrigo; upstream 15 minutes). The pinned C++ has
+-- no off switch (0 would kick after 1 minute), so the limit is set as high as
+-- it can safely go: Player::onThink and the death screen check compare an
+-- int32 millisecond counter with (minutes + 1) * 60000, which must stay below
+-- 2,147,483,647, so the maximum is 35,790. 35,000 minutes is about 24 days
+-- without touching the game; any action resets the counter.
+kickIdlePlayerAfterMinutes = 35000
 -- Creature list rerolls (2026-11-01, Rodrigo; free from 2026-10-19): gold
 -- again (level x 200, as in Tibia), but one free reroll per slot each day,
 -- back at 00:00 like the boss cooldowns (Tibia: 20 hours after the last free

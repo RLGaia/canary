@@ -116,4 +116,5 @@ FamilyChangelog = {
 	{ "2026-11-08", "The Rookie Guard, Mission 06: the RUUUUN! after skinning the war wolf really makes you faster now (it froze you in place, like an invisible wall), and Tom takes the skin even if you left the den another way. The mythic fire in Grimvale speeds you up too instead of slowing you down." },
 	{ "2026-11-08", "Catching a goldfish with an empty goldfish bowl now gives the secret achievement Silent Pet (before, nothing gave it)." },
 	{ "2026-11-08", "Fixes from the Canary team: the Store delivers what it shows (the Badger and Floating mounts, Full Trophy Hunter, Oven, Heart Table, Volcanic Spire, both carpets, Exercise Wraps, 500 charges on the Ultimate Health Keg); !deposit, !withdraw and !transfer refuse negative amounts; Lesser Ethereal Spear and Lesser Front Sweep have their own spell ids; True Asuras give more XP; soul regen in resting areas goes up to your vocation's maximum; small fixes for Wyrdin (The New Frontier), Soul War and primal pods." },
+	{ "2026-11-08", "No more AFK logout: standing still no longer disconnects you after 15 minutes, not even on the death screen." },
 }
