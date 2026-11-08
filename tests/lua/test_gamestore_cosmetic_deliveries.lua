@@ -13,7 +13,8 @@ end
 
 local mountIds = {}
 for attributes in readFile("data/XML/mounts.xml"):gmatch("<mount%s+([^>]+)>") do
-	local name = attributes:match('name="([^"]+)"')
+	-- FAMILY: our mounts.xml names end in their terrains, e.g. "Battle Badger (Wild/Caves)"
+	local name = attributes:match('name="([^"]+)"'):gsub("%s*%b()$", "")
 	mountIds[name] = tonumber(attributes:match('id="(%d+)"'))
 end
 

@@ -425,6 +425,7 @@ Each edit is marked with a `FAMILY:` comment. Re-check these after merging a new
 | `data-otservbr-global/npc/vascalir.lua`, `lily.lua`, `tom.lua` | Rookie Guard: the "mission" alias gets the answers of the "yes" step (Hi - Mission - Yes works); Vascalir: answers while the stones are carried, rat count line said, caught-by-the-queen greeting, level 8 line below level 8; Tom: wiki "Hmmmm" lines, boots without the lost skin (2026-11-06) |
 | `data-otservbr-global/npc/hyacinth.lua`, `paulie.lua` | Rookie Guard: Hyacinth asks about lost herbs on yes/herbs without them; Paulie pays the bonus only after a real deposit, says the total, wiki farewell, {basic}/{advanced} (2026-11-06) |
 | `data-otservbr-global/scripts/quests/the_rookie_guard/mission11_sweet_poison.lua`, `mission12_into_fortress.lua` | Flask also on dead wasp 4080 (movable corpses) and at state 1; tarantula trap nil check; boss timer only moves a player still in the throne room, old Kraknaknork removed on a new try (2026-11-06) |
+| `tests/lua/test_gamestore_cosmetic_deliveries.lua` | Upstream test from #4165: strips our terrain suffix from mount names before looking them up (2026-11-08) |
 
 If a Canary update conflicts in `raids.xml` or `otservbr-monster.xml`, take the upstream file and
 apply the same changes again (every raid margin becomes 71582 and the Ferumbras raid line is switched on; spawntime above 3600 becomes 3600).
@@ -584,9 +585,32 @@ release, so only data fixes (Lua, XML, NPCs) that work with it are copied, one
 by one with `git cherry-pick -x` (the commit message names the upstream
 commit). Checked on 2026-10-19: of the 95 upstream commits after v3.6.1,
 about half change C++ (they need a newer `canary.exe`) and most others are CI,
-Docker or documentation. Copied (35):
+Docker or documentation. Checked again on 2026-11-08 (17 newer commits, up to
+#4138 of 2026-11-05; upstream `main` now targets client 15.25). Copied (47):
 
-- Daily reward: reward wall fix #4146 (see Daily reward above).
+- Daily reward: reward wall fix #4146 (see Daily reward above); soul regen in
+  resting areas goes up to the vocation's maximum soul (#4138; before, free
+  accounts stopped at 100).
+- Store (2026-11-08): offers that delivered the wrong thing (#4165, #4166,
+  #4167): Battle, Ether and Zaoan Badger and the three Floating mounts gave
+  other mounts (Battle Badger gave a Percht Sleigh), Full Trophy Hunter gave
+  Lupine Warden, Oven gave a confetti cannon, Heart Table a heart chest,
+  Volcanic Spire a volcanic sphere, the Colourful and Flowery carpets were
+  swapped, Exercise Wraps gave the durable ones, Ultimate Health Keg had a
+  count instead of 500 charges.
+- Bank commands (#4173): `!deposit`, `!withdraw` and `!transfer` refuse
+  negative, zero and broken amounts (the old check let negative amounts pass).
+- Starter spells (#4162): Lesser Ethereal Spear and Lesser Front Sweep get ids
+  270 and 271 (Lesser Ethereal Spear shared 169 with Apprentice's Strike).
+  Checked against our client 15.11: its proficiency data uses 169 for casters,
+  270 for distance and 271 for melee weapons.
+- Monsters and items: True Dawnfire Asura 8,100 XP and True Midnight Asura
+  8,200 XP (#4159), folded artefact carpets II, III, IV and VI are floor
+  decorations (#4160).
+- Quests and systems (2026-11-08): Wyrdin's New Frontier keyword is always one
+  he understands (#4168), Soul War hatred damage bonus checks the right boss
+  (#4171), encounter stages that auto-advance keep their own tick (#4170),
+  primal pods drop on the death tile when no free tile is near (#4169).
 - Quests: Mortimer's pick and Explorer Society storages (#4047), Barbarian Test
   (#4025), Storkus (#4053), Inquisition holy water rollback (#4083) and Henricus
   (#4084), Cults of Tibia Barkless (#4074) and Gerimor (#4075), Sister of Jack
@@ -606,8 +630,13 @@ Docker or documentation. Copied (35):
 
 Not copied on purpose: #4136 (a character that never claimed a daily reward
 would lose the default streak bonuses it has now), #4116 (interval save, which
-we keep off), #4063 (Way of the Monk, already in our own fix).
-Adjusted after copying: Charos keeps our `discovering` answer (#4100 gave him
+we keep off), #4063 (Way of the Monk, already in our own fix), #4164 (NPC
+conversations: it moves calls to `NpcDialog`, which does not exist in v3.6.1,
+so every NPC goodbye would raise a Lua error). Not data, so not copied: #4158
+(vcpkg), #4161 (log timestamps) and #4172 (damage reflection) change the build
+or C++, #4174 is upstream's AGENTS.md.
+Adjusted after copying: the upstream test of #4165 strips our terrain suffix
+from mount names. Charos keeps our `discovering` answer (#4100 gave him
 static `discovering`, `map` and `service` answers, which the NPC system answers
 before our dialogue).
 
