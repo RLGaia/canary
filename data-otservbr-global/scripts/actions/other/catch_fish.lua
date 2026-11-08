@@ -12,6 +12,9 @@ function catchFish.onUse(player, item, fromPosition, target, toPosition, isHotke
 	player:say("You catch a golden fish in the bowl.", TALKTYPE_MONSTER_SAY)
 	item:transform(5929)
 	toPosition:sendMagicEffect(CONST_ME_MAGIC_BLUE)
+	-- FAMILY: TibiaWiki BR/EN: catching the goldfish gives the secret achievement
+	-- "Silent Pet"; upstream never gave it (2026-11-08).
+	player:addAchievement("Silent Pet")
 	return true
 end
 

@@ -144,7 +144,6 @@ to the achievement. List (id, name, s = secret):
 - 192 I Like it Fancy (s)
 - 196 Safely Stored Away (s)
 - 197 Something's in There (s)
-- 198 Silent Pet (s)
 - 201 Nomad Soul (s)
 - 204 Berry Picker (s)
 - 205 True Colours (s)
