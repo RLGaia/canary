@@ -105,6 +105,49 @@ local function setDoorAid(pos, aid)
 	return false
 end
 
+-- The depot passages -----------------------------------------------------------------------
+-- The Bounac depot (32389-32392,32486-32489,7) and the house south of it are closed off on our map.
+-- Rodrigo's BR screenshot shows the depot entered from that house; its two doorways (a plank on the
+-- floor under a stone wall: 32392,32496,7 from the street, 32394,32493,6 from the yard one floor up)
+-- let the Hero of Bounac through (BR: "Acesso ao Depot da Ilha"); others find them sealed.
+L.depotPassages = {
+	{ wall = Position(32392, 32496, 7), inside = Position(32392, 32495, 7), outside = Position(32392, 32497, 7) },
+	{ wall = Position(32394, 32493, 6), inside = Position(32393, 32493, 6), outside = Position(32395, 32493, 6) },
+}
+
+function L.usePassage(player, passage)
+	if not L.isHero(player) then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The door seems to be sealed against unwanted intruders.")
+		return false
+	end
+	local pos = player:getPosition()
+	local dest = pos == passage.inside and passage.outside or passage.inside
+	if pos ~= passage.inside and pos ~= passage.outside and pos:getDistance(passage.inside) < pos:getDistance(passage.outside) then
+		dest = passage.outside
+	end
+	player:teleportTo(dest)
+	dest:sendMagicEffect(CONST_ME_TELEPORT)
+	return true
+end
+
+local passage = Action()
+function passage.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not on() then
+		return false
+	end
+	for _, p in ipairs(L.depotPassages) do
+		if toPosition == p.wall then
+			L.usePassage(player, p)
+			return true
+		end
+	end
+	return false
+end
+for _, p in ipairs(L.depotPassages) do
+	passage:position(p.wall)
+end
+passage:register()
+
 -- The ledger and the map ------------------------------------------------------------
 -- They stay where they are (both players need them); taking one gives a copy to a
 -- player on the errand.
@@ -299,17 +342,17 @@ fugueDeath:register()
 
 -- The meeting with Drume ---------------------------------------------------------------
 -- Kesar takes the player to the small room east of Bounac (BR 32447,32493,7) and talks
--- to Drume on the field before it. The 8 lines are ours until Rodrigo sends the
--- full-size BR screenshots (Mensagem 01/08 - 08/08).
+-- to Drume in the room with the desk north of it. The 8 lines are Tibia's, read from
+-- the TibiaWiki BR screenshots Mensagem 01/08 - 08/08 (sent by Rodrigo, 2026-11-09).
 L.meetingLines = {
-	{ "kesar", "Drume! I came to talk, not to fight. Fugue attacked us in my own hall." },
-	{ "drume", "Fugue was a fool. But he was right about one thing: you do not belong on the throne of the Lion." },
-	{ "kesar", "I am a descendant of Kesar, founder of the Order of the Lion. Bounac is my home and the home of my people." },
-	{ "drume", "Your people starve behind their walls while you hide in your castle." },
-	{ "kesar", "Lift the siege, Drume, and no more blood needs to be spilled." },
-	{ "drume", "I have studied the Cobras, and the Falcons will come to my aid. Why should I bow to you?" },
-	{ "kesar", "Then there is nothing left to say." },
-	{ "drume", "We will meet on the battlefield, Kesar. Prepare your men!" },
+	{ "drume", "Your appearance here means nothing else than my brother's untimely death. Am I right, Kesar?" },
+	{ "kesar", "I am here to talk about peace, Drume. It is time to end this madness." },
+	{ "drume", "Mad? Remind me, king, who was the one leaving Bounac to rot in the sun, a legacy lost. And who killed my dear brother, Fugue?" },
+	{ "kesar", "Yes. Yes, it was me. We may be lost for what we've done. But even if we failed our people, we both need to come to our senses." },
+	{ "drume", "You and you alone failed our people. My people, Kesar. I've witnessed Bounac's decay long enough. I challenge the order." },
+	{ "kesar", "We don't have to do this, Drume. Let this stay between you and me, let our men out of this. Our people suffered long enough." },
+	{ "drume", "My men will fight to the bitter end. Will you stand? I will see you on the battlefield. Now leave, Kesar. This meeting is over." },
+	{ "kesar", "So be it, Drume. So be it." },
 }
 L.meetingGap = 5000
 L.meetingBack = Position(32367, 32478, 2) -- before Kesar's throne (ours)

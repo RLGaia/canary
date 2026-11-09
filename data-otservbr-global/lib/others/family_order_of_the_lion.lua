@@ -55,10 +55,11 @@ L.items = {
 L.throneRoom = { from = Position(32364, 32475, 2), to = Position(32381, 32481, 2) }
 L.fugueSpot = Position(32372, 32478, 2)
 
--- The meeting: the small room east of Bounac (BR 32447,32493,7) and the field before it
+-- The meeting: the player watches from the small room east of Bounac (BR 32447,32493,7); Kesar and
+-- Drume talk in the room with the desk just north of it (BR screenshots Mensagem 01-08)
 L.meetingRoom = Position(32447, 32493, 7)
-L.meetingKesar = Position(32446, 32497, 7)
-L.meetingDrume = Position(32448, 32497, 7)
+L.meetingKesar = Position(32448, 32490, 7)
+L.meetingDrume = Position(32446, 32490, 7)
 
 L.castleInside = Position(32398, 32481, 4) -- behind the gate at the Bounac Guard
 
