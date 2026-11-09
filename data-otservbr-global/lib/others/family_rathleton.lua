@@ -17,8 +17,8 @@
 --     06:00, server save); the most voted option of each topic then holds for the next period:
 --     the active shortcut slide (minotaurs, fungi, catacombs) and the magistrate dungeon
 --     (golems, minotaurs, wrath of evil) and the boss Flora offers for one voting right
---     (Bullwark, Lisa or the Glooth Fairy, since 2026-11-09). Raid results are only shown for
---     now.
+--     (Bullwark, Lisa or the Glooth Fairy, since 2026-11-09) and the hourly Glooth Factory
+--     raid (scripts/family/oramond_raids.lua, since 2026-11-09).
 --   * Citizen rank: the City Access slide at the boat and the slide back from the city, the
 --     Glooth Factory slide, and the ships Oramond <-> Edron, Venore, Port Hope, Krailos.
 --
