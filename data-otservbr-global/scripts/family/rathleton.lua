@@ -10,7 +10,9 @@
 --     the server log (TibiaWiki BR/EN The Voting Results).
 --   * Bosses (2026-11-09): Flora stands at the voted boss (checked at startup and every 10
 --     minutes); Bullwark's lever room (lever 33699,31849,7), his 15-minute fight and the
---     forcefield out of his room (33695,31820,7). The Glooth Fairy keeps upstream's lever.
+--     forcefield out of his room (33695,31820,7); Lisa in her lever hall (lever 33550,31905,8;
+--     her boss room is not on our map), back to Flora a minute after her death. The Glooth
+--     Fairy keeps upstream's lever.
 
 local R = FamilyRathleton
 local CITY = Position(33626, 31897, 6) -- where upstream's catacombs shortcut led
@@ -95,7 +97,7 @@ end
 board:id(21331, 21332)
 board:register()
 
--- Bosses (2026-11-09): Flora moves to the voted boss; Bullwark's lever, fight and exit.
+-- Bosses (2026-11-09): Flora moves to the voted boss; Bullwark's and Lisa's levers, fights, exits.
 local function inBox(box, fn)
 	for x = box[1], box[3] do
 		for y = box[2], box[4] do
@@ -170,20 +172,43 @@ local function startFight(key)
 	inBox(boss.bossBox, function(creature)
 		if creature:isMonster() then
 			creature:remove()
-		elseif creature:isPlayer() then
+		elseif creature:isPlayer() and not boss.arena then
 			creature:teleportTo(boss.out)
 		end
 	end)
-	inBox(boss.leverBox, function(creature)
-		if creature:isPlayer() then
-			creature:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
-			creature:teleportTo(boss.arrival)
-			boss.arrival:sendMagicEffect(CONST_ME_TELEPORT)
-		end
-	end)
-	Game.createMonster(boss.name, boss.spawn, false, true)
+	if not boss.arena then
+		inBox(boss.leverBox, function(creature)
+			if creature:isPlayer() then
+				creature:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+				creature:teleportTo(boss.arrival)
+				boss.arrival:sendMagicEffect(CONST_ME_TELEPORT)
+			end
+		end)
+	end
+	local monster = Game.createMonster(boss.name, boss.spawn, false, true)
+	if monster and boss.arena then
+		monster:registerEvent("FamilyRathletonArenaBoss")
+	end
 	addEvent(endFight, R.FIGHT_TIME * 1000, key, fight)
 end
+
+-- A boss fought in its lever hall (Lisa): everyone goes back to Flora one minute after its death.
+local arenaDeath = CreatureEvent("FamilyRathletonArenaBoss")
+function arenaDeath.onDeath(creature)
+	for key, boss in pairs(R.bosses) do
+		if boss.arena and boss.name == creature:getName() then
+			local fight = fightCount
+			inBox(boss.bossBox, function(player)
+				if player:isPlayer() then
+					player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Flora will bring you back in one minute.") -- ours
+				end
+			end)
+			addEvent(endFight, 60 * 1000, key, fight)
+		end
+	end
+	return true
+end
+arenaDeath:register()
 
 R.startBossFight, R.endBossFight = startFight, function(key)
 	endFight(key, fightCount)
@@ -201,7 +226,7 @@ for key, boss in pairs(R.bosses) do
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You need to wait %d minute%s to use again.", math.ceil(wait / 60), wait > 60 and "s" or ""))
 				return true
 			end
-			R.setLeverWait(key, R.LEVER_REST)
+			R.setLeverWait(key, R.leverRest(key))
 			player:say("Everyone in this place will be teleported into " .. boss.name .. "'s hideout in one minute. No way back!!!", TALKTYPE_MONSTER_SAY)
 			item:transform(8914)
 			local where = Position(boss.lever.x, boss.lever.y, boss.lever.z)
@@ -211,13 +236,14 @@ for key, boss in pairs(R.bosses) do
 				if pulled then
 					pulled:transform(8913)
 				end
-			end, R.LEVER_REST * 1000)
+			end, R.leverRest(key) * 1000)
 			addEvent(startFight, 60 * 1000, key)
 			return true
 		end
 		lever:position(boss.lever)
 		lever:register()
 
+		if boss.exit then
 		local exit = MoveEvent()
 		function exit.onStepIn(creature, item, position, fromPosition)
 			local player = creature:getPlayer()
@@ -231,5 +257,6 @@ for key, boss in pairs(R.bosses) do
 		exit:type("stepin")
 		exit:position(boss.exit)
 		exit:register()
+		end
 	end
 end

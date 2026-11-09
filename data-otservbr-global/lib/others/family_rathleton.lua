@@ -17,8 +17,8 @@
 --     06:00, server save); the most voted option of each topic then holds for the next period:
 --     the active shortcut slide (minotaurs, fungi, catacombs) and the magistrate dungeon
 --     (golems, minotaurs, wrath of evil) and the boss Flora offers for one voting right
---     (Bullwark or the Glooth Fairy, since 2026-11-09; Lisa's room is not known yet, so she
---     falls back to the Glooth Fairy). Raid results are only shown for now.
+--     (Bullwark, Lisa or the Glooth Fairy, since 2026-11-09). Raid results are only shown for
+--     now.
 --   * Citizen rank: the City Access slide at the boat and the slide back from the city, the
 --     Glooth Factory slide, and the ships Oramond <-> Edron, Venore, Port Hope, Krailos.
 --
@@ -532,17 +532,18 @@ function R.marvinReset(player)
 end
 
 -- ------------------------------------------------------------------ bosses (2026-11-09)
--- Flora stands where the boss voted for this period can be fought and charges one voting right
--- to send you into its lever room; the lever sends everyone in the room to the boss after one
--- minute and then rests 16 min 40 s; a fight lasts at most 15 minutes (TibiaWiki EN Bullwark,
--- Lisa, Flora; BR Rathleton Quest). Rooms found on our map: Bullwark's lever room had no
--- script. Lisa's boss room is not known yet: while she is voted, Flora keeps offering the Glooth
--- Fairy (ours).
+-- Flora stands where the boss voted for this period can be fought (TibiaWiki BR Flora: her three
+-- spots) and charges one voting right to send you into its lever room; the second rank
+-- (inhabitant) is needed (BR Bullwark, Lisa). The lever sends everyone in the room to the boss
+-- after one minute and then rests (EN 16 min 40 s; BR Lisa: 15 minutes); a fight lasts at most
+-- 15 minutes (EN). Bullwark's lever room had no script. Lisa's boss room is not on our map
+-- (only her lever hall, 33549-33567,31902-31909,8): she is fought in the hall itself and
+-- everyone is sent back to Flora one minute after her death (ours).
 
 R.bosses = {
 	["bullwark"] = {
 		name = "Bullwark",
-		flora = Position(33703, 31856, 7), -- EN 131.167|124.112|7
+		flora = Position(33702, 31856, 7), -- BR (EN 33703,31856,7)
 		leverRoom = Position(33700, 31847, 7),
 		lever = Position(33699, 31849, 7),
 		leverBox = { 33697, 31841, 33709, 31851, 7 },
@@ -553,10 +554,23 @@ R.bosses = {
 		out = Position(33703, 31857, 7),
 		about = "A furious, devastating lump of meat and muscles. He is pure destruction. Take care!",
 	},
+	["lisa"] = {
+		name = "Lisa",
+		flora = Position(33558, 31913, 8), -- BR and EN
+		leverRoom = Position(33565, 31905, 8),
+		lever = Position(33550, 31905, 8),
+		leverBox = { 33549, 31902, 33567, 31909, 8 },
+		bossBox = { 33549, 31902, 33567, 31909, 8 },
+		arena = true, -- no boss room on our map: the fight is in the lever hall
+		spawn = Position(33553, 31905, 8),
+		out = Position(33560, 31913, 8),
+		rest = 15 * 60, -- BR
+		about = "Poisonous and sly. She looks like a harmless glooth anemone, but she heals herself when she is about to die. Strike hard and fast!", -- ours (EN: her heal)
+	},
 	["glooth fairy"] = {
 		name = "Glooth Fairy",
 		the = "the ",
-		flora = Position(33654, 31937, 9), -- upstream spawn (EN 131.118|124.198|9)
+		flora = Position(33654, 31942, 9), -- EN (BR 33655,31941,9 is a wall on our map; upstream spawn 33654,31937,9)
 		leverRoom = Position(33660, 31936, 9), -- upstream's lever (uid 1020) runs the fight
 		upstream = true,
 		about = "A glooth-powered monstrosity of the new sewers. She heals herself and paralyses the careless. Take care!", -- ours
@@ -575,6 +589,10 @@ function R.activeBoss()
 end
 
 -- Seconds until the lever of a boss can be pulled again (0 = ready).
+function R.leverRest(key)
+	return R.bosses[key].rest or R.LEVER_REST
+end
+
 function R.leverWait(key, now)
 	now = now or os.time()
 	if R.bosses[key].upstream then
@@ -615,7 +633,9 @@ function R.setupFlora(npcHandler)
 		elseif MsgContains(message, "yes") and npcHandler:getTopic(id) == 1 then
 			npcHandler:setTopic(id, 0)
 			local wait = R.leverWait(key)
-			if R.votesLeft(player) < 1 then
+			if R.rank(player) < R.INHABITANT then
+				say("Only inhabitants of Rathleton may face the boss the citizens voted for. Ask Marvin about your {promotion}.") -- ours (BR: second rank)
+			elseif R.votesLeft(player) < 1 then
 				say("You have no voting right left to spend. Help the city of Rathleton and come back.") -- ours
 			elseif wait > 0 then
 				say(string.format("The lever is still resting after the last fight. Come back in %d minute%s, or you would be stuck in there.", math.ceil(wait / 60), wait > 60 and "s" or "")) -- ours
@@ -635,9 +655,6 @@ function R.setupFlora(npcHandler)
 					say(other.about)
 					return true
 				end
-			end
-			if MsgContains(message, "lisa") then
-				say("Poisonous and sly. But her hideout in the ancient sewers is closed for now.") -- ours
 			end
 		end
 		return true
