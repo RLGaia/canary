@@ -86,5 +86,22 @@ for i, entry in ipairs(familyBatch2) do
 		end,
 	}
 end
+-- FAMILY: batch 3 (2026-11-08): Four Demanding Statues, The Mutated Glooth Plague (texts ours)
+for i, entry in ipairs({ { "Four Demanding Statues", "Statues", 1 }, { "The Mutated Glooth Plague", "Plague", 1 } }) do
+	local name, key, start = entry[1], entry[2], entry[3]
+	quest.missions[#quest.missions + 1] = {
+		name = name,
+		storageId = Storage.Quest.FamilyOramondTasks[key],
+		missionId = 11250 + i, -- 11251-11252
+		startValue = start,
+		endValue = key == "Statues" and 4 or 1000000,
+		description = function(player)
+			if FamilyOramondTasks and FamilyOramondTasks.missionTextBatch3 then
+				return FamilyOramondTasks.missionTextBatch3(player, key)
+			end
+			return name
+		end,
+	}
+end
 
 return quest

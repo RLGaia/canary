@@ -1562,6 +1562,10 @@
 	<npc centerx="33584" centery="31942" centerz="7" radius="1">
 		<npc name="Roswitha" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	<!-- FAMILY: Georgia Rainbird (Oramond Quest, The Mutated Glooth Plague) was missing upstream; TibiaWiki EN position (2026-11-08) -->
+	<npc centerx="33588" centery="31907" centerz="12" radius="1">
+		<npc name="Georgia Rainbird" x="0" y="0" z="12" spawntime="60" />
+	</npc>
 	<!-- FAMILY: Dr Merlay (Oramond Quest, Dr Merlay's Misery) was not placed upstream; TibiaWiki EN position (2026-11-08) -->
 	<npc centerx="33579" centery="31868" centerz="12" radius="2">
 		<npc name="Dr Merlay" x="0" y="0" z="12" spawntime="60" />

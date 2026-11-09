@@ -34,6 +34,10 @@ local MusicEffect = {
 
 local music = Action()
 function music.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: Oramond Four Demanding Statues - entertain the king statue with a lyre
+	if item.itemid == 2949 and FamilyOramondTasks and FamilyOramondTasks.playLyre then
+		FamilyOramondTasks.playLyre(player)
+	end
 	if item.itemid == 2949 then
 		if player:getPosition():isInRange(Position(32695, 31717, 2), Position(32699, 31719, 2)) then
 			local lyreProgress = player:getStorageValue(Storage.Diapason.Lyre)

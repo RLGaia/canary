@@ -309,15 +309,36 @@ function T.setupDrystan(npcHandler)
 end
 
 -- ------------------------------------------------------------------ Elbert
+-- Capsules (batch 1) and, since batch 3, Four Demanding Statues and the glass tube for the
+-- Mutated Glooth Plague. Repeated capsule deliveries need Four Demanding Statues done (EN).
+
+local function elbertState(player)
+	return player:getStorageValue(S.Capsules), player:getStorageValue(S.Statues)
+end
+
+local elbertLines = {
+	{ "job", "I oversee the {glooth} pumping stations down here. Formerly I was the laboratory assistant to {Georgia Rainbird}, but her research work ... how might I phrase it? It is in abeyance at the moment." },
+	{ "glooth", "This is a slimy substance which is produced by the glooth worms. It was a driving force for the progress in Rathleton. A substance that has great potential but also carries some {risks}." },
+	{ "risks", "Yes, in these caves it seems to change in a strange way. This mutation has negative side effects. Ask {Georgia Rainbird}, she can tell you more." },
+	{ "georgia", "She is a very gifted scientist, researching the potential but also the {risks} of the {glooth}. Unfortunately she recently had an accident and received a severe injury that interferes with her work." },
+}
 
 function T.setupElbert(npcHandler)
 	local C = S.Capsules
 	npcHandler:setCallback(CALLBACK_GREET, function(npc, creature)
 		local player = Player(creature)
-		local state = player:getStorageValue(C)
-		if T.on() and state == 1 then
+		local capsules, statues = elbertState(player)
+		if T.on() and statues == 3 then
+			player:setStorageValue(S.Statues, 4)
+			addVotes(player, 4) -- EN: 4 voting points
+			npcHandler:setMessage(MESSAGE_GREET, "That is most interesting news! Thank you for your efforts and risk-taking. Sure, if this ominous Circle of the Black Sphinx is behind all that, a successor for this warlock might appear. But at least for now the danger is averted. And if you find some more glooth capsules, bring them back to me, please.")
+		elseif T.on() and capsules == 1 then
 			npcHandler:setMessage(MESSAGE_GREET, "Ah, there you are! Do you bring back the stolen glooth supply capsules?")
-		elseif T.on() and state >= 2 then
+		elseif T.on() and capsules >= 2 and statues < 1 then
+			npcHandler:setMessage(MESSAGE_GREET, "I don't believe that these thieves act on their own behalf. There must be someone behind this gang. I want you to find this person. Would you help me?")
+		elseif T.on() and statues >= 1 and statues <= 2 then
+			npcHandler:setMessage(MESSAGE_GREET, "Greetings. Have you found out whether there is someone behind the glooth bandits - and if so, who?")
+		elseif T.on() and capsules >= 2 then
 			npcHandler:setMessage(MESSAGE_GREET, "Ah, there you are! Do you bring back more stolen glooth supply capsules?")
 		else
 			npcHandler:setMessage(MESSAGE_GREET, "Greetings. Excuse me but I don't have the time for useless conversation. I have a lot of work and unfortunately also some {trouble} here.")
@@ -330,55 +351,105 @@ function T.setupElbert(npcHandler)
 		if not T.on() then
 			return true
 		end
-		local topic = npcHandler:getTopic(playerId)
-		local state = player:getStorageValue(C)
-		-- the greeting asks once the job is taken (setInteraction resets the topic after a greeting)
-		if topic == 0 and state >= 1 and (MsgContains(message, "yes") or MsgContains(message, "no")) then
-			topic = 2
+		local say = function(text)
+			npcHandler:say(text, npc, creature)
 		end
-		if topic == 2 and MsgContains(message, "yes") then
+		local topic = npcHandler:getTopic(playerId)
+		local capsules, statues = elbertState(player)
+		local yes, no = MsgContains(message, "yes"), MsgContains(message, "no")
+		-- the greeting asked something (setInteraction resets the topic after a greeting)
+		if topic == 0 and (yes or no) then
+			if capsules >= 2 and statues < 1 then
+				topic = 3
+			elseif statues == 1 or statues == 2 then
+				topic = 4
+			elseif capsules >= 1 then
+				topic = 2
+			end
+		end
+		if topic == 2 and yes then
 			npcHandler:setTopic(playerId, 0)
+			if capsules >= 2 and statues < 4 then
+				say("First find out who is behind these thieves. Then I will gladly take more capsules.") -- ours (EN: repeats need Four Demanding Statues)
+				return true
+			end
 			local batches = math.floor(player:getItemCount(T.CAPSULE) / 10)
 			if batches < 1 then
 				local tainted = player:getItemCount(21816) > 0 and " Tainted ones I cannot use until they are cleansed." or ""
-				npcHandler:say("You don't have ten glooth capsules with you." .. tainted, npc, creature) -- ours
+				say("You don't have ten glooth capsules with you." .. tainted) -- ours
 				return true
 			end
 			player:removeItem(T.CAPSULE, batches * 10)
 			addVotes(player, batches * 2)
 			player:setStorageValue(C, 2)
-			if state == 1 then
-				npcHandler:say({
+			if capsules == 1 then
+				say({
 					"Great! Thank you very much for your help. The city of Rathleton is a bit safer now. If you find more of these capsules bring them back to me, too. ...",
-					"But these capsules here, they seem to be filled with some kind of mutated glooth. They are tainted. If you can cleanse them somehow, I will take them.",
-				}, npc, creature)
+					"But these capsules here, they seem to be filled with some kind of mutated glooth. They are tainted. If you can cleanse them somehow, I will take them. ...",
+					"But there is still another thing that troubles me. I don't believe that these thieves act on their own behalf. There must be someone behind this gang. ...",
+					"I want you to find this person. Would you help me?",
+				})
+				npcHandler:setTopic(playerId, 3)
 			else
-				npcHandler:say("Great! Thank you very much for your help. The city of Rathleton is a bit safer now. This will get you a certain voice in the city. If you find more of these capsules bring them back to me, too.", npc, creature)
+				say("Great! Thank you very much for your help. The city of Rathleton is a bit safer now. This will get you a certain voice in the city. If you find more of these capsules bring them back to me, too.")
 			end
-		elseif topic == 2 and MsgContains(message, "no") then
+		elseif topic == 2 and no then
 			npcHandler:setTopic(playerId, 0)
-			npcHandler:say("Then keep looking. The bandits in the tunnels carry them.", npc, creature) -- ours
-		elseif topic == 1 and MsgContains(message, "yes") then
+			say("Then keep looking. The bandits in the tunnels carry them.") -- ours
+		elseif topic == 3 and yes then
+			npcHandler:setTopic(playerId, 0)
+			player:setStorageValue(S.Statues, 1)
+			T.kv(player):set("statues", 0)
+			say({
+				"Excellent! I even have a little hint: One of my labourers got lost in the south-western tunnels some days ago. There he heard that some glooth bandits were approaching and wisely hid himself. But suddenly they disappeared. ...",
+				"I assume they have a sort of secret hideout in this area.",
+			})
+		elseif topic == 3 and no then
+			npcHandler:setTopic(playerId, 0)
+			say("Pity. Tell me if you change your mind.") -- ours
+		elseif topic == 4 and (yes or no) then
+			npcHandler:setTopic(playerId, 0)
+			say("That doesn't sound very reasonable. Perhaps you should push on with your researches.")
+		elseif topic == 1 and yes then
 			npcHandler:setTopic(playerId, 0)
 			player:setStorageValue(C, 1)
 			openQuestLine(player)
-			npcHandler:say("I'm very happy to hear that. If you have found ten glooth capsules talk to me again.", npc, creature)
-		elseif topic == 1 and MsgContains(message, "no") then
+			say("I'm very happy to hear that. If you have found ten glooth capsules talk to me again.")
+		elseif topic == 1 and no then
 			npcHandler:setTopic(playerId, 0)
-			npcHandler:say("Then excuse me, I have work to do.", npc, creature) -- ours
+			say("Then excuse me, I have work to do.") -- ours
+		elseif MsgContains(message, "glass tube") or MsgContains(message, "tube") then
+			if player:getStorageValue(S.Plague) >= 1 then
+				player:addItem(21766, 1)
+				say("Did Georgia send you? Indeed I have the glass tube you are looking for. Here, take it. I hope you will successfully fight the glooth mutation down here.")
+			else
+				say("A glass tube? What would you need that for?") -- ours
+			end
 		elseif MsgContains(message, "trouble") or MsgContains(message, "mission") or MsgContains(message, "capsules") then
 			if rankOf(player) < 3 then
-				npcHandler:say("This is a matter for citizens of Rathleton. Come back when the magistrate counts you among them.", npc, creature) -- ours
-			elseif state >= 1 then
-				npcHandler:say("Do you bring back " .. (state >= 2 and "more " or "") .. "stolen glooth supply capsules?", npc, creature)
+				say("This is a matter for citizens of Rathleton. Come back when the magistrate counts you among them.") -- ours
+			elseif capsules >= 2 and statues < 1 then
+				say("I don't believe that these thieves act on their own behalf. There must be someone behind this gang. I want you to find this person. Would you help me?")
+				npcHandler:setTopic(playerId, 3)
+			elseif statues == 1 or statues == 2 then
+				say("I'm very happy that you agreed to help me.")
+			elseif capsules >= 1 then
+				say("Do you bring back " .. (capsules >= 2 and "more " or "") .. "stolen glooth supply capsules?")
 				npcHandler:setTopic(playerId, 2)
 			else
-				npcHandler:say({
+				say({
 					"There is a band of thieves who bully the tunnels near the factory far too long. Even worse, they have stolen some important objects. ...",
 					"On the one hand there were some special gauges I calibrated for Georgia Rainbird. She surely needed them for some important purpose. Further they have stolen a vast amount of ammunition for new glooth-based weapons, so called glooth ejectors. ...",
 					"This ammunition consists of glooth-filled supply capsules. Would you help me and try to bring them back?",
-				}, npc, creature)
+				})
 				npcHandler:setTopic(playerId, 1)
+			end
+		else
+			for _, entry in ipairs(elbertLines) do
+				if MsgContains(message, entry[1]) then
+					say(entry[2])
+					break
+				end
 			end
 		end
 		return true
@@ -1116,4 +1187,277 @@ function T.missionTextBatch2(player, key)
 		return "Use Alaistar's glooth potion on Azalea's soothe bloom, press the mixture into a pill in Dr Merlay's particle accelerator and give it to him."
 	end
 	return ""
+end
+
+-- ==================================================================== batch 3 (2026-11-08)
+-- Four Demanding Statues (Elbert) and The Mutated Glooth Plague (Georgia Rainbird, missing
+-- upstream: new NPC file). Sources: TibiaWiki EN Oramond Quest/Spoiler (method, server
+-- messages, Elbert's and Georgia's transcripts, the two books), BR Oramond Quest; the objects
+-- were found on our map (statue room 33574,32034,12, warlock room z11, Georgia's lab).
+
+-- ------------------------------------------------------------------ Four Demanding Statues
+
+T.STATUES = {
+	bless = { bit = 1, message = "Mysteriously the statue comes to life, nodds generously and spreads its wings. Then it turns back into its lifeless state." },
+	adorn = { bit = 2, message = "Mysteriously the statue comes to life, stretches out its arm and takes the flowers. Then it turns back into its lifeless state." },
+	feed = { bit = 4, message = "Mysteriously the statue comes to life, bends its head and devours the offered meat. Then it turns back into its lifeless state." },
+	entertain = { bit = 8, message = "Mysteriously the kingly statue comes to life, smiles slightly and nodds generously. Then it turns back into its lifeless state." },
+}
+T.STATUE_POS = {
+	bless = Position(33574, 32027, 12), -- angel statue, north
+	adorn = Position(33581, 32034, 12), -- sacred statue, east
+	feed = Position(33574, 32041, 12), -- cobra statue, south
+	entertain = Position(33567, 32034, 12), -- king statue, west
+}
+T.ALL_STATUES = 15
+
+function T.statuesDone(player)
+	return bit.band(T.kv(player):get("statues") or 0, T.ALL_STATUES) == T.ALL_STATUES
+end
+
+-- wish = bless/adorn/feed/entertain; returns true when it counted.
+function T.pleaseStatue(player, wish)
+	local state = player:getStorageValue(S.Statues)
+	if state < 1 or state >= 3 then
+		return false
+	end
+	local entry = T.STATUES[wish]
+	local mask = T.kv(player):get("statues") or 0
+	T.kv(player):set("statues", bit.bor(mask, entry.bit))
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, entry.message)
+	return true
+end
+
+function T.nearStatue(player, wish, range)
+	local pos, at = player:getPosition(), T.STATUE_POS[wish]
+	return pos.z == at.z and math.abs(pos.x - at.x) <= (range or 2) and math.abs(pos.y - at.y) <= (range or 2)
+end
+
+-- From music.lua (FAMILY hook): the lyre near the king statue.
+function T.playLyre(player)
+	if T.on() and T.nearStatue(player, "entertain", 3) then
+		T.pleaseStatue(player, "entertain")
+	end
+end
+
+function T.warlockKilled(player)
+	if player:getStorageValue(S.Statues) == 1 and T.statuesDone(player) then
+		player:setStorageValue(S.Statues, 2)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Has the warlock been behind the glooth bandits' assaults? Most likely, but you need a proof. Isn't there a letter in the shelf?")
+	end
+end
+
+T.WARLOCK_LETTER = "My esteemed colleague,\n\nwe are very pleased to hear that your activities near Rathleton are flourishing. To be honest, at first we were more than suspicious as we learned that you are hiring a gang of criminals and have them do the more inconvenient tasks for you. But seemingly you are able to keep away from them the important information about your actual goals and intentions. Furthermore your succes in establishing a makeshift laboratory in the tunnels under Rathleton and even acquiring some novel glooth based weaponry speaks for itself. The mutated glooth you mentioned in your last letter is an interesting matter. Perhaps it is useable in an arcane way to enhance spells or improve potions. Even the creation of yet unknown artefacts could be possible. We think your endeavours are taking a good path.\n\nWith best regards\nUquora the High-Handed of the Circle of the Black Sphinx"
+
+-- ------------------------------------------------------------------ The Mutated Glooth Plague
+
+T.DEVICE, T.CONVERTER, T.FILLED = 21759, 21761, 21767
+T.GEAR, T.VALVE, T.GAUGE, T.TUBE = 21755, 21758, 21757, 21766
+T.MUSHROOM, T.DISTILLATE = 21768, 21769
+T.POOLS_NEED = 8
+T.PARTS = {
+	[21755] = { bit = 1, count = 5, text = "You mount the gear wheels on the broken device." },
+	[21758] = { bit = 2, count = 1, text = "You mount the valve on the broken device." },
+	[21757] = { bit = 4, count = 1, text = "You mount the indicator gauge on the broken device." },
+	[21766] = { bit = 8, count = 1, text = "You mount the glass tube on the broken device." },
+}
+
+-- A part used on the strange device. Returns true when it was handled.
+function T.mountPart(player, part, device)
+	local entry = T.PARTS[part:getId()]
+	if not entry then
+		return false
+	end
+	local mask = T.kv(player):get("device-parts") or 0
+	if bit.band(mask, entry.bit) ~= 0 then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This part is already mounted.") -- ours
+		return true
+	end
+	if player:getItemCount(part:getId()) < entry.count then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You need %d of them.", entry.count)) -- ours
+		return true
+	end
+	player:removeItem(part:getId(), entry.count)
+	mask = bit.bor(mask, entry.bit)
+	if mask == 15 then
+		T.kv(player):set("device-parts", 0)
+		device:transform(T.CONVERTER)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, entry.text .. " Now it seems to work.")
+	else
+		T.kv(player):set("device-parts", mask)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, entry.text .. " But it doesn't seem complete yet.")
+	end
+	return true
+end
+
+-- The filled converter used on a purple slime square; returns true when it counted.
+function T.convertPool(player, position)
+	local kv = T.kv(player)
+	local key = position.x .. "," .. position.y .. "," .. position.z
+	local done = kv:get("pools") or ""
+	if done:find("[" .. key .. "]", 1, true) then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This glooth is already converted.") -- ours
+		return false
+	end
+	done = done .. "[" .. key .. "]"
+	local count = (kv:get("pool-count") or 0) + 1
+	kv:set("pools", done)
+	kv:set("pool-count", count)
+	if count >= T.POOLS_NEED then
+		kv:set("pools", "")
+		kv:set("pool-count", 0)
+		player:removeItem(T.FILLED, 1)
+		player:addItem(T.DEVICE, 1)
+		player:addItem(T.GEAR, 5)
+		player:addItem(T.VALVE, 1)
+		player:addItem(T.GAUGE, 1)
+		player:addItem(T.TUBE, 1)
+		if player:getStorageValue(S.Plague) >= 1 then
+			player:setStorageValue(S.Plague, 3)
+		end
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The mutated glooth turns back into its primal state - and the converter falls apart into its components. Report to Georgia Rainbird.") -- ours
+	else
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("The mutated glooth turns back into its primal state (%d of %d).", count, T.POOLS_NEED)) -- ours
+	end
+	return true
+end
+
+-- ------------------------------------------------------------------ Georgia Rainbird
+
+local georgiaLines = {
+	{ "busy", "I am researching the {glooth} and its mutation. Or I was, before I lost my eyesight." }, -- ours
+	{ "blind", "An accident in my laboratory. A flask of mutated glooth burst right in front of my face. Now I need other people's eyes." }, -- ours
+	{ "glooth", "Something is happening to the glooth in these caves. It seems to change in a strange way. This mutation has negative side effects and must be stopped." },
+	{ "components", "You need five special {gear wheels} I haven't in stock here in the laboratory. Furthermore the converter requires a {glass tube}, a {valve} and a specially calibrated indicator {gauge}." },
+	{ "gear wheels", "Bronze gear wheels. The golems and gargoyles of Rathleton are full of them." }, -- ours
+	{ "glass tube", "My former assistant Elbert should still have one. Ask him for a glass tube." }, -- ours
+	{ "valve", "The copper valves of the pumping pipes down here fit perfectly. Just demount one." }, -- ours
+	{ "gauge", "I calibrated some indicator gauges myself. A box with them stands in the western tunnels - if the bandits left any." }, -- ours
+}
+
+function T.setupGeorgia(npcHandler)
+	npcHandler:setMessage(MESSAGE_GREET, "Greetings. You don't have to shout, my ears are very good! Besides I'm quite {busy}, as you may see.")
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, function(npc, creature, type, message)
+		local player = Player(creature)
+		local id = player:getId()
+		if not T.on() then
+			return true
+		end
+		local say = function(text)
+			npcHandler:say(text, npc, creature)
+		end
+		local topic = npcHandler:getTopic(id)
+		local state = player:getStorageValue(S.Plague)
+		if topic == 51 and MsgContains(message, "yes") then
+			player:addItem(T.DEVICE, 1)
+			player:setStorageValue(S.Plague, 1)
+			T.kv(player):set("device-parts", 0)
+			openQuestLine(player)
+			say({
+				"Splendid! So listen: I think I found a way to eliminate the mutated glooth by converting it back into its primal state. I have constructed a special device, a glooth converter - or at least, I was about to do so. ...",
+				"Then I lost my eyesight and wasn't able to finish my work. There are still some missing {components}. If you could obtain them, we might complete the converter. ...",
+				"Here, I give you the unfinished device, so you can mount the missing parts. Do you know what you need for the repair?",
+			})
+			npcHandler:setTopic(id, 52)
+			return true
+		elseif topic == 51 and MsgContains(message, "no") then
+			npcHandler:setTopic(id, 0)
+			say("Then don't waste my time.") -- ours
+			return true
+		elseif topic == 52 and MsgContains(message, "no") then
+			npcHandler:setTopic(id, 0)
+			say("You need five special {gear wheels} I haven't in stock here in the laboratory. Furthermore the converter requires a {glass tube}, a {valve} and a specially calibrated indicator {gauge}.")
+			return true
+		elseif topic == 52 and MsgContains(message, "yes") then
+			npcHandler:setTopic(id, 0)
+			say("Good. Mount the parts on the device and come back to me with the converter.") -- ours
+			return true
+		end
+		if MsgContains(message, "lost glooth converter") or (MsgContains(message, "lost") and state >= 1) then
+			player:addItem(T.DEVICE, 1)
+			T.kv(player):set("device-parts", 0)
+			say("Lost it? I still have the old frame of another device. Here, but you will have to mount all the parts again.") -- ours
+			return true
+		elseif MsgContains(message, "mission") then
+			if rankOf(player) < 3 then
+				say("I only work with citizens of Rathleton.") -- ours
+			elseif state == 3 then
+				player:setStorageValue(S.Plague, 1)
+				addVotes(player, 5) -- EN: 5 votes
+				say("Eight pools of mutated glooth converted? Wonderful! That should stop the mutation for a while. Take these voices in the magistrate - and you may help me again any time, the glooth keeps mutating.") -- ours
+			elseif state >= 1 then
+				if player:getItemCount(T.CONVERTER) > 0 or player:getItemCount(T.FILLED) > 0 or state == 2 then
+					player:setStorageValue(S.Plague, 2)
+					say({
+						"The converter works? Splendid! But it needs an antidote to eliminate the harmful influence of the mutated glooth. Pick a crimson crest mushroom - they grow near the purple glooth pools in the east. ...",
+						"Distil it in my alchemical apparatus here and fill the vial into the converter. Then use the converter on eight pools of mutated glooth.",
+					}) -- ours
+				else
+					say("Mount the missing {components} on the device first.") -- ours
+				end
+			else
+				say({
+					"Indeed you could help me with a little triviality. Something is happening to the {glooth} in these caves. It seems to change in a strange way. This mutation has negative side effects and must be stopped. ...",
+					"Unfortunately I'm {blind} and can't fulfil some tasks any more. I need your eyes. Would you help me?",
+				})
+				npcHandler:setTopic(id, 51)
+			end
+			return true
+		end
+		for _, entry in ipairs(georgiaLines) do
+			if MsgContains(message, entry[1]) then
+				say(entry[2])
+				return true
+			end
+		end
+		return true
+	end)
+end
+
+function T.missionTextBatch3(player, key)
+	if key == "Statues" then
+		local state = player:getStorageValue(S.Statues)
+		if state >= 4 then
+			return "You found out that the warlock of the Circle of the Black Sphinx was behind the glooth bandits. Elbert takes glooth capsules again."
+		elseif state == 3 then
+			return "You found the warlock's letter. Report to Elbert."
+		elseif state == 2 then
+			return "The warlock is dead. Search the shelf in his room for a proof."
+		end
+		local mask = T.kv(player):get("statues") or 0
+		local wishes = {}
+		for _, wish in ipairs({ "bless", "adorn", "feed", "entertain" }) do
+			if bit.band(mask, T.STATUES[wish].bit) == 0 then
+				wishes[#wishes + 1] = wish
+			end
+		end
+		if #wishes > 0 then
+			return "Find the glooth bandits' hideout in the south-western tunnels. Four statues there want to be: " .. table.concat(wishes, ", ") .. "."
+		end
+		return "The four statues are content. Pass the forcefield between them and find out who leads the glooth bandits."
+	elseif key == "Plague" then
+		local state = player:getStorageValue(S.Plague)
+		if state == 3 then
+			return "You converted eight pools of mutated glooth. Report to Georgia Rainbird."
+		elseif state == 2 then
+			return string.format("Distil a crimson crest mushroom in Georgia's alchemical apparatus, fill the converter and convert eight pools of mutated glooth: %d of 8.", T.kv(player):get("pool-count") or 0)
+		end
+		return "Mount five bronze gear wheels, a copper valve, a calibrated indicator gauge and a glass tube on Georgia Rainbird's strange device, then ask her for the next step."
+	end
+	return ""
+end
+
+-- From actions_holy_water.lua (FAMILY hook).
+function T.blessStatue(player, item, target, toPosition)
+	if not T.on() or not target or not target.getId or target:getId() ~= 2031 then
+		return false
+	end
+	local at = T.STATUE_POS.bless
+	if toPosition.x ~= at.x or toPosition.y ~= at.y or toPosition.z ~= at.z then
+		return false
+	end
+	if T.pleaseStatue(player, "bless") then
+		item:remove(1)
+	end
+	return true
 end

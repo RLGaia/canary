@@ -56,6 +56,10 @@ local config = {
 local othersHolyWater = Action()
 
 function othersHolyWater.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: Oramond Four Demanding Statues - bless the angel statue (lib/others/family_oramond_tasks.lua)
+	if FamilyOramondTasks and FamilyOramondTasks.blessStatue and FamilyOramondTasks.blessStatue(player, item, target, toPosition) then
+		return true
+	end
 	-- Transformação do Antler Talisman
 	if target.itemid == config.antler_talisman then
 		target:transform(config.sacred_antler_talisman)

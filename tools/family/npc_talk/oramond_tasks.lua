@@ -143,13 +143,26 @@ T.check("elbert yes", has(elbert:say(e, "yes"), "If you have found ten glooth ca
 elbert:bye(e)
 T.check("elbert asks at greeting", has(elbert:say(e, "hi"), "Do you bring back the stolen glooth supply capsules?"))
 a = elbert:say(e, "yes")
-T.check("elbert first report: 2 batches, 4 votes, tainted line", has(a, "They are tainted.") and e.storage[VP] == 4 and e.items[21814] == 5 and e.storage[S.Capsules] == 2, a)
+T.check("elbert first report: 2 batches, 4 votes, tainted line, asks for the warlock", has(a, "They are tainted.") and has(a, "I want you to find this person. Would you help me?") and e.storage[VP] == 4 and e.items[21814] == 5 and e.storage[S.Capsules] == 2, a)
+elbert:bye(e)
+T.check("elbert greets with the statues question", has(elbert:say(e, "hi"), "I don't believe that these thieves act on their own behalf"))
+T.check("elbert statues yes", has(elbert:say(e, "yes"), "secret hideout") and e.storage[S.Statues] == 1)
+T.check("elbert: capsules wait for the statues", has(elbert:say(e, "capsules") .. elbert:say(e, "yes"), "I'm very happy that you agreed"))
+elbert:bye(e)
+T.check("elbert asks about the culprit", has(elbert:say(e, "hi"), "Have you found out whether there is someone behind"))
+T.check("elbert: not reasonable", has(elbert:say(e, "yes"), "That doesn't sound very reasonable"))
+elbert:bye(e)
+e.storage[S.Statues] = 3
+local before = e.storage[VP]
+T.check("elbert completes statues on greeting, 4 votes", has(elbert:say(e, "hi"), "Circle of the Black Sphinx") and e.storage[S.Statues] == 4 and e.storage[VP] == before + 4)
 elbert:bye(e)
 T.check("elbert asks for more", has(elbert:say(e, "hi"), "more stolen glooth supply capsules?"))
 a = elbert:say(e, "yes")
 T.check("elbert: not enough", has(a, "You don't have ten glooth capsules") and has(a, "Tainted ones"), a)
 e.items[21814] = 10
-T.check("elbert repeat report", has(elbert:say(e, "capsules") .. elbert:say(e, "yes"), "This will get you a certain voice") and e.storage[VP] == 6)
+T.check("elbert repeat report", has(elbert:say(e, "capsules") .. elbert:say(e, "yes"), "This will get you a certain voice") and e.storage[VP] == before + 6)
+T.check("elbert job line", has(elbert:say(e, "job"), "glooth} pumping stations"))
+T.check("elbert no tube before Georgia", has(elbert:say(e, "glass tube"), "What would you need that for"))
 elbert:bye(e)
 local n = player({})
 elbert:say(n, "hi")
@@ -297,5 +310,73 @@ T.check("merlay pill asks", has(merlay:say(mr, "ominously glowing pill"), "Yes o
 local votesBefore = math.max(0, mr.storage[VP] or 0)
 T.check("merlay cured", has(merlay:say(mr, "yes"), "I can feel it working already") and mr.storage[VP] == votesBefore + 1 and (mr.items[21142] or 0) == 0 and mr.storage[S.Merlay] == 0)
 merlay:bye(mr)
+
+
+-- ================================================================ batch 3
+-- statues
+local st = player({ storage = { [R.Rank] = 3, [S.Statues] = 1 } })
+local at = function(pos) st.position = pos rawset(st, "getPosition", function() return pos end) end
+local P = OT.STATUE_POS
+T.check("bless counts", OT.pleaseStatue(st, "bless") and has(st.messages[#st.messages], "spreads its wings"))
+T.check("adorn counts", OT.pleaseStatue(st, "adorn"))
+T.check("feed counts", OT.pleaseStatue(st, "feed"))
+T.check("not all yet", not OT.statuesDone(st))
+at(Position(P.entertain.x + 1, P.entertain.y, P.entertain.z))
+OT.playLyre(st)
+T.check("lyre near the king statue", OT.statuesDone(st) and has(st.messages[#st.messages], "kingly statue"))
+OT.warlockKilled(st)
+T.check("warlock killed after the statues", st.storage[S.Statues] == 2 and has(st.messages[#st.messages], "Isn't there a letter in the shelf?"))
+local st2 = player({ storage = { [S.Statues] = 1 } })
+OT.warlockKilled(st2)
+T.check("warlock before the statues does nothing", st2.storage[S.Statues] == 1)
+T.check("statues ignored before Elbert", not OT.pleaseStatue(player({}), "bless"))
+T.check("quest log statues text", has(OT.missionTextBatch3(st, "Statues"), "Search the shelf"))
+
+-- Georgia
+local georgia = T.load("data-otservbr-global/npc/georgia_rainbird.lua")
+local g = player({ storage = { [R.Rank] = 3 } })
+T.check("georgia greeting", has(georgia:say(g, "hi"), "You don't have to shout"))
+a = georgia:say(g, "mission")
+T.check("georgia mission", has(a, "I need your eyes. Would you help me?"), a)
+a = georgia:say(g, "yes")
+T.check("georgia gives the device", has(a, "Do you know what you need for the repair?") and g.items[21759] == 1 and g.storage[S.Plague] == 1, a)
+T.check("georgia lists components", has(georgia:say(g, "no"), "five special {gear wheels}"))
+T.check("georgia: parts first", has(georgia:say(g, "mission"), "Mount the missing"))
+georgia:bye(g)
+-- elbert's tube
+elbert:say(g, "hi")
+T.check("elbert gives the glass tube", has(elbert:say(g, "glass tube"), "Did Georgia send you?") and g.items[21766] == 1)
+elbert:bye(g)
+-- assembly
+local device = { id = 21759, getId = function(self) return self.id end, transform = function(self, id) self.id = id end }
+local function part(id) return { getId = function() return id end } end
+g.items[21755] = 4
+OT.mountPart(g, part(21755), device)
+T.check("four gear wheels are not enough", has(g.messages[#g.messages], "You need 5"))
+g.items[21755] = 5
+g.items[21758] = 1
+g.items[21757] = 1
+OT.mountPart(g, part(21755), device)
+T.check("gears mounted", has(g.messages[#g.messages], "You mount the gear wheels on the broken device. But it doesn't seem complete yet.") and (g.items[21755] or 0) == 0)
+OT.mountPart(g, part(21758), device)
+OT.mountPart(g, part(21757), device)
+OT.mountPart(g, part(21766), device)
+T.check("converter complete", device.id == 21761 and has(g.messages[#g.messages], "Now it seems to work."))
+g.items[21761] = 1
+georgia:say(g, "hi")
+T.check("georgia: antidote", has(georgia:say(g, "mission"), "crimson crest mushroom") and g.storage[S.Plague] == 2)
+georgia:bye(g)
+-- pools
+g.items[21767] = 1
+for i = 1, 7 do OT.convertPool(g, { x = 33712, y = 31850 + i, z = 12 }) end
+T.check("same pool twice refused", OT.convertPool(g, { x = 33712, y = 31851, z = 12 }) == false)
+T.check("quest log pools", has(OT.missionTextBatch3(g, "Plague"), "7 of 8"))
+OT.convertPool(g, { x = 33713, y = 31860, z = 12 })
+T.check("8 pools: parts back, report", g.storage[S.Plague] == 3 and g.items[21759] == 2 and g.items[21755] == 5 and (g.items[21767] or 0) == 0)
+georgia:say(g, "hi")
+local v0 = math.max(0, g.storage[VP] or 0)
+T.check("georgia pays 5 votes", has(georgia:say(g, "mission"), "Eight pools") and g.storage[VP] == v0 + 5 and g.storage[S.Plague] == 1)
+T.check("georgia lost device", has(georgia:say(g, "lost glooth converter"), "old frame") and g.items[21759] == 3)
+georgia:bye(g)
 
 T.finish()

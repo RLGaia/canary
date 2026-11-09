@@ -344,3 +344,292 @@ function mixture.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 end
 mixture:id(T.MIXTURE)
 mixture:register()
+
+-- ==================================================================== batch 3 (2026-11-08)
+-- Four Demanding Statues and The Mutated Glooth Plague (rules in lib/others/family_oramond_tasks.lua).
+
+local FORCEFIELD = Position(33574, 32034, 12) -- teleport to the warlock room (33573,32036,11)
+local WARLOCK_ROOM = Position(33573, 32036, 11)
+local WARLOCK_BOX = { 33595, 32015, 33660, 32060, 11 }
+local SHELF = Position(33636, 32035, 11)
+local GAUGE_BOX = Position(33394, 31915, 12)
+local GEORGIA_LAB = { 33578, 31895, 33600, 31912, 12 }
+local FLORET_OBJECTS = { 21851, 21852 }
+local FLORET, INTERWOVEN, GARLAND = 21853, 21857, 21856
+local HEAP, DEAD_RAT = 21858, 21850
+local SACRED_UNLIT, SACRED_LIT = 2062, 2063
+local COBRA = 2051
+local CRIMSON = 21806
+local COPPER_VALVE_OBJECT = 21792
+local PURPLE_SLIME = { 21772, 21773, 21774 }
+local APPARATUS = { 8995, 8996 }
+
+local function inBox(pos, box)
+	return pos.z == box[5] and pos.x >= box[1] and pos.x <= box[3] and pos.y >= box[2] and pos.y <= box[4]
+end
+
+local function samePos(a, b)
+	return a.x == b.x and a.y == b.y and a.z == b.z
+end
+
+local batch3Startup = GlobalEvent("FamilyOramondTasksBatch3")
+function batch3Startup.onStartup()
+	if not T.on() then
+		return true
+	end
+	local tile = Tile(FORCEFIELD)
+	local field = tile and tile:getItemById(1949)
+	if field and field.setDestination then
+		field:setDestination(Position(0, 0, 0)) -- the move event below decides
+	end
+	local warlock = MonsterType("Warlock")
+	if warlock then
+		warlock:registerEvent("FamilyOramondWarlockDeath")
+	end
+	logger.info("[Family] Oramond tasks batch 3: statue forcefield {}, warlock watched {}", field and "set" or "missing", warlock and "yes" or "no")
+	return true
+end
+batch3Startup:register()
+
+local forcefield = MoveEvent()
+function forcefield.onStepIn(creature, item, position, fromPosition)
+	local player = creature:getPlayer()
+	if not player then
+		return true
+	end
+	if not T.on() or T.statuesDone(player) or player:getStorageValue(T.S.Statues) >= 4 then
+		player:teleportTo(WARLOCK_ROOM)
+		WARLOCK_ROOM:sendMagicEffect(CONST_ME_TELEPORT)
+		return true
+	end
+	player:teleportTo(samePos(fromPosition, position) and Position(33574, 32033, 12) or fromPosition, true)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The forcefield does not let you pass. The four statues still demand something.") -- ours
+	return true
+end
+forcefield:type("stepin")
+forcefield:position(FORCEFIELD)
+forcefield:register()
+
+local warlockDeath = CreatureEvent("FamilyOramondWarlockDeath")
+function warlockDeath.onDeath(creature, corpse, lastHitKiller, mostDamageKiller)
+	if not T.on() or not inBox(creature:getPosition(), WARLOCK_BOX) then
+		return true
+	end
+	onDeathForDamagingPlayers(creature, function(_, player)
+		T.warlockKilled(player)
+	end)
+	return true
+end
+warlockDeath:register()
+
+local shelf = Action()
+function shelf.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or player:getStorageValue(T.S.Statues) ~= 2 then
+		return false
+	end
+	local letter = player:addItem(2819, 1)
+	if letter then
+		letter:setAttribute(ITEM_ATTRIBUTE_TEXT, T.WARLOCK_LETTER)
+	end
+	player:setStorageValue(T.S.Statues, 3)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You found a letter in the shelf. Bring this proof to Elbert.") -- ours
+	return true
+end
+shelf:position(SHELF)
+shelf:register()
+
+local floretObject = Action()
+function floretObject.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() then
+		return false
+	end
+	player:addItem(FLORET, 1)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You pick a dinky moss floret.") -- ours
+	return true
+end
+floretObject:id((table.unpack or unpack)(FLORET_OBJECTS))
+floretObject:register()
+
+local floret = Action()
+function floret.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId then
+		return false
+	end
+	local other = target:getId()
+	if item:getId() == FLORET and other == FLORET and target ~= item then
+		item:remove(1)
+		target:remove(1)
+		player:addItem(INTERWOVEN, 1)
+		return true
+	elseif (item:getId() == FLORET and other == INTERWOVEN) or (item:getId() == INTERWOVEN and other == FLORET) then
+		item:remove(1)
+		target:remove(1)
+		player:addItem(GARLAND, 1)
+		return true
+	elseif item:getId() == FLORET and other == FLORET then
+		if player:getItemCount(FLORET) >= 2 then
+			player:removeItem(FLORET, 2)
+			player:addItem(INTERWOVEN, 1)
+			return true
+		end
+	end
+	return false
+end
+floret:id(FLORET, INTERWOVEN)
+floret:register()
+
+local garland = Action()
+function garland.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId or not samePos(toPosition, T.STATUE_POS.adorn) then
+		return false
+	end
+	if target:getId() == SACRED_LIT then
+		item:remove(1)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The flame of the statue sets the garland on fire. It burns to ashes.") -- ours (EN: turn the flame off first)
+		return true
+	end
+	if target:getId() == SACRED_UNLIT and T.pleaseStatue(player, "adorn") then
+		item:remove(1)
+	end
+	return true
+end
+garland:id(GARLAND)
+garland:register()
+
+local heap = Action()
+function heap.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or player:getStorageValue(T.S.Statues) < 1 then
+		return false
+	end
+	if player:getItemCount(DEAD_RAT) > 0 then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You find nothing else of use in the rubbish.") -- ours
+		return true
+	end
+	player:addItem(DEAD_RAT, 1)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You find a dead rat in the rubbish.") -- ours
+	return true
+end
+heap:id(HEAP)
+heap:register()
+
+local rat = Action()
+function rat.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId or target:getId() ~= COBRA or not samePos(toPosition, T.STATUE_POS.feed) then
+		return false
+	end
+	if T.pleaseStatue(player, "feed") then
+		item:remove(1)
+	end
+	return true
+end
+rat:id(DEAD_RAT)
+rat:register()
+
+-- The Mutated Glooth Plague --------------------------------------------
+local part = Action()
+function part.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId or target:getId() ~= T.DEVICE then
+		return false
+	end
+	return T.mountPart(player, item, target)
+end
+part:id(T.GEAR, T.VALVE, T.GAUGE, T.TUBE)
+part:register()
+
+local gaugeBox = Action()
+function gaugeBox.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or player:getStorageValue(T.S.Plague) < 1 then
+		return false
+	end
+	local kv = T.kv(player)
+	if (kv:get("gauge-at") or 0) > os.time() then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The box is empty. Maybe later.") -- ours
+		return true
+	end
+	kv:set("gauge-at", os.time() + 2 * 60) -- EN: every 2 minutes
+	player:addItem(T.GAUGE, 1)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You find a calibrated indicator gauge in the box.") -- ours
+	return true
+end
+gaugeBox:position(GAUGE_BOX)
+gaugeBox:register()
+
+local valveObject = Action()
+function valveObject.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	local pos = item:getPosition()
+	if not T.on() or pos.z ~= 12 or player:getStorageValue(T.S.Plague) < 1 then
+		return false
+	end
+	player:addItem(T.VALVE, 1)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You demount a copper valve from the pipe.") -- ours
+	return true
+end
+valveObject:id(COPPER_VALVE_OBJECT)
+valveObject:register()
+
+local crimson = Action()
+function crimson.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() then
+		return false
+	end
+	local where = item:getPosition()
+	item:remove()
+	player:addItem(T.MUSHROOM, 1)
+	addEvent(function()
+		local tile = Tile(where)
+		if tile and not tile:getItemById(CRIMSON) then
+			Game.createItem(CRIMSON, 1, where)
+		end
+	end, 5 * 60 * 1000) -- EN: regrows after 5 minutes
+	return true
+end
+crimson:id(CRIMSON)
+crimson:register()
+
+local mushroom = Action()
+function mushroom.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId or not table.contains(APPARATUS, target:getId()) or not inBox(toPosition, GEORGIA_LAB) then
+		return false
+	end
+	item:remove(1)
+	player:addItem(T.DISTILLATE, 1)
+	toPosition:sendMagicEffect(CONST_ME_MAGIC_RED)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You distil the mushroom into a vial of mushroom distillate.") -- ours
+	return true
+end
+mushroom:id(T.MUSHROOM)
+mushroom:register()
+
+local distillate = Action()
+function distillate.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId or target:getId() ~= T.CONVERTER then
+		return false
+	end
+	item:remove(1)
+	target:transform(T.FILLED)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You fill the distillate into the glooth converter.") -- ours
+	return true
+end
+distillate:id(T.DISTILLATE)
+distillate:register()
+
+local filled = Action()
+function filled.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId then
+		return false
+	end
+	if target:getId() == 21816 then -- tainted glooth capsule
+		target:transform(21814)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The converter cleanses the tainted capsule.") -- ours
+		return true
+	end
+	if not table.contains(PURPLE_SLIME, target:getId()) then
+		return false
+	end
+	if T.convertPool(player, toPosition) then
+		toPosition:sendMagicEffect(CONST_ME_GREEN_RINGS)
+	end
+	return true
+end
+filled:id(T.FILLED)
+filled:register()

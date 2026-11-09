@@ -3117,6 +3117,9 @@ Storage = {
 			Communication = 48797, -- Communication Breakdown (Doubleday): 1 asked, 2 vial filled
 			Combinatorics = 48798, -- Combinatorics (Doubleday): 1 = started (details in player KV family-oramond)
 			Merlay = 48799, -- Dr Merlay's Misery: 1 letters given, 2 mixture shown
+			-- 48614-48619 are free between the Edron task blocks
+			Statues = 48614, -- Four Demanding Statues (Elbert): 1 asked, 2 warlock dead, 3 letter found, 4 done
+			Plague = 48615, -- The Mutated Glooth Plague (Georgia Rainbird): 1 device given, 2 antidote told, 3 eight pools done
 		},
 		-- FAMILY: In Service of Yalahar fixes (lib/others/family_in_service_of_yalahar.lua)
 		FamilyInServiceOfYalahar = {
