@@ -312,6 +312,25 @@ function R.refuseSlide(player, actionId, position, fromPosition)
 	return true
 end
 
+-- The magistrate slide (aid 42628, 33669,31887,5) needs the commoner rank (EN Oramond Dungeon:
+-- "you must have cast at least 50 votes", Tibia's commoner). true = refused.
+R.DUNGEON_SLIDE_BACK = Position(33669, 31886, 5) -- ours: when the player came from nowhere
+
+function R.refuseDungeon(player, position, fromPosition)
+	if not R.on() or R.rank(player) >= R.COMMONER then
+		return false
+	end
+	local back = fromPosition
+	if not back or (back.x == position.x and back.y == position.y and back.z == position.z) then
+		back = R.DUNGEON_SLIDE_BACK
+	end
+	player:teleportTo(back, true)
+	local text = string.format("Only commoners of Rathleton may use this slide. Cast %d votes at Marvin first.", R.ranks[R.COMMONER].votes) -- ours
+	player:sendCancelMessage(text)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, text)
+	return true
+end
+
 -- Where the magistrate slide (aid 42628) leads for each dungeon result. The three set-ups are
 -- separate areas on our map (TibiaWiki EN Oramond Dungeon: one cave with three set-ups).
 R.dungeonPositions = {

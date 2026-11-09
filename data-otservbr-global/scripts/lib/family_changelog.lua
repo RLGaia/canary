@@ -130,4 +130,5 @@ FamilyChangelog = {
 	{ "2026-11-09", "Glooth Factory raids: every full hour the raid voted at Marvin comes to the factory's second floor for 45 minutes, on top of the usual monsters - minotaurs with totems and the Moohtant Wallbreaker, mechanical creatures with batteries and the Glooth Bomb, or wild life with unstable tunnels and the Tremor Worm. Stop the bosses before they reach the plant wall!" },
 	{ "2026-11-09", "Rathleton ranks need half the votes now: commoner 13 votes cast, inhabitant 38, citizen 75, squire 125." },
 	{ "2026-11-09", "Marvin counts the Rathleton votes every week now (Mondays at 06:00) instead of every two weeks." },
+	{ "2026-11-09", "The slime slide in the Rathleton magistrate into the Oramond Dungeon now needs the commoner rank (13 votes cast at Marvin), like in Tibia." },
 }

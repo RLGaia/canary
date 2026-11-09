@@ -302,4 +302,15 @@ do
 	T.check("strange pipe: squire gets access", q.storage[AD] == 1)
 end
 
+-- ---------------------------------------------------------------- magistrate dungeon slide (2026-11-09)
+do
+	local slide = { x = 33669, y = 31887, z = 5 }
+	local nobody = player({ storage = {} })
+	T.check("dungeon slide: no rank refused (EN: 50 votes cast)", R.refuseDungeon(nobody, slide, { x = 33670, y = 31887, z = 5 }) == true and nobody.teleported and nobody.teleported.x == 33670)
+	local stuck = player({ storage = {} })
+	R.refuseDungeon(stuck, slide, slide)
+	T.check("dungeon slide: fallback square", stuck.teleported and stuck.teleported.y == 31886)
+	T.check("dungeon slide: commoner passes", R.refuseDungeon(player({ storage = { [S.Rank] = 1 } }), slide, slide) == false)
+end
+
 T.finish()

@@ -16,6 +16,12 @@ function votingOramond.onStepIn(creature, item, position, fromPosition)
 		return true
 	end
 
+	-- FAMILY: entry needs the first Rathleton rank (TibiaWiki EN Oramond Dungeon: 50 votes cast,
+	-- Tibia's commoner; ours 13). lib/others/family_rathleton.lua
+	if FamilyRathleton and FamilyRathleton.refuseDungeon(player, position, fromPosition) then
+		return true
+	end
+
 	local teleport = setting[os.date("%A")]
 	-- FAMILY: the dungeon the citizens voted for at Marvin, not the weekday (lib/others/family_rathleton.lua)
 	if FamilyRathleton and FamilyRathleton.on() then
