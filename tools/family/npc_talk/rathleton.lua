@@ -161,12 +161,12 @@ T.check("count: tie keeps previous (wrath default)", db:get("result-dungeon") ==
 T.check("count: lisa", db:get("result-boss") == "lisa")
 T.check("count: no raid votes keeps default", db:get("result-raid") == nil)
 T.check("tallies reset", db:get("tally-shortcut-fungi") == nil)
-R.refresh(start + 13 * 86400)
+R.refresh(start + 6 * 86400)
 T.check("same period: no change", db:get("result-shortcut") == "fungi")
 db:set("tally-shortcut-minotaurs", 1)
-R.refresh(start + 14 * 86400 + 1)
+R.refresh(start + 7 * 86400 + 1)
 T.check("next period: minotaurs", db:get("result-shortcut") == "minotaurs")
-T.check("next count in 14 days", R.secondsToNextPeriod(start + 1) == 14 * 86400 - 1)
+T.check("next count in 7 days", R.secondsToNextPeriod(start + 1) == 7 * 86400 - 1)
 
 -- ---------------------------------------------------------------- ships
 local function travelCheck(file, keyword, costText)

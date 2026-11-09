@@ -13,7 +13,7 @@
 --     results. Topics by rank: shortcut (everyone), dungeon (commoner), boss (inhabitant),
 --     raid (citizen). Ranks after votes CAST: family numbers below (Tibia: 50/150/300/500),
 --     with the achievements Rathleton Commoner/Inhabitant/Citizen/Squire.
---   * The votes of each 14-day period are counted when the period ends (every other Monday at
+--   * The votes of each 7-day period are counted when the period ends (every Monday at
 --     06:00, server save); the most voted option of each topic then holds for the next period:
 --     the active shortcut slide (minotaurs, fungi, catacombs) and the magistrate dungeon
 --     (golems, minotaurs, wrath of evil) and the boss Flora offers for one voting right
@@ -49,7 +49,7 @@ R.ranks = {
 R.COMMONER, R.INHABITANT, R.CITIZEN, R.SQUIRE = 1, 2, 3, 4
 
 -- Length of a voting period and its first start (a Monday at server save, local time).
-R.periodDays = 14
+R.periodDays = 7 -- Tibia (and here until 2026-11-09): 14; Rodrigo asked for one week
 R.periodStart = os.time({ year = 2026, month = 11, day = 9, hour = 6, min = 0, sec = 0 })
 
 -- Topics in Marvin's order. bit = first bit of the topic in S.Voted (one bit per option).
