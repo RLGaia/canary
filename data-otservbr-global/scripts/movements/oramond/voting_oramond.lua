@@ -17,7 +17,7 @@ function votingOramond.onStepIn(creature, item, position, fromPosition)
 	end
 
 	-- FAMILY: entry needs the first Rathleton rank (TibiaWiki EN Oramond Dungeon: 50 votes cast,
-	-- Tibia's commoner; ours 13). lib/others/family_rathleton.lua
+	-- Tibia's commoner; ours 25). lib/others/family_rathleton.lua
 	if FamilyRathleton and FamilyRathleton.refuseDungeon(player, position, fromPosition) then
 		return true
 	end
