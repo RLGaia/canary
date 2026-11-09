@@ -8,8 +8,8 @@
 --     if lost, and Master Debater needs all nine (BR/EN) - FAMILY edit in creaturescripts_kill.lua
 --   * the quest log showed the mission only after asking Dedoras: entering the Bastion (FAMILY
 --     edit in actions_entrance.lua), Oberon's death and a login repair now show it
---   * the brass-shod chest on the rooftop (33377,31321,1) gave nothing; it gives the EN rewards
---     once a day like the other six
+--   (the brass-shod chest on the rooftop, 33377,31321,1, is upstream's Key 0909 chest, uid 5012 set
+--    at startup: left alone; a first version of this file wrongly gave it daily rewards)
 -- Oberon's answers (any punctuation and case), the miniboss message and the Zao boat are FAMILY
 -- edits in the upstream files. Switch: Family.falconBastion.
 
@@ -154,51 +154,6 @@ function fixed.playerOnMoveItem(player, item, count, fromPosition, toPosition, f
 end
 fixed:register()
 
--- The rooftop chest ----------------------------------------------------------------------------
-F.roofChest = Position(33377, 31321, 1)
-F.chestRewards = { -- TibiaWiki EN, Brass-Shod Chest (Falcon Bastion); the same as upstream's six chests
-	{ id = 9081, count = 1 }, -- roasted dragon wings
-	{ id = 28821, count = 1 }, -- patch of fine cloth
-	{ id = 28823, count = 1 }, -- falcon crest
-	{ id = 9058, count = 1 }, -- gold ingot
-	{ id = 6299, count = 1 }, -- death ring
-	{ id = 3052, count = 1 }, -- life ring
-	{ id = 3035, count = 10 }, -- platinum coins
-}
-F.chestWait = 24 * 60 * 60
-
-function F.openRoofChest(player)
-	local last = tonumber(kv(player):get("roof-chest")) or 0
-	if os.time() < last + F.chestWait then
-		msg(player, "The chest is empty.")
-		return false
-	end
-	local reward = F.chestRewards[math.random(#F.chestRewards)]
-	local it = ItemType(reward.id)
-	if not player:addItem(reward.id, reward.count) then
-		player:sendCancelMessage("You have no room or not enough capacity to take it.")
-		return false
-	end
-	kv(player):set("roof-chest", os.time())
-	if reward.count > 1 then
-		msg(player, string.format("You have found %d %s.", reward.count, it:getPluralName()))
-	else
-		msg(player, string.format("You have found %s %s.", it:getArticle(), it:getName()))
-	end
-	return true
-end
-
-local roofChest = Action()
-function roofChest.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if not on() then
-		return false
-	end
-	F.openRoofChest(player)
-	return true
-end
-roofChest:position(F.roofChest)
-roofChest:register()
-
 -- Quest log ----------------------------------------------------------------------------------
 function F.showMission(player, value)
 	if player:getStorageValue(SL.Questlog) < 1 then
@@ -237,7 +192,7 @@ function startup.onStartup()
 			end
 		end
 	end
-	logger.info("[Family] Falcon Bastion: {} debate volumes, {} placed, rooftop chest", #F.books, placed)
+	logger.info("[Family] Falcon Bastion: {} debate volumes, {} placed", #F.books, placed)
 	return true
 end
 startup:register()
