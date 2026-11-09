@@ -16,6 +16,10 @@ function actions_entrance.onUse(player, item, fromPosition, target, toPosition, 
 			player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Once more you mix the chalk with a drop of your blood and a bit of water and renew the symbol on the floor...")
 			item:transform(2873, 0)
+			-- FAMILY: the mission shows in the quest log on arrival (scripts/family/falcon_bastion.lua)
+			if FamilyFalcon and Family.falconBastion then
+				FamilyFalcon.showMission(player, 1)
+			end
 		end
 	else
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You can only use this entrance during the night.")

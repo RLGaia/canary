@@ -20,14 +20,14 @@ local boats = {
 		toPosition = Position(33374, 31310, 7),
 		message = "Your heart lightens as you return from the gloomy isle.",
 	},
-	[3] = {
+	[3] = { -- FAMILY: the Zao Steppe boat opens after Grand Canon Dominus (TibiaWiki BR; upstream: after Gaunder)
 		boatPosition = Position(33344, 31348, 7),
-		value = 3,
+		value = 4,
 		toPosition = Position(33326, 31352, 7),
 	},
-	[4] = {
+	[4] = { -- FAMILY: as boat 3
 		boatPosition = Position(33328, 31352, 7),
-		value = 3,
+		value = 4,
 		toPosition = Position(33346, 31348, 7),
 	},
 }

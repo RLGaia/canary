@@ -30,10 +30,22 @@ function creaturescripts_library_bosses.onDeath(creature, corpse, killer, mostDa
 				end
 				if monsterStorage.achievements then
 					for i = 1, #monsterStorage.achievements do
-						p:addAchievement(monsterStorage.achievements[i])
+						-- FAMILY: Master Debater needs all nine debate volumes (TibiaWiki BR/EN; scripts/family/falcon_bastion.lua)
+						local name = monsterStorage.achievements[i]
+						if name ~= "Master Debater" or not (FamilyFalcon and Family.falconBastion) or FamilyFalcon.allBooks(p) then
+							p:addAchievement(name)
+						end
 					end
 				end
+				-- FAMILY: a Falcon miniboss kill that counts says so (TibiaWiki EN: "Your deeds have been noticed.")
+				if Family.falconBastion and monsterStorage.stg == Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.KillingBosses and not monsterStorage.lastBoss then
+					p:sendTextMessage(MESSAGE_LOOT, "Your deeds have been noticed.")
+				end
 				if monsterStorage.lastBoss then
+					-- FAMILY: show the mission in the quest log even without Dedoras (FamilyFalcon.showMission)
+					if FamilyFalcon and Family.falconBastion then
+						FamilyFalcon.showMission(p, 2)
+					end
 					if p:getStorageValue(Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.Questline) < 2 then
 						p:setStorageValue(Storage.Quest.U11_80.TheSecretLibrary.FalconBastion.Questline, 2)
 					end

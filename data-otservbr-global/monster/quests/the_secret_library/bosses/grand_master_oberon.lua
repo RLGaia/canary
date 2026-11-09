@@ -149,7 +149,12 @@ mType.onSay = function(monster, creature, type, message)
 		local oberonMessagesTable = GrandMasterOberonResponses[asking_storage]
 
 		if oberonMessagesTable then
-			if message == oberonMessagesTable.msg:lower() or message == oberonMessagesTable.msg2:lower() then
+			-- FAMILY: any punctuation and spacing count (TibiaWiki BR writes "SEHWO ASIMO, TOLIDO ESD!", the EN
+			-- book "...prefer talking?"); upstream needed the exact text. scripts/family/falcon_bastion.lua
+			local function plain(text)
+				return (text:lower():gsub("[%p]", " "):gsub("%s+", " "):gsub("^ ", ""):gsub(" $", ""))
+			end
+			if plain(message) == plain(oberonMessagesTable.msg) or plain(message) == plain(oberonMessagesTable.msg2) then
 				monster:say("GRRRAAANNGH!", TALKTYPE_MONSTER_SAY)
 				monster:unregisterEvent("OberonImmunity")
 			else
