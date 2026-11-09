@@ -132,4 +132,5 @@ FamilyChangelog = {
 	{ "2026-11-09", "The slime slide in the Rathleton magistrate into the Oramond Dungeon now needs the commoner rank (25 votes cast at Marvin), like in Tibia." },
 	{ "2026-11-09", "New quest: The Order of the Lion. Visit Evrard the Miller on Bounac by day, earn the trust of the town with the passphrase YSELDA, meet Kesar the Younger, face Fugue at night and Drume on the battlefield, and become the Hero of Bounac. Augustin and the Bounac merchants now trade only with the Hero." },
 	{ "2026-11-09", "The Order of the Lion: Kesar and Drume now say their real lines at the meeting, and the Hero of Bounac can enter the town depot through the house south of it." },
+	{ "2026-11-09", "Bounac: the crypt warriors on the ground floor of the town come out only at night, and the Hero of Bounac can open three more doors that were always sealed." },
 }

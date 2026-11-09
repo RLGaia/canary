@@ -42589,12 +42589,8 @@
 	<monster centerx="33154" centery="32470" centerz="7" radius="2">
 		<monster name="Deer" x="1" y="0" z="7" spawntime="90" />
 	</monster>
-	<monster centerx="32387" centery="32471" centerz="7" radius="1">
-		<monster name="Crypt Warrior" x="1" y="0" z="7" spawntime="60" />
-	</monster>
-	<monster centerx="32392" centery="32471" centerz="7" radius="1">
-		<monster name="Crypt Warrior" x="-1" y="0" z="7" spawntime="60" />
-	</monster>
+	<!-- FAMILY: Crypt Warrior 32388,32471,7 (Bounac) spawns only at night (data-otservbr-global/scripts/family/night_spawns.lua) -->
+	<!-- FAMILY: Crypt Warrior 32391,32471,7 (Bounac) spawns only at night (data-otservbr-global/scripts/family/night_spawns.lua) -->
 	<monster centerx="32404" centery="32471" centerz="7" radius="1">
 		<monster name="Skeleton" x="0" y="0" z="7" spawntime="60" />
 	</monster>
@@ -42629,9 +42625,7 @@
 		<monster name="Hyaena" x="-2" y="0" z="7" spawntime="90" />
 		<monster name="Hyaena" x="0" y="0" z="7" spawntime="90" />
 	</monster>
-	<monster centerx="32390" centery="32475" centerz="7" radius="1">
-		<monster name="Crypt Warrior" x="0" y="-1" z="7" spawntime="60" />
-	</monster>
+	<!-- FAMILY: Crypt Warrior 32390,32474,7 (Bounac) spawns only at night (data-otservbr-global/scripts/family/night_spawns.lua) -->
 	<monster centerx="32423" centery="32475" centerz="7" radius="1">
 		<monster name="Deer" x="0" y="0" z="7" spawntime="60" />
 	</monster>

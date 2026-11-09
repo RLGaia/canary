@@ -13,6 +13,12 @@
 -- gets its creature, again 90 s after it is killed (as the map's spawntime);
 -- when day comes the ones still alive disappear.
 --
+-- Since 2026-11-09 also the three crypt warriors on the ground floor of Bounac
+-- (TibiaWiki BR, The Order of the Lion Quest: "essas criaturas dão respawn
+-- (32390,32470,7) (durante a noite tibiana)"; EN: they "roam the ground floor
+-- of the island at night"); the crypt below the town keeps its own all day.
+-- Their map spawntime is 60 s (30 s at our spawn rate), so they come back after 30 s.
+--
 -- Switch: Family.nightSpawns (false = no creatures at these spots at all).
 
 Family = Family or {}
@@ -24,6 +30,9 @@ local spots = {
 	{ name = "Werebadger", pos = Position(33236, 31768, 3) },
 	{ name = "Werebadger", pos = Position(33217, 31767, 4) },
 	{ name = "Werefox", pos = Position(33237, 31775, 4) },
+	{ name = "Crypt Warrior", pos = Position(32388, 32471, 7), respawn = 30 },
+	{ name = "Crypt Warrior", pos = Position(32391, 32471, 7), respawn = 30 },
+	{ name = "Crypt Warrior", pos = Position(32390, 32474, 7), respawn = 30 },
 }
 
 function Family.isNight()
@@ -48,7 +57,7 @@ function Family.updateNightSpawns()
 				if spot.id then
 					spot.goneAt, spot.id = now, nil -- killed: wait for the respawn time
 				end
-				if not spot.goneAt or now - spot.goneAt >= RESPAWN then
+				if not spot.goneAt or now - spot.goneAt >= (spot.respawn or RESPAWN) then
 					local monster = Game.createMonster(spot.name, spot.pos, true, false)
 					if monster then
 						spot.id, spot.goneAt = monster:getId(), nil
@@ -78,7 +87,7 @@ think:register()
 local startup = GlobalEvent("FamilyNightSpawnsStartup")
 
 function startup.onStartup()
-	logger.info("[Family] night spawns: {} ({} spots, Troll Sabotage path)", tostring(Family.nightSpawns), #spots)
+	logger.info("[Family] night spawns: {} ({} spots, Troll Sabotage path and Bounac)", tostring(Family.nightSpawns), #spots)
 	return true
 end
 

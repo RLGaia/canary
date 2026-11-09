@@ -105,15 +105,22 @@ local function setDoorAid(pos, aid)
 	return false
 end
 
--- The depot passages -----------------------------------------------------------------------
+-- Passages for the Hero of Bounac -------------------------------------------------------------
 -- The Bounac depot (32389-32392,32486-32489,7) and the house south of it are closed off on our map.
 -- Rodrigo's BR screenshot shows the depot entered from that house; its two doorways (a plank on the
 -- floor under a stone wall: 32392,32496,7 from the street, 32394,32493,6 from the yard one floor up)
--- let the Hero of Bounac through (BR: "Acesso ao Depot da Ilha"); others find them sealed.
-L.depotPassages = {
-	{ wall = Position(32392, 32496, 7), inside = Position(32392, 32495, 7), outside = Position(32392, 32497, 7) },
-	{ wall = Position(32394, 32493, 6), inside = Position(32393, 32493, 6), outside = Position(32395, 32493, 6) },
+-- let the Hero of Bounac through (BR: "Acesso ao Depot da Ilha"). Kesar: "Feel free to roam Bounac as
+-- you please", so the three Bounac doors no script can open (ids 33632/33634, not in any door table:
+-- Wes' room at night, the kitchen of the house south of the town, a door in the north) also let the
+-- Hero through (2026-11-09). Others find them sealed.
+L.heroPassages = {
+	{ wall = Position(32392, 32496, 7), inside = Position(32392, 32495, 7), outside = Position(32392, 32497, 7), depot = true },
+	{ wall = Position(32394, 32493, 6), inside = Position(32393, 32493, 6), outside = Position(32395, 32493, 6), depot = true },
+	{ wall = Position(32374, 32465, 6), inside = Position(32374, 32466, 6), outside = Position(32374, 32464, 6) },
+	{ wall = Position(32421, 32502, 7), inside = Position(32422, 32502, 7), outside = Position(32420, 32502, 7) },
+	{ wall = Position(32398, 32460, 6), inside = Position(32399, 32460, 6), outside = Position(32397, 32460, 6) },
 }
+L.depotPassages = { L.heroPassages[1], L.heroPassages[2] }
 
 function L.usePassage(player, passage)
 	if not L.isHero(player) then
@@ -135,7 +142,7 @@ function passage.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if not on() then
 		return false
 	end
-	for _, p in ipairs(L.depotPassages) do
+	for _, p in ipairs(L.heroPassages) do
 		if toPosition == p.wall then
 			L.usePassage(player, p)
 			return true
@@ -143,7 +150,7 @@ function passage.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 	return false
 end
-for _, p in ipairs(L.depotPassages) do
+for _, p in ipairs(L.heroPassages) do
 	passage:position(p.wall)
 end
 passage:register()
