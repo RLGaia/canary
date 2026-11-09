@@ -58,6 +58,12 @@ combinatorics and favour exchange, the whole Dr Merlay chain, Four Demanding Sta
 Rainbird's converter, The Gloud Ship (Zeronex, Nicholas, Yeo, the cauldron, the laboratory, the
 three tasks, Publicity), three days of Tending Gloothworms with Wesley, kill counting with ranks.
 
+`order_of_the_lion.lua` is The Order of the Lion check (2026-11-09, 95 checks): Evrard, the five residents
+(YSELDA: intro, tasks, counts, hand-over), the Bounac Guard, Kesar the Younger in every step (night, the waits,
+the Falcon/Cobra check, the escort, Hero of Bounac), the trade rule of the Bounac merchants and Augustin, Malefitz
+with Fitzmaurice and Fitzgerald, the quest log texts, every `{highlighted}` word and every NPC line of the
+TibiaWiki BR page: `luajit tools/family/npc_talk/order_of_the_lion.lua br.txt` (the page as text).
+
 ## Writing a check
 
 ```lua

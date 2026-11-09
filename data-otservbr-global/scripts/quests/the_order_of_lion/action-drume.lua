@@ -66,6 +66,17 @@ function drumeAction.onUse(player, item, fromPosition, target, toPosition, isHot
 	if #players == 0 then
 		return false
 	end
+	-- FAMILY: only players Kesar the Younger sent to the battlefield (The Order of the Lion, step 10+;
+	-- scripts/family/order_of_the_lion.lua). Upstream let anyone fight Drume.
+	if FamilyLion and FamilyLion.canFightDrume then
+		for _, pi in pairs(players) do
+			if not FamilyLion.canFightDrume(pi) then
+				player:sendCancelMessage("Kesar the Younger has not called everyone of your team to the battlefield yet.") -- ours
+				player:getPosition():sendMagicEffect(CONST_ME_POFF)
+				return true
+			end
+		end
+	end
 	for _, pi in pairs(players) do
 		if not pi:canFightBoss("Drume") then
 			player:sendCancelMessage("Someone of your team has already fought in the skirmish in the last 10h.")

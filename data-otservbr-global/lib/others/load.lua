@@ -11,3 +11,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_explorer_society.lua") -- FAMILY: T
 dofile(DATA_DIRECTORY .. "/lib/others/family_in_service_of_yalahar.lua") -- FAMILY: In Service of Yalahar fixes (guards, sides, achievements)
 dofile(DATA_DIRECTORY .. "/lib/others/family_rathleton.lua") -- FAMILY: Rathleton Quest, Marvin's voting and citizen ranks
 dofile(DATA_DIRECTORY .. "/lib/others/family_oramond_tasks.lua") -- FAMILY: Oramond Quest kill and delivery tasks
+dofile(DATA_DIRECTORY .. "/lib/others/family_order_of_the_lion.lua") -- FAMILY: The Order of the Lion Quest (Bounac NPCs, Kesar, Fugue, Hero of Bounac)

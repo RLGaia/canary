@@ -34,6 +34,8 @@ monster.summon = {
 		{ name = "preceptor lazare", chance = 10, interval = 8000, count = 1 },
 		{ name = "grand commander soeren", chance = 10, interval = 8000, count = 1 },
 		{ name = "grand chaplain gaunder", chance = 10, interval = 8000, count = 1 },
+		-- FAMILY: the fourth Falcon aid named by TibiaWiki BR and the EN spoiler (upstream had three)
+		{ name = "grand canon dominus", chance = 10, interval = 8000, count = 1 },
 	},
 }
 

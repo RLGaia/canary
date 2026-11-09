@@ -170,6 +170,17 @@ npcHandler:setMessage(MESSAGE_GREET, "Oh, please come in, |PLAYERNAME|. What do 
 npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye.")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Good bye.")
 
+-- FAMILY: Augustin trades only with the Hero of Bounac (TibiaWiki EN: "Can only trade after completing The
+-- Order of the Lion Quest"; lib/others/family_order_of_the_lion.lua). Upstream he traded with anyone.
+npcHandler:setCallback(CALLBACK_ON_TRADE_REQUEST, function(npc, creature)
+	local player = Player(creature)
+	if player and FamilyLion and not FamilyLion.canTrade(player) then
+		FamilyLion.tradeRefused(npc, creature, npcHandler)
+		return false
+	end
+	return true
+end)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- On buy npc shop message

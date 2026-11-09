@@ -3123,6 +3123,12 @@ Storage = {
 			Gloud = 48616, -- The Gloud Ship (Zeronex): 1 cloth, 2 gloo, 3 gas bag, 4 done; tasks 5 harvesting, 6 concocting, 7 retrieving
 			Gloothworms = 48617, -- Tending Gloothworms (Wesley): 1 read the machine, 2 report, 3-6 task, 7 done for today
 		},
+		-- FAMILY: The Order of the Lion (2026-11-09; lib/others/family_order_of_the_lion.lua). The mission itself
+		-- uses the upstream Storage.Quest.U12_40.TheOrderOfTheLion.QuestLine (1-12); details in player KV family-lion.
+		-- (48619 is the action id of the usurpers' ledger and map, kept free here; the Family range is full)
+		FamilyOrderOfTheLion = {
+			Hero = 48618, -- 1 = Hero of Bounac; also the action id of the Bounac doors sealed until then
+		},
 		-- FAMILY: In Service of Yalahar fixes (lib/others/family_in_service_of_yalahar.lua)
 		FamilyInServiceOfYalahar = {
 			Side03 = 48780, -- side taken in Mission 03: 1 Palimuth, 2 Azerus

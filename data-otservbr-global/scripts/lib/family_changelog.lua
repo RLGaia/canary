@@ -130,4 +130,5 @@ FamilyChangelog = {
 	{ "2026-11-09", "Glooth Factory raids: every full hour the raid voted at Marvin comes to the factory's second floor for 45 minutes, on top of the usual monsters - minotaurs with totems and the Moohtant Wallbreaker, mechanical creatures with batteries and the Glooth Bomb, or wild life with unstable tunnels and the Tremor Worm. Stop the bosses before they reach the plant wall!" },
 	{ "2026-11-09", "Marvin counts the Rathleton votes every week now (Mondays at 06:00) instead of every two weeks." },
 	{ "2026-11-09", "The slime slide in the Rathleton magistrate into the Oramond Dungeon now needs the commoner rank (25 votes cast at Marvin), like in Tibia." },
+	{ "2026-11-09", "New quest: The Order of the Lion. Visit Evrard the Miller on Bounac by day, earn the trust of the town with the passphrase YSELDA, meet Kesar the Younger, face Fugue at night and Drume on the battlefield, and become the Hero of Bounac. Augustin and the Bounac merchants now trade only with the Hero." },
 }
