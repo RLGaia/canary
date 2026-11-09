@@ -50,6 +50,11 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: Oramond Quest task (lib/others/family_oramond_tasks.lua); upstream had no dialogue
+if FamilyOramondTasks then
+	FamilyOramondTasks.setupElbert(npcHandler)
+end
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

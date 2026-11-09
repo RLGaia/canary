@@ -3102,6 +3102,17 @@ Storage = {
 			StatusLog = 48772, -- 1 = Marvin put the citizen status in the quest log
 			Voted = 48773, -- bit mask of the options voted at least once (FamilyRathleton.topics, bits 0-11)
 		},
+		-- FAMILY: Oramond Quest kill and delivery tasks (2026-11-08; lib/others/family_oramond_tasks.lua).
+		-- Kill counts: -1 = never started, else kills since the last report.
+		FamilyOramondTasks = {
+			Rot = 48788, -- Taking the Rot Out (Terrence)
+			Beast = 48789, -- The Name of the Beast (Terrence)
+			Minor = 48790, -- The Minor Taurs (Terrence)
+			Gargoyles = 48791, -- Rust in Peace (Terrence)
+			Major = 48792, -- The Major Taurs (Terrence)
+			Bandits = 48793, -- Nature's Balance (Drystan Wildweed)
+			Capsules = 48794, -- The Glooth Bandits (Elbert): 1 asked, 2 capsules delivered at least once
+		},
 		-- FAMILY: In Service of Yalahar fixes (lib/others/family_in_service_of_yalahar.lua)
 		FamilyInServiceOfYalahar = {
 			Side03 = 48780, -- side taken in Mission 03: 1 Palimuth, 2 Azerus

@@ -54,6 +54,11 @@ local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	local playerId = player:getId()
 
+	-- FAMILY: Oramond Quest kill tasks (lib/others/family_oramond_tasks.lua)
+	if FamilyOramondTasks and not MsgContains(message, "manway") and npcHandler:getTopic(playerId) ~= 1 and FamilyOramondTasks.terrenceSay(npc, player, message, npcHandler) then
+		return true
+	end
+
 	if MsgContains(message, "manway") then
 		if player:getStorageValue(Storage.Quest.U10_50.DarkTrails.Mission16) == 1 and player:getStorageValue(Storage.Quest.U10_50.DarkTrails.Mission17) < 1 then
 			npcHandler:say("I'm not allowed to let just anyone pass. If you have proven your willingness and effort to participate in the fighting, I'm allowed to let you pass.", npc, creature)
