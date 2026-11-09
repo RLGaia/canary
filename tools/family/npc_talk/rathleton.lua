@@ -83,10 +83,10 @@ T.check("votes left 20, cast 10", p.storage[VP] == 20 and p.storage[S.VotesCast]
 T.check("fungi voted bit", R.hasVoted(p, R.topicByKey.shortcut.options[2]) and not R.hasVoted(p, R.topicByKey.shortcut.options[1]))
 T.check("tally fungi 10", R.tally("shortcut", "fungi") == 10)
 a = marvin:say(p, "status")
-T.check("status: no rank, lacks 15, quest log question", has(a, "Currently, you have no citizen rank. You lack 15 successful voting casts") and has(a, "quest log, yes or no"), a)
+T.check("status: no rank, lacks 3, quest log question", has(a, "Currently, you have no citizen rank. You lack 3 successful voting casts") and has(a, "quest log, yes or no"), a)
 T.check("status into quest log", has(marvin:say(p, "yes"), "from now on you can check the status") and p.storage[S.StatusLog] == 1)
-T.check("quest log text", has(R.statusText(p), "cast 10 votes") and has(R.statusText(p), "15 more cast votes and Marvin can promote you to commoner"), R.statusText(p))
-T.check("promotion refused", has(marvin:say(p, "promotion"), "You lack 15"))
+T.check("quest log text", has(R.statusText(p), "cast 10 votes") and has(R.statusText(p), "3 more cast votes and Marvin can promote you to commoner"), R.statusText(p))
+T.check("promotion refused", has(marvin:say(p, "promotion"), "You lack 3"))
 -- cast the rest on catacombs, then minotaurs: 'all'
 marvin:say(p, "shortcut")
 marvin:say(p, "catacombs")

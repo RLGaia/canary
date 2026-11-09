@@ -38,12 +38,13 @@ function R.on()
 	return Family.rathletonRanks == true
 end
 
--- Votes cast needed for each rank (Tibia: 50, 150, 300, 500). Family numbers: half.
+-- Votes cast needed for each rank (Tibia: 50, 150, 300, 500). Family numbers: a quarter,
+-- rounded up (half until 2026-11-09, when Rodrigo halved them again).
 R.ranks = {
-	{ name = "commoner", votes = 25, achievement = "Rathleton Commoner" },
-	{ name = "inhabitant", votes = 75, achievement = "Rathleton Inhabitant" },
-	{ name = "citizen", votes = 150, achievement = "Rathleton Citizen" },
-	{ name = "squire", votes = 250, achievement = "Rathleton Squire" },
+	{ name = "commoner", votes = 13, achievement = "Rathleton Commoner" },
+	{ name = "inhabitant", votes = 38, achievement = "Rathleton Inhabitant" },
+	{ name = "citizen", votes = 75, achievement = "Rathleton Citizen" },
+	{ name = "squire", votes = 125, achievement = "Rathleton Squire" },
 }
 R.COMMONER, R.INHABITANT, R.CITIZEN, R.SQUIRE = 1, 2, 3, 4
 
