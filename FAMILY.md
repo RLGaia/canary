@@ -604,7 +604,7 @@ by one with `git cherry-pick -x` (the commit message names the upstream
 commit). Checked on 2026-10-19: of the 95 upstream commits after v3.6.1,
 about half change C++ (they need a newer `canary.exe`) and most others are CI,
 Docker or documentation. Checked again on 2026-11-08 (17 newer commits, up to
-#4138 of 2026-11-05; upstream `main` now targets client 15.25). Copied (47):
+#4138 of 2026-11-05; upstream `main` now targets client 15.25). Copied (48):
 
 - Daily reward: reward wall fix #4146 (see Daily reward above); soul regen in
   resting areas goes up to the vocation's maximum soul (#4138; before, free
@@ -645,6 +645,10 @@ Docker or documentation. Checked again on 2026-11-08 (17 newer commits, up to
   query handle (#4111), safe table unserialize (#4101), NPC say error (#4105),
   antiPush cleanup (#4103), monk's apparition race id (#4147), invalid item
   ranges in items.xml (from #4034).
+- Magic wolf trap (2026-11-08, from #4023, which is otherwise a C++
+  performance change): a monster other than a Starving Wolf stepping on a
+  magic wolf trap raised "attempt to index field 'damage'" in
+  `data/scripts/movements/trap.lua`; now nothing happens to it, as in Tibia.
 
 Not copied on purpose: #4136 (a character that never claimed a daily reward
 would lose the default streak bonuses it has now), #4116 (interval save, which

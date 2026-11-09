@@ -35,11 +35,18 @@ function trap.onStepIn(creature, item, position, fromPosition)
 		item:transform(trap.transformTo)
 	end
 
-	if item.itemid == 12368 and creature:getName() == "Starving Wolf" then
-		position:sendMagicEffect(CONST_ME_STUN)
-		creature:remove()
-		Game.createItem(12369, 1, position)
-	else
+	-- FAMILY: copied from upstream #4023 (bc826ad). The magic wolf trap (12368) has no
+	-- damage, so any other monster stepping on it raised "attempt to index field 'damage'".
+	if item.itemid == 12368 then
+		if creature:getName() == "Starving Wolf" then
+			position:sendMagicEffect(CONST_ME_STUN)
+			creature:remove()
+			Game.createItem(12369, 1, position)
+			return true
+		end
+	end
+
+	if trap.damage then
 		doTargetCombatHealth(0, creature, trap.type or COMBAT_PHYSICALDAMAGE, trap.damage[1], trap.damage[2], CONST_ME_NONE)
 	end
 
