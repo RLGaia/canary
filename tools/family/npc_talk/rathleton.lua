@@ -244,4 +244,51 @@ do
 	T.check("ezebeth: Glooth Engineer", z.achievements[1] == "Glooth Engineer")
 end
 
+-- ---------------------------------------------------------------- Flora and the bosses (2026-11-09)
+do
+	for _, boss in pairs(R.bosses) do
+		for _, field in pairs(boss) do
+			if type(field) == "table" and field.x and not field.sendMagicEffect then
+				field.sendMagicEffect = function() end
+			end
+		end
+	end
+	local flora = T.load("data-otservbr-global/npc/flora.lua")
+	local db = kv.scoped("family-rathleton")
+	db:set("result-boss", "glooth fairy")
+	local f = player({ storage = { [VP] = 2 } })
+	T.check("flora: glooth fairy greeting (EN)", has(flora:say(f, "hi"), "voted for the {Glooth Fairy}!"))
+	T.check("flora: fight question", has(flora:say(f, "fight"), "Do you really want to enter the Glooth Fairy's hideout."))
+	T.check("flora: one voting right charged", has(flora:say(f, "yes"), "Here you go!") and f.storage[VP] == 1 and f.teleported and f.teleported.x == 33660)
+	flora:bye(f)
+	db:set("result-boss", "bullwark")
+	T.check("flora: bullwark greeting (EN)", has(flora:say(f, "hi"), "voted for {Bullwark}!"))
+	T.check("flora: bullwark (EN)", has(flora:say(f, "bullwark"), "lump of meat and muscles"))
+	flora:say(f, "fight")
+	f.teleported = nil
+	T.check("flora: into Bullwark's lever room", has(flora:say(f, "yes"), "Here you go!") and f.storage[VP] == 0 and f.teleported.x == 33700 and f.teleported.y == 31847)
+	flora:say(f, "fight")
+	T.check("flora: no voting right left", has(flora:say(f, "yes"), "no voting right left"))
+	flora:bye(f)
+	R.setLeverWait("bullwark", R.LEVER_REST)
+	local g = player({ storage = { [VP] = 5 } })
+	flora:say(g, "hi")
+	flora:say(g, "fight")
+	T.check("flora: lever resting", has(flora:say(g, "yes"), "still resting") and g.storage[VP] == 5)
+	flora:bye(g)
+	R.setLeverWait("bullwark", -1)
+	db:set("result-boss", "lisa")
+	T.check("flora: lisa voted, glooth fairy offered (ours)", select(1, R.activeBoss()) == "glooth fairy")
+	db:set("result-boss", nil)
+	-- Hero of Rathleton
+	local pipe = T.load("data-otservbr-global/npc/strange_pipe.lua")
+	local AD = Storage.HeroRathleton.AccessDoor
+	local c = player({ storage = { [S.Rank] = 3 } })
+	pipe:say(c, "hi")
+	T.check("strange pipe: citizen refused", (c.storage[AD] or -1) < 1)
+	local q = player({ storage = { [S.Rank] = 4 } })
+	pipe:say(q, "hi")
+	T.check("strange pipe: squire gets access", q.storage[AD] == 1)
+end
+
 T.finish()

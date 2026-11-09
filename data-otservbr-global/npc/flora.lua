@@ -94,6 +94,12 @@ npcHandler:setMessage(MESSAGE_FAREWELL, "Come back soon.")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "")
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+-- FAMILY: Flora offers the boss voted at Marvin, charges one voting right and checks the lever
+-- (lib/others/family_rathleton.lua, switch Family.rathletonRanks)
+if FamilyRathleton and FamilyRathleton.on() then
+	FamilyRathleton.setupFlora(npcHandler)
+end
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

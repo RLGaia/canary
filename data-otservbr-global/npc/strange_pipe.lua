@@ -59,6 +59,12 @@ keywordHandler:addKeyword({ "years" }, StdModule.say, { npcHandler = npcHandler,
 local function greetCallback(npc, creature)
 	local playerId = creature:getId()
 	local player = Player(creature)
+	-- FAMILY: Hero of Rathleton needs the Rathleton rank squire (TibiaWiki EN Hero of Rathleton
+	-- Quest/Spoiler; lib/others/family_rathleton.lua). The line is ours.
+	if FamilyRathleton and FamilyRathleton.on() and FamilyRathleton.rank(player) < FamilyRathleton.SQUIRE then
+		npcHandler:say("<bubble> Only a squire of Rathleton may hear what I have to tell. Come back when the magistrate trusts you that much. <bubble>", npc, creature)
+		return false
+	end
 	player:setStorageValue(Storage.HeroRathleton.AccessDoor, 1)
 	return true
 end

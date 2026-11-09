@@ -16,9 +16,9 @@
 --   * The votes of each 14-day period are counted when the period ends (every other Monday at
 --     06:00, server save); the most voted option of each topic then holds for the next period:
 --     the active shortcut slide (minotaurs, fungi, catacombs) and the magistrate dungeon
---     (golems, minotaurs, wrath of evil). Boss and raid results are only shown for now
---     (Bullwark, Lisa and the Oramond raids are not on our server; the Glooth Fairy lever
---     keeps working).
+--     (golems, minotaurs, wrath of evil) and the boss Flora offers for one voting right
+--     (Bullwark or the Glooth Fairy, since 2026-11-09; Lisa's room is not known yet, so she
+--     falls back to the Glooth Fairy). Raid results are only shown for now.
 --   * Citizen rank: the City Access slide at the boat and the slide back from the city, the
 --     Glooth Factory slide, and the ships Oramond <-> Edron, Venore, Port Hope, Krailos.
 --
@@ -529,4 +529,117 @@ end
 
 function R.marvinReset(player)
 	R.talk[player:getId()] = nil
+end
+
+-- ------------------------------------------------------------------ bosses (2026-11-09)
+-- Flora stands where the boss voted for this period can be fought and charges one voting right
+-- to send you into its lever room; the lever sends everyone in the room to the boss after one
+-- minute and then rests 16 min 40 s; a fight lasts at most 15 minutes (TibiaWiki EN Bullwark,
+-- Lisa, Flora; BR Rathleton Quest). Rooms found on our map: Bullwark's lever room had no
+-- script. Lisa's boss room is not known yet: while she is voted, Flora keeps offering the Glooth
+-- Fairy (ours).
+
+R.bosses = {
+	["bullwark"] = {
+		name = "Bullwark",
+		flora = Position(33703, 31856, 7), -- EN 131.167|124.112|7
+		leverRoom = Position(33700, 31847, 7),
+		lever = Position(33699, 31849, 7),
+		leverBox = { 33697, 31841, 33709, 31851, 7 },
+		bossBox = { 33694, 31818, 33711, 31840, 7 },
+		arrival = Position(33702, 31836, 7),
+		spawn = Position(33702, 31829, 7), -- EN 131.166|124.85|7
+		exit = Position(33695, 31820, 7), -- the forcefield in the boss room
+		out = Position(33703, 31857, 7),
+		about = "A furious, devastating lump of meat and muscles. He is pure destruction. Take care!",
+	},
+	["glooth fairy"] = {
+		name = "Glooth Fairy",
+		the = "the ",
+		flora = Position(33654, 31937, 9), -- upstream spawn (EN 131.118|124.198|9)
+		leverRoom = Position(33660, 31936, 9), -- upstream's lever (uid 1020) runs the fight
+		upstream = true,
+		about = "A glooth-powered monstrosity of the new sewers. She heals herself and paralyses the careless. Take care!", -- ours
+	},
+}
+R.LEVER_REST = 1000 -- 16 min 40 s (EN)
+R.FIGHT_TIME = 15 * 60 -- EN: maxbattlelength 900
+
+-- The boss Flora offers now.
+function R.activeBoss()
+	local key = R.result("boss")
+	if not R.bosses[key] then
+		key = "glooth fairy"
+	end
+	return key, R.bosses[key]
+end
+
+-- Seconds until the lever of a boss can be pulled again (0 = ready).
+function R.leverWait(key, now)
+	now = now or os.time()
+	if R.bosses[key].upstream then
+		return math.max(0, Game.getStorageValue(GlobalStorage.GloothFairyTimer) - now)
+	end
+	return math.max(0, (store():get("lever-" .. key:gsub(" ", "-")) or 0) - now)
+end
+
+function R.setLeverWait(key, seconds)
+	store():set("lever-" .. key:gsub(" ", "-"), os.time() + seconds)
+end
+
+function R.floraGreeting(player)
+	local _, boss = R.activeBoss()
+	local name = (boss.the or "") .. "{" .. boss.name .. "}"
+	return "Greetings, " .. player:getName() .. ". Well, we all know what time it is. Always when we meet, the citizens of Rathleton voted for " .. name .. "! ... Well, the rules are as simple as always. Ask me for a {fight} and I'll teleport you into the room with the lever, therefore I'll charge one voting right. ... From this room there is no way back to me. Pull the trigger and after one minute you and your buddies will face " .. name .. "."
+end
+
+function R.setupFlora(npcHandler)
+	npcHandler:setCallback(CALLBACK_GREET, function(npc, creature)
+		npcHandler:setMessage(MESSAGE_GREET, R.floraGreeting(Player(creature)))
+		npcHandler:setTopic(creature:getId(), 0)
+		return true
+	end)
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, function(npc, creature, type, message)
+		local player = Player(creature)
+		if not player or not npcHandler:checkInteraction(npc, creature) then
+			return false
+		end
+		local id = player:getId()
+		local key, boss = R.activeBoss()
+		local say = function(text)
+			npcHandler:say(text, npc, creature)
+		end
+		if MsgContains(message, "fight") then
+			say("Do you really want to enter " .. (boss.the or "") .. boss.name .. "'s hideout. There is no chickening out and I also have to charge one voting right! {Yes} or {no}?")
+			npcHandler:setTopic(id, 1)
+		elseif MsgContains(message, "yes") and npcHandler:getTopic(id) == 1 then
+			npcHandler:setTopic(id, 0)
+			local wait = R.leverWait(key)
+			if R.votesLeft(player) < 1 then
+				say("You have no voting right left to spend. Help the city of Rathleton and come back.") -- ours
+			elseif wait > 0 then
+				say(string.format("The lever is still resting after the last fight. Come back in %d minute%s, or you would be stuck in there.", math.ceil(wait / 60), wait > 60 and "s" or "")) -- ours
+			else
+				player:setStorageValue(VOTING_POINTS, R.votesLeft(player) - 1)
+				say("Here you go!")
+				player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+				player:teleportTo(boss.leverRoom)
+				boss.leverRoom:sendMagicEffect(CONST_ME_TELEPORT)
+			end
+		elseif MsgContains(message, "no") and npcHandler:getTopic(id) == 1 then
+			npcHandler:setTopic(id, 0)
+			say("Okay...")
+		else
+			for _, other in pairs(R.bosses) do
+				if MsgContains(message, other.name:lower()) or (other.name == "Glooth Fairy" and MsgContains(message, "fairy")) then
+					say(other.about)
+					return true
+				end
+			end
+			if MsgContains(message, "lisa") then
+				say("Poisonous and sly. But her hideout in the ancient sewers is closed for now.") -- ours
+			end
+		end
+		return true
+	end)
 end
