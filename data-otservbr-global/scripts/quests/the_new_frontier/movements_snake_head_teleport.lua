@@ -9,6 +9,7 @@ local TheNewFrontier = Storage.Quest.U8_54.TheNewFrontier
 local teleport = MoveEvent()
 
 function teleport.onStepIn(player, item, position, fromPosition)
+	player = player:getPlayer() -- FAMILY: monsters stepping here gave a Lua error (2026-11-09)
 	if not player then
 		return true
 	end

@@ -4,16 +4,31 @@ local setting = {
 }
 local TheNewFrontier = Storage.Quest.U8_54.TheNewFrontier
 
-local function completeTest(cid)
+-- FAMILY: The New Frontier review (2026-11-09). Upstream passed the test
+-- after two minutes wherever the player was (also after dying in the ring),
+-- and an older timer could end a second try early. Now the player must still
+-- be in the ring, and only the timer of the latest entry counts.
+local entries = {}
+
+local function inRing(player)
+	local pos = player:getPosition()
+	return pos.z == setting.arenaPosition.z and math.abs(pos.x - setting.arenaPosition.x) <= 6 and math.abs(pos.y - setting.arenaPosition.y) <= 6
+end
+
+local function completeTest(cid, entry)
 	local player = Player(cid)
-	if not player then
+	if not player or entries[cid] ~= entry then
+		return false
+	end
+	entries[cid] = nil
+	if not inRing(player) then
 		return false
 	end
 	if player:getStorageValue(TheNewFrontier.Questline) == 17 then
 		player:teleportTo(setting.successPosition)
 		player:setStorageValue(TheNewFrontier.Questline, 18)
 		player:setStorageValue(TheNewFrontier.Mission06, 3) --Questlog, The New Frontier Quest "Mission 06: Days Of Doom"
-		player:say("You have braved the tiral of the Mooh'tah master.", TALKTYPE_MONSTER_SAY)
+		player:say("You have braved the trial of the Mooh'tah master.", TALKTYPE_MONSTER_SAY)
 	end
 end
 
@@ -31,7 +46,9 @@ function minotaurBoss.onStepIn(creature, item, position, fromPosition)
 		return player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You don't have access to this area.")
 	end
 
-	addEvent(completeTest, 2 * 60 * 1000, player.uid)
+	local entry = os.time() .. ":" .. math.random(1, 1000000)
+	entries[player:getId()] = entry
+	addEvent(completeTest, 2 * 60 * 1000, player:getId(), entry)
 	player:teleportTo(setting.arenaPosition)
 	setting.arenaPosition:sendMagicEffect(CONST_ME_TELEPORT)
 	return true

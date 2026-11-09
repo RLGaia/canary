@@ -31,13 +31,30 @@ local config = {
 }
 local TheNewFrontier = Storage.Quest.U8_54.TheNewFrontier
 
-local function summonBoss(name, position)
+-- FAMILY: The New Frontier review (2026-11-09). Upstream locked the arena
+-- until Tirecz died: after a defeat (or leaving) it stayed "already in use"
+-- until the server restarted, the waves went on spawning, and the 30-minute
+-- clean-up of an old fight could throw out the fighters of a newer one. Now
+-- every fight has its own number; when no fighter is left inside, the arena
+-- is cleaned and opened again, and old timers do nothing.
+FamilyNewFrontierArena = FamilyNewFrontierArena or { run = 0 }
+local arena = FamilyNewFrontierArena
+local arenaCenter = Position(33063, 31034, 3)
+
+local function fightersInside()
+	return #Game.getSpectators(arenaCenter, false, true, 10, 10, 10, 10) > 0
+end
+
+local function summonBoss(run, name, position)
+	if run ~= arena.run then
+		return
+	end
 	Game.createMonster(name, position)
 	position:sendMagicEffect(CONST_ME_TELEPORT)
 end
 
 local function clearArena()
-	local spectators = Game.getSpectators(Position(33063, 31034, 3), false, false, 10, 10, 10, 10)
+	local spectators = Game.getSpectators(arenaCenter, false, false, 10, 10, 10, 10)
 	local exitPosition = Position(33049, 31017, 2)
 	for i = 1, #spectators do
 		local spectator = spectators[i]
@@ -48,6 +65,26 @@ local function clearArena()
 			spectator:remove()
 		end
 	end
+end
+
+local function endFight(run)
+	if run ~= arena.run then
+		return
+	end
+	arena.run = arena.run + 1
+	clearArena()
+	Game.setStorageValue(TheNewFrontier.Mission09[1], -1)
+end
+
+local function watchFight(run)
+	if run ~= arena.run then
+		return
+	end
+	if not fightersInside() then
+		endFight(run)
+		return
+	end
+	addEvent(watchFight, 5 * 1000, run)
 end
 
 local theNewFrontierArena = Action()
@@ -68,11 +105,16 @@ function theNewFrontierArena.onUse(player, item, fromPosition, target, toPositio
 	end
 
 	if Game.getStorageValue(TheNewFrontier.Mission09[1]) == 1 then
-		return player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The arena is already in use.")
+		if fightersInside() then
+			return player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The arena is already in use.")
+		end
+		endFight(arena.run) -- FAMILY: nobody left inside, open it again
 	end
 
 	Game.setStorageValue(TheNewFrontier.Mission09[1], 1)
-	addEvent(clearArena, 30 * 60 * 1000)
+	arena.run = arena.run + 1
+	local run = arena.run
+	addEvent(endFight, 30 * 60 * 1000, run)
 
 	for b = 1, #fighters do
 		local creature = fighters[b].player
@@ -83,9 +125,10 @@ function theNewFrontierArena.onUse(player, item, fromPosition, target, toPositio
 
 	for i = 1, #config.bosses do
 		for j = 1, #config.bosses[i] do
-			addEvent(summonBoss, (i - 1) * 90 * 1000, config.bosses[i][j], config.positions[j + (i == 1 and 2 or 0)])
+			addEvent(summonBoss, (i - 1) * 90 * 1000, run, config.bosses[i][j], config.positions[j + (i == 1 and 2 or 0)])
 		end
 	end
+	addEvent(watchFight, 10 * 1000, run)
 	return true
 end
 

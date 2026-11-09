@@ -90,12 +90,15 @@ local function creatureSayCallback(npc, creature, type, message)
 				"Does this sound like something you can handle? ",
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 1)
-		elseif player:getStorageValue(TheNewFrontier.Mission02.Beaver1) == 1 and player:getStorageValue(TheNewFrontier.Mission02.Beaver2) == 1 and player:getStorageValue(TheNewFrontier.Mission02.Beaver3) == 1 then
+		-- FAMILY: only while the trees are being marked (upstream also answered later and set the quest back to this step, 2026-11-09)
+		elseif player:getStorageValue(TheNewFrontier.Questline) == 5 and player:getStorageValue(TheNewFrontier.Mission02.Beaver1) == 1 and player:getStorageValue(TheNewFrontier.Mission02.Beaver2) == 1 and player:getStorageValue(TheNewFrontier.Mission02.Beaver3) == 1 then
 			npcHandler:say("Yes, I can hear them even from here. It has to be a legion of beavers! I'll send the men to get the wood as soon as their gnawing frenzy has settled! You can report to Ongulf that men and wood will be on their way!", npc, creature)
 			player:setStorageValue(TheNewFrontier.Questline, 6)
 			player:setStorageValue(TheNewFrontier.Mission02[1], 3) --Questlog, The New Frontier Quest "Mission 02: From Kazordoon With Love"
-		else
+		elseif player:getStorageValue(TheNewFrontier.Questline) == 5 then
 			npcHandler:say("If you place the beaver bait on trees on some strategic locations, we could let the beavers do the work and later on, I'll send men to get the fallen trees.", npc, creature)
+		elseif player:getStorageValue(TheNewFrontier.Questline) == 6 then
+			npcHandler:say("You can report to Ongulf that men and wood will be on their way!", npc, creature) -- FAMILY: EN line, once more
 		end
 	elseif MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 1 then
@@ -117,7 +120,7 @@ local function creatureSayCallback(npc, creature, type, message)
 				npcHandler:say("Here you go.", npc, creature)
 				npcHandler:setTopic(playerId, 0)
 			else
-				npcHandler:say("You dont have enough of gold coins.", npc, creature)
+				npcHandler:say("You don't have enough gold coins.", npc, creature) -- FAMILY: typo
 				npcHandler:setTopic(playerId, 0)
 			end
 		end
@@ -126,7 +129,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("You want to buy a Flask with Beaver Bait for 100 gold coins?", npc, creature)
 			npcHandler:setTopic(playerId, 2)
 		else
-			npcHandler:say("Im out of stock.", npc, creature)
+			npcHandler:say("I'm out of stock.", npc, creature) -- FAMILY: typo
 		end
 	end
 	return true

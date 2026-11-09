@@ -54,6 +54,27 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: TibiaWiki BR, Zurak takes a winner back to the reward room of the
+	-- arena while the armor or a chest is still waiting there; upstream had no
+	-- way back (2026-11-09, data-otservbr-global/lib/others/family_new_frontier.lua)
+	if MsgContains(message, "reward") and Family.newFrontierAnswers then
+		if FamilyNewFrontier.rewardMissing(player) then
+			npcHandler:say("Me can alzzo guide you to rewardroom if you did not collect your reward for fighting yet. You want?", npc, creature)
+			npcHandler:setTopic(playerId, 2)
+		else
+			npcHandler:unGreet(npc, creature)
+		end
+		return true
+	elseif MsgContains(message, "yes") and npcHandler:getTopic(playerId) == 2 then
+		npcHandler:setTopic(playerId, 0)
+		if FamilyNewFrontier.rewardMissing(player) then
+			player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+			player:teleportTo(FamilyNewFrontier.rewardRoom)
+			FamilyNewFrontier.rewardRoom:sendMagicEffect(CONST_ME_TELEPORT)
+		end
+		return true
+	end
+
 	if MsgContains(message, "trip") or MsgContains(message, "passage") then
 		if player:getStorageValue(TheNewFrontier.Questline) >= 24 then
 			npcHandler:say("You want trip to Izzle of Zzao?", npc, creature)
@@ -81,6 +102,10 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 	return true
 end
+-- FAMILY: EN transcript greeting and farewells (upstream used the default ones, 2026-11-09)
+npcHandler:setMessage(MESSAGE_GREET, "{Hurry} before zzomeone will zee uzz.")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Yezz, zztrange creature leave Zurak.")
+npcHandler:setMessage(MESSAGE_WALKAWAY, "Zurak allwayzz zzo much to do.")
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

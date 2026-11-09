@@ -57,14 +57,14 @@ local function creatureSayCallback(npc, creature, type, message)
 	if MsgContains(message, "battle") then
 		if player:getStorageValue(TheNewFrontier.Questline) == 24 then
 			npcHandler:say({
-				"Zo you want to enter ze arena, you know ze rulez and zat zere will be no ozer option zan deaz or victory?",
+				"Zo you want to enter ze arena, you know ze {rulez} and zat zere will be no ozer option zan deaz or victory?",
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		end
 	elseif MsgContains(message, "mission") then
 		if player:getStorageValue(TheNewFrontier.Questline) == 24 then
 			npcHandler:say({
-				"Ze tournament iz ze ultimate challenge of might and prowrezz. Ze rulez may have changed over ze centuriez but ze ezzence remained ze zame. ...",
+				"Ze tournament iz ze ultimate challenge of might and prowrezz. Ze {rulez} may have changed over ze centuriez but ze ezzence remained ze zame. ...",
 				"If you know ze rulez, you might enter ze arena for ze {battle}.",
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 0)
@@ -78,10 +78,13 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(TheNewFrontier.Mission09[1], 3) --Questlog, "Mission 09: Mortal Combat"
 			player:setStorageValue(TheNewFrontier.Mission10[1], 1) --Questlog, "Mission 10: New Horizons"
 			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(TheNewFrontier.Questline) == 26 and Family.newFrontierAnswers then
+			-- FAMILY: ours; upstream said nothing when the winner left the reward room without the armor (2026-11-09)
+			npcHandler:say("Firzt take ze ancient armor from ze reward room. Zurak can guide you zere if you left it.", npc, creature)
 		end
 	elseif MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 1 then
-			npcHandler:say("I grant you ze permizzion to enter ze arena. Remember, you'will have to enter ze arena az a team of two. If you are not familiar wiz ze rulez, I can explain zem to you once again.", npc, creature)
+			npcHandler:say("I grant you ze permizzion to enter ze arena. Remember, you'll have to enter ze arena az a team of two. If you are not familiar wiz ze {rulez}, I can explain zem to you once again.", npc, creature)
 			player:setStorageValue(TheNewFrontier.Questline, 25)
 			player:setStorageValue(TheNewFrontier.Mission09.ArenaDoor, 1)
 			npcHandler:setTopic(playerId, 0)
@@ -90,7 +93,27 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Greetingz, competitor.")
+npcHandler:setMessage(MESSAGE_GREET, "Greetingz, {competitor}.")
+
+-- FAMILY: EN transcript keywords; upstream had none, not even ze rulez (2026-11-09)
+keywordHandler:addKeyword({ "competitor" }, StdModule.say, { npcHandler = npcHandler, text = "I'm ze mazter of ze ceremony and ze gamez. I overzee zat everyzing iz handled accordingly to ze ancient traditionz. I'm ze one to teach ze {rulez} of ze {tournament} to ze competitorz." })
+for _, word in ipairs({ "tournament", "arena", "victory" }) do
+	keywordHandler:addKeyword({ word }, StdModule.say, { npcHandler = npcHandler, text = { "Ze tournament iz ze ultimate challenge of might and prowrezz. Ze {rulez} may have changed over ze centuriez but ze ezzence remained ze zame. ...", "If you know ze rulez, you might enter ze arena for ze {battle}." } })
+end
+for _, word in ipairs({ "rulez", "rules" }) do
+	keywordHandler:addKeyword({ word }, StdModule.say, {
+		npcHandler = npcHandler,
+		text = {
+			"I waz informed zat you were zent to fight for one of ze mozt preztigiouz officialz of ze court. According to ze rulez, ziz zponzorzhip allowz you to participate in ze tournament. ...",
+			"While in ze pazt, ze tournament waz ztrictly non-leazal, ze ztakez have raized conziderably nowadayz. Zo lizten clozely: You will enter ze tornament az a team! ...",
+			"Two of you muzt have gotten ze permizzion to enter ze arena. Zen you have to ztand on ze platformz in ze back and one of you haz to pull ze lever. You will be tranzported into ze arena. ...",
+			"Once you enter, zere will only be victory or deaz! You have to be aware zat zere will be no chance to flee ze combat! Firzt you will face one team of opponentz. ...",
+			"You don't have long to defeat zem becauze zoon anozer team will enter ze fight. Az outziderz you will certainly be ze target of zeir concentrated attackz, zo it iz advizable to get rid of your opponentz az quickly az pozzible. ...",
+			"You might even gain zome time to regroup and tend your woundz if you are quick. After fighting zix teamz, you will have to face ze current champion of ze arena of ztrive. ...",
+			"If you manage to defeat him, your mazter winz ze tournament and all honourz. Zo if you feel prepared for ze {battle}, you can azk me to enter ze arena any time.",
+		},
+	})
+end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)

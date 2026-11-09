@@ -54,20 +54,13 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	if MsgContains(message, "farmine") and player:getStorageValue(TheNewFrontier.Questline) == 14 then
-		if player:getStorageValue(TheNewFrontier.Mission05.KingTibianus) == 1 then
-			npcHandler:say("Ah, I vaguely remember that our little allies were eager to build some base. So speak up, what do you want?", npc, creature)
-			npcHandler:setTopic(playerId, 10)
-		else
-			npcHandler:say("Do you have anything that might change my mind?", npc, creature)
-			npcHandler:setTopic(playerId, 6)
-		end
-	elseif MsgContains(message, "flatter") and player:getStorageValue(TheNewFrontier.Mission05.KingTibianus) == 1 then
-		if npcHandler:getTopic(playerId) == 10 then
-			npcHandler:say("Indeed, indeed. Without the help of Thais, our allies stand no chance! Well, I'll send some money to support their cause.", npc, creature)
-			player:setStorageValue(TheNewFrontier.Mission05.KingTibianus, 3)
-		end
-	elseif (MsgContains(message, "outfit")) or (MsgContains(message, "addon")) then
+	-- FAMILY: The New Frontier mission 5 talk (data-otservbr-global/lib/others/family_new_frontier.lua, 2026-11-09);
+	-- upstream failed the talk on any other word ("Wrong Word.") and had no line for wrong words
+	if FamilyNewFrontier and FamilyNewFrontier.negotiate(npc, creature, message, npcHandler, "king") then
+		return true
+	end
+
+	if (MsgContains(message, "outfit")) or (MsgContains(message, "addon")) then
 		npcHandler:say("In exchange for a truly generous donation, I will offer a special outfit. Do you want to make a donation?", npc, creature)
 		npcHandler:setTopic(playerId, 1)
 	elseif MsgContains(message, "yes") then
@@ -161,13 +154,6 @@ local function creatureSayCallback(npc, creature, type, message)
 			end
 			-- Fim da boots
 			npcHandler:setTopic(playerId, 2)
-			-- Reseting word The New Frontier: Mission 5
-		elseif npcHandler:getTopic(playerId) == 6 then
-			if player:getStorageValue(TheNewFrontier.Questline) == 14 and player:getStorageValue(TheNewFrontier.Mission05.KingTibianus) == 2 and player:removeItem(10009, 1) then
-				npcHandler:say("Ah, I vaguely remember that our little allies were eager to build some base. So speak up, what do you want?", npc, creature)
-				player:setStorageValue(TheNewFrontier.Mission05.KingTibianus, 1)
-				npcHandler:setTopic(playerId, 10)
-			end
 		end
 		-- inicio das opções armor/helmet/boots
 		-- caso o player não diga YES, dirá alguma das seguintes palavras:
@@ -180,11 +166,6 @@ local function creatureSayCallback(npc, creature, type, message)
 	elseif (MsgContains(message, "boots")) and npcHandler:getTopic(playerId) == 2 then
 		npcHandler:say("So you would like to donate 250.000.000 gold pieces which in return will entitle you to wear a unique boots?", npc, creature)
 		npcHandler:setTopic(playerId, 5) -- alterando o tópico para que no próximo YES ele faça a boots
-	else
-		if player:getStorageValue(TheNewFrontier.Questline) == 14 and player:getStorageValue(TheNewFrontier.Mission05.KingTibianus) == 1 then
-			npcHandler:say("Wrong Word.", npc, creature)
-			player:setStorageValue(TheNewFrontier.Mission05.KingTibianus, 2)
-		end
 	end
 	-- fim das opções armor/helmet/boots
 end

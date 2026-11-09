@@ -7,7 +7,7 @@ local function clearArena()
 		spectator = spectators[i]
 		if spectator:isPlayer() then
 			spectator:teleportTo(exitPosition[2])
-			exitPosition[2]:sendMagicEffect(COsNST_ME_TELEPORT)
+			exitPosition[2]:sendMagicEffect(CONST_ME_TELEPORT) -- FAMILY: typo (COsNST), 2026-11-09
 		else
 			spectator:remove()
 		end

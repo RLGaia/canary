@@ -59,43 +59,10 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	if MsgContains(message, "farmine") and player:getStorageValue(TheNewFrontier.Questline) == 14 then
-		if player:getStorageValue(TheNewFrontier.Mission05.Telas) == 1 then
-			npcHandler:say("I have heard only little about this mine. I am a bit absorbed in my studies. But what does this mine have to do with me?", npc, creature)
-			npcHandler:setTopic(playerId, 1)
-		else
-			npcHandler:say("You are starting this discussion again? Why should I listen to you this time, do you have anything to convince me to let you even try?", npc, creature)
-			npcHandler:setTopic(playerId, 2)
-		end
-	elseif MsgContains(message, "reason") or MsgContains(message, "flatter") and player:getStorageValue(TheNewFrontier.Mission05.TelasKeyword) <= 2 and player:getStorageValue(TheNewFrontier.Mission05.Telas) == 1 then
-		if npcHandler:getTopic(playerId) == 1 then
-			if MsgContains(message, "reason") and player:getStorageValue(TheNewFrontier.Mission05.TelasKeyword) == 1 then
-				npcHandler:say("Well it sounds like a good idea to test my golems in some real environment. I think it is acceptable to send some of them to Farmine.", npc, creature)
-				player:setStorageValue(TheNewFrontier.Mission05.Telas, 3)
-			elseif MsgContains(message, "flatter") and player:getStorageValue(TheNewFrontier.Mission05.TelasKeyword) == 2 then
-				npcHandler:say("Well, of course my worker golems are quite usefull and it might indeed be a good idea to see who they operate on realistic conditions. I will send some to farmine soon.", npc, creature)
-				player:setStorageValue(TheNewFrontier.Mission05.Telas, 3)
-			end
-			player:setStorageValue(TheNewFrontier.Mission05.TelasKeyword, 3)
-		end
-	elseif MsgContains(message, "plea") and player:getStorageValue(TheNewFrontier.Mission05.TelasKeyword) == 3 and player:getStorageValue(TheNewFrontier.Mission05.Telas) == 1 then
-		if npcHandler:getTopic(playerId) == 1 then
-			npcHandler:say("Well, if the situation is that desperate I think it is possible to send some of the golems to help the poor dwarfs out of their misery.", npc, creature)
-			player:setStorageValue(TheNewFrontier.Mission05.Telas, 3)
-		end
-	elseif MsgContains(message, "yes") then
-		if npcHandler:getTopic(playerId) == 2 then
-			if player:getStorageValue(TheNewFrontier.Mission05.Telas) == 2 and player:removeItem(10027, 1) then
-				npcHandler:say("Oh how nice of you. I might have misjudged you. So let us return to this matter of worker golems. Do you have any better arguments this time?", npc, creature)
-				player:setStorageValue(TheNewFrontier.Mission05.Telas, 1)
-				npcHandler:setTopic(playerId, 1)
-			end
-		end
-	else
-		if player:getStorageValue(TheNewFrontier.Questline) == 14 and player:getStorageValue(TheNewFrontier.Mission05.Telas) == 1 then
-			npcHandler:say("Wrong Word.", npc, creature)
-			player:setStorageValue(TheNewFrontier.Mission05.Telas, 2)
-		end
+	-- FAMILY: The New Frontier mission 5 talk (data-otservbr-global/lib/others/family_new_frontier.lua, 2026-11-09);
+	-- upstream failed the talk on any other word ("Wrong Word.") and had no line for wrong words
+	if FamilyNewFrontier and FamilyNewFrontier.negotiate(npc, creature, message, npcHandler, "telas") then
+		return true
 	end
 	return true
 end

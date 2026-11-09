@@ -3,6 +3,7 @@ local TheNewFrontier = Storage.Quest.U8_54.TheNewFrontier
 local corruptionhole = MoveEvent()
 
 function corruptionhole.onStepIn(player, item, position, fromPosition)
+	player = player:getPlayer() -- FAMILY: monsters stepping here gave a Lua error (2026-11-09)
 	if not player then
 		return true
 	end

@@ -59,44 +59,18 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: The New Frontier mission 5 talk (data-otservbr-global/lib/others/family_new_frontier.lua, 2026-11-09);
+	-- upstream failed the talk on any other word ("Wrong Word.") and had no line for wrong words
+	if FamilyNewFrontier and FamilyNewFrontier.negotiate(npc, creature, message, npcHandler, "angus") then
+		return true
+	end
+
 	-- Joining
 	if MsgContains(message, "join") then
 		if player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.JoiningTheExplorers) < 1 and player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine) < 1 then
 			npcHandler:say("Do you want to join the explorer society?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		end
-		-- The New Frontier Start
-	elseif MsgContains(message, "farmine") and player:getStorageValue(TheNewFrontier.Questline) == 14 then
-		if player:getStorageValue(TheNewFrontier.Mission05.Angus) == 1 then
-			npcHandler:say("Oh yes, an interesting topic. We had vivid discussions about this discovery. But what is it that you want?", npc, creature)
-			npcHandler:setTopic(playerId, 1)
-		else
-			npcHandler:say("You bring up this topic again? I don't think our talks make any sense unless you prove that you are a supporter of science. Do you have some proof for your dedication to science?", npc, creature)
-			npcHandler:setTopic(playerId, 35)
-		end
-	elseif MsgContains(message, "bluff") and player:getStorageValue(TheNewFrontier.Mission05.AngusKeyword) == 1 and player:getStorageValue(TheNewFrontier.Questline) == 14 and player:getStorageValue(TheNewFrontier.Mission05.Angus) == 1 then
-		if npcHandler:getTopic(playerId) == 1 or npcHandler:getTopic(playerId) == 2 then
-			if player:getStorageValue(TheNewFrontier.Mission05.Angus) == 1 then
-				npcHandler:say({
-					"Those stories are just amazing! Men with faces on their stomach instead of heads you say? And hens that lay golden eggs? Whereas, most amazing is this fountain of youth you've mentioned! ...",
-					"I'll immediately send some of our most dedicated explorers to check those things out!",
-				}, npc, creature)
-				player:setStorageValue(TheNewFrontier.Mission05.Angus, 3)
-			end
-		end
-	elseif MsgContains(message, "impress") and player:getStorageValue(TheNewFrontier.Mission05.AngusKeyword) == 2 and player:getStorageValue(TheNewFrontier.Questline) == 14 and player:getStorageValue(TheNewFrontier.Mission05.Angus) == 1 then
-		if npcHandler:getTopic(playerId) == 1 then
-			if player:getStorageValue(TheNewFrontier.Mission05.Angus) == 1 then
-				npcHandler:say("A whole new land is indeed very tempting. I can hardly imagine all the wonders that await us there. I doubt I could stop our explorers from going there even if I tried to.", npc, creature)
-				player:setStorageValue(TheNewFrontier.Mission05.Angus, 3)
-			end
-		elseif npcHandler:getTopic(playerId) == 2 then
-			if player:getStorageValue(TheNewFrontier.Mission05.Angus) == 1 then
-				npcHandler:say({ "For all I've heard, this is rather a barren isle than a whole new land. There are so many places to explore in this world, I won't send our best explorers on account of a rumour." }, npc, creature)
-				player:setStorageValue(TheNewFrontier.Mission05.Angus, 3)
-			end
-		end
-		-- The New Frontier End
 		-- Mission Check
 	elseif MsgContains(message, "mission") then
 		if
@@ -574,13 +548,6 @@ local function creatureSayCallback(npc, creature, type, message)
 				npcHandler:say("No you don't.", npc, creature)
 				npcHandler:setTopic(playerId, 0)
 			end
-			-- The New Frontier
-		elseif npcHandler:getTopic(playerId) == 35 then
-			if player:getStorageValue(TheNewFrontier.Questline) == 14 and player:getStorageValue(TheNewFrontier.Mission05.Angus) == 2 and player:removeItem(10011, 1) then
-				npcHandler:say("What a strange map. I wonder if any of our explorers recognises this coastal lines. However, you earned yourself another chance to convince me. Why do you think that Farmine would be interesting for us?", npc, creature)
-				player:setStorageValue(TheNewFrontier.Mission05.Angus, 1)
-				npcHandler:setTopic(playerId, 2)
-			end
 			-- Explorer Brooch
 		elseif npcHandler:getTopic(playerId) == 36 then
 			if player:getStorageValue(Storage.Quest.U7_6.ExplorerSociety.ExplorerBrooch) == 1 and player:removeItem(4871, 1) then
@@ -621,12 +588,6 @@ local function creatureSayCallback(npc, creature, type, message)
 			"We offer a reward for each brooch returned to us. Have you found an explorer brooch?",
 		}, npc, creature)
 		npcHandler:setTopic(playerId, 36)
-	else
-		-- The New Frontier
-		if player:getStorageValue(TheNewFrontier.Questline) == 14 and player:getStorageValue(TheNewFrontier.Mission05.Angus) == 1 then
-			npcHandler:say({ "Wrong Word." }, npc, creature)
-			player:setStorageValue(TheNewFrontier.Mission05.Angus, 2)
-		end
 	end
 	return true
 end

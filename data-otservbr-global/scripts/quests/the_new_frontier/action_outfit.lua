@@ -10,7 +10,7 @@ function theNewFrontierOutfit.onUse(player, item)
 		player:setStorageValue(TheNewFrontier.Questline, 27)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have gained your new outfit and may leave the reward room now!")
 	else
-		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You already taken the outfit, ask about mission for Chrak.")
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have already taken the ancient armor. Report your victory to Chrak.") -- FAMILY: wording, 2026-11-09
 	end
 	return true
 end
