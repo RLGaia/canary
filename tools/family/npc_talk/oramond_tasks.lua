@@ -1,6 +1,7 @@
 -- Gaia Family server: Oramond Quest kill and delivery tasks check (2026-11-08): Terrence's five
 -- hunts, Drystan Wildweed's Nature's Balance and Elbert's glooth capsules, kill counting and
--- the quest log texts. Run from the repository root:
+-- the quest log texts; batches 2-4 (Doubleday, Dr Merlay, statues, Georgia, The Gloud Ship with
+-- Zeronex, Nicholas, Yeo and Publicity, Tending Gloothworms with Wesley). Run from the repository root:
 --   luajit tools/family/npc_talk/oramond_tasks.lua
 
 local T = dofile("tools/family/npc_talk/npc_talk.lua")
@@ -378,5 +379,249 @@ local v0 = math.max(0, g.storage[VP] or 0)
 T.check("georgia pays 5 votes", has(georgia:say(g, "mission"), "Eight pools") and g.storage[VP] == v0 + 5 and g.storage[S.Plague] == 1)
 T.check("georgia lost device", has(georgia:say(g, "lost glooth converter"), "old frame") and g.items[21759] == 3)
 georgia:bye(g)
+
+-- ================================================================ batch 4
+local function obj(p, id)
+	local o = { id = id }
+	function o:getId() return self.id end
+	function o:remove(n) p.items[self.id] = (p.items[self.id] or 0) - (n or 1) return true end
+	function o:transform(to) p.items[self.id] = (p.items[self.id] or 0) - 1 p.items[to] = (p.items[to] or 0) + 1 self.id = to return true end
+	return o
+end
+local function last(p) return p.messages[#p.messages] or "" end
+-- Zeronex: the mission
+local zeronex = T.load("data-otservbr-global/npc/zeronex.lua")
+local nicholas = T.load("data-otservbr-global/npc/nicholas.lua")
+local yeo = T.load("data-otservbr-global/npc/yeo.lua")
+local low = player({ storage = { [R.Rank] = 2 } })
+zeronex:say(low, "hi")
+T.check("zeronex: inhabitant refused", has(zeronex:say(low, "mission"), "a citizen of Rathleton"))
+zeronex:bye(low)
+local z = player({ storage = { [R.Rank] = 3 }, items = { [10279] = 20, [3581] = 10 } })
+T.check("zeronex greeting", has(zeronex:say(z, "hi"), "very interesting {process}"))
+T.check("zeronex gloud", has(zeronex:say(z, "gloud"), "'glooth' and 'cloud'"))
+T.check("zeronex job", has(zeronex:say(z, "job"), "{dangerous} job"))
+a = zeronex:say(z, "incident")
+T.check("zeronex incident (EN)", has(a, "am I boring you?"), a)
+a = zeronex:say(z, "yes")
+T.check("zeronex starts the mission", has(a, "Nicholas Cavendish is his name") and z.storage[S.Gloud] == 1 and z.storage[QL] == 1, a)
+T.check("zeronex reminder", has(zeronex:say(z, "mission"), "{very strong cloth}"))
+zeronex:bye(z)
+T.check("zeronex report greeting", has(zeronex:say(z, "hi"), "Any progress?"))
+zeronex:bye(z)
+-- BR start through "mission"
+local zb = player({ storage = { [R.Rank] = 3 } })
+zeronex:say(zb, "hi")
+T.check("zeronex mission (BR)", has(zeronex:say(zb, "mission"), "Will you go on the necessary errands for me?"))
+T.check("zeronex yes (BR)", has(zeronex:say(zb, "yes"), "Splendid!") and zb.storage[S.Gloud] == 1)
+zeronex:bye(zb)
+-- Nicholas
+nicholas:say(z, "hi")
+a = nicholas:say(z, "very strong cloth")
+T.check("nicholas wants crocodile leather", has(a, "I want 20 pieces of crocodile leather"), a)
+a = nicholas:say(z, "strong cloth")
+T.check("nicholas takes the leather, gives the fork", has(a, "steel spider silk") and z.items[10279] == 0 and z.items[21877] == 1, a)
+T.check("nicholas afterwards", has(nicholas:say(z, "strong cloth"), "That's all I will say"))
+nicholas:bye(z)
+local n0 = player({ storage = { [R.Rank] = 3 } })
+nicholas:say(n0, "hi")
+T.check("nicholas before Zeronex", has(nicholas:say(n0, "strong cloth"), "All my cloth is strong"))
+nicholas:bye(n0)
+-- silk, yarn, cloth
+local spot = Position(33541, 31928, 7)
+OT.milkSpider(z, spot)
+T.check("spider milked", z.items[21819] == 1 and has(last(z), "With much care, you extracted some steel spider silk."))
+OT.milkSpider(z, spot)
+T.check("same spider: one minute", z.items[21819] == 1 and has(last(z), "Give it a minute"))
+OT.windYarn(z)
+T.check("winch needs 15 silk", has(last(z), "You need 15") and z.items[21819] == 1)
+z.items[21819] = 15
+OT.windYarn(z)
+T.check("winch: spool", z.items[21820] == 1 and z.items[21819] == 0 and has(last(z), "You have spun the yarn on a spool."))
+OT.weaveCloth(z, obj(z, 21820))
+T.check("loom: strong cloth", z.items[21873] == 1 and z.items[21820] == 0 and has(last(z), "fine strong cloth"))
+OT.milkSpider(player({ storage = { [S.Gloud] = 4 } }), spot)
+zeronex:say(z, "hi")
+a = zeronex:say(z, "mission")
+T.check("zeronex takes the cloth", has(a, "Yeo, who might know more") and z.storage[S.Gloud] == 2 and z.items[21873] == 0, a)
+zeronex:bye(z)
+-- Yeo
+T.check("yeo greeting with shrimp", has(yeo:say(z, "hi"), "lovely smell of shrimp"))
+T.check("yeo strong glue", has(yeo:say(z, "strong glue"), "I can make you some {gloo}"))
+T.check("yeo asks", has(yeo:say(z, "gloo"), "Did you bring me those 10 shrimp?"))
+a = yeo:say(z, "yes")
+T.check("yeo trades the gloo", has(a, "Here's your gloo, friend") and z.items[3581] == 0 and z.items[21803] == 1, a)
+T.check("yeo: no second gloo", has(yeo:say(z, "gloo"), "You don't need any gloo now"))
+yeo:bye(z)
+local y0 = player({ storage = { [S.Gloud] = 2 } })
+T.check("yeo greeting", has(yeo:say(y0, "hi"), "Hrm?"))
+T.check("yeo hungry", has(yeo:say(y0, "gloo"), "I want shrimp, 10 fresh shrimp at least!"))
+yeo:bye(y0)
+-- pharmacy and cauldron
+T.check("shelf gives farina", OT.searchShelf(z, Position(33614, 31939, 6)) and z.items[21841] == 1 and has(last(z), "You have found glooth farina."))
+T.check("shelf: only one at a time", OT.searchShelf(z, Position(33614, 31939, 6)) == false)
+OT.searchShelf(z, Position(33614, 31939, 5))
+OT.searchShelf(z, Position(33616, 31939, 5))
+T.check("shelves give essence and vinegar", z.items[21839] == 1 and z.items[21872] == 1)
+T.check("other bookcase opens", OT.searchShelf(z, Position(33612, 31947, 7)) == false)
+T.check("cauldron empty", OT.stirBrew(z) == false)
+OT.startBrew(z, obj(z, 21803))
+T.check("gloo in the cauldron", has(last(z), "<gloop> <gloop gloop>") and z.items[21803] == 0)
+T.check("cauldron spots", OT.isCauldron(Position(33622, 31945, 7)) and OT.isCauldron(Position(33621, 31940, 6)) and not OT.isCauldron(Position(33620, 31945, 7)))
+local needs, plasmas, stirs = 0, 0, 0
+math.randomseed(7)
+while (z.items[21876] or 0) == 0 and stirs < 200 do
+	stirs = stirs + 1
+	OT.stirBrew(z)
+	local msg = last(z)
+	for id, text in pairs(OT.BREW_NEEDS) do
+		if msg == text then
+			needs = needs + 1
+			OT.addIngredient(z, obj(z, id == 21872 and 21841 or 21872)) -- wrong one first
+			T.check("wrong ingredient refused " .. needs, has(last(z), "doesn't need that"))
+			z.items[id] = (z.items[id] or 0) + 1
+			OT.addIngredient(z, obj(z, id))
+			T.check("ingredient accepted " .. needs, has(last(z), "bubbles contentedly"))
+		end
+	end
+	if has(msg, "glooth plasma") then plasmas = plasmas + 1 end
+end
+T.check("airtight gloo cooked", (z.items[21876] or 0) == 1 and has(last(z), "You have retrieved some airtight gloo."), stirs .. " stirs")
+z.items[21840] = 1
+local pl = obj(z, 21840)
+for _ = 1, 20 do if pl.id == 21840 then OT.shakePlasma(z, pl) end end
+T.check("plasma decomposes", pl.id == 3109 and has(last(z), "The mix decomposes."))
+zeronex:say(z, "hi")
+a = zeronex:say(z, "airtight gloo")
+T.check("zeronex takes the gloo, gives cloth and gas bag", has(a, "use this special gas bag at the centre machine") and z.items[21876] == 0 and z.items[21870] == 1 and z.items[21880] == 1 and z.storage[S.Gloud] == 3, a)
+zeronex:bye(z)
+-- laboratory
+T.check("centre machine", OT.isLabCentre(Position(33395, 31981, 12)) and OT.isLabCentre(Position(33394, 31981, 12)))
+local bag = obj(z, 21880)
+OT.fillGasBag(z, bag)
+T.check("gas bag needs calibration", bag.id == 21880 and has(last(z), "not calibrated yet"))
+OT.useLabMachine(z, Position(33394, 31967, 12))
+T.check("calibrating", has(last(z), "+++ 01 REPORT --- CALIBRATING"))
+for _ = 1, 2 do OT.useLabMachine(z, Position(33394, 31967, 12)) end
+T.check("machine 1 calibrated (EN message)", last(z) == "+++ 01 REPORT --- CALIBRATION COMPLETE --- VALUES IDEAL +++")
+for _ = 1, 3 do OT.useLabMachine(z, Position(33384, 31968, 12)) OT.useLabMachine(z, Position(33381, 31979, 12)) end
+T.check("all calibrated", OT.labCalibrated(z))
+OT.fillGasBag(z, bag)
+T.check("gas bag filled", bag.id == 21881 and z.items[21881] == 1 and last(z) == "You fill some of the gloud into the gas bag.")
+T.check("calibration reset", not OT.labCalibrated(z))
+T.check("lab machines ignored without the task", OT.useLabMachine(player({}), Position(33394, 31967, 12)) == false)
+zeronex:say(z, "hi")
+local v1 = math.max(0, z.storage[VP] or 0)
+a = zeronex:say(z, "yes")
+T.check("zeronex: 3 votes (EN)", has(a, "Finally a fresh gloud sample!") and z.storage[VP] == v1 + 3 and z.storage[S.Gloud] == 4 and z.items[21881] == 0, a)
+T.check("zeronex tasks offered", has(zeronex:say(z, "mission"), "{harvesting}"))
+-- tasks
+a = zeronex:say(z, "retrieving")
+T.check("retrieving task", has(a, "fill this gas bag") and z.storage[S.Gloud] == 7 and z.items[21880] == 1, a)
+T.check("one task at a time", has(zeronex:say(z, "harvesting"), "Finish your current task first"))
+z.items[21880] = 0
+z.items[21881] = 1
+v1 = z.storage[VP]
+T.check("retrieving report: 1 vote", has(zeronex:say(z, "retrieving"), "one step closer") and z.storage[VP] == v1 + 1 and z.storage[S.Gloud] == 4)
+a = zeronex:say(z, "concocting")
+T.check("concocting task gives gloo and cloth", z.items[21803] == 1 and z.items[21870] == 2 and z.storage[S.Gloud] == 6, a)
+z.items[21876] = 1
+zeronex:say(z, "concocting")
+T.check("concocting report", z.storage[S.Gloud] == 4 and z.storage[VP] == v1 + 2)
+zeronex:say(z, "harvesting")
+z.items[21819] = 19
+T.check("harvesting: 20 needed", has(zeronex:say(z, "harvesting"), "I still need 20"))
+z.items[21819] = 20
+zeronex:say(z, "harvesting")
+T.check("harvesting report", z.storage[S.Gloud] == 4 and z.storage[VP] == v1 + 3 and z.items[21819] == 0)
+T.check("zeronex: another airtight cloth", has(zeronex:say(z, "airtight cloth"), "You still have a prototype"))
+zeronex:bye(z)
+T.check("quest log gloud", has(OT.missionTextBatch4(z, "Gloud"), "harvesting, concocting or retrieving"))
+-- Publicity
+local pubNpcs = {
+	{ "yeo", yeo }, { "nicholas", nicholas }, { "barazbaz", T.load("data-otservbr-global/npc/barazbaz.lua") },
+	{ "alaistar", T.load("data-otservbr-global/npc/alaistar.lua") }, { "fayla", T.load("data-otservbr-global/npc/fayla.lua") },
+	{ "christine", T.load("data-otservbr-global/npc/christine.lua") },
+}
+z.items[21870] = 6
+for i, entry in ipairs(pubNpcs) do
+	entry[2]:say(z, "hi")
+	a = entry[2]:say(z, "airtight cloth")
+	T.check("publicity: " .. entry[1], z.items[21870] == 6 - i and a ~= "", a)
+	entry[2]:bye(z)
+end
+T.check("Publicity achievement", z.achievements["Publicity"] == true)
+pubNpcs[1][2]:say(z, "hi")
+T.check("publicity: once per NPC", has(pubNpcs[1][2]:say(z, "airtight cloth"), "already"))
+pubNpcs[1][2]:bye(z)
+
+-- Wesley
+local wesley = T.load("data-otservbr-global/npc/wesley.lua")
+local w = player({ storage = { [R.Rank] = 3 } })
+T.check("wesley first greeting (BR)", has(wesley:say(w, "hi"), "Are you the new assistant?"))
+a = wesley:say(w, "mission")
+T.check("wesley mission", has(a, "A daily routine implies at least three different tasks done.") and w.storage[S.Gloothworms] == 1, a)
+T.check("wesley: read the machine first", has(wesley:say(w, "report"), "Please read the analysis code"))
+wesley:bye(w)
+local machine = OT.WORM_MACHINE
+T.check("other data machine ignored", OT.readWormMachine(w, Position(33625, 31896, 12)) == false)
+local seen = {}
+for round = 1, 3 do
+	OT.readWormMachine(w, Position(machine.x - 1, machine.y, machine.z))
+	T.check("machine alert " .. round, last(w) == "--- ALERT --- 0001110010110011001 --- ALERT ---" and w.storage[S.Gloothworms] == 2)
+	T.check("wesley report greeting " .. round, has(wesley:say(w, "hi"), "what is your {report}?"))
+	a = wesley:say(w, "report")
+	local task = OT.wormTask(w)
+	T.check("task assigned " .. round, task ~= nil and not seen[task.key], a)
+	seen[task.key] = true
+	T.check("not done yet " .. round, has(wesley:say(w, "report"), "0 of " .. task.need))
+	if task.key == "calibrate" then
+		for _, f in ipairs(OT.FUNNELS) do OT.useFunnel(w, f, false) end
+		T.check("funnels calibrated", has(w.messages[#w.messages - 1], "<squeak> <scrrt> The funnel is correctly calibrated."))
+		T.check("funnel twice", OT.useFunnel(w, OT.FUNNELS[1], false) and has(last(w), "already calibrated"))
+	elseif task.key == "water" then
+		T.check("distil", OT.distilWater(w) and w.items[21838] == 1)
+		for _, f in ipairs(OT.FUNNELS) do OT.useFunnel(w, f, true) end
+		T.check("funnels watered", has(w.messages[#w.messages - 1], "You pour a measured amount of pure water down the funnel."))
+	elseif task.key == "feed" then
+		T.check("hoe given", w.items[3455] == 1)
+		for _ = 1, 6 do OT.shredFungus(w) end
+		T.check("5 doses", w.items[21837] == 5 and has(last(w), "enough fungus powder"))
+		local i = 0
+		for x = 33647, 33649 do for y = 31851, 31852 do
+			i = i + 1
+			if i <= 5 then OT.feedTube(w, obj(w, 21837), obj(w, 21826), Position(x, y, 12)) end
+		end end
+		T.check("tubes fed", (w.items[21837] or 0) == 0 and has(last(w), "last dose"))
+	elseif task.key == "rake" then
+		T.check("rake given", w.items[3452] == 1)
+		T.check("rake outside the farm ignored", OT.rakeTube(w, obj(w, 21826), Position(33600, 31851, 12)) == false)
+		for x = 33640, 33649 do OT.rakeTube(w, obj(w, 21827), Position(x, 31860, 12)) end
+		T.check("rake: last floss (EN)", last(w) == "That's the last of the excrement floss you had to rake away. Return to Wesley to check the gloothworm data.")
+		w.items[3452] = 0
+		T.check("rake must come back", has(wesley:say(w, "report"), "buy a new one at {Maro}"))
+		w.items[3452] = 1
+	end
+	local v = math.max(0, w.storage[VP] or 0)
+	a = wesley:say(w, "report")
+	if round < 3 then
+		T.check("task reported " .. round, has(a, "find out what else needs doing") and w.storage[S.Gloothworms] == 1 and (w.items[3455] or 0) == 0 and (w.items[3452] or 0) == 0, a)
+	else
+		T.check("third task: reward (BR)", has(a, "Here's your reward!") and w.storage[VP] == v + 2 and w.storage[S.Gloothworms] == 7, a)
+	end
+	wesley:bye(w)
+end
+wesley:say(w, "hi")
+T.check("done for today", has(wesley:say(w, "mission"), "come back tomorrow"))
+wesley:bye(w)
+T.check("quest log worms", has(OT.missionTextBatch4(w, "Gloothworms"), "three tasks"))
+OT.kv(w):set("worm-day", "2000-01-01")
+wesley:say(w, "hi")
+T.check("next day", w.storage[S.Gloothworms] == 1 and has(wesley:say(w, "mission"), "You know what to do"))
+wesley:bye(w)
+local wl = player({ storage = { [R.Rank] = 2 } })
+wesley:say(wl, "hi")
+T.check("wesley: citizens only", has(wesley:say(wl, "mission"), "citizens of Rathleton"))
+wesley:bye(wl)
 
 T.finish()

@@ -50,6 +50,11 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: Tending Gloothworms (lib/others/family_oramond_tasks.lua)
+if FamilyOramondTasks then
+	FamilyOramondTasks.setupWesley(npcHandler)
+end
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

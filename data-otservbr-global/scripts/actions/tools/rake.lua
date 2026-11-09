@@ -1,6 +1,10 @@
 local rake = Action()
 
 function rake.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: Tending Gloothworms, Rake Away (lib/others/family_oramond_tasks.lua)
+	if FamilyOramondTasks and FamilyOramondTasks.rakeTube(player, target, toPosition) then
+		return true
+	end
 	-- Wrath of the Emperor Mission02
 	if target.itemid == 11366 then
 		player:addItem(11329, 1)

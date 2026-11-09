@@ -103,5 +103,22 @@ for i, entry in ipairs({ { "Four Demanding Statues", "Statues", 1 }, { "The Muta
 		end,
 	}
 end
+-- FAMILY: batch 4 (2026-11-08): The Gloud Ship, Tending Gloothworms (texts ours)
+for i, entry in ipairs({ { "The Gloud Ship", "Gloud" }, { "Tending Gloothworms", "Gloothworms" } }) do
+	local name, key = entry[1], entry[2]
+	quest.missions[#quest.missions + 1] = {
+		name = name,
+		storageId = Storage.Quest.FamilyOramondTasks[key],
+		missionId = 11252 + i, -- 11253-11254
+		startValue = 1,
+		endValue = 1000000,
+		description = function(player)
+			if FamilyOramondTasks and FamilyOramondTasks.missionTextBatch4 then
+				return FamilyOramondTasks.missionTextBatch4(player, key)
+			end
+			return name
+		end,
+	}
+end
 
 return quest

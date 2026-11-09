@@ -114,6 +114,10 @@ local function creatureSayCallback(npc, creature, type, message)
 	if FamilyOramondTasks and FamilyOramondTasks.merlaySay(npc, player, message, npcHandler, "alaistar") then
 		return true
 	end
+	-- FAMILY: Publicity (lib/others/family_oramond_tasks.lua)
+	if FamilyOramondTasks and FamilyOramondTasks.publicitySay(npc, player, message, npcHandler, "alaistar") then
+		return true
+	end
 
 	if not npcHandler:checkInteraction(npc, creature) then
 		return false

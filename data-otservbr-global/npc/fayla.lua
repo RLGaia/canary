@@ -50,6 +50,11 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: Publicity (airtight cloth) (lib/others/family_oramond_tasks.lua)
+if FamilyOramondTasks then
+	FamilyOramondTasks.setupPublicity(npcHandler, "fayla")
+end
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 npcConfig.shop = {

@@ -1461,3 +1461,1030 @@ function T.blessStatue(player, item, target, toPosition)
 	end
 	return true
 end
+
+-- ==================================================================== batch 4 (2026-11-08)
+-- The Gloud Ship (Zeronex, Nicholas, Yeo - missing upstream: new NPC file -, the six NPCs of the
+-- Publicity achievement) and Tending Gloothworms (Wesley). Sources: TibiaWiki BR Oramond Quest
+-- (method, transcripts, screenshots matched square by square with our map: pharmacy bookcases,
+-- cauldrons, data machine map), EN Oramond Quest/Spoiler (transcripts, server messages, 3 votes
+-- for the mission). Neither wiki says what Wesley pays: 2 votes per daily routine (ours). Our
+-- map has one steel spider and no glooth cauldron objects: spiders are added at startup in the
+-- Glooth Factory building (BR 33551,31928,7) and the cauldrons are the pipe machines of the
+-- building east of the pharmacy (BR 33622,31945,7).
+
+T.SILK, T.SPOOL, T.STRONG_CLOTH, T.FORK = 21819, 21820, 21873, 21877
+T.GLOO, T.AIRTIGHT_GLOO, T.AIRTIGHT_CLOTH = 21803, 21876, 21870
+T.GAS_BAG, T.FULL_GAS_BAG = 21880, 21881
+T.FARINA, T.VINEGAR, T.ESSENCE, T.PLASMA, T.RUBBISH = 21841, 21872, 21839, 21840, 3109
+T.LEATHER, T.SHRIMP = 10279, 3581
+T.SILK_NEED, T.HARVEST_NEED, T.LEATHER_NEED, T.SHRIMP_NEED = 15, 20, 20, 10
+T.GLOUD_VOTES, T.GLOUD_TASK_VOTES, T.WORM_VOTES = 3, 1, 2
+
+-- S.Gloud: 1 cloth, 2 gloo, 3 gas bag, 4 done; 5/6/7 = task harvesting/concocting/retrieving.
+T.GLOUD_TASKS = { harvesting = 5, concocting = 6, retrieving = 7 }
+
+local function gloud(player)
+	return player:getStorageValue(S.Gloud)
+end
+
+function T.harvesting(player)
+	local state = gloud(player)
+	return state == 1 or state == 5
+end
+
+function T.cooking(player)
+	local state = gloud(player)
+	return state == 2 or state == 6
+end
+
+function T.retrieving(player)
+	local state = gloud(player)
+	return state == 3 or state == 7
+end
+
+local function advance(player, text)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, text)
+end
+
+-- ------------------------------------------------------------------ strong cloth
+
+T.spiderCooldown = {}
+
+-- The milking fork used on a steel spider at pos.
+function T.milkSpider(player, pos)
+	if not T.harvesting(player) then
+		advance(player, "The spider scuttles away from the fork.") -- ours
+		return true
+	end
+	local key = player:getId() .. ":" .. pos.x .. "," .. pos.y .. "," .. pos.z
+	if (T.spiderCooldown[key] or 0) > os.time() then
+		advance(player, "This spider has no silk left right now. Give it a minute.") -- ours (BR: 1 minute per spider)
+		return true
+	end
+	T.spiderCooldown[key] = os.time() + 60
+	player:addItem(T.SILK, 1)
+	advance(player, "With much care, you extracted some steel spider silk.")
+	return true
+end
+
+-- Steel spider silk used on the yarn-winding winch.
+function T.windYarn(player)
+	if player:getItemCount(T.SILK) < T.SILK_NEED then
+		advance(player, string.format("You need %d pieces of steel spider silk to spin a spool of yarn.", T.SILK_NEED)) -- ours
+		return true
+	end
+	player:removeItem(T.SILK, T.SILK_NEED)
+	player:addItem(T.SPOOL, 1)
+	advance(player, "You have spun the yarn on a spool. Now you can weave a cloth.")
+	return true
+end
+
+-- The spool used on a weaving loom.
+function T.weaveCloth(player, spool)
+	spool:remove(1)
+	player:addItem(T.STRONG_CLOTH, 1)
+	advance(player, "You have woven a fine strong cloth.")
+	return true
+end
+
+-- ------------------------------------------------------------------ airtight gloo
+
+-- The pharmacy bookcases (BR screenshots matched with our map).
+T.SHELVES = {
+	{ pos = Position(33614, 31939, 6), item = T.FARINA, name = "glooth farina" },
+	{ pos = Position(33614, 31939, 5), item = T.ESSENCE, name = "pink gloud essence" },
+	{ pos = Position(33616, 31939, 5), item = T.VINEGAR, name = "glooth vinegar" },
+}
+
+-- A pharmacy bookcase used; false lets it open as usual.
+function T.searchShelf(player, pos)
+	for _, shelf in ipairs(T.SHELVES) do
+		if shelf.pos.x == pos.x and shelf.pos.y == pos.y and shelf.pos.z == pos.z then
+			if not T.cooking(player) or player:getItemCount(shelf.item) > 0 then
+				return false
+			end
+			player:addItem(shelf.item, 1)
+			advance(player, "You have found " .. shelf.name .. ".")
+			return true
+		end
+	end
+	return false
+end
+
+-- The glooth cauldrons: the middle of the pipe machines east of the pharmacy, both floors.
+function T.isCauldron(pos)
+	return pos.x >= 33621 and pos.x <= 33623 and ((pos.y == 31945 and pos.z == 7) or (pos.y == 31940 and pos.z == 6))
+end
+
+T.BREW_NEEDS = {
+	[T.VINEGAR] = "The concoction is too thick. Liquefy it with glooth vinegar.",
+	[T.FARINA] = "The concoction does not stick! Sequester it with glooth farina.",
+	[T.ESSENCE] = "The concoction loses its colour. Tint it with pink gloud essence.", -- ours (the wikis lack this message)
+}
+T.BREW_ORDER = { T.VINEGAR, T.FARINA, T.ESSENCE }
+
+-- The bottle of gloo used on a cauldron.
+function T.startBrew(player, bottle)
+	local kv = T.kv(player)
+	if not T.cooking(player) then
+		advance(player, "You have no reason to cook gloo right now.") -- ours
+		return true
+	end
+	if (kv:get("brew") or 0) > 0 then
+		advance(player, "Your gloo is already cooking. Keep stirring the cauldron.") -- ours
+		return true
+	end
+	bottle:remove(1)
+	kv:set("brew", math.random(5, 7)) -- stirs left (ours)
+	kv:set("brew-need", 0)
+	advance(player, "<gloop> <gloop gloop>")
+	return true
+end
+
+-- The cauldron used. false = nothing cooking (no message of ours).
+function T.stirBrew(player)
+	local kv = T.kv(player)
+	local left = kv:get("brew") or 0
+	if left <= 0 then
+		return false
+	end
+	local need = kv:get("brew-need") or 0
+	if need ~= 0 then
+		advance(player, T.BREW_NEEDS[need])
+		return true
+	end
+	left = left - 1
+	if left <= 0 then
+		kv:set("brew", 0)
+		player:addItem(T.AIRTIGHT_GLOO, 1)
+		advance(player, "You have retrieved some airtight gloo.")
+		return true
+	end
+	kv:set("brew", left)
+	local roll = math.random(100)
+	if roll <= 35 then
+		need = T.BREW_ORDER[math.random(#T.BREW_ORDER)]
+		kv:set("brew-need", need)
+		advance(player, T.BREW_NEEDS[need])
+	elseif roll <= 45 then
+		player:addItem(T.PLASMA, 1)
+		advance(player, "You have retrieved some glooth plasma. Maybe you should shake it to see if it settles down?")
+	else
+		advance(player, "<bubble> <bloop> ... <blop> <blop>")
+	end
+	return true
+end
+
+-- An ingredient used on a cauldron. false = nothing cooking.
+function T.addIngredient(player, ingredient)
+	local kv = T.kv(player)
+	if (kv:get("brew") or 0) <= 0 then
+		return false
+	end
+	if (kv:get("brew-need") or 0) ~= ingredient:getId() then
+		advance(player, "The concoction doesn't need that right now.") -- ours
+		return true
+	end
+	ingredient:remove(1)
+	kv:set("brew-need", 0)
+	advance(player, "The concoction bubbles contentedly. Keep stirring.") -- ours
+	return true
+end
+
+-- The glooth plasma used (EN: it never settles, it only decomposes in the end).
+function T.shakePlasma(player, plasma)
+	if math.random(2) == 1 then
+		advance(player, "Nothing happens. Maybe if you shook it a little more?")
+	else
+		plasma:transform(T.RUBBISH)
+		advance(player, "The mix decomposes. Try to cook up some gloo at the cauldrons again.")
+	end
+	return true
+end
+
+-- ------------------------------------------------------------------ gloud (Zeronex's laboratory)
+
+-- Glooth data machines are two squares; pos = the east square, the one to use (EN).
+T.LAB_MACHINES = {
+	{ n = 1, pos = Position(33394, 31967, 12) }, -- north
+	{ n = 2, pos = Position(33385, 31968, 12) }, -- north-west
+	{ n = 3, pos = Position(33381, 31979, 12) }, -- west
+}
+T.LAB_CENTRE = Position(33395, 31981, 12) -- the gas bag machine (BR map: red circle)
+T.CALIBRATION_USES = 3 -- ours (EN: "repeatedly")
+
+local function onMachine(pos, at)
+	return pos.z == at.z and pos.y == at.y and (pos.x == at.x or pos.x == at.x - 1)
+end
+
+function T.isLabCentre(pos)
+	return onMachine(pos, T.LAB_CENTRE)
+end
+
+-- A glooth data machine of the lab used; false = not one of them or no task.
+function T.useLabMachine(player, pos)
+	for _, machine in ipairs(T.LAB_MACHINES) do
+		if onMachine(pos, machine.pos) then
+			if not T.retrieving(player) then
+				return false
+			end
+			local kv = T.kv(player)
+			local key = "calibration-" .. machine.n
+			local uses = (kv:get(key) or 0) + 1
+			if uses >= T.CALIBRATION_USES then
+				kv:set(key, T.CALIBRATION_USES)
+				advance(player, string.format("+++ 0%d REPORT --- CALIBRATION COMPLETE --- VALUES IDEAL +++", machine.n))
+			else
+				kv:set(key, uses)
+				advance(player, string.format("+++ 0%d REPORT --- CALIBRATING --- VALUES DEVIATING +++", machine.n)) -- ours
+			end
+			return true
+		end
+	end
+	return false
+end
+
+function T.labCalibrated(player)
+	local kv = T.kv(player)
+	for _, machine in ipairs(T.LAB_MACHINES) do
+		if (kv:get("calibration-" .. machine.n) or 0) < T.CALIBRATION_USES then
+			return false
+		end
+	end
+	return true
+end
+
+-- The gas bag used on the centre machine.
+function T.fillGasBag(player, bag)
+	if not T.labCalibrated(player) then
+		advance(player, "Nothing comes out of the machine. The three machines on the walls are not calibrated yet.") -- ours
+		return true
+	end
+	local kv = T.kv(player)
+	for _, machine in ipairs(T.LAB_MACHINES) do
+		kv:set("calibration-" .. machine.n, 0)
+	end
+	bag:transform(T.FULL_GAS_BAG)
+	advance(player, "You fill some of the gloud into the gas bag.")
+	return true
+end
+
+-- ------------------------------------------------------------------ Zeronex
+
+local zeronexLines = {
+	{ "process", "Maybe the mixture will work this time! I am sure it can only be a minuscule variation that needs to take place. Then the {gloud}-filled balloon should be lifted UP, and we achieve non-magical levitation, or airborne travel!" },
+	{ "gloud", "My own invention to indicate gaseous glooth, made up from the words 'glooth' and 'cloud' - gloud. Gloud will {revolutionise} research, travel, and everything else!" },
+	{ "revolutionise", {
+		"Don't you see the implications? Airborne travel would no longer confine us to the boundaries of Oramond with its dangerous cliffs and this devious fog! ...",
+		"The possibilities to travel, to observe and to learn from a higher vantage point are sheer endless! ...",
+		"And I shall be the one to give this to the world. It will redeem the name of Pierre Zeronex, and show everyone they were wrong to exclude me from my research, to forbid me the use of my laboratory!",
+	} },
+	{ "job", { "Well, it's not so much as a job, but rather a vocation. I am a research scientist by trade. ...", "I research the use of heavy glooth gases, or Gloud, as I call it. A rather {dangerous} job, at that." } },
+	{ "dangerous", "I had to abandon the old laboratory after the last ...{incident}." },
+	{ "name", "Professor Pierre Zeronex. You may have heard of me. Hopefully not." }, -- ours
+}
+
+local GLOUD_START = {
+	"Splendid! Now, first, I need a durable and tough airtight cloth. The tissue must be strong and flexible. Previous experiments with existing cloth and weaving have proven ineffective; I need a new thread. ...",
+	"There is a specialist for cloth in town; he once boasted to know of a very strong cloth but wouldn't say more to me on the subject. Nicholas Cavendish is his name. Ask him, but please don't mention my name.",
+}
+
+T.GLOUD_TASK_TEXT = {
+	harvesting = "Wonderful! I need more steel spider silk for the next balloons. Milk the spiders with this fork and bring me 20 samples of their silk.", -- ours
+	concocting = "Wonderful! Cook some more airtight gloo for me. Here is a bottle of gloo to start with - and another airtight cloth to show around. Mind the ingredients from the pharmacy!", -- ours
+	retrieving = "Wonderful! I need a fresh gloud sample. Calibrate the three machines on the walls of my laboratory and fill this gas bag at the centre machine.", -- ours
+}
+
+function T.zeronexGreeting(player)
+	local state = gloud(player)
+	if (state >= 1 and state <= 3) or state >= 5 then
+		return "Hmm? Oh yes, hello. Please, what do you have to report? Any progress?"
+	end
+	return "Hmm? Oh yes, hello. Please, take a seat. I am in the middle of a very interesting {process}."
+end
+
+-- Reports the mission step or task; returns true when something was handed in.
+local function zeronexReport(player, say)
+	local state = gloud(player)
+	if state == 1 and player:getItemCount(T.STRONG_CLOTH) > 0 then
+		player:removeItem(T.STRONG_CLOTH, 1)
+		player:setStorageValue(S.Gloud, 2)
+		say({
+			"This is the cloth? Wonderful! Ah, it looks very promising, very promising indeed! Now, on to the next step - making the cloth airtight. We need some kind of adhesive, or glue. ...",
+			"I have heard rumours of a very strong glue, used for making boats watertight. I believe that there is a fisherman in the harbour, Yeo, who might know more on this subject. Please visit him.",
+		})
+		return true
+	elseif state == 2 and player:getItemCount(T.AIRTIGHT_GLOO) > 0 then
+		player:removeItem(T.AIRTIGHT_GLOO, 1)
+		player:addItem(T.AIRTIGHT_CLOTH, 1)
+		player:addItem(T.GAS_BAG, 1)
+		T.kv(player):set("brew", 0)
+		player:setStorageValue(S.Gloud, 3)
+		say({
+			"Yeees, yeeees.... very promising indeed. Let's try it out - voilà! ...",
+			"This is a prototype, of course. We'll put it to the test. I'll keep my sample and you - in fact, you can keep this prototype and maybe show it to some people and see how they react... for publicity, you might say. ...",
+			"Now, on to the last step! I need you to go to my lab. It is underground, far southwest in the Glooth Factory. Calibrate the three glooth machines on the wall, according to this - <whisper whisper whisper> ...",
+			"Then, when all three machines are calibrated thusly, use this special gas bag at the centre machine - it will dispense some gloud into it. Then bring the filled gas bag to me and you'll receive your reward!",
+		})
+		return true
+	elseif state == 3 and player:getItemCount(T.FULL_GAS_BAG) > 0 then
+		player:removeItem(T.FULL_GAS_BAG, 1)
+		player:setStorageValue(S.Gloud, 4)
+		addVotes(player, T.GLOUD_VOTES)
+		say({
+			"Yes! YES! Finally a fresh gloud sample! Give it here. This is the moment of truth for me, and of reward for you, my friend! Here, take this voting right, you earned it. ...",
+			"And if you would like to asisst me further, don't hesitate to call in at any time!",
+		})
+		return true
+	end
+	local done = { [5] = { T.SILK, T.HARVEST_NEED }, [6] = { T.AIRTIGHT_GLOO, 1 }, [7] = { T.FULL_GAS_BAG, 1 } }
+	local task = done[state]
+	if task and player:getItemCount(task[1]) >= task[2] then
+		player:removeItem(task[1], task[2])
+		player:setStorageValue(S.Gloud, 4)
+		addVotes(player, T.GLOUD_TASK_VOTES)
+		say("Splendid, splendid! This brings me one step closer to the first gloud ship. Here, take this voting right. And don't hesitate to call in again!") -- ours
+		return true
+	end
+	return false
+end
+
+local function zeronexReminder(player)
+	local state = gloud(player)
+	if state == 1 then
+		return "I still need that strong cloth. Ask Nicholas Cavendish about a {very strong cloth} - but don't mention my name!" -- ours
+	elseif state == 2 then
+		return "I still need the {airtight gloo}. Yeo the fisherman knows of a strong glue." -- ours
+	elseif state == 3 then
+		return "The gas bag is still empty? Calibrate the three machines on the walls of my laboratory, far southwest in the Glooth Factory, then fill the bag at the centre machine." -- ours
+	elseif state == 5 then
+		return string.format("I still need %d samples of steel spider silk.", T.HARVEST_NEED) -- ours
+	elseif state == 6 then
+		return "I still need a bottle of airtight gloo." -- ours
+	elseif state == 7 then
+		return "I still need a full gas bag from my laboratory." -- ours
+	end
+	return "If you would like to assist me further: I always need someone for {harvesting} spider silk, {concocting} gloo or {retrieving} gloud." -- ours
+end
+
+function T.setupZeronex(npcHandler)
+	npcHandler:setMessage(MESSAGE_FAREWELL, "<absentmindedly> Err yes, good bye!")
+	npcHandler:setMessage(MESSAGE_WALKAWAY, "<absentmindedly> Err yes, good bye!")
+	npcHandler:setCallback(CALLBACK_GREET, function(npc, creature)
+		npcHandler:setMessage(MESSAGE_GREET, T.zeronexGreeting(Player(creature)))
+		return true
+	end)
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, function(npc, creature, type, message)
+		local player = Player(creature)
+		if not T.on() or not player or not npcHandler:checkInteraction(npc, creature) then
+			return true
+		end
+		local id = player:getId()
+		local say = function(text)
+			npcHandler:say(text, npc, creature)
+		end
+		local state = gloud(player)
+		local topic = npcHandler:getTopic(id)
+		if topic == 61 then
+			npcHandler:setTopic(id, 0)
+			if MsgContains(message, "yes") then
+				player:setStorageValue(S.Gloud, 1)
+				openQuestLine(player)
+				say(GLOUD_START)
+			else
+				say("Pity. Science waits for no one, you know.") -- ours
+			end
+			return true
+		end
+		if MsgContains(message, "airtight cloth") and state >= 3 then
+			if player:getItemCount(T.AIRTIGHT_CLOTH) > 0 then
+				say("You still have a prototype. Show it around - for publicity!") -- ours
+			else
+				player:addItem(T.AIRTIGHT_CLOTH, 1)
+				say("Of course, take another prototype. Show it to some people and see how they react - for publicity!") -- ours
+			end
+			return true
+		end
+		for word, value in pairs(T.GLOUD_TASKS) do
+			if MsgContains(message, word) and state >= 4 then
+				if state == value then
+					if not zeronexReport(player, say) then
+						say(zeronexReminder(player))
+					end
+				elseif state ~= 4 then
+					say("One thing after the other! Finish your current task first. " .. zeronexReminder(player)) -- ours
+				else
+					player:setStorageValue(S.Gloud, value)
+					if word == "harvesting" and player:getItemCount(T.FORK) < 1 then
+						player:addItem(T.FORK, 1)
+					elseif word == "concocting" then
+						player:addItem(T.GLOO, 1)
+						player:addItem(T.AIRTIGHT_CLOTH, 1)
+						T.kv(player):set("brew", 0)
+					elseif word == "retrieving" then
+						player:addItem(T.GAS_BAG, 1)
+					end
+					say(T.GLOUD_TASK_TEXT[word])
+				end
+				return true
+			end
+		end
+		if MsgContains(message, "incident") then
+			if state < 1 then
+				say("Well, the concoction was nearly right. Nearly. Unfortunately, I had miscalculated the effect that the pressurised gloothine would have on the gaseous mixture and the tank exploded... I am sorry, am I boring you?")
+				if rankOf(player) >= 3 then
+					npcHandler:setTopic(id, 61)
+				end
+			else
+				say("Let's not talk about that. Let's talk about your progress!") -- ours
+			end
+			return true
+		end
+		if MsgContains(message, "mission") or MsgContains(message, "report") or MsgContains(message, "airtight gloo") or MsgContains(message, "progress") or (MsgContains(message, "yes") and state >= 1) then
+			if state < 1 then
+				if rankOf(player) < 3 then
+					say("I need someone whom the magistrate trusts - a citizen of Rathleton. Come back when you are one.") -- ours
+					return true
+				end
+				say({
+					"Ah, I am on the brink of achieving greatness! With my inventions, tomorrow might come today! ...",
+					"But first, I need to perfect some unprecedented, novel things - an airtight cloth, which also requires the making of an airtight adhesive; and last but not least, a certain gaseous mixture. ...",
+					"However, as my name is ill-famed, I cannot pursue my experiments in town for fear of being exiled once and for all. Will you go on the necessary errands for me?",
+				})
+				npcHandler:setTopic(id, 61)
+			elseif not zeronexReport(player, say) then
+				say(zeronexReminder(player))
+			end
+			return true
+		end
+		for _, entry in ipairs(zeronexLines) do
+			if MsgContains(message, entry[1]) then
+				say(entry[2])
+				return true
+			end
+		end
+		return true
+	end)
+end
+
+-- ------------------------------------------------------------------ Nicholas, Yeo, Publicity
+
+T.PUBLICITY = { yeo = 1, nicholas = 2, barazbaz = 4, alaistar = 8, fayla = 16, christine = 32 }
+T.ALL_PUBLICITY = 63
+local publicityLines = { -- ours
+	yeo = "Airtight, eh? Made with old Yeo's gloo, I bet. Nice work, I'll show it to the fishermen.",
+	nicholas = "Hm! Strong cloth, airtight... I can see where my secret went. Well, it IS exquisite work. I'll show it to my customers.",
+	barazbaz = "An airtight cloth? Interesting. I will mention it to the magistrate.",
+	alaistar = "Fascinating! Airtight, you say? That could keep potions fresh for ages. I'll show it around.",
+	fayla = "Oh, how practical! I'll tell everyone about it.",
+	christine = "Airtight? My, my. Whoever made this knows their craft. I'll pass the word.",
+}
+
+-- "airtight cloth" to one of the six NPCs; true when answered.
+function T.publicitySay(npc, player, message, npcHandler, who)
+	if not T.on() or not MsgContains(message, "airtight cloth") or gloud(player) < 3 then
+		return false
+	end
+	if not npcHandler:checkInteraction(npc, player) then
+		return false
+	end
+	local mask = T.kv(player):get("publicity") or 0
+	local bitOf = T.PUBLICITY[who]
+	if bit.band(mask, bitOf) ~= 0 then
+		npcHandler:say("You showed me that cloth already. Very airtight, I remember.", npc, player) -- ours
+		return true
+	end
+	if player:getItemCount(T.AIRTIGHT_CLOTH) < 1 then
+		npcHandler:say("An airtight cloth? I'd like to see one.", npc, player) -- ours
+		return true
+	end
+	player:removeItem(T.AIRTIGHT_CLOTH, 1)
+	mask = bit.bor(mask, bitOf)
+	T.kv(player):set("publicity", mask)
+	npcHandler:say(publicityLines[who], npc, player)
+	if mask == T.ALL_PUBLICITY and not player:hasAchievement("Publicity") then
+		player:addAchievement("Publicity")
+	end
+	return true
+end
+
+-- For NPCs without their own callback (Fayla, Christine).
+function T.setupPublicity(npcHandler, who)
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, function(npc, creature, type, message)
+		local player = Player(creature)
+		if player then
+			T.publicitySay(npc, player, message, npcHandler, who)
+		end
+		return true
+	end)
+end
+
+function T.setupNicholas(npcHandler)
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, function(npc, creature, type, message)
+		local player = Player(creature)
+		if not T.on() or not player then
+			return true
+		end
+		if T.publicitySay(npc, player, message, npcHandler, "nicholas") then
+			return true
+		end
+		if not MsgContains(message, "strong cloth") or not npcHandler:checkInteraction(npc, creature) then
+			return true
+		end
+		local say = function(text)
+			npcHandler:say(text, npc, creature)
+		end
+		local kv = T.kv(player)
+		if gloud(player) < 1 then
+			say("Strong cloth? All my cloth is strong, my friend. Ask me for a {trade}.") -- ours
+		elseif kv:get("nicholas") == 2 then
+			if player:getItemCount(T.FORK) < 1 then
+				player:addItem(T.FORK, 1)
+				say("Lost the milking fork? Here, take another one - and keep your voice down!") -- ours
+			else
+				say("Pshshsht! Steel spider silk, yarn, then a weaving loom. That's all I will say!") -- ours
+			end
+		elseif kv:get("nicholas") == 1 and player:getItemCount(T.LEATHER) >= T.LEATHER_NEED then
+			player:removeItem(T.LEATHER, T.LEATHER_NEED)
+			player:addItem(T.FORK, 1)
+			kv:set("nicholas", 2)
+			say({
+				"Quiet, please. This must not become common knowledge, you know. Oh - that's the crocodile leather? It's even more beautiful than I thought! Only look at the texture! Marvellous! And the - but I am getting carried away. ...",
+				"Now, here's the secret - to make a really strong cloth, you need a special kind of silk - steel spider silk. The spiders live in the dark and dank of abandoned buildings, cellars and sewers, so be wary of other, more dangerous, monsters! ...",
+				"Use this milking fork to harvest their silk. Once you have the spiders' raw silk, first make it into yarn and then spin the yarn on a weaving loom - and voilà! you have a strong cloth. ...",
+				"How you achieve the latter steps is none of my business - you know a valuable secret already. ...",
+				"Look for some leftover looms in the workshops quarter to spin yarn and cloth; all my looms are in operation around the clock and can't be spared.",
+			})
+		elseif kv:get("nicholas") == 1 then
+			say("Quiet, please. This must not become common knowledge, you know. 20 pieces of crocodile leather, that's my price.") -- ours
+		else
+			kv:set("nicholas", 1)
+			say({
+				"Pshshsht! Keep your voice down! This is a well-kept trade secret, you know! I'm not about to just confer it to anyone just like that! ...",
+				"We may come to a deal, though. I have heard of a fancy, exotic animal skin that would make the most extravagant cloth, if only I could get hold of it! ...",
+				"I am talking of crocodile leather, of course. A most exquisite thing! I want 20 pieces of crocodile leather in exchange for my most valued expertise here.",
+			})
+		end
+		return true
+	end)
+end
+
+function T.yeoGreeting(player)
+	if player:getItemCount(T.SHRIMP) >= T.SHRIMP_NEED then
+		return "Mhmmm, what a lovely smell of shrimp."
+	end
+	return "Hrm?"
+end
+
+function T.setupYeo(npcHandler)
+	npcHandler:setCallback(CALLBACK_GREET, function(npc, creature)
+		npcHandler:setMessage(MESSAGE_GREET, T.yeoGreeting(Player(creature)))
+		return true
+	end)
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, function(npc, creature, type, message)
+		local player = Player(creature)
+		if not T.on() or not player then
+			return true
+		end
+		if T.publicitySay(npc, player, message, npcHandler, "yeo") then
+			return true
+		end
+		if not npcHandler:checkInteraction(npc, creature) then
+			return true
+		end
+		local id = player:getId()
+		local say = function(text)
+			npcHandler:say(text, npc, creature)
+		end
+		local wantsGloo = T.cooking(player) and player:getItemCount(T.GLOO) < 1 and player:getItemCount(T.AIRTIGHT_GLOO) < 1
+		if npcHandler:getTopic(id) == 71 then
+			npcHandler:setTopic(id, 0)
+			if MsgContains(message, "yes") and wantsGloo and player:getItemCount(T.SHRIMP) >= T.SHRIMP_NEED then
+				player:removeItem(T.SHRIMP, T.SHRIMP_NEED)
+				player:addItem(T.GLOO, 1)
+				T.kv(player):set("brew", 0)
+				say({
+					"Perfect. Here's your gloo, friend. Now, listen closely. You want it even more than watertight - airtight, right? Then you need to cook it up some more. There's glooth cauldrons next to the old pharmacist building that everyone can use. ...",
+					"Just pay attention to what the mixture needs. Methinks it might be necessary to add some glooth vinegar or some glooth farina, depending on the cooking process. ...",
+					"All needed ingredients can be found in the pharmacist building - third building left from the stairs that lead to uptown. Good luck with your experiment, friend!",
+				})
+			elseif MsgContains(message, "yes") then
+				say("Hrm. I don't see 10 shrimp.") -- ours
+			else
+				say("Hrm. Then off with you.") -- ours
+			end
+			return true
+		end
+		if MsgContains(message, "strong glue") or MsgContains(message, "glue") then
+			say("Ah, you need some kind of really sticky glue? Impervious to water, too? That's a job for old Yeo. Yeah, I can make you some {gloo}.")
+		elseif MsgContains(message, "gloo") then
+			if not wantsGloo then
+				say("Gloo? You don't need any gloo now, friend.") -- ours
+			elseif player:getItemCount(T.SHRIMP) >= T.SHRIMP_NEED then
+				say("Yep, you can have some gloo in exchange for 10 shrimp. Did you bring me those 10 shrimp?")
+				npcHandler:setTopic(id, 71)
+			else
+				say("See here, I'm hungry. If I make gloo, I can't take care of cooking. That means you need to fetch me something. I want shrimp, 10 fresh shrimp at least! Bring me those and I'll give you a vial of gloo.")
+			end
+		elseif MsgContains(message, "job") then
+			say("Fishing. And making {gloo} for the boats, now and then.") -- ours
+		elseif MsgContains(message, "name") then
+			say("Yeo.") -- ours
+		end
+		return true
+	end)
+end
+
+-- ------------------------------------------------------------------ Tending Gloothworms
+
+T.WORM_MACHINE = Position(33648, 31876, 12) -- east square of the farm's data machine (EN 131.112|124.132)
+T.FUNNELS = {
+	Position(33644, 31852, 12), Position(33644, 31861, 12), Position(33650, 31861, 12), Position(33653, 31869, 12),
+	Position(33656, 31861, 12), Position(33661, 31852, 12), Position(33661, 31861, 12),
+}
+T.FARM_BOX = { 33636, 31846, 33665, 31880, 12 }
+T.TUBES = { 21826, 21827, 21828, 21829, 21844, 21845 }
+T.HOE, T.RAKE, T.POWDER, T.WATER = 3455, 3452, 21837, 21838
+T.FUNGUS, T.FUNGUS_SHREDDED = 21836, 21842
+
+T.WORM_TASKS = {
+	{
+		key = "calibrate",
+		name = "Calibrating the Irrigation Funnels",
+		need = 7,
+		assign = "The ground has taken up too much water! Calibrate all of the 7 irrigation funnels in the glooth farm.",
+		done = "Ah, very good. The funnel values have returned to normal.",
+		log = "Calibrate all 7 irrigation funnels in the gloothworm farm north-east of Wesley",
+	},
+	{
+		key = "water",
+		name = "Distilled Water",
+		need = 7,
+		assign = {
+			"The gloothworms need distilled water! Use one of the distil machines here in the cave to get pure water. Then pour some drops of the pure water into the 7 irrigation funnels. ...",
+			"Remember to use all 7 irrigation funnels! We need the water to be spread around evenly.",
+		},
+		done = "Ah, very good. Water supply values of the gloothworm tubes are back to normal. Well done.",
+		log = "Fill a vial at a water distilling machine west of Wesley and pour it into all 7 irrigation funnels of the farm",
+	},
+	{
+		key = "feed",
+		name = "Feeding the Worms",
+		need = 5,
+		tool = T.HOE,
+		assign = {
+			"The gloothworms need feeding! It's a very strict mushroom diet. Go to the cave southeast of here and shred some of the mushrooms into flakes. You need exactly 5 doses. Here, take this hoe to do it. ...",
+			"When you have 5 doses of fungus powder, scatter all 5 doses on the gloothworm tubes in the farm. Return to me after that.",
+		},
+		done = "Ah, very good. My data reveals the gloothworms are correctly fed. I'll take the hoe back now.",
+		lost = "Hmm, the gloothworms are correctly fed. Good. But I still need that hoe back. Please hand it over. If you lost it, buy a new one at {Maro}.", -- ours, after the rake line
+		log = "Shred edible rock fungi with the hoe in the cave south-east of Wesley and scatter 5 doses of fungus powder on the gloothworm tubes",
+	},
+	{
+		key = "rake",
+		name = "Rake Away",
+		need = 10,
+		tool = T.RAKE,
+		assign = {
+			"There's too much excremental floss around the gloothworm tubes! Quick, before they choke under it - use this rake on the gloothworm tubes! ...",
+			"Use it evenly, on at least at 10 gloothworm tube spots! The floss must be raked away.",
+		},
+		done = "Ah, I see toxic values are back to uncritical. Swell!",
+		lost = "Hmm, toxic values are returning to uncritical. Good. But I still need that rake back. Please hand it over. If you lost it, buy a new one at {Maro}.",
+		log = "Rake the excremental floss away from 10 gloothworm tubes in the farm",
+	},
+}
+
+local function worms(player)
+	return player:getStorageValue(S.Gloothworms)
+end
+
+function T.wormTask(player)
+	local state = worms(player)
+	if state >= 3 and state <= 6 then
+		return T.WORM_TASKS[state - 2]
+	end
+	return nil
+end
+
+function T.dayKey()
+	return os.date("%Y-%m-%d", os.time() - 6 * 60 * 60) -- days start at 06:00 (ours, like the Rathleton periods)
+end
+
+-- Starts a new day of tasks when the date changed.
+local function wormDay(player)
+	local kv = T.kv(player)
+	if kv:get("worm-day") ~= T.dayKey() then
+		kv:set("worm-day", T.dayKey())
+		kv:set("worm-done", 0)
+		kv:set("worm-bits", 0)
+		if worms(player) == 7 then
+			player:setStorageValue(S.Gloothworms, 1)
+			return true
+		end
+	end
+	return false
+end
+
+local function wormProgress(player)
+	return T.kv(player):get("worm-count") or 0
+end
+
+-- Marks one spot of the current task; false when it was counted already.
+local function wormSpot(player, pos)
+	local kv = T.kv(player)
+	local key = "[" .. pos.x .. "," .. pos.y .. "," .. pos.z .. "]"
+	local spots = kv:get("worm-spots") or ""
+	if spots:find(key, 1, true) then
+		return false
+	end
+	kv:set("worm-spots", spots .. key)
+	kv:set("worm-count", (kv:get("worm-count") or 0) + 1)
+	return true
+end
+
+-- The farm's data machine used; false = another data machine.
+function T.readWormMachine(player, pos)
+	if not onMachine(pos, T.WORM_MACHINE) then
+		return false
+	end
+	wormDay(player)
+	if worms(player) == 1 then
+		player:setStorageValue(S.Gloothworms, 2)
+		advance(player, "--- ALERT --- 0001110010110011001 --- ALERT ---")
+	else
+		advance(player, "--- STATUS --- 0000000000000000000 --- STATUS ---") -- ours
+	end
+	return true
+end
+
+local function funnelIndex(pos)
+	for i, at in ipairs(T.FUNNELS) do
+		if at.x == pos.x and at.y == pos.y and at.z == pos.z then
+			return i
+		end
+	end
+	return nil
+end
+
+local function taskDone(player, task, text)
+	if wormProgress(player) >= task.need then
+		advance(player, text)
+	end
+end
+
+-- An irrigation funnel used (calibrate) or the distilled water used on it (water).
+function T.useFunnel(player, pos, water)
+	local task = T.wormTask(player)
+	if not funnelIndex(pos) or not task or task.key ~= (water and "water" or "calibrate") then
+		return false
+	end
+	if not wormSpot(player, pos) then
+		advance(player, water and "This funnel has its water already." or "This funnel is already calibrated.") -- ours
+		return true
+	end
+	if water then
+		advance(player, "You pour a measured amount of pure water down the funnel.")
+	else
+		advance(player, "<squeak> <scrrt> The funnel is correctly calibrated.")
+	end
+	taskDone(player, task, "That was the last irrigation funnel. Return to Wesley.") -- ours
+	return true
+end
+
+-- A water distilling machine used.
+function T.distilWater(player)
+	local task = T.wormTask(player)
+	if not task or task.key ~= "water" then
+		return false
+	end
+	if player:getItemCount(T.WATER) > 0 then
+		advance(player, "You already have a vial of distilled water.") -- ours
+	else
+		player:addItem(T.WATER, 1)
+		advance(player, "You fill a vial with distilled water.") -- ours
+	end
+	return true
+end
+
+-- The hoe used on an edible rock fungus: true when shredded (the caller makes it regrow),
+-- false when the player has enough, nil when no feeding task.
+function T.shredFungus(player)
+	local task = T.wormTask(player)
+	if not task or task.key ~= "feed" then
+		return nil
+	end
+	if player:getItemCount(T.POWDER) + wormProgress(player) >= task.need then
+		advance(player, "You have enough fungus powder for the gloothworms.") -- ours
+		return false
+	end
+	player:addItem(T.POWDER, 1)
+	advance(player, "You shred the fungus into a dose of fungus powder.") -- ours
+	return true
+end
+
+function T.isFarmTube(target, pos)
+	local b = T.FARM_BOX
+	return target and target.getId and table.contains(T.TUBES, target:getId()) and pos.z == b[5] and pos.x >= b[1] and pos.x <= b[3] and pos.y >= b[2] and pos.y <= b[4]
+end
+
+-- Fungus powder used on a gloothworm tube.
+function T.feedTube(player, powder, target, pos)
+	local task = T.wormTask(player)
+	if not task or task.key ~= "feed" or not T.isFarmTube(target, pos) then
+		return false
+	end
+	if not wormSpot(player, pos) then
+		advance(player, "These gloothworms have been fed already. Try another tube.") -- ours
+		return true
+	end
+	powder:remove(1)
+	advance(player, "You scatter a dose of fungus powder on the gloothworm tube.") -- ours
+	taskDone(player, task, "That was the last dose. Return to Wesley.") -- ours
+	return true
+end
+
+-- From rake.lua (FAMILY hook): the rake used on a gloothworm tube.
+function T.rakeTube(player, target, pos)
+	local task = T.wormTask(player)
+	if not T.on() or not task or task.key ~= "rake" or not T.isFarmTube(target, pos) then
+		return false
+	end
+	if not wormSpot(player, pos) then
+		advance(player, "This tube is clean already. Try another one.") -- ours
+		return true
+	end
+	if wormProgress(player) >= task.need then
+		advance(player, "That's the last of the excrement floss you had to rake away. Return to Wesley to check the gloothworm data.")
+	else
+		advance(player, "You rake away the excremental floss.") -- ours
+	end
+	return true
+end
+
+function T.wesleyGreeting(player)
+	local state = worms(player)
+	if state < 1 then
+		return "Hi! Are you the new assistant? No? Well then, I'll make you an honorary assistant."
+	elseif state >= 2 and state <= 6 then
+		return "Ah, hello! Well, what is your {report}?"
+	end
+	return "Ah, my faithful assistant! Your help is very welcome."
+end
+
+local function wesleyReport(player, say)
+	local state = worms(player)
+	local kv = T.kv(player)
+	if state == 1 then
+		say("Please read the analysis code on the gloothworm surveillance machine northeast of here, and then report to me.")
+		return
+	elseif state == 2 then
+		local free = {}
+		local bits = kv:get("worm-bits") or 0
+		for i = 1, #T.WORM_TASKS do
+			if bit.band(bits, 2 ^ (i - 1)) == 0 then
+				free[#free + 1] = i
+			end
+		end
+		local index = free[math.random(#free)]
+		local task = T.WORM_TASKS[index]
+		kv:set("worm-spots", "")
+		kv:set("worm-count", 0)
+		if task.tool and player:getItemCount(task.tool) < 1 then
+			player:addItem(task.tool, 1)
+		end
+		player:setStorageValue(S.Gloothworms, index + 2)
+		say(task.assign)
+		return
+	end
+	local task = T.wormTask(player)
+	if not task then
+		say("Ask me for a {mission} first.") -- ours
+		return
+	end
+	if wormProgress(player) < task.need then
+		say(string.format("The data hasn't changed much yet. %s: %d of %d done.", task.name, wormProgress(player), task.need)) -- ours
+		return
+	end
+	if task.tool then
+		if player:getItemCount(task.tool) < 1 then
+			say(task.lost)
+			return
+		end
+		player:removeItem(task.tool, 1)
+	end
+	if task.key == "water" and player:getItemCount(T.WATER) > 0 then
+		player:removeItem(T.WATER, player:getItemCount(T.WATER))
+	end
+	local done = (kv:get("worm-done") or 0) + 1
+	kv:set("worm-done", done)
+	kv:set("worm-bits", bit.bor(kv:get("worm-bits") or 0, 2 ^ (state - 3)))
+	if done >= 3 then
+		player:setStorageValue(S.Gloothworms, 7)
+		addVotes(player, T.WORM_VOTES)
+		say({
+			task.done .. " Well, that's about all for now. ...",
+			"I need to work on the surveillance machines for a little, so you can take a break for a while. Here's your reward!",
+		})
+	else
+		player:setStorageValue(S.Gloothworms, 1)
+		say(task.done .. " Please go to the northern glooth surveillance machine to find out what else needs doing.")
+	end
+end
+
+function T.setupWesley(npcHandler)
+	npcHandler:setCallback(CALLBACK_GREET, function(npc, creature)
+		local player = Player(creature)
+		wormDay(player)
+		npcHandler:setMessage(MESSAGE_GREET, T.wesleyGreeting(player))
+		return true
+	end)
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, function(npc, creature, type, message)
+		local player = Player(creature)
+		if not T.on() or not player or not npcHandler:checkInteraction(npc, creature) then
+			return true
+		end
+		local say = function(text)
+			npcHandler:say(text, npc, creature)
+		end
+		wormDay(player)
+		local state = worms(player)
+		if MsgContains(message, "mission") or MsgContains(message, "task") then
+			if rankOf(player) < 3 then
+				say("I only take citizens of Rathleton as assistants. The gloothworms are too precious.") -- ours
+			elseif state == 7 then
+				say("That's all for today. The gloothworms are fine for now - come back tomorrow.") -- ours
+			elseif state < 1 then
+				player:setStorageValue(S.Gloothworms, 1)
+				openQuestLine(player)
+				say({
+					"So you'll assist me? Great! Okay. You will look after the gloothworms - find out what they need and then do the associated task. ...",
+					"A daily routine implies at least three different tasks done. To receive a task, take a look at the gloothworm surveillance machine in the northern cave and then tell me what it says.",
+				})
+			elseif state == 1 then
+				say({
+					"You know what to do - find out what the gloothworms need and then do the associated task. ...",
+					"Take a look at the gloothworm surveillance machine in the northern cave and then tell me what it says.",
+				})
+			elseif state == 2 then
+				say("What did the machine say? Give me your {report}.") -- ours
+			else
+				say("First finish your task, then give me your {report}.") -- ours
+			end
+			return true
+		elseif MsgContains(message, "report") then
+			if rankOf(player) < 3 or state < 1 or state == 7 then
+				say("Report? You are not my assistant today.") -- ours
+			else
+				wesleyReport(player, say)
+			end
+			return true
+		elseif MsgContains(message, "gloothworm") or MsgContains(message, "farm") then
+			say("Gloothworms produce the glooth that keeps this city running. They are delicate creatures - water, food, cleanliness, everything must be just right.") -- ours
+			return true
+		elseif MsgContains(message, "job") then
+			say("I'm a farmer. A gloothworm farmer.") -- ours
+			return true
+		elseif MsgContains(message, "maro") then
+			say("Maro runs the tool shop in town. He sells rakes and hoes.") -- ours
+			return true
+		end
+		return true
+	end)
+end
+
+function T.missionTextBatch4(player, key)
+	if key == "Gloud" then
+		local state = gloud(player)
+		if state == 1 then
+			local kv = T.kv(player)
+			if kv:get("nicholas") == 2 then
+				return string.format("Milk steel spiders in the Glooth Factory building with Nicholas' fork (%d silk so far), spin %d silk on a yarn-winding winch and weave the yarn on a weaving loom in the room below Zeronex. Bring the strong cloth to Zeronex.", player:getItemCount(T.SILK), T.SILK_NEED)
+			end
+			return "Ask Nicholas Cavendish above the post office about a very strong cloth, but don't mention Zeronex. He wants 20 pieces of crocodile leather."
+		elseif state == 2 then
+			return "Trade 10 shrimp for a bottle of gloo with Yeo in the harbour and cook it into airtight gloo at the glooth cauldrons east of the pharmacy. The ingredients are in the pharmacy bookcases. Bring it to Zeronex."
+		elseif state == 3 then
+			return "Calibrate the three glooth data machines on the walls of Zeronex' laboratory, far south-west in the Underground Glooth Factory, fill the gas bag at the centre machine and bring it to Zeronex."
+		elseif state == 5 then
+			return string.format("Harvesting: bring %d samples of steel spider silk to Zeronex (%d so far).", T.HARVEST_NEED, player:getItemCount(T.SILK))
+		elseif state == 6 then
+			return "Concocting: cook a bottle of airtight gloo and bring it to Zeronex."
+		elseif state == 7 then
+			return "Retrieving: fill the gas bag in Zeronex' laboratory and bring it to him."
+		end
+		return "Zeronex has his gloud sample. He pays one voice in the magistrate for harvesting, concocting or retrieving."
+	elseif key == "Gloothworms" then
+		local state = worms(player)
+		local task = T.wormTask(player)
+		if task then
+			return string.format("%s: %s (%d of %d). Then report to Wesley.", task.name, task.log, wormProgress(player), task.need)
+		elseif state == 2 then
+			return "You read the gloothworm surveillance machine. Report to Wesley."
+		elseif state == 7 then
+			return "You finished three tasks for Wesley today. He will need you again tomorrow."
+		end
+		return string.format("Read the gloothworm surveillance machine north-east of Wesley and report to him. Tasks done today: %d of 3.", T.kv(player):get("worm-done") or 0)
+	end
+	return ""
+end

@@ -633,3 +633,221 @@ function filled.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 end
 filled:id(T.FILLED)
 filled:register()
+
+-- ==================================================================== batch 4 (2026-11-08)
+-- Map objects of The Gloud Ship and Tending Gloothworms (positions read from our map; rules and
+-- texts in lib/others/family_oramond_tasks.lua).
+
+local SPIDERS = { 21830, 21831, 21832, 21878 }
+local SPIDER = 21831
+-- Our map has one steel spider (33547,31926,7); these are added in the same Glooth Factory
+-- building (BR 33551,31928,7) at startup. Ours.
+local SPIDER_SPOTS = {
+	Position(33541, 31928, 7), Position(33549, 31928, 7), Position(33557, 31928, 7), Position(33545, 31930, 7),
+	Position(33552, 31930, 7), Position(33543, 31933, 7), Position(33550, 31933, 7), Position(33556, 31935, 7),
+	Position(33542, 31936, 7),
+}
+local WINCH = 21825
+local LOOMS = { 21821, 21822, 21823, 21824 }
+local DATA_MACHINES = { 21846, 21847, 21848, 21849 }
+local FUNNEL = 21833
+local DISTILLERS = { 21834, 21835 }
+local CAULDRON_SPOTS = {}
+for x = 33621, 33623 do
+	CAULDRON_SPOTS[#CAULDRON_SPOTS + 1] = Position(x, 31945, 7)
+	CAULDRON_SPOTS[#CAULDRON_SPOTS + 1] = Position(x, 31940, 6)
+end
+
+local batch4Startup = GlobalEvent("FamilyOramondTasksBatch4")
+function batch4Startup.onStartup()
+	if not T.on() then
+		return true
+	end
+	local added = 0
+	for _, pos in ipairs(SPIDER_SPOTS) do
+		local tile = Tile(pos)
+		if tile and tile:getGround() and not tile:getItemById(SPIDER) then
+			Game.createItem(SPIDER, 1, pos)
+			added = added + 1
+		end
+	end
+	logger.info("[Family] Oramond tasks: {} steel spiders added in the Glooth Factory", added)
+	return true
+end
+batch4Startup:register()
+
+-- The Gloud Ship ------------------------------------------------------
+local fork = Action()
+function fork.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId or not table.contains(SPIDERS, target:getId()) then
+		return false
+	end
+	return T.milkSpider(player, toPosition)
+end
+fork:id(T.FORK)
+fork:register()
+
+local silk = Action()
+function silk.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId or target:getId() ~= WINCH then
+		return false
+	end
+	return T.windYarn(player)
+end
+silk:id(T.SILK)
+silk:register()
+
+local spool = Action()
+function spool.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId or not table.contains(LOOMS, target:getId()) then
+		return false
+	end
+	return T.weaveCloth(player, item)
+end
+spool:id(T.SPOOL)
+spool:register()
+
+local shelf4 = Action()
+function shelf4.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() then
+		return false
+	end
+	return T.searchShelf(player, item:getPosition())
+end
+for _, entry in ipairs(T.SHELVES) do
+	shelf4:position(entry.pos)
+end
+shelf4:register()
+
+local cauldron = Action()
+function cauldron.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() then
+		return false
+	end
+	return T.stirBrew(player)
+end
+for _, pos in ipairs(CAULDRON_SPOTS) do
+	cauldron:position(pos)
+end
+cauldron:register()
+
+local gloo = Action()
+function gloo.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not T.isCauldron(toPosition) then
+		return false
+	end
+	return T.startBrew(player, item)
+end
+gloo:id(T.GLOO)
+gloo:register()
+
+local ingredient = Action()
+function ingredient.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not T.isCauldron(toPosition) then
+		return false
+	end
+	return T.addIngredient(player, item)
+end
+ingredient:id(T.FARINA, T.VINEGAR, T.ESSENCE)
+ingredient:register()
+
+local plasma = Action()
+function plasma.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() then
+		return false
+	end
+	return T.shakePlasma(player, item)
+end
+plasma:id(T.PLASMA)
+plasma:register()
+
+local gasBag = Action()
+function gasBag.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId or not table.contains(DATA_MACHINES, target:getId()) or not T.isLabCentre(toPosition) then
+		return false
+	end
+	if not T.retrieving(player) then
+		return false
+	end
+	return T.fillGasBag(player, item)
+end
+gasBag:id(T.GAS_BAG)
+gasBag:register()
+
+-- Glooth data machines: Zeronex' laboratory and the gloothworm farm.
+local dataMachine = Action()
+function dataMachine.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() then
+		return false
+	end
+	local pos = item:getPosition()
+	return T.readWormMachine(player, pos) or T.useLabMachine(player, pos)
+end
+dataMachine:id((table.unpack or unpack)(DATA_MACHINES))
+dataMachine:register()
+
+-- Tending Gloothworms -------------------------------------------------
+local funnel = Action()
+function funnel.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() then
+		return false
+	end
+	return T.useFunnel(player, item:getPosition(), false)
+end
+funnel:id(FUNNEL)
+funnel:register()
+
+local water = Action()
+function water.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId or target:getId() ~= FUNNEL then
+		return false
+	end
+	return T.useFunnel(player, toPosition, true)
+end
+water:id(T.WATER)
+water:register()
+
+local distiller = Action()
+function distiller.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() then
+		return false
+	end
+	return T.distilWater(player)
+end
+distiller:id((table.unpack or unpack)(DISTILLERS))
+distiller:register()
+
+local hoe = Action()
+function hoe.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() or not target or not target.getId or target:getId() ~= T.FUNGUS then
+		return false
+	end
+	local shredded = T.shredFungus(player)
+	if shredded == nil then
+		return false
+	end
+	if shredded then
+		local where = Position(toPosition.x, toPosition.y, toPosition.z)
+		target:transform(T.FUNGUS_SHREDDED)
+		addEvent(function()
+			local tile = Tile(where)
+			local stump = tile and tile:getItemById(T.FUNGUS_SHREDDED)
+			if stump then
+				stump:transform(T.FUNGUS)
+			end
+		end, 60 * 1000) -- EN: it regrows after 1 minute
+	end
+	return true
+end
+hoe:id(T.HOE)
+hoe:register()
+
+local powder = Action()
+function powder.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not T.on() then
+		return false
+	end
+	return T.feedTube(player, item, target, toPosition)
+end
+powder:id(T.POWDER)
+powder:register()

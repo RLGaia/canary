@@ -3120,6 +3120,8 @@ Storage = {
 			-- 48614-48619 are free between the Edron task blocks
 			Statues = 48614, -- Four Demanding Statues (Elbert): 1 asked, 2 warlock dead, 3 letter found, 4 done
 			Plague = 48615, -- The Mutated Glooth Plague (Georgia Rainbird): 1 device given, 2 antidote told, 3 eight pools done
+			Gloud = 48616, -- The Gloud Ship (Zeronex): 1 cloth, 2 gloo, 3 gas bag, 4 done; tasks 5 harvesting, 6 concocting, 7 retrieving
+			Gloothworms = 48617, -- Tending Gloothworms (Wesley): 1 read the machine, 2 report, 3-6 task, 7 done for today
 		},
 		-- FAMILY: In Service of Yalahar fixes (lib/others/family_in_service_of_yalahar.lua)
 		FamilyInServiceOfYalahar = {

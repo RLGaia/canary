@@ -52,10 +52,11 @@ quest log and promotions to squire, the Dark Trails funding vote, the 14-day cou
 citizen-only ships (Gulliver, Fearless, Charles, Seahorse), Elliott/Jacob's repairs, Sholley and
 Ezebeth: `luajit tools/family/npc_talk/rathleton.lua`.
 
-`oramond_tasks.lua` is the Oramond tasks check (2026-11-08, 122 checks): Terrence's five hunts,
+`oramond_tasks.lua` is the Oramond tasks check (2026-11-08, 222 checks): Terrence's five hunts,
 supplies and sabotage, Drystan's Nature's Balance, Elbert's capsules, Doubleday's communication,
 combinatorics and favour exchange, the whole Dr Merlay chain, Four Demanding Statues, Georgia
-Rainbird's converter, kill counting with ranks.
+Rainbird's converter, The Gloud Ship (Zeronex, Nicholas, Yeo, the cauldron, the laboratory, the
+three tasks, Publicity), three days of Tending Gloothworms with Wesley, kill counting with ranks.
 
 ## Writing a check
 

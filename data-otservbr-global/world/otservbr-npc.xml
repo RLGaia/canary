@@ -1570,6 +1570,14 @@
 	<npc centerx="33579" centery="31868" centerz="12" radius="2">
 		<npc name="Dr Merlay" x="0" y="0" z="12" spawntime="60" />
 	</npc>
+	<!-- FAMILY: Nicholas (Oramond Quest, The Gloud Ship) had an NPC file but no spawn; TibiaWiki EN position (2026-11-08) -->
+	<npc centerx="33640" centery="31897" centerz="5" radius="1">
+		<npc name="Nicholas" x="0" y="0" z="5" spawntime="60" />
+	</npc>
+	<!-- FAMILY: Yeo (Oramond Quest, The Gloud Ship) was missing upstream; TibiaWiki EN position (2026-11-08) -->
+	<npc centerx="33660" centery="31990" centerz="7" radius="1">
+		<npc name="Yeo" x="0" y="0" z="7" spawntime="60" />
+	</npc>
 	<npc centerx="32617" centery="31946" centerz="7" radius="1">
 		<npc name="Lukosch" x="0" y="0" z="7" spawntime="60" />
 	</npc>

@@ -50,6 +50,11 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: The Gloud Ship (very strong cloth) and Publicity (lib/others/family_oramond_tasks.lua)
+if FamilyOramondTasks then
+	FamilyOramondTasks.setupNicholas(npcHandler)
+end
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 npcConfig.shop = {

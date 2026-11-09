@@ -54,6 +54,11 @@ local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	local playerId = player:getId()
 
+	-- FAMILY: Publicity (lib/others/family_oramond_tasks.lua)
+	if FamilyOramondTasks and FamilyOramondTasks.publicitySay(npc, player, message, npcHandler, "barazbaz") then
+		return true
+	end
+
 	if MsgContains(message, "ritual") and player:getStorageValue(Storage.Quest.U10_50.DarkTrails.Mission06) == 1 and player:getStorageValue(Storage.Quest.U10_50.DarkTrails.Mission07) < 1 then
 		npcHandler:say({
 			"Ancient structures in the sewers you say? Well, our city has had a certain bloody past, even before it has been city at all. But to investigate the archives for what you may have found is a time-consuming process. ...",
