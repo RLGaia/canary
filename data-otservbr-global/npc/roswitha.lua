@@ -54,6 +54,11 @@ local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	local playerId = player:getId()
 
+	-- FAMILY: Dr Merlay's Misery (lib/others/family_oramond_tasks.lua)
+	if FamilyOramondTasks and FamilyOramondTasks.merlaySay(npc, player, message, npcHandler, "roswitha") then
+		return true
+	end
+
 	if MsgContains(message, "Harsin") then
 		if player:getStorageValue(Storage.Quest.U10_50.DarkTrails.Mission13) == 1 and player:getStorageValue(Storage.Quest.U10_50.DarkTrails.Mission14) < 1 then
 			npcHandler:say("I'm sorry, but Harsin no longer lives here. He ordered a local named Quandon to transport all his stuff somewhere. I don't know where he moved, but Quandon should be able to help you with this information.", npc, creature)

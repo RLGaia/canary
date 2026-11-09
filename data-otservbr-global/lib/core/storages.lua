@@ -3112,6 +3112,11 @@ Storage = {
 			Major = 48792, -- The Major Taurs (Terrence)
 			Bandits = 48793, -- Nature's Balance (Drystan Wildweed)
 			Capsules = 48794, -- The Glooth Bandits (Elbert): 1 asked, 2 capsules delivered at least once
+			Sabotage = 48795, -- Sabotage (Terrence): armor racks destroyed since the last report
+			Turnips = 48796, -- Rathleton Turnip Party (Terrence): crates sunk since the last report
+			Communication = 48797, -- Communication Breakdown (Doubleday): 1 asked, 2 vial filled
+			Combinatorics = 48798, -- Combinatorics (Doubleday): 1 = started (details in player KV family-oramond)
+			Merlay = 48799, -- Dr Merlay's Misery: 1 letters given, 2 mixture shown
 		},
 		-- FAMILY: In Service of Yalahar fixes (lib/others/family_in_service_of_yalahar.lua)
 		FamilyInServiceOfYalahar = {

@@ -61,5 +61,30 @@ quest.missions[#quest.missions + 1] = {
 		return "Bring ten glooth capsules, stolen by the glooth bandits and brigands, back to Elbert in the Underground Glooth Factory."
 	end,
 }
+-- FAMILY: batch 2 (2026-11-08): Sabotage, Rathleton Turnip Party, Communication Breakdown,
+-- Combinatorics, Dr Merlay's Misery (texts ours)
+local familyBatch2 = {
+	{ "Sabotage", "Sabotage", 0 },
+	{ "Rathleton Turnip Party", "Turnips", 0 },
+	{ "Communication Breakdown", "Communication", 1 },
+	{ "Combinatorics", "Combinatorics", 1 },
+	{ "Dr Merlay's Misery", "Merlay", 0 },
+}
+for i, entry in ipairs(familyBatch2) do
+	local name, key, start = entry[1], entry[2], entry[3]
+	quest.missions[#quest.missions + 1] = {
+		name = name,
+		storageId = Storage.Quest.FamilyOramondTasks[key],
+		missionId = 11245 + i, -- 11246-11250
+		startValue = start,
+		endValue = 1000000,
+		description = function(player)
+			if FamilyOramondTasks and FamilyOramondTasks.missionTextBatch2 then
+				return FamilyOramondTasks.missionTextBatch2(player, key)
+			end
+			return name
+		end,
+	}
+end
 
 return quest

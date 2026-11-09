@@ -413,6 +413,11 @@ npcHandler:setMessage(MESSAGE_GREET, "Welcome, young |PLAYERNAME|! If you are he
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Remember: If you are heavily wounded or poisoned, I can heal you for free.")
 npcHandler:setMessage(MESSAGE_FAREWELL, "May the gods bless you, |PLAYERNAME|!")
 
+-- FAMILY: Dr Merlay's Misery (lib/others/family_oramond_tasks.lua)
+if FamilyOramondTasks then
+	FamilyOramondTasks.setupMerlayFriend(npcHandler, "azalea")
+end
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

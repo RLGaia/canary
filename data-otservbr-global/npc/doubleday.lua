@@ -58,6 +58,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Communication Breakdown, Combinatorics and the favour exchange (lib/others/family_oramond_tasks.lua)
+	if FamilyOramondTasks and FamilyOramondTasks.doubledaySay(npc, player, message, npcHandler) then
+		return true
+	end
+
 	if MsgContains(message, "experiment") then
 		if player:getStorageValue(Storage.Quest.U10_50.OramondQuest.Probing.Mission) == -1 then
 			npcHandler:say({

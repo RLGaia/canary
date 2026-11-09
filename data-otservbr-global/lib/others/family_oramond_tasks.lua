@@ -153,6 +153,10 @@ function T.countKill(player, creatureName)
 	if not T.on() then
 		return
 	end
+	if T.combo and T.combo[creatureName] then
+		T.comboKill(player, creatureName)
+		return
+	end
 	local tasks = T.byCreature[creatureName]
 	if not tasks then
 		return
@@ -233,7 +237,7 @@ function T.terrenceSay(npc, player, message, npcHandler)
 		end
 	end
 	if MsgContains(message, "killing") or MsgContains(message, "helping") or MsgContains(message, "help") or MsgContains(message, "mission") or MsgContains(message, "hunt") then
-		say("The city guard pays for every hundred pests you kill with a voice in the magistrate. Right now you can help with " .. huntList(player) .. ".")
+		say("The city guard pays for every hundred pests you kill with a voice in the magistrate. Right now you can help with " .. huntList(player) .. ". The minotaurs' {supplies} and a bit of {sabotage} would help too.")
 		return true
 	end
 	return false
@@ -379,4 +383,737 @@ function T.setupElbert(npcHandler)
 		end
 		return true
 	end)
+end
+
+-- ==================================================================== batch 2 (2026-11-08)
+-- Sabotage and Rathleton Turnip Party (Terrence), Communication Breakdown and Combinatorics
+-- (Doubleday, paid in favours that he exchanges for votes, with Probing), Dr Merlay's Misery.
+-- Objects are on our map (Oramond Minotaur Camp, the four sewer machines, the lab); the world
+-- side is in scripts/family/oramond_tasks.lua. Messages quoted in TibiaWiki EN are used as they
+-- are; the rest is ours and marked.
+
+T.SABOTAGE_NEED, T.TURNIP_NEED = 10, 10
+
+function T.kv(player)
+	return player:kv():scoped("family-oramond")
+end
+
+local function voteFor(player, amount)
+	addVotes(player, amount)
+end
+
+function T.favors(player)
+	local favors = T.kv(player):get("favors") or 0
+	if player:getStorageValue(O.Probing.Mission) == 3 then
+		favors = favors + 1 -- an upstream probing report not exchanged yet
+	end
+	return favors
+end
+
+function T.addFavors(player, amount)
+	T.kv(player):set("favors", (T.kv(player):get("favors") or 0) + amount)
+end
+
+-- Takes favours, the upstream probing report first.
+function T.takeFavors(player, amount)
+	if amount > 0 and player:getStorageValue(O.Probing.Mission) == 3 then
+		player:setStorageValue(O.Probing.Mission, -1)
+		amount = amount - 1
+	end
+	if amount > 0 then
+		T.kv(player):set("favors", math.max(0, (T.kv(player):get("favors") or 0) - amount))
+	end
+end
+
+-- ------------------------------------------------------------------ Terrence: supplies, sabotage
+
+T.terrenceTasks = {
+	{
+		words = { "supplies", "supply", "turnips", "turnip" },
+		storage = S.Turnips,
+		need = T.TURNIP_NEED,
+		offer = "The minotaurs keep their turnip supplies in crates up on the mountain of their camp. Sink ten of those crates in the water - gently and secretly, mind you - and report back to me.", -- ours
+		progress = "You sank %d of the ten supply crates so far.", -- ours
+		done = "Ten crates of turnips at the bottom of the sea! That will hurt them. That's one more voice in the magistrate for you.", -- ours
+	},
+	{
+		words = { "sabotage" },
+		storage = S.Sabotage,
+		need = T.SABOTAGE_NEED,
+		offer = "The mootants wear armor no blade can pierce. But the cowcoa they brew on their mountain is acrid enough to eat through it. Fill a cup at the nozzle south of their mill, pour it over ten of their armor racks and report back to me.", -- ours
+		progress = "You destroyed %d of the ten armor racks so far.", -- ours
+		done = "Ten armor racks? Excellent sabotage! That's one more voice in the magistrate for you.", -- ours
+	},
+}
+
+local baseTerrenceSay = T.terrenceSay
+function T.terrenceSay(npc, player, message, npcHandler)
+	if T.on() then
+		for _, task in ipairs(T.terrenceTasks) do
+			for _, word in ipairs(task.words) do
+				if MsgContains(message, word) then
+					local count = player:getStorageValue(task.storage)
+					if count >= task.need then
+						player:setStorageValue(task.storage, 0)
+						voteFor(player, 1)
+						npcHandler:say(task.done, npc, player)
+					elseif count >= 0 then
+						npcHandler:say(string.format(task.progress, count), npc, player)
+					else
+						player:setStorageValue(task.storage, 0)
+						openQuestLine(player)
+						npcHandler:say(task.offer, npc, player)
+					end
+					return true
+				end
+			end
+		end
+	end
+	return baseTerrenceSay(npc, player, message, npcHandler)
+end
+
+-- A destroyed rack turns back into a whole one after 3 minutes (EN).
+T.RACK_RESET = 180
+function T.destroyRack(rack)
+	local pos = rack:getPosition()
+	local where = Position(pos.x, pos.y, pos.z)
+	rack:transform(21161)
+	addEvent(function()
+		local tile = Tile(where)
+		local destroyed = tile and tile:getItemById(21161)
+		if destroyed then
+			destroyed:transform(21163)
+		end
+	end, T.RACK_RESET * 1000)
+end
+
+-- Item side, called from scripts/family/oramond_tasks.lua.
+function T.addSabotage(player)
+	local count = math.max(0, player:getStorageValue(S.Sabotage))
+	if count >= T.SABOTAGE_NEED then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have already sabotaged a fair amount of minotaur gear. Any further attempts will arouse suspicion. Return to a city official.")
+		return false
+	end
+	player:setStorageValue(S.Sabotage, count + 1)
+	openQuestLine(player)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The acrid cowcoa reacts with the armor. Whatever it was made of, it is no more.")
+	return true
+end
+
+function T.canTakeCrate(player)
+	if math.max(0, player:getStorageValue(S.Turnips)) >= T.TURNIP_NEED then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You thinned out these supplies quite effectively - any more and they would surely notice. Return to a city official.")
+		return false
+	end
+	return true
+end
+
+function T.addTurnips(player)
+	player:setStorageValue(S.Turnips, math.max(0, player:getStorageValue(S.Turnips)) + 1)
+	openQuestLine(player)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You gently acquaint the crate with fresh water, destroying the turnip in the process - the feeling of being watched disappears.")
+end
+
+-- ------------------------------------------------------------------ Combinatorics
+
+T.combo = { ["Glooth Golem"] = "g", ["Devourer"] = "d", ["Glooth Anemone"] = "a" }
+T.comboNames = { g = "Glooth Golem", d = "Devourer", a = "Glooth Anemone" }
+local ORDERS = { "gda", "gad", "dga", "dag", "agd", "adg" }
+
+function T.comboOrder(player)
+	local order = T.kv(player):get("combo-order")
+	if not order then
+		order = ORDERS[math.random(#ORDERS)]
+		T.kv(player):set("combo-order", order)
+		T.kv(player):set("combo-step", 0)
+		T.kv(player):set("combo-sequences", 0)
+		T.kv(player):set("combo-chains", 0)
+	end
+	return order
+end
+
+local function orderText(order)
+	local names = {}
+	for i = 1, 3 do
+		names[i] = T.comboNames[order:sub(i, i)]
+	end
+	return table.concat(names, ", ")
+end
+
+-- Kills in the right order make sequences; from the fourth sequence in a row each one is a
+-- consecutive chain (Combo Master: 10 chains = 39 kills, its description). A wrong kill ends the
+-- streak and the chains not reported yet (EN).
+function T.comboKill(player, creatureName)
+	local letter = T.combo[creatureName]
+	if not letter or not T.on() then
+		return
+	end
+	local kv = T.kv(player)
+	local order = T.comboOrder(player)
+	if player:getStorageValue(S.Combinatorics) < 1 then
+		player:setStorageValue(S.Combinatorics, 1)
+		openQuestLine(player)
+	end
+	local step = kv:get("combo-step") or 0
+	if order:sub(step + 1, step + 1) ~= letter then
+		local lost = kv:get("combo-chains") or 0
+		kv:set("combo-step", 0)
+		kv:set("combo-sequences", 0)
+		kv:set("combo-chains", 0)
+		player:sendTextMessage(MESSAGE_STATUS, string.format("Combinatorics: wrong order, the combo is broken%s. Order: %s.", lost > 0 and string.format(" (%d chains lost)", lost) or "", orderText(order)))
+		return
+	end
+	step = step + 1
+	if step < 3 then
+		kv:set("combo-step", step)
+		player:sendTextMessage(MESSAGE_STATUS, string.format("Combinatorics: %s %d of 3, next %s.", T.comboNames[letter], step, T.comboNames[order:sub(step + 1, step + 1)]))
+		return
+	end
+	kv:set("combo-step", 0)
+	local sequences = (kv:get("combo-sequences") or 0) + 1
+	kv:set("combo-sequences", sequences)
+	local streak = math.max(0, sequences - 3)
+	if streak > 0 then
+		kv:set("combo-chains", (kv:get("combo-chains") or 0) + 1)
+	end
+	if streak >= 10 and not player:hasAchievement("Combo Master") then
+		player:addAchievement("Combo Master")
+	end
+	player:sendTextMessage(MESSAGE_STATUS, string.format("Combinatorics: sequence %d complete, %d consecutive chains to report. Next %s.", sequences, kv:get("combo-chains") or 0, T.comboNames[order:sub(1, 1)]))
+end
+
+function T.comboText(player)
+	local kv = T.kv(player)
+	local order = kv:get("combo-order")
+	if not order then
+		return "Kill a glooth golem, a devourer and a glooth anemone in the right order in the Rathleton new sewers for Doubleday."
+	end
+	return string.format("Kill in this order in the Rathleton new sewers: %s. Sequences in a row: %d. Consecutive chains to report to Doubleday: %d. Favours with Doubleday: %d.", orderText(order), kv:get("combo-sequences") or 0, kv:get("combo-chains") or 0, T.favors(player))
+end
+
+-- ------------------------------------------------------------------ Doubleday
+
+-- Topics 20+ (upstream uses 1-9).
+function T.doubledaySay(npc, player, message, npcHandler)
+	if not T.on() then
+		return false
+	end
+	local id = player:getId()
+	local topic = npcHandler:getTopic(id)
+	local say = function(text)
+		npcHandler:say(text, npc, player)
+	end
+	local kv = T.kv(player)
+
+	if topic == 21 and MsgContains(message, "yes") then
+		npcHandler:setTopic(id, 0)
+		kv:remove("combo-order")
+		local order = T.comboOrder(player)
+		player:setStorageValue(S.Combinatorics, 1)
+		openQuestLine(player)
+		say({
+			"Ha, I knew it! Well, just go to the new sewers and kill some monsters that's it! Here is how to do it and which combination to try, it's always a little different, see... ...",
+			"First a " .. T.comboNames[order:sub(1, 1)] .. ", then a " .. T.comboNames[order:sub(2, 2)] .. " and then a " .. T.comboNames[order:sub(3, 3)] .. ". ...",
+			"Now, no need for any vessel or whatever - just come back here, I will scrape the blood from your coat and you tell me what I want to know about each... 'sample'. Hey, I can even keep track of your combo score.",
+		})
+		return true
+	elseif topic == 22 and MsgContains(message, "yes") then
+		npcHandler:setTopic(id, 0)
+		local chains = kv:get("combo-chains") or 0
+		if chains < 1 then
+			say("Hmm, no consecutive chains on your coat. Remember: three sequences in a row first, then every further sequence makes a chain.") -- ours
+			return true
+		end
+		kv:set("combo-chains", 0)
+		T.addFavors(player, chains)
+		say(string.format("%d consecutive chains! Marvellous samples. I noted them - ask me for an {exchange} whenever you want your votes.", chains)) -- ours
+		return true
+	elseif topic == 23 and MsgContains(message, "yes") then
+		npcHandler:setTopic(id, 0)
+		player:setStorageValue(S.Communication, 1)
+		openQuestLine(player)
+		say({
+			"Splendid! My altered glooth carries sounds - but it is quite unstable, so I had to leave my machines running in the new sewers. The way down is the sewer grate under the docks, south-west of here. ...",
+			"At a machine, turn one of the valves three times and watch the colour of the steam. Then pull the levers of those colours in the same order. A bit of coloured glooth will come out - fill it into a vial and bring it to me.",
+		}) -- ours
+		return true
+	elseif topic == 24 then
+		local amount = tonumber(message:match("%d+"))
+		if amount then
+			local favors = T.favors(player)
+			if amount < 1 then
+				return true
+			elseif amount > favors then
+				say("Hey, let's try to be reasonable here, alright? That's a bit too much for what you did, isn't it? It may seem that way but the number of votes I can offer isn't limitless.")
+				return true
+			end
+			kv:set("exchange-amount", amount)
+			npcHandler:setTopic(id, 25)
+			say(string.format("Alright then, that's %d vote(s) you want - I won't take them back, are you sure?", amount))
+			return true
+		end
+	elseif topic == 25 and MsgContains(message, "yes") then
+		npcHandler:setTopic(id, 0)
+		local amount = kv:get("exchange-amount") or 0
+		if amount < 1 or amount > T.favors(player) then
+			return true
+		end
+		T.takeFavors(player, amount)
+		voteFor(player, amount)
+		say(string.format("Good, you just gained %d genuine votes in the magistrate!", amount))
+		return true
+	end
+
+	if MsgContains(message, "exchange") then
+		local favors = T.favors(player)
+		if favors < 1 then
+			say("You haven't helped me with anything I could pay votes for yet. Ask me about my {experiment}.") -- ours
+			npcHandler:setTopic(id, 0)
+		else
+			say(string.format("Well, let's see, you helped me %d times before exchanging any votes - how many votes do you want me to give you in exchange?", favors))
+			npcHandler:setTopic(id, 24)
+		end
+		return true
+	elseif MsgContains(message, "combinatorics") then
+		if not kv:get("combo-order") then
+			say({
+				"Besides the state of the altered glooth down there, I am trying to figure out more about the structure of the creatures this affects. This requires blood - in a certain combination! ...",
+				"See, down there in the upper parts of the new sewers, you can find three sorts of creatures. When I went down there the last time - and that was quite some time ago - I found a strange substance. ...",
+				"Undoubtedly blood - but not just any blood. It must have been a certain combination of everything that crawls down there. Believe it or not - it made a puddle of my altered glooth down there perfectly stable! ...",
+				"I couldn't find out the combination - but I took samples! See, this is like - mixing a certain cocktail, you need to put different liquids with different densities in a specific order to get the best effect, ahem heh heh, eh? ...",
+				"Well, don't you get it? If you can kill them in a specific order (which I will explain to you in DETAIL before), the mixed blood will be ideal for my research! ...",
+				"Sounds crazy, doesn't it? Well it isn't! If I can figure out what kind of monster combination made the altered glooth stable - there will be no shortage of altered glooth anymore! ...",
+				"With that being said - only combo chains (3x 3 creatures in a row and consecutive chains) will be rewarded! So, are you in or not or what?",
+			})
+			npcHandler:setTopic(id, 21)
+		else
+			say(string.format("So, let me see your coat... %d consecutive chains since you last reported. Shall I scrape them off and note them?", kv:get("combo-chains") or 0)) -- ours
+			npcHandler:setTopic(id, 22)
+		end
+		return true
+	elseif MsgContains(message, "communication") or MsgContains(message, "communications") then
+		local state = player:getStorageValue(S.Communication)
+		if state >= 2 then
+			player:removeItem(21188, 1)
+			player:setStorageValue(S.Communication, 0)
+			T.addFavors(player, 1)
+			say("The coloured glooth! Even a little broken it tells me everything I need. Thank you - ask me for an {exchange} when you want votes for it.") -- ours
+			npcHandler:setTopic(id, 0)
+		elseif state == 1 then
+			say("Did you get a vial of coloured glooth from one of my machines yet? Valves first, three times - then the levers of the same colours, in the same order.") -- ours
+			npcHandler:setTopic(id, 0)
+		else
+			say("I am working on a wireless communication system for Rathleton - altered glooth conducts sounds wonderfully. But I need samples from my machines in the new sewers. Will you fetch one?") -- ours
+			npcHandler:setTopic(id, 23)
+		end
+		return true
+	end
+	return false
+end
+
+-- ------------------------------------------------------------------ Communication Breakdown machines
+
+T.COLOURS = {
+	r = { name = "Red", effect = CONST_ME_REDSMOKE, lever = 21125 },
+	y = { name = "Yellow", effect = CONST_ME_YELLOWSMOKE, lever = 21126 },
+	g = { name = "Green", effect = CONST_ME_GREENSMOKE, lever = 21127 },
+	v = { name = "Violet", effect = CONST_ME_PURPLESMOKE, lever = 21128 },
+}
+T.colourByLever = {}
+for key, colour in pairs(T.COLOURS) do
+	T.colourByLever[colour.lever] = key
+end
+
+-- The four machines on our map: lever column (red at the top) and where the glooth appears.
+T.machines = {
+	{ lever = Position(33618, 31927, 9), glooth = Position(33618, 31926, 9) },
+	{ lever = Position(33640, 31928, 10), glooth = Position(33640, 31927, 10) },
+	{ lever = Position(33625, 31958, 9), glooth = Position(33624, 31957, 9) }, -- no ground north of the levers
+	{ lever = Position(33667, 31980, 9), glooth = Position(33667, 31979, 9) },
+}
+
+function T.machineAt(position)
+	for index, machine in ipairs(T.machines) do
+		if machine.lever.z == position.z and math.abs(machine.lever.x - position.x) <= 6 and math.abs(machine.lever.y + 1 - position.y) <= 6 then
+			return index, machine
+		end
+	end
+end
+
+function T.useValve(player, position)
+	local index = T.machineAt(position)
+	if not index then
+		return false
+	end
+	local kv = T.kv(player)
+	local colours = kv:get("comm-colours") or ""
+	if kv:get("comm-machine") ~= index or #colours >= 3 then
+		colours = ""
+		kv:set("comm-machine", index)
+		kv:set("comm-pulled", "")
+	end
+	local keys = { "r", "y", "g", "v" }
+	local key = keys[math.random(#keys)]
+	colours = colours .. key
+	kv:set("comm-colours", colours)
+	local colour = T.COLOURS[key]
+	player:getPosition():sendMagicEffect(colour.effect)
+	player:say(colour.name .. " steam emerges...", TALKTYPE_MONSTER_SAY, false, player, position)
+	return true
+end
+
+T.leverReady = {}
+
+-- Returns "glooth" when the right three levers were pulled.
+function T.pullLever(player, item, position)
+	local key = T.colourByLever[item:getId()]
+	local index, machine = T.machineAt(position)
+	if not key or not index then
+		return false
+	end
+	local spot = position.x .. "," .. position.y .. "," .. position.z
+	if (T.leverReady[spot] or 0) > os.time() then
+		player:sendCancelMessage("The lever is still moving back.") -- ours
+		return true
+	end
+	T.leverReady[spot] = os.time() + 5 -- EN: levers take 5 seconds to return
+	position:sendMagicEffect(T.COLOURS[key].effect)
+	local kv = T.kv(player)
+	local colours = kv:get("comm-colours") or ""
+	if kv:get("comm-machine") ~= index or #colours < 3 then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Nothing happens. Turn a valve of this machine first.") -- ours
+		return true
+	end
+	local pulled = (kv:get("comm-pulled") or "") .. key
+	if colours:sub(1, #pulled) ~= pulled then
+		kv:set("comm-pulled", "")
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The machine coughs and nothing comes out. That was not the colour of the steam.") -- ours
+		return true
+	end
+	if #pulled < 3 then
+		kv:set("comm-pulled", pulled)
+		return true
+	end
+	kv:set("comm-pulled", "")
+	kv:set("comm-colours", "")
+	local tile = Tile(machine.glooth)
+	if tile and not tile:getItemById(21152) then
+		local glooth = Game.createItem(21152, 1, machine.glooth)
+		if glooth then
+			local where = Position(machine.glooth.x, machine.glooth.y, machine.glooth.z)
+			addEvent(function()
+				local t = Tile(where)
+				local g = t and t:getItemById(21152)
+				if g then
+					g:remove()
+				end
+			end, 2 * 60 * 1000)
+		end
+	end
+	machine.glooth:sendMagicEffect(CONST_ME_GREENSMOKE)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Strangely coloured glooth seeps out of the machine.") -- ours
+	return true
+end
+
+function T.takeGlooth(player, item)
+	if player:getStorageValue(S.Communication) ~= 1 then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "It is a strange, coloured glooth. You have no use for it.") -- ours
+		return true
+	end
+	item:remove()
+	player:addItem(21188, 1)
+	player:setStorageValue(S.Communication, 2)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You fill some of the coloured glooth in a vessel. It seems to affect it, making it fragile. Better carry it somewhere safe.")
+	return true
+end
+
+-- ------------------------------------------------------------------ Dr Merlay's Misery
+
+T.LETTERS, T.POTION, T.BLOOM, T.MIXTURE, T.PILL = 21141, 21154, 21213, 21216, 21142
+T.friends = { maro = 1, alaistar = 2, azalea = 4, fyodor = 8, emily = 16 }
+T.ALL_FRIENDS = 31
+
+local function visited(player, friend)
+	return bit.band(T.kv(player):get("merlay-visits") or 0, T.friends[friend]) ~= 0
+end
+
+local function visit(player, friend)
+	T.kv(player):set("merlay-visits", bit.bor(T.kv(player):get("merlay-visits") or 0, T.friends[friend]))
+end
+
+function T.isRotElemental(player)
+	return (T.kv(player):get("rot-until") or 0) >= os.time()
+end
+
+function T.hasLabAccess(player)
+	return T.kv(player):get("lab-access") == true
+end
+
+function T.merlayGreeting(player)
+	if player:getStorageValue(S.Merlay) >= 1 then
+		return "Welcome, my eagerly awaited friend! How did it go? Please tell me everything!"
+	end
+	return "Don't look at me! I'm {hideous}!"
+end
+
+local merlayLines = {
+	{ "hideous", "What do you think? Look at me! Do you think I was born this way? I was a respected glooth {scientist} and tradesman!" },
+	{ "scientist", "The {glooth} has been my nemesis! It caused this strange transformation and now I dare not even walk the street at nights anymore." },
+	{ "glooth", "Ah, that strange enticing stuff! It is incredibly versatile, so fascinatingly useful! And yet, and yet... <looks down at himself>" },
+	{ "name", "I used to be Dr Henry Merlay, but now.... <howls>" },
+	{ "merlay", "Yes, yes, the one who disappeared years ago in that tragic glooth {factory} incident." },
+	{ "factory", "Ah, it was the pride of my days! An experimental glooth and working units production factory - nobody could construct metal golems like I did! <sadly> All in the past, now... all in the past." },
+	{ "time", "<anxiously> The time? Which year is it? How long have I been here underground?" },
+	{ "wife", "My beautiful, lovely Emily. Is she still alive? Did she forget me? ... I can't bear to think of it!" },
+	{ "emily", "Oh, my beloved wife. I don't know what became of her. So many years ... The horror of not knowing!" },
+	{ "graham", "Who? And he looks like me? Are you sure?" },
+	{ "maro", { "He was my only friend, the only one who did not turn away in horror when he chanced to see me one night, when I went above ground. ...", "No one else listened! They all screamed and ran in horror! And I can hardly blame them. Who would believe me to be Henry Merlay? <sigh> ...", "But now Maro runs that tool shop he cannot come any longer. I understand. But I need someone to fetch and deliver my {letters}." } },
+	{ "alaistar", "My best friend in younger days. I charged him to look after Emily. But I don't know what happened since then. Is he alive and still my friend?" },
+	{ "mordecai", "We appreciated each other, though we never became quite as good friends as Alaistar and I." },
+	{ "carefew", "The nemesis of my family. He has always been against all modern concepts, and has looked upon my revolutionary findings with an unfriendly eye. I fear he has influenced everyone in this town against me." },
+}
+
+-- Returns true when the NPC answered. friend = "merlay", "roswitha" or a key of T.friends.
+function T.merlaySay(npc, player, message, npcHandler, friend)
+	if not T.on() then
+		return false
+	end
+	local id = player:getId()
+	local say = function(text)
+		npcHandler:say(text, npc, player)
+	end
+	local state = player:getStorageValue(S.Merlay)
+	local kv = T.kv(player)
+
+	if friend == "roswitha" then
+		if MsgContains(message, "pint") then
+			if (kv:get("pint-at") or 0) > os.time() then
+				say("One free pint an hour, my lad - ask for a {drink} if you want another one.") -- ours
+			else
+				kv:set("pint-at", os.time() + 60 * 60)
+				player:addItem(21137, 1)
+				say("Here you go, a fresh pint of glooth - on the house! Drink it while it's frothy.") -- ours
+			end
+			return true
+		elseif MsgContains(message, "drink") then
+			if not player:removeMoneyBank(10) then
+				say("That's 10 gold, my lad. Come back when you have it.") -- ours
+			else
+				player:addItem(21137, 1)
+				say("A pint of glooth, 10 gold. Cheers!") -- ours
+			end
+			return true
+		end
+		return false
+	end
+
+	if friend == "merlay" then
+		local topic = npcHandler:getTopic(id)
+		if topic == 31 and MsgContains(message, "yes") then
+			npcHandler:setTopic(id, 0)
+			player:addItem(T.LETTERS, 1)
+			player:setStorageValue(S.Merlay, 1)
+			kv:set("merlay-visits", 0)
+			openQuestLine(player)
+			say({
+				"Thank you, thank you! Here are my letters. Take the first one to Maro in his tool shop - he will tell you where the others live: Alaistar, Azalea, Fyodor and my Emily. ...",
+				"Alaistar is a clever man. If anyone knows how to make a cure, it is him. Bring me whatever he gives you.",
+			}) -- ours
+			return true
+		elseif topic == 32 and MsgContains(message, "yes") then
+			npcHandler:setTopic(id, 0)
+			if player:getItemCount(T.PILL) < 1 then
+				say("But... where is it? You don't have the pill with you!") -- ours
+				return true
+			end
+			player:removeItem(T.PILL, 1)
+			if player:getItemCount(T.LETTERS) > 0 then
+				player:removeItem(T.LETTERS, 1)
+			end
+			player:setStorageValue(S.Merlay, 0)
+			kv:set("merlay-visits", 0)
+			voteFor(player, 1)
+			say({
+				"<gulps> Ah.... I can feel it working already... Please my friend, accept my humblest thanks for your help! Feel free to exert my city voting right at the magistrate for me, I cannot use it at present. ...",
+				"And now, leave me some privacy to change into something more... humane. But feel free to visit me anytime!",
+			})
+			return true
+		elseif topic == 32 and MsgContains(message, "no") then
+			npcHandler:setTopic(id, 0)
+			say("Oh... I thought... never mind.") -- ours
+			return true
+		end
+		if MsgContains(message, "pill") or MsgContains(message, "ominously glowing pill") then
+			if state >= 1 and player:getItemCount(T.PILL) > 0 then
+				if bit.band(kv:get("merlay-visits") or 0, T.ALL_FRIENDS) ~= T.ALL_FRIENDS then
+					say("A pill? But did you deliver all my letters? Maro, Alaistar, Azalea, Fyodor and Emily must know I am alive!") -- ours
+					return true
+				end
+				say({ "It worked! It WORKED! Please, give it to me, I must try it!", "I must have misheard you, could you please say that again? Yes or no?" })
+				npcHandler:setTopic(id, 32)
+			else
+				say("A pill? I wish there was a pill against... this.") -- ours
+			end
+			return true
+		elseif MsgContains(message, "mixture") or MsgContains(message, "cool gloothy mixture") then
+			if state >= 1 and player:getItemCount(T.MIXTURE) > 0 then
+				player:setStorageValue(S.Merlay, 2)
+				say("This... this looks promising! You have it from Alaistar? Perfect! Quickly, use the particle accelerator with it, maybe this can create a potent lozenge that can cure me!")
+			else
+				say("Mixture? Alaistar would know about mixtures. Did you visit him?") -- ours
+			end
+			return true
+		elseif MsgContains(message, "help") or MsgContains(message, "letters") or MsgContains(message, "letter") or MsgContains(message, "mission") then
+			if state >= 1 then
+				local missing = {}
+				for _, name in ipairs({ "maro", "alaistar", "azalea", "fyodor", "emily" }) do
+					if not visited(player, name) then
+						missing[#missing + 1] = name:gsub("^%l", string.upper)
+					end
+				end
+				if #missing > 0 then
+					say("Please deliver my letters - still waiting are: " .. table.concat(missing, ", ") .. "." .. (player:getItemCount(T.LETTERS) < 1 and " Here, take another bundle, you seem to have lost yours." or "")) -- ours
+					if player:getItemCount(T.LETTERS) < 1 then
+						player:addItem(T.LETTERS, 1)
+					end
+				else
+					say("Everyone knows? Then bring me Alaistar's cure - stabilised with a soothe bloom and pressed into a {pill} in my particle accelerator.") -- ours
+				end
+			else
+				say("Would you... would you help me? I need someone to deliver my letters to my friends and my wife up in the city. Will you do it?") -- ours
+				npcHandler:setTopic(id, 31)
+			end
+			return true
+		end
+		for _, entry in ipairs(merlayLines) do
+			if MsgContains(message, entry[1]) then
+				say(entry[2])
+				return true
+			end
+		end
+		return false
+	end
+
+	-- the friends in the city
+	local hasLetters = state >= 1 and player:getItemCount(T.LETTERS) > 0
+	if friend == "maro" and MsgContains(message, "message") and hasLetters then
+		say("Thank you for bringing me his letter. And you need to see some other fellow hoomans, yes?")
+		npcHandler:setTopic(id, 41)
+		visit(player, "maro")
+		return true
+	elseif friend == "maro" and npcHandler:getTopic(id) == 41 and MsgContains(message, "yes") then
+		npcHandler:setTopic(id, 0)
+		say({
+			"Maro knows them by smell, although they did not tell him their names. But they told father Alaistar their names, because he was the best friend of fellow hooman, a long time ago, and he trusted me. Azalea and Fyodor, they are called. ...",
+			"Then there is the lady friend Emily. She will be gladdest of all to hear from fellow hooman friend! ...",
+			"But now you should see father Alaistar upstairs, he will be glad to hear from fellow hooman friend, and may have an idea that will help cure him!",
+		})
+		return true
+	elseif friend == "alaistar" and (MsgContains(message, "message") or MsgContains(message, "letter")) and hasLetters then
+		say("You... have... a message... from... Henry?? By the gods above and below! Keep quiet. He still lives? I thought, after all these years of silence... never mind. Let me read his message for a {moment}.")
+		npcHandler:setTopic(id, 42)
+		return true
+	elseif friend == "alaistar" and MsgContains(message, "moment") and npcHandler:getTopic(id) == 42 then
+		npcHandler:setTopic(id, 0)
+		visit(player, "alaistar")
+		player:addItem(T.POTION, 1)
+		say({
+			"This is fantastic! He writes he may have found the missing coagent for the gloothomagic combination! ...",
+			"<reads intently> This is it, the final clue I was missing! Of course, the coefficient <mumbles unintelligibly> the particle acceleration.... Of course! Yes! This could actually work! Let me mix you something. ...",
+			"... There! This glooth potion could be the base for the cure. I agree with Henry that he needs to cure this from the inside, maybe through a pill of lozenge. ...",
+			"However, this potion is VERY unstable, so you must combine it with a freshly granulated soothe bloom first, to neutralise the toxic effects, before you can make a lozenge out of it. Azalea has reared a soothe blossom, please visit her. ...",
+			"And please also visit Fyodor if you did not already do so. I know that he can help Henry with his writing problem, he is just the right man for it. ...",
+			"Remember, the stabilised potion must be mixed in Henry's patented particle accelerator to create the exact right density for the lozenge! He must have an accelerator in his lab. Thank you, and please send my regards to Henry.",
+		})
+		return true
+	elseif friend == "alaistar" and MsgContains(message, "lost") and visited(player, "alaistar") and state >= 1 then
+		player:addItem(T.POTION, 1)
+		say("Lost it? Here, I mixed another glooth potion. Handle it with care!") -- ours
+		return true
+	elseif friend == "azalea" and MsgContains(message, "letter") and hasLetters then
+		visit(player, "azalea")
+		kv:set("bloom-at", os.time() + 60 * 60)
+		player:addItem(T.BLOOM, 1)
+		say({
+			"It is from the doctor who is in pain! Finally he has decided to turn to his friends again. This pleases me. ...",
+			"Here, take this darling I nurtured for him with you. I spoke words of power to it. It should help alleviate the torment in his soul, and will seek to restore his original shape. ...",
+			"If you did not already visit all the others, please do so. They will be pleased to hear news from him and to be able to help him again. Thank you for your help.",
+		})
+		return true
+	elseif friend == "azalea" and MsgContains(message, "lost") and visited(player, "azalea") and state >= 1 then
+		if (kv:get("bloom-at") or 0) > os.time() then
+			say("A soothe bloom needs time to grow. Come back in an hour.") -- ours
+		else
+			kv:set("bloom-at", os.time() + 60 * 60)
+			player:addItem(T.BLOOM, 1)
+			say("Here is another soothe bloom. Take better care of this one.") -- ours
+		end
+		return true
+	elseif friend == "fyodor" and (MsgContains(message, "friend") or MsgContains(message, "letter")) and hasLetters then
+		visit(player, "fyodor")
+		say({
+			"<reads> 'To whomever it concerns '... Hey! This is... it is... from... it really is, isn't it? This is capital news! ...",
+			"I will do as he pleads. I must act at once! I will seek his leftover writings and copy his letters in his style for him. The injustice he and his family have suffered shall not endure. My pen is at his command! ...",
+			"You should see his wife Emily, if you have not already done so. Thank you again and again, you have served a good cause and helped a great man!",
+		})
+		return true
+	elseif friend == "emily" and (MsgContains(message, "message") or MsgContains(message, "letter")) and hasLetters then
+		say("You have news, news from Henry! What is it? Where is he? Why doesn't he come himself? Is he ill? Captured? Suffering? Dying? {Tell} me at once, I beg you!")
+		npcHandler:setTopic(id, 43)
+		return true
+	elseif friend == "emily" and MsgContains(message, "tell") and npcHandler:getTopic(id) == 43 then
+		npcHandler:setTopic(id, 0)
+		visit(player, "emily")
+		say("A letter? A letter from Henry! Oh, how wonderful! After all this time! I must read it at once. Oh, you have made me so happy! I shall forever be in your debt!")
+		return true
+	end
+	return false
+end
+
+-- For NPCs without their own callbacks (Maro, Azalea, Fyodor, Emily, Dr Merlay).
+function T.setupMerlayFriend(npcHandler, friend)
+	if friend == "merlay" then
+		npcHandler:setCallback(CALLBACK_GREET, function(npc, creature)
+			npcHandler:setMessage(MESSAGE_GREET, T.merlayGreeting(Player(creature)))
+			return true
+		end)
+	end
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, function(npc, creature, type, message)
+		local player = Player(creature)
+		if player then
+			T.merlaySay(npc, player, message, npcHandler, friend)
+		end
+		return true
+	end)
+end
+
+function T.missionTextBatch2(player, key)
+	if key == "Sabotage" then
+		return string.format("Destroy ten mootant armor racks in the Oramond Minotaur Camp with cups of cowcoa from the nozzle south of the mill on the mountain, then report to Terrence: %d of 10.", math.max(0, player:getStorageValue(S.Sabotage)))
+	elseif key == "Turnips" then
+		return string.format("Take supply crates from the mountain of the Oramond Minotaur Camp and sink them gently in the water, then report to Terrence: %d of 10.", math.max(0, player:getStorageValue(S.Turnips)))
+	elseif key == "Communication" then
+		if player:getStorageValue(S.Communication) >= 2 then
+			return "You have a vial of coloured glooth. Bring it to Doubleday."
+		end
+		return "Get a vial of coloured glooth from one of Doubleday's machines in the Rathleton new sewers: turn a valve three times, then pull the levers of the steam colours in the same order."
+	elseif key == "Combinatorics" then
+		return T.comboText(player)
+	elseif key == "Merlay" then
+		local state = player:getStorageValue(S.Merlay)
+		if state < 1 then
+			return "Dr Merlay can be helped again. Get a pint of glooth from Roswitha to reach his laboratory."
+		end
+		local missing = {}
+		for _, name in ipairs({ "maro", "alaistar", "azalea", "fyodor", "emily" }) do
+			if not visited(player, name) then
+				missing[#missing + 1] = name:gsub("^%l", string.upper)
+			end
+		end
+		if #missing > 0 then
+			return "Deliver Dr Merlay's letters. Still waiting: " .. table.concat(missing, ", ") .. "."
+		end
+		return "Use Alaistar's glooth potion on Azalea's soothe bloom, press the mixture into a pill in Dr Merlay's particle accelerator and give it to him."
+	end
+	return ""
 end

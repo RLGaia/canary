@@ -52,8 +52,9 @@ quest log and promotions to squire, the Dark Trails funding vote, the 14-day cou
 citizen-only ships (Gulliver, Fearless, Charles, Seahorse), Elliott/Jacob's repairs, Sholley and
 Ezebeth: `luajit tools/family/npc_talk/rathleton.lua`.
 
-`oramond_tasks.lua` is the Oramond tasks batch 1 check (2026-11-08, 38 checks): Terrence's five
-hunts, Drystan's Nature's Balance, Elbert's capsules, kill counting with ranks, quest log texts.
+`oramond_tasks.lua` is the Oramond tasks check (2026-11-08, 90 checks): Terrence's five hunts,
+supplies and sabotage, Drystan's Nature's Balance, Elbert's capsules, Doubleday's communication,
+combinatorics and favour exchange, the whole Dr Merlay chain, kill counting with ranks.
 
 ## Writing a check
 
