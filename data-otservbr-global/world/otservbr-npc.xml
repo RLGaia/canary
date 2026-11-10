@@ -3103,4 +3103,11 @@
 	<npc centerx="32952" centery="31441" centerz="3" radius="1">
 		<npc name="A Fading Memory" x="0" y="0" z="3" spawntime="60" />
 	</npc>
+	<!-- FAMILY: A Pirate's Tail (2026-11-10): Tik'hi Tak'he and Om'Wake Naha in Rascacoon (TibiaWiki BR positions); upstream had neither -->
+	<npc centerx="33730" centery="31344" centerz="7" radius="1">
+		<npc name="Tik'hi Tak'he" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="33746" centery="31332" centerz="7" radius="1">
+		<npc name="Om'Wake Naha" x="0" y="0" z="7" spawntime="60" />
+	</npc>
 </npcs>

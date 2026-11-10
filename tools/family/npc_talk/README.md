@@ -107,4 +107,5 @@ Fake player fields: `storage`, `items` (id = count), `money`, `bank`, `level`,
 below and above 1500 points (the secret), location with and without a raid, flintstone and orb with their
 30-minute wait, the raid points rules (300 per raid, hunting after the secret), Pied Piper, every lore word of
 the TibiaWiki BR Eustacio page and the shortcut: `luajit tools/family/npc_talk/pirates_tail.lua`. The raids
-themselves are checked on the test server (`/piratraid`, 103 checks on 2026-11-10).
+themselves are checked on the test server (`/piratraid`, 103 checks on 2026-11-10). Part 2a (same day, 156 checks in all):
+Tik'hi Tak'he's mission, trust points, the 1200 advance, wares, wisdom and every BR line, and Om'Wake Naha's BR lines.

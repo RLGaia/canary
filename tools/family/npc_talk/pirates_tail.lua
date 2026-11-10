@@ -114,4 +114,50 @@ npc:say(s, "yes")
 T.check("shortcut takes the player to Rascacoon", s.teleported ~= nil)
 
 T.checkHints(npc, function() return player({ storage = { [S.QuestLine] = 1, [S.RaidPoints] = 0 } }) end, { yes = true, shortcut = true })
+
+-- part 2: Tik'hi Tak'he (TibiaWiki BR NPC page and quest page)
+local tik = T.load("data-otservbr-global/npc/tikhi_takhe.lua")
+local r = player({})
+T.check("Tik'hi greeting before (BR)", plain(tik:say(r, "hi")) == "Hail, visitor! Welcome!")
+T.check("trust before the mission", has(tik:say(r, "trust points"), "help with our mission"))
+T.check("mission asks (BR)", tik:say(r, "mission") == "Do you want to help our colony, to earn our trust and respect?")
+T.check("yes (BR)", has(tik:say(r, "yes"), "Go ahead then. You will get what I like to call 'trust points' for different tasks."))
+T.check("state 1, shortcut, quest log", r.storage[S.Rascacoon] == 1 and r.storage[S.RascacoonShortcut] == 1 and r.storage[S.QuestLine] == 1 and r.storage[S.TrustPoints] == 0)
+T.check("trust points 0 (BR)", tik:say(r, "trust points") == "No, I don't trust you yet. You have 0 trust points right now.")
+T.check("tasks (BR)", has(tik:say(r, "tasks"), "Even back in the Corym caves you might find something useful to do."))
+tik:say(r, "bye")
+T.check("greeting after (BR)", has(tik:say(r, "hi"), "You can ask me about your 'trust points'!"))
+T.check("memory points count", PT.addTrust(r, 5) == 5 and PT.trust(r) == 5)
+r.storage[S.TrustPoints] = 1250
+local adv = tik:say(r, "trust points")
+T.check("1200 offer (BR)", has(adv, "You held out for a long time.") and has(adv, "transforms you into a pirat for fifteen minutes") and has(adv, "Do you want to advance?"), adv)
+T.check("advance (BR)", tik:say(r, "yes") == "I hereby name you trusted friend of the Rascoohan people!")
+T.check("1200 spent, door, state 2", r.storage[S.TrustPoints] == 50 and r.storage[S.TentuglyDoor] == 1 and r.storage[S.Rascacoon] == 2)
+T.check("quest log Rascacoon", has(PT.describeRascacoon(r), "trusted friend"))
+T.check("wares before the hideout", has(tik:say(r, "accessories"), "who reached the pirats' hideout"))
+r.storage[S.TentuglyKilled] = 1
+T.check("accessories list (BR prices)", has(tik:say(r, "accessories"), "raccoon backpack for 15000"))
+T.check("decorations list (BR prices)", has(tik:say(r, "wall decorations"), "golden shark trophy for 12000"))
+T.check("too few trust points", has(tik:say(r, "shark jaws"), "6000 trust points") and has(tik:say(r, "yes"), "don't have enough"))
+r.storage[S.TrustPoints] = 7000
+tik:say(r, "shark jaws")
+tik:say(r, "yes")
+T.check("shark jaws bought", given(r, 35587) == 1 and r.storage[S.TrustPoints] == 1000)
+T.check("wisdom (BR)", has(tik:say(r, "wisdom"), "shatter the perception of reality") and #tik:say(r, "yes") > 10)
+for _, w in ipairs({ "job", "shaman", "rascacoon", "colony", "pirats", "washingstone", "changed", "ways", "adopted", "aggressive", "mold", "powder", "terrorize", "power", "stopped", "knowledge", "help", "raccoon", "creator", "creation", "unique", "loneliness", "image", "enjoyment", "king" }) do
+	local a = tik:say(r, w)
+	T.check("Tik'hi " .. w .. " (BR)", #a > 20, a)
+end
+T.check("bye (BR)", tik:say(r, "bye") == "Farewell!")
+
+local om = T.load("data-otservbr-global/npc/om_wake_naha.lua")
+local o = player({})
+T.check("Om'Wake greeting (BR)", om:say(o, "hi") == "Hello, traveller! Be welcome!")
+T.check("Om'Wake helping (BR)", has(om:say(o, "helping"), "transformation magic to enter my cheese cellar"))
+T.check("Om'Wake cheese (BR)", has(om:say(o, "cheese"), "Push as many cheese as you can"))
+for _, w in ipairs({ "name", "job", "supplies", "colony", "rascacoon", "ancestors", "settled", "day", "washingstone" }) do
+	T.check("Om'Wake " .. w .. " (BR)", #om:say(o, w) > 20)
+end
+T.checkHints(tik, function() return player({ storage = { [S.Rascacoon] = 1, [S.TrustPoints] = 0 } }) end, { yes = true })
+T.checkHints(om, function() return player({}) end, {})
 T.finish()

@@ -120,3 +120,64 @@ function PT.describe(player)
 	end
 	return string.format("Eustacio in Venore wants to weaken the Pirats who attack the cities and coasts of Tibia. Ask him about the location of their raids and fight them. He will tell you more once you reach %d points. Your score: %d points.", PT.NEEDED, points) -- ours
 end
+
+-- Part 2: Rascacoon (2026-11-10). Tik'hi Tak'he (npc/tikhi_takhe.lua), Om'Wake Naha (npc/om_wake_naha.lua),
+-- the memory test and the pirat disguise (scripts/family/rascacoon.lua). Sources: TibiaWiki BR quest page,
+-- Tik'hi Tak'he and Om'Wake Naha pages (from Rodrigo), TibiaWiki EN spoiler and Trust Point page.
+-- Rascacoon (Storage ...APiratesTail.Rascacoon):
+--   1 Tik'hi `mission`, `yes`: helping the colony; trust points from the tasks; Eustacio's shortcut opens
+--     (EN: after talking to Tik'hi; BR: from now on)
+--   2 Tik'hi `trust points` with 1200, `yes`: 1200 spent, trusted friend: the ship teleport (pirat
+--     disguise for 15 minutes) and Tentugly's door
+-- Trust points: memory test 5 a round, 10 rounds, every 2 h (BR/EN); supply and stealth missions 200
+-- every 20 h (BR/EN; part 2b); the raft journey 200 (part 4); Ratmiral 100 (part 3).
+-- Tik'hi's wares (BR prices) once the pirats' hideout was reached (BR: "after you reached the pirats
+-- hideout" = Tentugly's Head defeated).
+PT.TRUST_NEEDED = 1200
+PT.wares = {
+	accessories = {
+		{ name = "raccoon backpack", id = 35577, price = 15000 },
+		{ name = "amethyst necklace", id = 35609, price = 4000 },
+		{ name = "emerald necklace", id = 35605, price = 4000 },
+		{ name = "diamond necklace", id = 35607, price = 10000 },
+		{ name = "rhodolith necklace", id = 35608, price = 4000 },
+		{ name = "garnet necklace", id = 35606, price = 4000 },
+		{ name = "sapphire necklace", id = 35604, price = 4000 },
+	},
+	decorations = {
+		{ name = "blue shark trophy", id = 35582, price = 4000 },
+		{ name = "brown shark trophy", id = 35585, price = 5000 },
+		{ name = "golden shark trophy", id = 35586, price = 12000 },
+		{ name = "hammerhead trophy", id = 35599, price = 8000 },
+		{ name = "striped shark trophy", id = 35584, price = 5000 },
+		{ name = "shark jaws", id = 35587, price = 6000 },
+	},
+}
+
+function PT.trust(player)
+	return math.max(0, player:getStorageValue(S.TrustPoints))
+end
+
+function PT.addTrust(player, amount)
+	if PT.rascacoon(player) < 1 then
+		return 0
+	end
+	player:setStorageValue(S.TrustPoints, PT.trust(player) + amount)
+	return amount
+end
+
+function PT.rascacoon(player)
+	return math.max(0, player:getStorageValue(S.Rascacoon))
+end
+
+function PT.reachedHideout(player)
+	return player:getStorageValue(S.TentuglyKilled) == 1
+end
+
+function PT.describeRascacoon(player)
+	local state = PT.rascacoon(player)
+	if state >= 2 then
+		return string.format("You are a trusted friend of the Rascoohan people. Go through the teleporter in the east of Rascacoon to the pirats' ship. Trust points: %d.", PT.trust(player)) -- ours
+	end
+	return string.format("Help the colony of Rascacoon to earn the trust of Tik'hi Tak'he: the memory test in the mountain, Om'Wake Naha's cheese cellar and the task of Eustacio's spy rat in the pirat mines. Trust points: %d of %d.", PT.trust(player), PT.TRUST_NEEDED) -- ours
+end

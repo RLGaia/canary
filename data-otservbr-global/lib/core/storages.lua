@@ -2926,6 +2926,12 @@ Storage = {
 				OrbTime = 47504, -- os.time() of the last magical water orb from Eustacio
 				RaidCredit = 47505, -- points earned in the raid RaidSerial (at most 300)
 				RaidSerial = 47506, -- start time of the raid RaidCredit belongs to
+				-- FAMILY: Rascacoon (lib/others/family_pirates_tail.lua, scripts/family/rascacoon.lua)
+				TrustPoints = 47507, -- Tik'hi Tak'he's trust points
+				Rascacoon = 47508, -- 1 helping the colony, 2 trusted friend (1200 spent: the ship teleport, Tentugly's door)
+				MemoryTime = 47509, -- os.time() when the memory test may be taken again
+				SupplyTime = 47510, -- os.time() when the supply mission may be done again
+				StealthTime = 47511, -- os.time() when the stealth mission may be done again
 				RascacoonShortcut = 47512,
 				TentuglyKilled = 47513,
 				TentuglyDoor = 47514,
