@@ -303,4 +303,74 @@ for _, file in ipairs({ "ongulf.lua", "lazaran.lua", "chrak.lua", "zurak.lua", "
 	end, { long = true, short = true, mission = true, missions = true, peace = true, help = true, battle = true, project = true })
 end
 
+-- 2026-11-10: lore keywords from the TibiaWiki EN transcripts (Rodrigo: yes)
+local lore = {
+	{ "ongulf.lua", "hi", {
+		{ "dwarf", "You humans often think of us dwarfs as a shorter version of yourself." },
+		{ "humans", "Maybe we can settle some mutual agreement of help in some way." },
+		{ "orcs", "kept at bay by their minotaur masters." },
+		{ "minotaurs", "they are the closest thing to allies we have for now." },
+		{ "mine", "Mines are the veins of every dwarven hold." },
+		{ "guild", "the emperor who is of course the most prominent guild master." },
+		{ "bye", "Bye." },
+	} },
+	{ "curos.lua", "hi", {
+		{ "greeted", "I am Curos of the minotaurs! Leader of the local orc tribes." },
+		{ "leader", "This led to our great experiment." },
+		{ "orc", "a new breed of orcs that is smarter" },
+		{ "Mooh'Tah", "The Mooh'Tah teaches the taming of the inner beast." },
+		{ "humans", "why shouldn't orcs be able to rise to unknown heights?" },
+		{ "land", "The lizard men call this land Zao." },
+		{ "zao", "This land used to be the land of the lizards." },
+		{ "bye", "Farewell for now!" },
+	} },
+	{ "ztiss.lua", "hi", {
+		{ "name", "I'm Ztiss!" },
+		{ "job", "I work for zomeone of immenze power." },
+		{ "dragon", "Ze dragonz are ze rulerz of ziz land." },
+		{ "land", "Zen he azcended to ze zky" },
+		{ "zao", "Ziz land iz ruled by ze immortal dragon emperor!" },
+		{ "barbarianz", "Alzo, zeir iz a zmall number of primitive humanz around." },
+		{ "humanz", "Humanz are of no importance." },
+		{ "orcz", "Zey are ze worzt of ze barbarianz" },
+		{ "minotaurz", "Zey are zomewhat enigmatic." },
+		{ "emperor", "He rezidez in ze dragon palace behind ze great wall." },
+		{ "palace", "Ze palace iz a mozt magnificant place" },
+		{ "kingz", "Ze dragon kingz are ze mozt truzted followerz of ze emperor." },
+		{ "great wall", "King Chong III ordered ze begin of ze wall'z conztruction" },
+		{ "bye", "Hurry, you no longer have any buzinezz here." },
+	} },
+	{ "zurak.lua", "hello", {
+		{ "hurry", "Me zzimple ferryman. I arrange trip to Izzle of Zztrife." },
+		{ "name", "Me Zurak." },
+		{ "lizards", "If you hurt me, all my people will come for you!" },
+		{ "dragon", "Zzo obey when dragon or emizzary are talking!" },
+		{ "ztiss", "Ztiss high mighty emizzary of dragon kingzz!" },
+		{ "tournament", "Tournament izz not for zzhe weak." },
+		{ "boat", "You want trip to Izzle of Zztrife?" },
+		{ "no", "Zzoftzzkinzz zzo full of fear." },
+		{ "bye", "Yezz, zztrange creature leave Zurak." },
+	} },
+}
+for _, entry in ipairs(lore) do
+	local npc = T.load(NPC .. entry[1])
+	if entry[1] == "ongulf.lua" then
+		npc.npc.getPosition = function()
+			return { x = 33024, y = 31543, z = 14 }
+		end
+	end
+	local lp = T.player({ storage = { [S.Questline] = 29 } })
+	npc:say(lp, entry[2])
+	for _, step in ipairs(entry[3]) do
+		a = npc:say(lp, step[1])
+		check(entry[1] .. ": '" .. step[1] .. "' (EN)", has(a, step[2]), a)
+	end
+end
+-- the quest words still win over the new keywords
+local ongulf2 = T.load(NPC .. "ongulf.lua")
+local p3 = T.player({ name = "Third" })
+ongulf2:say(p3, "hi")
+a = ongulf2:say(p3, "missions")
+check("ongulf.lua: 'missions' still starts the story with the lore keywords in place", has(a, "the long story or the short version?"), a)
+
 T.finish()

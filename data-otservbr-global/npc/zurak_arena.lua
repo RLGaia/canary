@@ -75,7 +75,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		return true
 	end
 
-	if MsgContains(message, "trip") or MsgContains(message, "passage") then
+	if MsgContains(message, "trip") or MsgContains(message, "passage") or MsgContains(message, "boat") then -- FAMILY: "boat" (EN transcript)
 		if player:getStorageValue(TheNewFrontier.Questline) >= 24 then
 			npcHandler:say("You want trip to Izzle of Zzao?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
@@ -102,6 +102,15 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 	return true
 end
+-- FAMILY: TibiaWiki EN transcript keywords (upstream had none, 2026-11-10)
+keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "Me Zurak." })
+keywordHandler:addKeyword({ "lizards" }, StdModule.say, { npcHandler = npcHandler, text = "Me people rule zzhe whole land. If you hurt me, all my people will come for you!" })
+keywordHandler:addKeyword({ "lizard" }, StdModule.say, { npcHandler = npcHandler, text = "Me people rule zzhe whole land. If you hurt me, all my people will come for you!" })
+keywordHandler:addKeyword({ "dragon" }, StdModule.say, { npcHandler = npcHandler, text = "Zzhe mighty dragonzz are our rulerzz. One dragon can wipe out all our people! Zzo obey when dragon or emizzary are talking! You obey or dead!" })
+keywordHandler:addKeyword({ "dragons" }, StdModule.say, { npcHandler = npcHandler, text = "Zzhe mighty dragonzz are our rulerzz. One dragon can wipe out all our people! Zzo obey when dragon or emizzary are talking! You obey or dead!" })
+keywordHandler:addKeyword({ "ztiss" }, StdModule.say, { npcHandler = npcHandler, text = "Ztiss high mighty emizzary of dragon kingzz! When Ztiss zzpeak all obey!" })
+keywordHandler:addKeyword({ "tournament" }, StdModule.say, { npcHandler = npcHandler, text = "Tournament important izz. Many like you come to fight. Only bezzt of bezzt are allowed to fight. Many try. Zzhinking zzhem being bezzt. Mozzt end up dead! Tournament izz not for zzhe weak." })
+
 -- FAMILY: EN transcript greeting and farewells (upstream used the default ones, 2026-11-09)
 npcHandler:setMessage(MESSAGE_GREET, "{Hurry} before zzomeone will zee uzz.")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Yezz, zztrange creature leave Zurak.")

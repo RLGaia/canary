@@ -64,7 +64,7 @@ the Falcon/Cobra check, the escort, Hero of Bounac), the trade rule of the Bouna
 with Fitzmaurice and Fitzgerald, the quest log texts, every `{highlighted}` word and every NPC line of the
 TibiaWiki BR page: `luajit tools/family/npc_talk/order_of_the_lion.lua br.txt` (the page as text).
 
-`new_frontier.lua` is The New Frontier Quest check (2026-11-09, 194 checks): one character
+`new_frontier.lua` is The New Frontier Quest check (2026-11-09, 233 checks with the lore keywords of 2026-11-10): one character
 plays the quest from Ongulf's story to the last report with Melfar, Lazaran, the six mission 5
 NPCs (unrelated words, wrong word, present, secret word), Curos, Ztiss, Chrak and Zurak (world
 steps set as storages), with the TibiaWiki EN/BR lines, Ongulf's greeting per floor and the

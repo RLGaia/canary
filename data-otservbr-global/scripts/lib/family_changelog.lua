@@ -136,4 +136,5 @@ FamilyChangelog = {
 	{ "2026-11-09", "The Order of the Falcon: the nine Grand Master of Verbal Debate volumes can be found in the Falcon Bastion (Master Debater needs all of them), Grand Master Oberon accepts answers with any punctuation, the mission shows in the quest log on arrival and the Zao boat opens after Grand Canon Dominus." },
 	{ "2026-11-09", "Falcon Bastion: Key 0808 lies on the kitchen counter again (it comes back after a while), and a can of grease in the cell with the racks opens the gate next to its rusty mechanism for a short time." },
 	{ "2026-11-09", "The New Frontier: mission 5 talks only count the six words after farmine and answer with the real lines, Melfar no longer sets the quest back, a lost arena fight can be tried again at once, and Zurak takes winners back to the reward room." },
+	{ "2026-11-10", "The New Frontier: the arena reward backpack also holds a transcendence potion, the vines up to Lazaran need mission 3, and Ongulf, Curos, Ztiss and Zurak answer their lore words." },
 }

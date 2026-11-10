@@ -1029,8 +1029,10 @@ ChestUnique = {
 		itemId = 2472,
 		itemPos = { x = 33057, y = 31029, z = 7 },
 		container = 2854,
-		weight = 25.00,
-		reward = { { 7439, 1 }, { 7440, 1 }, { 7443, 1 } },
+		weight = 27.90, -- FAMILY: + transcendence potion 2.90 oz
+		-- FAMILY: transcendence potion 49271 added (Tibia 15.01 update notes: "The monk now gets the
+		-- Transcendence Potion as reward of The New Frontier Quest"; TibiaWiki BR lists the four in the backpack), 2026-11-10
+		reward = { { 7439, 1 }, { 7440, 1 }, { 7443, 1 }, { 49271, 1 } },
 		storage = Storage.Quest.U8_54.TheNewFrontier.Reward.Potions,
 	},
 	[6098] = {

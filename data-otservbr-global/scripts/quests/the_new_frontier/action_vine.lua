@@ -10,6 +10,12 @@ function theNewFrontierVine.onUse(player, item, fromPosition, target, toPosition
 		return true
 	end
 
+	-- FAMILY: TibiaWiki BR "Note que você só conseguirá subir, se tiver pedido a missão": climbing up
+	-- needs mission 3 from Ongulf (Questline 8); climbing down stays free (2026-11-10)
+	if player:getPosition().z == 6 and player:getStorageValue(Storage.Quest.U8_54.TheNewFrontier.Questline) < 8 then
+		return false
+	end
+
 	player:teleportTo(targetPosition[2])
 	targetPosition[2]:sendMagicEffect(CONST_ME_POFF)
 	return true
