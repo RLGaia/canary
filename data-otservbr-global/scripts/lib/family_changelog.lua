@@ -137,4 +137,5 @@ FamilyChangelog = {
 	{ "2026-11-09", "Falcon Bastion: Key 0808 lies on the kitchen counter again (it comes back after a while), and a can of grease in the cell with the racks opens the gate next to its rusty mechanism for a short time." },
 	{ "2026-11-09", "The New Frontier: mission 5 talks only count the six words after farmine and answer with the real lines, Melfar no longer sets the quest back, a lost arena fight can be tried again at once, and Zurak takes winners back to the reward room." },
 	{ "2026-11-10", "The New Frontier: the arena reward backpack also holds a transcendence potion, the vines up to Lazaran need mission 3, and Ongulf, Curos, Ztiss and Zurak answer their lore words." },
+	{ "2026-11-10", "Steamships to Farmine cost 50 gold less after The New Frontier mission 2, and NPCs no longer repeat the first player's name or price to everyone after." },
 }

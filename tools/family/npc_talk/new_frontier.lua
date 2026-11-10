@@ -373,4 +373,19 @@ ongulf2:say(p3, "hi")
 a = ongulf2:say(p3, "missions")
 check("ongulf.lua: 'missions' still starts the story with the lore keywords in place", has(a, "the long story or the short version?"), a)
 
+-- 2026-11-10: steamship discount after mission 2 (TibiaWiki EN: 110/210 gp, 50 gp less after mission 2)
+for _, ship in ipairs({ { "gurbasch.lua", 110 }, { "brodrosch.lua", 210 } }) do
+	local npc = T.load(NPC .. ship[1])
+	local sp = T.player({ storage = { [S.FarmineFirstTravel] = 1 } })
+	npc:say(sp, "hi")
+	a = npc:say(sp, "farmine")
+	check(ship[1] .. ": " .. ship[2] .. " gp before mission 2", has(a, tostring(ship[2])), a)
+	npc:bye(sp)
+	sp = T.player({ storage = { [S.FarmineFirstTravel] = 1, [S.Mission02[1]] = 4 } }) -- second player: the price must not stick from the first
+	npc:say(sp, "hi")
+	a = npc:say(sp, "farmine")
+	check(ship[1] .. ": " .. (ship[2] - 50) .. " gp after mission 2", has(a, tostring(ship[2] - 50)), a)
+	npc:bye(sp)
+end
+
 T.finish()

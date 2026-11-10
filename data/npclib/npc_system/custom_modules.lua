@@ -17,6 +17,9 @@ end
 
 local travelDiscounts = {
 	["postman"] = { price = 10, storage = Storage.Quest.ExampleQuest, value = 1 },
+	-- FAMILY: the steamships to Farmine use "new frontier" but it was never defined, so the 50 gp
+	-- discount after mission 2 (TibiaWiki EN Gurbasch/Brodrosch) never applied (2026-11-10)
+	["new frontier"] = { price = 50, storage = Storage.Quest.U8_54.TheNewFrontier.Mission02[1], value = 4 },
 }
 
 function StdModule.travelDiscount(npc, player, discounts)
@@ -24,13 +27,13 @@ function StdModule.travelDiscount(npc, player, discounts)
 	local discount = 0
 	if type(discounts) == "string" then
 		discount = travelDiscounts[discounts]
-		if discount and player:getStorageValue(discount.storage) >= discount.value then
+		if discount and discount.storage and player:getStorageValue(discount.storage) >= discount.value then -- FAMILY: "postman" has no storage (nil key)
 			return discount.price
 		end
 	else
 		for i = 1, #discounts do
 			discount = travelDiscounts[discounts[i]]
-			if discount and player:getStorageValue(discount.storage) >= discount.value then
+			if discount and discount.storage and player:getStorageValue(discount.storage) >= discount.value then -- FAMILY: "postman" has no storage (nil key)
 				discountPrice = discountPrice + discount.price
 			end
 		end

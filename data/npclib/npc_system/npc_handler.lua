@@ -358,18 +358,23 @@ if NpcHandler == nil then
 				end
 			end
 		else
+			-- FAMILY: work on a copy (2026-11-10). Upstream replaced the tags inside the NPC's own
+			-- table, so the first player's |TRAVELCOST|, |PLAYERNAME| etc. stayed in that text for
+			-- everyone after (Gurbasch kept showing 110 gold to a player with the 50 gp discount),
+			-- and a function tag called string.gsub on the whole table.
+			local copy = {}
 			for i = 1, #ret do
+				local line = ret[i]
 				for search, replace in pairs(parseInfo) do
-					ret[i] = string.gsub(ret[i], search, replace)
-					if type(replace) == "string" then
-						ret[i] = string.gsub(ret[i], search, replace)
-					elseif type(replace) == "function" then
-						ret = string.gsub(ret, search, replace(player, message))
+					if type(replace) == "function" then
+						line = string.gsub(line, search, replace(player, message))
 					else
-						ret[i] = string.gsub(ret[i], search, replace)
+						line = string.gsub(line, search, replace)
 					end
 				end
+				copy[i] = line
 			end
+			ret = copy
 		end
 		return ret
 	end
