@@ -530,6 +530,10 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 	if FamilyFullMoon and FamilyFullMoon.onPick and FamilyFullMoon.onPick(player, target, toPosition) then
 		return true
 	end
+	-- FAMILY: A Pirate's Tail (scripts/family/pirat_raids.lua): ballistic boulders from the grey stones of a Pirat ship raid
+	if FamilyPiratesTail and FamilyPiratesTail.onPick and FamilyPiratesTail.onPick(player, target, toPosition) then
+		return true
+	end
 	local stonePos = Position(32648, 32134, 10)
 	if toPosition == stonePos then
 		local tile = Tile(stonePos)

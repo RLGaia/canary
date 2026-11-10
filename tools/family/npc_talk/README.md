@@ -102,3 +102,9 @@ Fake player fields: `storage`, `items` (id = count), `money`, `bank`, `level`,
    word must not also be a plain keyword (Woblin's "key").
 6. Rewards check that the item is really taken (`if player:removeItem(...)`).
 7. When the NPC should trade, `trade` opens a shop (`npcConfig.shop`).
+
+`pirates_tail.lua` is the A Pirate's Tail check, part 1 (2026-11-10, 62 checks): Eustacio's mission, status
+below and above 1500 points (the secret), location with and without a raid, flintstone and orb with their
+30-minute wait, the raid points rules (300 per raid, hunting after the secret), Pied Piper, every lore word of
+the TibiaWiki BR Eustacio page and the shortcut: `luajit tools/family/npc_talk/pirates_tail.lua`. The raids
+themselves are checked on the test server (`/piratraid`, 103 checks on 2026-11-10).

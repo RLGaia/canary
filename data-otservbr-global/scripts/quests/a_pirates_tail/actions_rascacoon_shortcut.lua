@@ -1,5 +1,7 @@
 local config = {
-	{ position = { x = 32941, y = 32030, z = 7 }, destination = { x = 33774, y = 31347, z = 7 } },
+	-- FAMILY: the hawser on Venore's pier no longer goes to Rascacoon (any level 200 player skipped
+	-- Eustacio's mission with it); in Tibia the way there is Eustacio's {shortcut} (BR, EN). Only the
+	-- way back from Rascacoon stays (A Pirate's Tail, 2026-11-10).
 	{ position = { x = 33774, y = 31348, z = 7 }, destination = { x = 32941, y = 32031, z = 7 } },
 }
 

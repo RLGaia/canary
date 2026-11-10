@@ -56,6 +56,7 @@ local questModules = {
 	"055_grimvale_quest", -- FAMILY: Grimvale Quest (The Curse Spreads)
 	"056_rathleton", -- FAMILY: Rathleton Quest (citizen status from Marvin)
 	"057_the_order_of_the_lion", -- FAMILY: The Order of the Lion Quest (Bounac)
+	"058_a_pirates_tail", -- FAMILY: A Pirate's Tail Quest (Eustacio and the Pirat raids)
 }
 
 local catalog = dofile(CORE_DIRECTORY .. "/lib/core/quests/catalog.lua")

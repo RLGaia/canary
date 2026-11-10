@@ -2920,6 +2920,12 @@ Storage = {
 		U12_60 = { -- update 12.60 - Reserved Storages 47501 - 47600
 			APiratesTail = {
 				QuestLine = 47501,
+				-- FAMILY: Eustacio and the Pirat raids (lib/others/family_pirates_tail.lua)
+				RaidPoints = 47502, -- Eustacio's score
+				FlintstoneTime = 47503, -- os.time() of the last greenish flintstone from Eustacio
+				OrbTime = 47504, -- os.time() of the last magical water orb from Eustacio
+				RaidCredit = 47505, -- points earned in the raid RaidSerial (at most 300)
+				RaidSerial = 47506, -- start time of the raid RaidCredit belongs to
 				RascacoonShortcut = 47512,
 				TentuglyKilled = 47513,
 				TentuglyDoor = 47514,

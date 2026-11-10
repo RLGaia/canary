@@ -13,3 +13,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_rathleton.lua") -- FAMILY: Rathleto
 dofile(DATA_DIRECTORY .. "/lib/others/family_oramond_tasks.lua") -- FAMILY: Oramond Quest kill and delivery tasks
 dofile(DATA_DIRECTORY .. "/lib/others/family_order_of_the_lion.lua") -- FAMILY: The Order of the Lion Quest (Bounac NPCs, Kesar, Fugue, Hero of Bounac)
 dofile(DATA_DIRECTORY .. "/lib/others/family_new_frontier.lua") -- FAMILY: The New Frontier Quest fixes (Mission 5 talks, Ongulf, Zurak, Chrak)
+dofile(DATA_DIRECTORY .. "/lib/others/family_pirates_tail.lua") -- FAMILY: A Pirate's Tail Quest, Eustacio and the Pirat raids

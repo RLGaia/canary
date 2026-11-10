@@ -139,4 +139,5 @@ FamilyChangelog = {
 	{ "2026-11-10", "The New Frontier: the arena reward backpack also holds a transcendence potion, the vines up to Lazaran need mission 3, and Ongulf, Curos, Ztiss and Zurak answer their lore words." },
 	{ "2026-11-10", "Steamships to Farmine cost 50 gold less after The New Frontier mission 2, and NPCs no longer repeat the first player's name or price to everyone after." },
 	{ "2026-11-10", "The New Frontier quest log: typos fixed and a clearer last mission text; the extra Zurak standing in the water in the Muggy Plains is gone." },
+	{ "2026-11-10", "A Pirate's Tail: Eustacio in Venore now gives his mission, and Pirat raids (spyrats in the water, a ship with catapults, or a land invasion) come to Krailos, Thais, Darashia, Port Hope or Liberty Bay; ask him about the location." },
 }
