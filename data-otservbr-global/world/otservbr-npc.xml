@@ -1105,9 +1105,11 @@
 	<npc centerx="32894" centery="31228" centerz="7" radius="1">
 		<npc name="Oliver" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	<!-- FAMILY: second Zurak removed (2026-11-10): he stood in shallow water next to the real one at 33158,31225 (TibiaWiki EN/BR: one Zurak in the Muggy Plains)
 	<npc centerx="33154" centery="31230" centerz="7" radius="1">
 		<npc name="Zurak" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	-->
 	<npc centerx="32783" centery="31236" centerz="7" radius="1">
 		<npc name="Dorbin" x="0" y="0" z="7" spawntime="60" />
 	</npc>

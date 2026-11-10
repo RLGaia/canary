@@ -138,4 +138,5 @@ FamilyChangelog = {
 	{ "2026-11-09", "The New Frontier: mission 5 talks only count the six words after farmine and answer with the real lines, Melfar no longer sets the quest back, a lost arena fight can be tried again at once, and Zurak takes winners back to the reward room." },
 	{ "2026-11-10", "The New Frontier: the arena reward backpack also holds a transcendence potion, the vines up to Lazaran need mission 3, and Ongulf, Curos, Ztiss and Zurak answer their lore words." },
 	{ "2026-11-10", "Steamships to Farmine cost 50 gold less after The New Frontier mission 2, and NPCs no longer repeat the first player's name or price to everyone after." },
+	{ "2026-11-10", "The New Frontier quest log: typos fixed and a clearer last mission text; the extra Zurak standing in the water in the Muggy Plains is gone." },
 }

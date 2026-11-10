@@ -41,7 +41,7 @@ local quest = {
 				somewhere during their escape. Try to negotiate a peaceful agreement if possible.",
 				[2] = "You have talked to the leader of the primitive humans and have assured their peacefulness. \z
 				Report this to Ongulf back in the base.",
-				[3] = "You have negotiated a peacful agreement between the dwarfs and the local primitives.",
+				[3] = "You have negotiated a peaceful agreement between the dwarfs and the local primitives.", -- FAMILY: typo (2026-11-10)
 			},
 		},
 		[4] = {
@@ -146,7 +146,7 @@ local quest = {
 				[2] = "You have talked to the minotaur leaders of the orcs. They agreed to spare Farmine if you \z
 				prove your worth in their arena. You will have to survive against Mooh'Tah master for 2 minutes, so prepare!",
 				[3] = "You have survived the arena. Talk to Curos again about your mission.",
-				[4] = "Your negotiations had moderate success. Your can report back to Ongulf.",
+				[4] = "Your negotiations had moderate success. You can report back to Ongulf.", -- FAMILY: typo (2026-11-10)
 				[5] = "You have ensured a brittle peace between Farmine and the orcs.",
 			},
 		},
@@ -198,8 +198,9 @@ local quest = {
 			states = {
 				[1] = "Ongulf will be anxious to learn about your latest adventures. Travel back to Farmine \z
 				for a final report.",
-				[2] = "Ongulf got very satisfied with your journey, this land is yours to be taken. You can \z
-				find now on top of the mountain a red carpet, it might offer you access to some cities.", -- This last questlog message is not accurate, need to update.
+				-- FAMILY: rewritten from Ongulf's last report (upstream marked its text as not accurate), 2026-11-10
+				[2] = "Ongulf was very satisfied with your report. This new land is yours to be taken, and Farmine is always a safe haven to return to. \z
+				A carpet pilot has joined the base: you'll find him on top of the lift in the mountains, offering fast access to some cities back home.",
 			},
 		},
 		[17] = {
@@ -209,7 +210,7 @@ local quest = {
 			startValue = 1,
 			endValue = 12,
 			states = {
-				[1] = "You brought the fist Tome of Knowledge to Cael. He learnt more about the lizard culture. \z
+				[1] = "You brought the first Tome of Knowledge to Cael. He learnt more about the lizard culture. \z
 				Pompan will sell you dragon tapestries from now on.",
 				[2] = "You brought the second Tome of Knowledge to Cael. He learnt more about the minotaur culture. \z
 				Pompan will sell you minotaur backpacks from now on.",
@@ -226,7 +227,7 @@ local quest = {
 				Cael will sell you War Drums and Didgeridoo from now on.",
 				[7] = "You brought the seventh Tome of Knowledge to Cael. \z
 				He learnt something interesting about the Zao steppe. \z
-				Now you to use the snake teleport at the peak of the mountain.",
+				Now you can use the snake teleport at the peak of the mountain.", -- FAMILY: typos "fist", "you to use" (2026-11-10)
 				[8] = "You brought the eighth Tome of Knowledge to Cael. \z
 				He learnt a few things about an illness. \z
 				Now you can enter a corruption hole in the north-eastern end of Zao.",
