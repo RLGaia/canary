@@ -20,8 +20,10 @@ monster.corpse = 35846
 monster.speed = 115
 monster.manaCost = 0
 
+-- FAMILY: our death event (scripts/family/ratmiral_fight.lua): 100 trust points; the outfit now comes from
+-- Tik'hi Tak'he (TibiaWiki BR), not straight from the death (upstream "RatmiralBlackwhiskersDeath")
 monster.events = {
-	"RatmiralBlackwhiskersDeath",
+	"FamilyRatmiralDeath",
 }
 
 monster.changeTarget = {
@@ -116,6 +118,8 @@ monster.attacks = {
 	{ name = "combat", interval = 2000, chance = 40, type = COMBAT_PHYSICALDAMAGE, minDamage = -300, maxDamage = -600, range = 7, shootEffect = CONST_ANI_WHIRLWINDCLUB, target = true },
 	{ name = "combat", interval = 2000, chance = 40, type = COMBAT_LIFEDRAIN, minDamage = -300, maxDamage = -600, radius = 4, effect = CONST_ME_MAGIC_RED, target = false },
 	{ name = "combat", interval = 2000, chance = 30, type = COMBAT_LIFEDRAIN, minDamage = -600, maxDamage = -1000, length = 4, spread = 0, effect = CONST_ME_SOUND_PURPLE, target = false },
+	-- FAMILY: his fire waves (TibiaWiki BR/EN: the bath tub's water charges protect from them); damage ours
+	{ name = "combat", interval = 2000, chance = 25, type = COMBAT_FIREDAMAGE, minDamage = -500, maxDamage = -900, length = 7, spread = 3, effect = CONST_ME_FIREAREA, target = false },
 }
 
 monster.defenses = {

@@ -144,4 +144,5 @@ FamilyChangelog = {
 	{ "2026-11-10", "A Pirate's Tail: Om'Wake Naha's cheese cellar can be defended now (push the cheese into the trapdoor, reveal the spy rats); it gives 200 trust points once every 20 hours." },
 	{ "2026-11-11", "A Pirate's Tail: Eustacio's Spy Rat waits in the pirat mines below Rascacoon; sneak through the pirats' laboratory disguised as a rat (watch the guards, the patrols and the lamps; levitate onto the platforms) for 200 trust points once every 20 hours. The spy rats in Om'Wake Naha's cellar now really go for the cheese." },
 	{ "2026-11-11", "A Pirate's Tail: Tentugly's Head now fights as in Tibia: servants, a dive, tentacles on both decks that retreat square by square, then the head again; the first victory gives the cheesy key, and the ship goes on to The Wreckoning." },
+	{ "2026-11-11", "A Pirate's Tail: Ratmiral Blackwhiskers is fought in four stages now: break the gate with the rum barrel, chase Mister Catkiller and 1st Mate Ratticus across the ship, then face Ratmiral with the bath tub's water against his fire. Each victory gives 100 trust points, and Tik'hi Tak'he gives the Rascoohan outfit." },
 }

@@ -80,8 +80,10 @@ monster.loot = {
 }
 
 monster.attacks = {
-	{ name = "melee", interval = 2000, chance = 100, minDamage = 400, maxDamage = -210 },
-	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = 80, maxDamage = -110, range = 7, shootEffect = CONST_ANI_WHIRLWINDCLUB, target = false },
+	-- FAMILY: upstream had positive minimum damage (400 and 80, a heal) and a thrown club that never left the
+	-- monster (target = false); read as 0-400 melee and 80-210 thrown (2026-11-11, Ratmiral fight)
+	{ name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -400 },
+	{ name = "combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = -80, maxDamage = -210, range = 7, shootEffect = CONST_ANI_WHIRLWINDCLUB, target = true },
 }
 
 monster.defenses = {

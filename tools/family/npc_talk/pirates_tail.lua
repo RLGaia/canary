@@ -181,6 +181,21 @@ for _, l in ipairs(spyLines) do
 end
 T.check("Spy Rat bye (ours)", spy:say(sp, "bye") == "Off with ye, and quietly!")
 
+-- Part 3b: the Rascoohan outfit from Tik'hi after Ratmiral (BR)
+local function withOutfits(p)
+	p.outfits = {}
+	rawset(p, "hasOutfit", function(self, id) return self.outfits[id] == true end)
+	rawset(p, "addOutfit", function(self, id) self.outfits[id] = true return true end)
+	return p
+end
+local w = withOutfits(player({ storage = { [S.Rascacoon] = 2, [S.TrustPoints] = 0 } }))
+tik:say(w, "hi")
+T.check("mission before Ratmiral (ours)", has(tik:say(w, "mission"), "teleporter in the east") and not w.outfits[1371])
+w.storage[S.RatmiralKilled] = 1
+T.check("mission after Ratmiral (BR)", plain(tik:say(w, "mission")) == "You did it. You defeated Ratmiral Blackwhiskers, earned the right to be a honorary Rascoohan and wear this wonderful Rascoohan outfit as a token of our gratitude!")
+T.check("Rascoohan outfit given (male and female)", w.outfits[1371] and w.outfits[1372])
+T.check("mission afterwards (ours)", has(tik:say(w, "mission"), "think twice"))
+
 T.checkHints(tik, function() return player({ storage = { [S.Rascacoon] = 1, [S.TrustPoints] = 0 } }) end, { yes = true })
 T.checkHints(om, function() return player({}) end, {})
 T.checkHints(spy, function() return player({}) end, {})

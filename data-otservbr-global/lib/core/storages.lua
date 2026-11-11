@@ -2936,6 +2936,7 @@ Storage = {
 				TentuglyKilled = 47513,
 				TentuglyDoor = 47514,
 				CheesyKey = 47515, -- FAMILY: the cheesy key was given (first victory over Tentugly's Head, BR)
+				RatmiralKilled = 47516, -- FAMILY: Ratmiral Blackwhiskers defeated (Tik'hi gives the Rascoohan outfit, BR)
 			},
 			RascoohanOutfits = {},
 		},

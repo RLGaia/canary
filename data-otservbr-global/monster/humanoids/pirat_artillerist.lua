@@ -17,7 +17,7 @@ monster.health = 2700
 monster.maxHealth = 2700
 monster.race = "blood"
 monster.corpse = 35372
-monster.speed = 100
+monster.speed = 0 -- FAMILY: stands at its catapult (2026-11-11)
 monster.manaCost = 0
 
 monster.changeTarget = {
@@ -79,11 +79,9 @@ monster.loot = {
 	{ id = 818, chance = 3225 }, -- magma boots
 }
 
-monster.attacks = {
-	{ name = "melee", interval = 2000, chance = 100, minDamage = 450, maxDamage = -140 },
-	{ name = "corym vanguard wave", interval = 2000, chance = 10, minDamage = -50, maxDamage = -100, target = false },
-	{ name = "combat", interval = 2000, chance = 15, type = COMBAT_DEATHDAMAGE, minDamage = -40, maxDamage = -70, radius = 4, effect = CONST_ME_MORTAREA, target = true },
-}
+-- FAMILY: TibiaWiki EN/BR: artillerists only shoot life drain from their catapults (scripts/family/ratmiral_fight.lua
+-- does the shooting); upstream had a melee with positive damage and other attacks (2026-11-11)
+monster.attacks = {}
 
 monster.defenses = {
 	defense = 65,

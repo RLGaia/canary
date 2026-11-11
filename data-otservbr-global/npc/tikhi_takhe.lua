@@ -178,6 +178,14 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, TOPIC_MISSION)
 		elseif state == 1 then
 			npcHandler:say("Help our colony with its {tasks} and ask me about your '{trust points}' from time to time.", npc, creature) -- ours
+		elseif player:getStorageValue(S.RatmiralKilled) == 1 and not player:hasOutfit(1371) and not player:hasOutfit(1372) then
+			-- FAMILY part 3b: the Rascoohan outfit after Ratmiral (BR; upstream gave it on his death)
+			player:addOutfit(1371, 0)
+			player:addOutfit(1372, 0)
+			player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+			npcHandler:say("You did it. You defeated Ratmiral Blackwhiskers, earned the right to be a honorary Rascoohan and wear this wonderful Rascoohan outfit as a token of our gratitude!", npc, creature) -- BR
+		elseif player:getStorageValue(S.RatmiralKilled) == 1 then
+			npcHandler:say("The pirats will think twice before they come back. Our colony thanks you, honorary Rascoohan!", npc, creature) -- ours
 		else
 			npcHandler:say("Go through the teleporter in the east of the island and find out what the pirats are up to.", npc, creature) -- ours
 		end
