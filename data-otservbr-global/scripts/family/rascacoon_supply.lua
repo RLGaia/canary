@@ -107,6 +107,7 @@ local function spawn(run, name, pos)
 			run.cheeses[monster:getId()] = true
 		else
 			run.rats[monster:getId()] = true
+			monster:changeSpeed(120) -- shown while the script walks it (the base speed stays 0)
 		end
 	end
 	return monster
@@ -286,7 +287,14 @@ local function ratThink(run, rat)
 	end
 	local path = rat:getPathTo(cpos, 0, 1, true, true, 30)
 	if path and path[1] then
-		rat:move(path[1])
+		-- a move in a direction is refused for a base speed of 0 (fixed 2026-11-11: the rats stood still);
+		-- a move onto a tile is not
+		local to = rat:getPosition()
+		to:getNextPosition(path[1])
+		local tile = Tile(to)
+		if tile then
+			rat:move(tile, 0)
+		end
 	end
 end
 

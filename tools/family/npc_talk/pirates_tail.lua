@@ -158,6 +158,30 @@ T.check("Om'Wake cheese (BR)", has(om:say(o, "cheese"), "Push as many cheese as 
 for _, w in ipairs({ "name", "job", "supplies", "colony", "rascacoon", "ancestors", "settled", "day", "washingstone" }) do
 	T.check("Om'Wake " .. w .. " (BR)", #om:say(o, w) > 20)
 end
+-- Part 2c: Eustacio's Spy Rat, every line of the TibiaWiki EN spoiler transcript in its order
+local spy = T.load("data-otservbr-global/npc/eustacios_spy_rat.lua")
+local sp = player({ storage = { [S.Rascacoon] = 1 } })
+T.check("Spy Rat greeting (EN)", plain(spy:say(sp, "hi")) == "Psssht! Not that loud!")
+local spyLines = {
+	{ "loud", "Been seen with creatures like thee might cause me loosing my head or even my job. Wouldn't even do so now if ol' Eustacio hadn't sent word an' cheese. ...", "Good for ye', he just recently did. Ye probably made some good progress on his behalf." },
+	{ "job", "I am a proud pirate. A hungry proud pirat that isn't treated too well and with a liking to people who pay with good cheese." },
+	{ "people", "Eustacio pays me good cheese for my invaluable assistance." },
+	{ "assistance", "I got ye entrance to the secret laboratory complex and placed the enchanted rat disguise at the entrance. ...", "So ye can sneak in and sabotage the newest mouldy powder production, which ye should find in some chest in the lab." },
+	{ "disguise", "It looks convincing in the dark or from distance. It won't fool anyone from close up, not to mention that the guards get suspicious if they don't smell a rat. ...", "Keep in mind that the magic will run out with time, so don't be too tardy." },
+	{ "convincing", "Just stay out of lit areas and keep yer distance from the guards. ...", "If ye are lucky, the glowing bugs that they use as illumination lose their shining for a few moments and ye can use that to yer advantage." },
+	{ "advantage", "Ye'll have to be sneaky and resourceful. Use the terrain to yer advantage. Ye might even have to do some climbing. If ye are not agile enough, better bring some parcels." },
+}
+for _, l in ipairs(spyLines) do
+	local a = plain(spy:say(sp, l[1]))
+	local ok = true
+	for k = 2, #l do
+		ok = ok and a:find(l[k], 1, true) ~= nil
+	end
+	T.check("Spy Rat " .. l[1] .. " (EN)", ok, a)
+end
+T.check("Spy Rat bye (ours)", spy:say(sp, "bye") == "Off with ye, and quietly!")
+
 T.checkHints(tik, function() return player({ storage = { [S.Rascacoon] = 1, [S.TrustPoints] = 0 } }) end, { yes = true })
 T.checkHints(om, function() return player({}) end, {})
+T.checkHints(spy, function() return player({}) end, {})
 T.finish()

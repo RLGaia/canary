@@ -3110,4 +3110,8 @@
 	<npc centerx="33746" centery="31332" centerz="7" radius="1">
 		<npc name="Om'Wake Naha" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	<!-- FAMILY: A Pirate's Tail part 2c (2026-11-11): Eustacio's Spy Rat in the pirat mines below Rascacoon (TibiaWiki BR position); upstream had none -->
+	<npc centerx="33857" centery="31333" centerz="9" radius="1">
+		<npc name="Eustacio's Spy Rat" x="0" y="0" z="9" spawntime="60" />
+	</npc>
 </npcs>
