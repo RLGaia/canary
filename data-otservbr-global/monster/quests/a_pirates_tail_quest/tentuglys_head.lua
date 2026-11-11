@@ -19,8 +19,10 @@ monster.corpse = 35600
 monster.speed = 0
 monster.manaCost = 0
 
+-- FAMILY: one death event of ours (scripts/family/tentugly_fight.lua); upstream registered "TentuglysHeadDeath"
+-- in two scripts, and the server kept only the first loaded
 monster.events = {
-	"TentuglysHeadDeath",
+	"FamilyTentuglyDeath",
 }
 
 monster.changeTarget = {
@@ -73,7 +75,7 @@ monster.loot = {
 	{ id = 7440, chance = 16900, minCount = 2, maxCount = 9 }, -- mastermind potion
 	{ id = 49271, chance = 16900, minCount = 2, maxCount = 9 }, -- transcendence potion (FAMILY: was 51302, not a potion in client 15.11)
 	{ id = 35572, chance = 13380, minCount = 3, maxCount = 86 }, -- pirate coin
-	{ id = 35508, chance = 7750 }, -- cheesy key
+	-- FAMILY: the cheesy key is given on the first victory (TibiaWiki BR), not dropped at 7.75%
 	{ id = 32623, chance = 4930 }, -- giant topaz
 	{ id = 35571, chance = 4230 }, -- small treasure chest
 	{ id = 35581, chance = 3520 }, -- golden cheese wedge

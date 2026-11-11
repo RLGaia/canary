@@ -2935,6 +2935,7 @@ Storage = {
 				RascacoonShortcut = 47512,
 				TentuglyKilled = 47513,
 				TentuglyDoor = 47514,
+				CheesyKey = 47515, -- FAMILY: the cheesy key was given (first victory over Tentugly's Head, BR)
 			},
 			RascoohanOutfits = {},
 		},

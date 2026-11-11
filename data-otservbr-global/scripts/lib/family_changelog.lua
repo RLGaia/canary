@@ -143,4 +143,5 @@ FamilyChangelog = {
 	{ "2026-11-10", "A Pirate's Tail: Tik'hi Tak'he and Om'Wake Naha now live in Rascacoon; the memory test in the mountain gives trust points, and with 1200 of them Tik'hi opens the way to the pirats' ship and Tentugly." },
 	{ "2026-11-10", "A Pirate's Tail: Om'Wake Naha's cheese cellar can be defended now (push the cheese into the trapdoor, reveal the spy rats); it gives 200 trust points once every 20 hours." },
 	{ "2026-11-11", "A Pirate's Tail: Eustacio's Spy Rat waits in the pirat mines below Rascacoon; sneak through the pirats' laboratory disguised as a rat (watch the guards, the patrols and the lamps; levitate onto the platforms) for 200 trust points once every 20 hours. The spy rats in Om'Wake Naha's cellar now really go for the cheese." },
+	{ "2026-11-11", "A Pirate's Tail: Tentugly's Head now fights as in Tibia: servants, a dive, tentacles on both decks that retreat square by square, then the head again; the first victory gives the cheesy key, and the ship goes on to The Wreckoning." },
 }
