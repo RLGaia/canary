@@ -702,18 +702,17 @@ function M.solve()
 	return true
 end
 
-local chessMove = MoveEvent()
-function chessMove.onAddItem(moveitem, tileitem, position)
-	if not on() then
-		return true
-	end
-	addEvent(M.solve, 100)
-	return true
+-- Check the board after a player moves a piece or the figurine onto it. (A MoveEvent "additem"
+-- registered by position never fires in v3.6.1: Lua files it as ADD_ITEM_ITEMTILE while the
+-- engine looks positions up as ADD_ITEM, so the first version of the board never reacted.)
+function M.onBoard(pos)
+	return pos and pos.z == M.board.z and pos.x >= M.board.x1 and pos.x <= M.board.x2 and pos.y >= M.board.y1 and pos.y <= M.board.y2
 end
-chessMove:type("additem")
-for x = M.board.x1, M.board.x2 do
-	for y = M.board.y1, M.board.y2 do
-		chessMove:position(Position(x, y, M.board.z))
+
+local chessMove = EventCallback("FamilyCobraChessMove")
+function chessMove.playerOnItemMoved(player, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+	if on() and M.onBoard(toPosition) then
+		addEvent(M.solve, 100)
 	end
 end
 chessMove:register()
