@@ -1,3 +1,8 @@
+-- FAMILY: Horse Station (lib/others/family_horse_station.lua): this second upstream copy of the raid would add its wide area to the same zone; the raid is defined in scripts/raids/thais/wild_horses.lua
+if Family and Family.horseStation then
+	return
+end
+
 local zone = Zone("thais.wild-horses")
 zone:addArea(Position(32456, 32193, 7), Position(32491, 32261, 7))
 zone:addArea(Position(32431, 32240, 7), Position(32464, 32280, 7))

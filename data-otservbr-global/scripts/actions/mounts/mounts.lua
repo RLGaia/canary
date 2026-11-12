@@ -52,6 +52,14 @@ local config = {
 	[43901] = { NAME = "Foxmouse", ID = 218, BREAK = false, TYPE = TYPE_MONSTER, CHANCE = 100, FAIL_MSG = { { 1, "The foxmouse ran away." } }, SUCCESS_MSG = "You have tamed the foxmouse.", ACHIEV = "Like Fox and Mouse" },
 }
 
+-- FAMILY: wild horse taming as in Tibia (lib/others/family_horse_station.lua): a failed sugar oat is eaten and the horse stays (upstream: half the failures removed the horse), Tibia's messages, Family chance
+if Family and Family.horseStation and FamilyHorseStation then
+	local horse = config[12802]
+	horse.CHANCE = FamilyHorseStation.chance
+	horse.FAIL_MSG = { { ACTION_BREAK, FamilyHorseStation.failMessage } }
+	horse.SUCCESS_MSG = FamilyHorseStation.successMessage
+end
+
 local function doFailAction(cid, mount, pos, item, itemEx, loseItem)
 	local action, effect = mount.FAIL_MSG[math.random(#mount.FAIL_MSG)], CONST_ME_POFF
 	if action[1] == ACTION_RUN then
