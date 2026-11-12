@@ -16,6 +16,15 @@
 --     that area), wait, and repeat. They stop while a player talks to them.
 --   * Travel: walk to the street tile next to the ship captain, vanish, and
 --     appear at another city's harbour a few minutes later.
+--   * Since 2026-11-12 (Rodrigo: in Edron they got stuck in lines near the
+--     castle; a 4-minute test showed every walker taking the same line, so
+--     two of them met head-on in the 2-wide lanes, waited 3 s and often
+--     picked a new spot down the same lane): each walker has its own route
+--     preference (a small per-walker cost on every square, so paths spread
+--     over the width of a street), steps around a creature in its way
+--     (detour that avoids the squares creatures stand on), waits a random
+--     moment before giving up, rests only where the street is 3 or more
+--     squares wide and does not pick a rest spot next to another walker's.
 
 local cfg = FamilyCityLife
 if not cfg or not cfg.enabled then
@@ -112,17 +121,39 @@ local function makeArea(city, z, tiles)
 			wander[#wander + 1] = k
 		end
 	end
-	-- "Open" tiles (3+ walkable neighbours) are where walkers stop, so they
-	-- never wait in a doorway or a narrow passage.
-	local open = {}
-	for _, k in ipairs(wander) do
-		local x, y, n = keyX(k), keyY(k), 0
-		for _, d in ipairs(DIRS) do
-			if set[key(x + d.dx, y + d.dy)] then
+	-- "Open" tiles are where walkers stop, so they never wait in a doorway or
+	-- a narrow passage. FAMILY 2026-11-12: the street must be at least 3
+	-- squares wide through the tile both across and along (before: 3 of 4
+	-- neighbours, which let them rest inside 2-wide lanes and block them);
+	-- the old rule is the fallback for an area with few such squares.
+	local function run(x, y, dx, dy)
+		local n = 1
+		for sign = -1, 1, 2 do
+			for i = 1, 2 do
+				if not set[key(x + sign * i * dx, y + sign * i * dy)] then
+					break
+				end
 				n = n + 1
 			end
 		end
-		if n >= 3 then
+		return n
+	end
+	local open, loose = {}, {}
+	for _, k in ipairs(wander) do
+		local x, y, n4 = keyX(k), keyY(k), 0
+		for _, d in ipairs(DIRS) do
+			if set[key(x + d.dx, y + d.dy)] then
+				n4 = n4 + 1
+			end
+		end
+		if run(x, y, 1, 0) >= 3 and run(x, y, 0, 1) >= 3 and n4 >= 3 then
+			open[#open + 1] = k
+		elseif n4 >= 3 then
+			loose[#loose + 1] = k
+		end
+	end
+	if #open < 10 then
+		for _, k in ipairs(loose) do
 			open[#open + 1] = k
 		end
 	end
@@ -207,8 +238,19 @@ end
 -- ---------------------------------------------------------------------------
 -- A* path (4 directions) inside the city's walkable area
 -- ---------------------------------------------------------------------------
-local function findPath(state, sx, sy, tx, ty)
+-- FAMILY 2026-11-12: a step costs 10 plus 0-4 from a per-walker hash of
+-- the square (seed), so each walker prefers its own lines through a street
+-- instead of all of them using the same one; avoid: squares to treat as
+-- blocked (where creatures stand), for detours.
+local pathStats = { tooLong = 0 }
+
+local function stepCost(x, y, seed)
+	return 10 + ((x * 7919 + y * 104729 + seed * 15485863) % 9973) % 5
+end
+
+local function findPath(state, sx, sy, tx, ty, seed, avoid)
 	local set = state.set
+	seed = seed or 0
 	local startKey, goalKey = key(sx, sy), key(tx, ty)
 	if startKey == goalKey then
 		return {}
@@ -277,17 +319,18 @@ local function findPath(state, sx, sy, tx, ty)
 			closed[k] = true
 			expanded = expanded + 1
 			if expanded > MAX_PATH_NODES then
+				pathStats.tooLong = pathStats.tooLong + 1
 				return nil
 			end
 			local x, y = keyX(k), keyY(k)
 			for _, d in ipairs(DIRS) do
 				local nk = key(x + d.dx, y + d.dy)
-				if set[nk] and not closed[nk] then
-					local ng = g[k] + 1
+				if set[nk] and not closed[nk] and not (avoid and avoid[nk] and nk ~= goalKey) then
+					local ng = g[k] + stepCost(x + d.dx, y + d.dy, seed)
 					if not g[nk] or ng < g[nk] then
 						g[nk] = ng
 						came[nk] = { k = k, dir = d.dir }
-						push({ f = ng + math.abs(x + d.dx - tx) + math.abs(y + d.dy - ty), k = nk })
+						push({ f = ng + 10 * (math.abs(x + d.dx - tx) + math.abs(y + d.dy - ty)), k = nk })
 					end
 				end
 			end
@@ -303,8 +346,19 @@ local function rashidToday()
 	return cfg.rashidCity[os.date("*t").wday] or "somewhere"
 end
 
+-- FAMILY 2026-11-12 (asked by Rodrigo): no repeats per player. Each tip a
+-- player hears from any walker is remembered (until the server restarts);
+-- the next one is one he has not heard yet: a quest that fits his level and
+-- that he has not started (random among the 3 closest to his level), or now
+-- and then a server tip. When all have been told, it starts over.
+local heardTips = {}
+
 local function tipFor(player)
 	local level = player:getLevel()
+	local guid = player:getGuid()
+	local heard = heardTips[guid] or {}
+	heardTips[guid] = heard
+
 	local candidates = {}
 	for _, tip in ipairs(cfg.tips) do
 		if level >= tip.minLevel then
@@ -314,14 +368,40 @@ local function tipFor(player)
 			end
 		end
 	end
-	if #candidates == 0 or math.random(100) <= 20 then
-		return pick(cfg.serverTips)
-	end
 	-- The tips closest to the player's level come first.
 	table.sort(candidates, function(a, b)
 		return a.minLevel > b.minLevel
 	end)
-	return candidates[math.random(math.min(3, #candidates))].text
+
+	local function unheard()
+		local quests, server = {}, {}
+		for _, tip in ipairs(candidates) do
+			if not heard[tip.text] then
+				quests[#quests + 1] = tip.text
+			end
+		end
+		for _, text in ipairs(cfg.serverTips) do
+			if not heard[text] then
+				server[#server + 1] = text
+			end
+		end
+		return quests, server
+	end
+
+	local quests, server = unheard()
+	if #quests == 0 and #server == 0 then
+		heard = {}
+		heardTips[guid] = heard
+		quests, server = unheard()
+	end
+	local text
+	if #server > 0 and (#quests == 0 or math.random(100) <= 20) then
+		text = pick(server)
+	else
+		text = quests[math.random(math.min(3, #quests))]
+	end
+	heard[text] = true
+	return text
 end
 
 local function newsLine(walker)
@@ -528,9 +608,22 @@ local function playerNearby(npc)
 	return #Game.getSpectators(npc:getPosition(), false, true, 7, 7, 5, 5) > 0
 end
 
+-- Squares where creatures (other walkers, players, other NPCs) stand
+-- around the walker, for detours. FAMILY 2026-11-12.
+local function occupiedAround(npc)
+	local avoid, me = {}, npc:getId()
+	for _, creature in ipairs(Game.getSpectators(npc:getPosition(), false, false, 10, 10, 10, 10)) do
+		if creature:getId() ~= me then
+			local p = creature:getPosition()
+			avoid[key(p.x, p.y)] = true
+		end
+	end
+	return avoid
+end
+
 local function startWalk(walker, npc, targetKey)
 	local pos = npc:getPosition()
-	local path = findPath(walker.state_city, pos.x, pos.y, keyX(targetKey), keyY(targetKey))
+	local path = findPath(walker.state_city, pos.x, pos.y, keyX(targetKey), keyY(targetKey), walker.seed)
 	if not path or #path == 0 then
 		walker.state = "idle"
 		walker.waitUntil = tick + ticksFromSeconds(3)
@@ -539,8 +632,36 @@ local function startWalk(walker, npc, targetKey)
 	walker.path = path
 	walker.step = 1
 	walker.blocked = 0
+	walker.detours = 0
+	walker.target = targetKey
 	walker.state = "walking"
 	walker.nextStepAt = tick
+end
+
+-- A rest spot no other walker of the city is resting at or heading to
+-- (2 squares apart at least). FAMILY 2026-11-12.
+local function freeSpot(walker, list)
+	local k
+	for _ = 1, 8 do
+		k = pick(list)
+		local x, y = keyX(k), keyY(k)
+		local tile = Tile(x, y, walker.state_city.z)
+		-- someone standing there (a newspaper seller, a player...)
+		local taken = tile and tile:getTopCreature() ~= nil
+		for _, other in ipairs(walkers) do
+			if other ~= walker and other.state_city == walker.state_city then
+				local ok = other.target
+				if ok and math.max(math.abs(keyX(ok) - x), math.abs(keyY(ok) - y)) <= 2 then
+					taken = true
+					break
+				end
+			end
+		end
+		if not taken then
+			return k
+		end
+	end
+	return k
 end
 
 local function chooseNext(walker, npc)
@@ -570,7 +691,7 @@ local function chooseNext(walker, npc)
 			return startWalk(walker, npc, state.dockKey)
 		end
 	end
-	return startWalk(walker, npc, pick(state.open))
+	return startWalk(walker, npc, freeSpot(walker, state.open))
 end
 
 local function sail(walker, npc)
@@ -597,6 +718,75 @@ local function arrive(walker)
 	end
 end
 
+-- Helpers for walkers meeting each other. FAMILY 2026-11-12.
+local STEP = {}
+for _, d in ipairs(DIRS) do
+	STEP[d.dir] = d
+end
+
+local function walkerOf(creatureId)
+	for _, w in ipairs(walkers) do
+		if w.npcId == creatureId then
+			return w
+		end
+	end
+	return nil
+end
+
+-- Is the other walker's next step onto this position?
+local function headingInto(other, pos)
+	local npc = other.npcId and Npc(other.npcId)
+	local dir = other.path and other.path[other.step]
+	if not npc or not dir then
+		return false
+	end
+	local p, d = npc:getPosition(), STEP[dir]
+	return p.x + d.dx == pos.x and p.y + d.dy == pos.y
+end
+
+-- Step to a free square beside the way (left or right, else back), wait a
+-- moment for the other walker to pass, then go on by a way that avoids the
+-- square it stood on and the one it is going to.
+local function sidestep(walker, npc, pos, dir, blockerKey)
+	local d = STEP[dir]
+	local options = { { dx = d.dy, dy = d.dx }, { dx = -d.dy, dy = -d.dx } }
+	if math.random(2) == 1 then
+		options[1], options[2] = options[2], options[1]
+	end
+	options[3] = { dx = -d.dx, dy = -d.dy }
+	local set = walker.state_city.set
+	for _, o in ipairs(options) do
+		local x, y = pos.x + o.dx, pos.y + o.dy
+		local tile = Tile(x, y, pos.z)
+		if set[key(x, y)] and tile and not tile:getTopCreature() then
+			local sdir
+			for _, s in ipairs(DIRS) do
+				if s.dx == o.dx and s.dy == o.dy then
+					sdir = s.dir
+				end
+			end
+			npc:move(sdir)
+			local now = npc:getPosition()
+			if now.x == x and now.y == y then
+				local avoid = { [blockerKey] = true, [key(pos.x, pos.y)] = true }
+				local path = walker.target and findPath(walker.state_city, x, y, keyX(walker.target), keyY(walker.target), walker.seed, avoid)
+				if path and #path > 0 then
+					walker.path, walker.step = path, 1
+				else
+					walker.path = nil
+					walker.state = "idle"
+					walker.waitUntil = tick + math.random(4, 12)
+				end
+				walker.blocked = 0
+				walker.sidesteps = (walker.sidesteps or 0) + 1
+				walker.nextStepAt = tick + STEP_TICKS + math.random(2, 4)
+				return true
+			end
+		end
+	end
+	return false
+end
+
 local function stepWalker(walker, npc)
 	local dir = walker.path[walker.step]
 	local before = npc:getPosition()
@@ -616,11 +806,52 @@ local function stepWalker(walker, npc)
 		end
 	else
 		walker.blocked = walker.blocked + 1
-		if walker.blocked >= 4 then
-			-- Someone stands in the way: give up this spot and pick another soon.
+		-- FAMILY 2026-11-12: someone stands in the way.
+		local d = STEP[dir]
+		local nx, ny = before.x + d.dx, before.y + d.dy
+		local tile = Tile(nx, ny, before.z)
+		local blocker = tile and tile:getTopCreature()
+		local other = blocker and walkerOf(blocker:getId())
+		if not blocker then
+			-- Nobody there any more (it moved on): just try again.
+			if walker.blocked < 4 then
+				walker.nextStepAt = tick + 1
+				return
+			end
+		elseif other and other.state == "walking" and headingInto(other, before) then
+			-- Head-on with another walker: the one with the lower id steps
+			-- aside and lets it pass; the other waits a moment.
+			if npc:getId() < blocker:getId() and sidestep(walker, npc, before, dir, key(nx, ny)) then
+				return
+			end
+			if walker.blocked < 6 then
+				walker.nextStepAt = tick + STEP_TICKS + math.random(0, 2)
+				return
+			end
+		end
+		-- Someone standing (or no way aside): a detour around the squares
+		-- creatures stand on (at most 3 per walk); if there is none, wait a
+		-- random moment and after a few tries pick another spot.
+		local rerouted = false
+		if (walker.detours or 0) < 3 and walker.target then
+			local avoid = occupiedAround(npc)
+			local path = findPath(walker.state_city, before.x, before.y, keyX(walker.target), keyY(walker.target), walker.seed, avoid)
+			if path and #path > 0 and #path <= (#walker.path - walker.step + 1) + 12 then
+				walker.path, walker.step = path, 1
+				walker.detours = (walker.detours or 0) + 1
+				rerouted = true
+			end
+		end
+		if not rerouted and walker.blocked >= 4 then
 			walker.path = nil
+			walker.target = nil
 			walker.state = "idle"
-			walker.waitUntil = tick + ticksFromSeconds(2)
+			walker.waitUntil = tick + math.random(2, 12)
+			return
+		end
+		if not rerouted then
+			walker.nextStepAt = tick + STEP_TICKS + math.random(0, 4)
+			return
 		end
 	end
 	walker.nextStepAt = tick + STEP_TICKS
@@ -708,6 +939,7 @@ local function newWalker(entry, kind)
 		job = pick(cfg.jobs),
 		talkers = 0,
 		talkUntil = 0,
+		seed = math.random(1, 1000000), -- route preference (2026-11-12)
 		nextChatter = ticksFromSeconds(math.random(10, 120)),
 	}
 end
@@ -851,6 +1083,9 @@ cfg.internal = {
 	walkers = walkers,
 	cityStates = cityStates,
 	tipFor = tipFor,
+	heardTips = heardTips,
+	pathStats = pathStats,
+	findPath = findPath,
 	newsLine = newsLine,
 	getTick = function()
 		return tick

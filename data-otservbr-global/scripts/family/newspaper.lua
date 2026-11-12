@@ -1,7 +1,8 @@
 -- Gaia Family server: the daily newspaper (2026-10-14).
 --
--- Ours, not upstream. A newspaper seller stands near the temple of each city
--- in FamilyCityLife.cities and sells today's edition for 1 gold coin
+-- Ours, not upstream. A newspaper seller stands at the depot of each city
+-- in FamilyCityLife.cities (since 2026-11-12; before: near the temple) and
+-- sells today's edition for 1 gold coin
 -- (hi -> newspaper -> yes). The newspaper is a "golden newspaper" item renamed
 -- "newspaper"; using it opens the edition. Its text is written when it is
 -- bought and never changes, so a paper from an earlier day shows that day's
@@ -28,6 +29,26 @@ FamilyNewspaper = {
 	itemId = 8153, -- golden newspaper (picture of a newspaper)
 	weight = 100, -- 1.00 oz instead of 24 oz
 	dayStartHour = 6, -- a new edition every day at the server save time
+	-- Since 2026-11-12 (asked by Rodrigo): each seller stands still at his
+	-- city's depot, next to the post officer where the post officer is at the
+	-- depot (TibiaWiki EN "Depot" table and NPC pages; squares picked on our
+	-- map: inside the entrance, by a wall, never in front of a locker niche,
+	-- a door or stairs). Where the post officer is elsewhere (Darashia,
+	-- Ankrahmun, Port Hope, Svargrond, Yalahar) the seller is at the depot
+	-- entrance. A city missing here falls back to the city center.
+	depotSpots = {
+		["Thais"] = Position(32347, 32220, 7), -- inside the north entrance, by Benjamin's booth
+		["Carlin"] = Position(32335, 31786, 7), -- inside the south entrance, by Liane's booth
+		["Venore"] = Position(32918, 32077, 7), -- in the hall, south of Dove's booth
+		["Ab'Dendriel"] = Position(32683, 31690, 7), -- south entrance, towards Olrik's post office
+		["Edron"] = Position(33174, 31808, 7), -- inside the east entrance, beside Chrystal's booth
+		["Darashia"] = Position(33212, 32458, 8), -- foot of the depot stairs (depot is underground)
+		["Ankrahmun"] = Position(33123, 32838, 7), -- inside the north entrance, by the west wall
+		["Port Hope"] = Position(32627, 32750, 7), -- street between the two depot doors (Ray is upstairs)
+		["Liberty Bay"] = Position(32332, 32837, 7), -- beside the mailbox, above Herbert
+		["Svargrond"] = Position(32254, 31140, 7), -- inside the west entrance, by the north wall
+		["Yalahar"] = Position(32796, 31249, 7), -- inside the east entrance (Redward is east, upstairs)
+	},
 }
 
 local cfg = FamilyNewspaper
@@ -441,8 +462,8 @@ local function createSellerType(cityName)
 		description = name,
 		health = 100,
 		maxHealth = 100,
-		walkInterval = 3000,
-		walkRadius = 3,
+		walkInterval = 0, -- stands still at the depot (2026-11-12; was 3000 / radius 3)
+		walkRadius = 0,
 		outfit = { lookType = 128, lookHead = 78, lookBody = 106, lookLegs = 58, lookFeet = 76, lookAddons = 0 },
 		flags = { floorchange = false },
 		speechBubble = SPEECHBUBBLE_NORMAL,
@@ -534,15 +555,26 @@ local newspaperSellers = GlobalEvent("FamilyNewspaperSellers")
 function newspaperSellers.onStartup()
 	local placed = 0
 	for _, city in ipairs(cities) do
-		local npc = Game.createNpc(sellerName(city.name), city.center, true)
+		local spot = cfg.depotSpots[city.name]
+		local npc = spot and Game.createNpc(sellerName(city.name), spot, false)
+		if not npc then
+			-- The square is taken (a city walker?) or the city has no spot:
+			-- the nearest free square instead.
+			npc = Game.createNpc(sellerName(city.name), spot or city.center, true)
+			if npc and spot then
+				local p = npc:getPosition()
+				logger.warn("[Family] newspaper: {} depot square taken, seller at {},{},{}", city.name, p.x, p.y, p.z)
+			end
+		end
 		if npc then
 			npc:setMasterPos(npc:getPosition())
+			npc:setDirection(DIRECTION_SOUTH)
 			placed = placed + 1
 		else
-			logger.warn("[Family] newspaper: no free tile near the center of {}", city.name)
+			logger.warn("[Family] newspaper: no free tile for the {} seller", city.name)
 		end
 	end
-	logger.info("[Family] newspaper: {} sellers, {} gold per {} (new edition at {})", placed, cfg.price, cfg.title, string.format("%02d:00", cfg.dayStartHour))
+	logger.info("[Family] newspaper: {} sellers at the depots, {} gold per {} (new edition at {})", placed, cfg.price, cfg.title, string.format("%02d:00", cfg.dayStartHour))
 	return true
 end
 
