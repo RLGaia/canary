@@ -36,6 +36,13 @@ FamilyNewspaper = {
 	-- a door or stairs). Where the post officer is elsewhere (Darashia,
 	-- Ankrahmun, Port Hope, Svargrond, Yalahar) the seller is at the depot
 	-- entrance. A city missing here falls back to the city center.
+	-- Since 2026-11-12 (evening, asked by Rodrigo) they also stroll a little:
+	-- a step every few seconds among the squares within walkRadius of their
+	-- spot that are not a door, stairs, a locker, a mailbox or the square in
+	-- front of one (see "Strolling" below); never while a player is next to
+	-- them. walkRadius = 0 makes them stand still again.
+	walkRadius = 2,
+	walkSeconds = { 4, 9 },
 	depotSpots = {
 		["Thais"] = Position(32347, 32220, 7), -- inside the north entrance, by Benjamin's booth
 		["Carlin"] = Position(32335, 31786, 7), -- inside the south entrance, by Liane's booth
@@ -492,6 +499,7 @@ local function createSellerType(cityName)
 		npcHandler:onMove(npc, creature, fromPosition, toPosition)
 	end
 	npcType.onSay = function(npc, creature, type, message)
+		cfg.lastTalk[npc:getId()] = os.time()
 		npcHandler:onSay(npc, creature, type, message)
 	end
 	npcType.onCloseChannel = function(npc, creature)
@@ -550,6 +558,134 @@ for _, city in ipairs(cities) do
 	createSellerType(city.name)
 end
 
+-- ---------------------------------------------------------------------------
+-- Strolling (2026-11-12). The engine's own NPC walk (walkRadius) avoids only
+-- stairs and teleports, so a seller could stand in a depot door or in front
+-- of a locker; this picks safe squares instead.
+-- ---------------------------------------------------------------------------
+cfg.lastTalk = {}
+local strollers = {} -- { npcId, spot, allowed = { [key] = true }, count, nextStep }
+
+local function skey(x, y)
+	return x * 65536 + y
+end
+
+local LOCKERS = { [3497] = true, [3498] = true, [3499] = true, [3500] = true }
+
+-- A square someone should not stand on for long: a door, stairs or a hole,
+-- a teleport, a locker or a mailbox.
+local function isFixture(tile)
+	if tile:hasFlag(TILESTATE_FLOORCHANGE) or tile:hasFlag(TILESTATE_TELEPORT) then
+		return true
+	end
+	for _, item in ipairs(tile:getItems() or {}) do
+		local id = item:getId()
+		local name = ItemType(id):getName():lower()
+		if LOCKERS[id] or name == "mailbox" or name:find("door", 1, true) or name:find("gate", 1, true) then
+			return true
+		end
+	end
+	return false
+end
+
+local DIRS = {
+	{ dir = DIRECTION_NORTH, dx = 0, dy = -1 },
+	{ dir = DIRECTION_EAST, dx = 1, dy = 0 },
+	{ dir = DIRECTION_SOUTH, dx = 0, dy = 1 },
+	{ dir = DIRECTION_WEST, dx = -1, dy = 0 },
+}
+
+-- Squares within the radius of the spot, reached from it step by step, that
+-- are walkable, not in a house, not a fixture, not next to one and not in a
+-- 1-wide passage.
+local function strollSquares(npc, spot, radius)
+	local function open(x, y)
+		local tile = Tile(x, y, spot.z)
+		return tile and tile:getGround() and tile:queryAdd(npc, FLAG_PATHFINDING + FLAG_IGNOREBLOCKCREATURE) == RETURNVALUE_NOERROR
+	end
+	local function ok(x, y)
+		if math.max(math.abs(x - spot.x), math.abs(y - spot.y)) > radius then
+			return false
+		end
+		local tile = Tile(x, y, spot.z)
+		if not tile or not tile:getGround() or tile:getHouse() or isFixture(tile) then
+			return false
+		end
+		if tile:queryAdd(npc, FLAG_PATHFINDING + FLAG_IGNOREBLOCKCREATURE) ~= RETURNVALUE_NOERROR then
+			return false
+		end
+		for _, d in ipairs(DIRS) do
+			local near = Tile(x + d.dx, y + d.dy, spot.z)
+			if near and isFixture(near) then
+				return false
+			end
+		end
+		-- Not in a 1-wide passage (a locker niche, a corridor).
+		if (not open(x - 1, y) and not open(x + 1, y)) or (not open(x, y - 1) and not open(x, y + 1)) then
+			return false
+		end
+		return true
+	end
+	local allowed, count = { [skey(spot.x, spot.y)] = true }, 1
+	local queue, head = { { spot.x, spot.y } }, 1
+	while head <= #queue do
+		local x, y = queue[head][1], queue[head][2]
+		head = head + 1
+		for _, d in ipairs(DIRS) do
+			local nx, ny = x + d.dx, y + d.dy
+			if not allowed[skey(nx, ny)] and ok(nx, ny) then
+				allowed[skey(nx, ny)] = true
+				count = count + 1
+				queue[#queue + 1] = { nx, ny }
+			end
+		end
+	end
+	return allowed, count
+end
+
+local function strollStep(s)
+	local npc = Npc(s.npcId)
+	if not npc then
+		return
+	end
+	local pos = npc:getPosition()
+	-- Someone talking or standing next to him: stay.
+	if (cfg.lastTalk[s.npcId] or 0) > os.time() - 15 or #Game.getSpectators(pos, false, true, 1, 1, 1, 1) > 0 then
+		return
+	end
+	local options = {}
+	for _, d in ipairs(DIRS) do
+		local x, y = pos.x + d.dx, pos.y + d.dy
+		local tile = Tile(x, y, pos.z)
+		if s.allowed[skey(x, y)] and tile and not tile:getTopCreature() then
+			-- Squares closer to his spot count twice, so he stays around it.
+			local here = math.abs(pos.x - s.spot.x) + math.abs(pos.y - s.spot.y)
+			local there = math.abs(x - s.spot.x) + math.abs(y - s.spot.y)
+			options[#options + 1] = d.dir
+			if there < here then
+				options[#options + 1] = d.dir
+			end
+		end
+	end
+	if #options > 0 then
+		npc:move(options[math.random(#options)])
+	end
+end
+
+local function strollLoop()
+	local now = os.time()
+	for _, s in ipairs(strollers) do
+		if now >= s.nextStep then
+			local ok, err = pcall(strollStep, s)
+			if not ok then
+				logger.error("[Family] newspaper: stroll failed: {}", tostring(err))
+			end
+			s.nextStep = now + math.random(cfg.walkSeconds[1], cfg.walkSeconds[2])
+		end
+	end
+	addEvent(strollLoop, 1000)
+end
+
 local newspaperSellers = GlobalEvent("FamilyNewspaperSellers")
 
 function newspaperSellers.onStartup()
@@ -570,15 +706,28 @@ function newspaperSellers.onStartup()
 			npc:setMasterPos(npc:getPosition())
 			npc:setDirection(DIRECTION_SOUTH)
 			placed = placed + 1
+			if (cfg.walkRadius or 0) > 0 then
+				local at = npc:getPosition()
+				local allowed, count = strollSquares(npc, at, cfg.walkRadius)
+				strollers[#strollers + 1] = { npcId = npc:getId(), city = city.name, spot = at, allowed = allowed, count = count, nextStep = os.time() + math.random(5, 15) }
+			end
 		else
 			logger.warn("[Family] newspaper: no free tile for the {} seller", city.name)
 		end
 	end
 	logger.info("[Family] newspaper: {} sellers at the depots, {} gold per {} (new edition at {})", placed, cfg.price, cfg.title, string.format("%02d:00", cfg.dayStartHour))
+	if #strollers > 0 then
+		local counts = {}
+		for _, s in ipairs(strollers) do
+			counts[#counts + 1] = s.city .. " " .. s.count
+		end
+		logger.info("[Family] newspaper: sellers stroll within {} squares ({})", cfg.walkRadius, table.concat(counts, ", "))
+		addEvent(strollLoop, 1000)
+	end
 	return true
 end
 
 newspaperSellers:register()
 
 -- Test hooks (used by temporary self-tests only).
-cfg.internal = { dayKey = dayKey, displayText = displayText, printNewspaper = printNewspaper, markKey = MARK }
+cfg.internal = { dayKey = dayKey, displayText = displayText, printNewspaper = printNewspaper, markKey = MARK, strollers = strollers }
