@@ -63,6 +63,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: any sniffing order (lib/others/family_postman.lua)
+	if Family.postmanFixes then
+		return FamilyPostman.noodles(npc, creature, message, npcHandler)
+	end
+
 	if MsgContains(message, "banana skin") then
 		if player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission06) == 7 then
 			if player:getItemCount(3104) > 0 then

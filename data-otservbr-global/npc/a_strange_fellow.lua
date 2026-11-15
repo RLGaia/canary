@@ -58,6 +58,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: four "hat"s, four rabbits, the bill only on his question (lib/others/family_postman.lua)
+	if Family.postmanFixes then
+		return FamilyPostman.strangeFellow(npc, creature, message, npcHandler)
+	end
+
 	if player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission03) ~= 1 then
 		return true
 	end
@@ -95,6 +100,11 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 	return true
 end
+
+-- FAMILY: greeting (EN/BR transcripts) and farewell (BR) of David Brassacres (2026-11-15)
+npcHandler:setMessage(MESSAGE_GREET, "Uh? What do you want?!")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Still I am better in vanishing!")
+npcHandler:setMessage(MESSAGE_WALKAWAY, "Still I am better in vanishing!")
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 

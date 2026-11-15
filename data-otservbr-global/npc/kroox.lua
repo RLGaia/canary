@@ -57,6 +57,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Postman quest measurements (lib/others/family_postman.lua)
+	if Family.postmanFixes and FamilyPostman.officer(npc, creature, message, npcHandler) then
+		return true
+	end
+
 	if MsgContains(message, "sam sent me") or MsgContains(message, "sam send me") then
 		if player:getStorageValue(Storage.Quest.U7_5.SamsOldBackpack.SamsOldBackpackNpc) == 1 then
 			npcHandler:say({

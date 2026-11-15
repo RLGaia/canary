@@ -66,6 +66,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Postman quest measurements (lib/others/family_postman.lua)
+	if Family.postmanFixes and FamilyPostman.officer(npc, creature, message, npcHandler) then
+		return true
+	end
+
 	if MsgContains(message, "measurements") then
 		local player = Player(creature)
 		if player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission07) >= 1 and player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.MeasurementsBenjamin) ~= 1 then

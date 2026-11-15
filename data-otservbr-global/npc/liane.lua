@@ -67,6 +67,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Postman quest measurements (lib/others/family_postman.lua)
+	if Family.postmanFixes and FamilyPostman.officer(npc, creature, message, npcHandler) then
+		return true
+	end
+
 	if MsgContains(message, "measurements") then
 		if player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission07) >= 1 and player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.MeasurementsLiane) ~= 1 then
 			npcHandler:say("I have more urgent problem to attend then that. Those hawks are hunting my carrier pigeons. Bring me 12 arrows and I'll see if I have the time for this nonsense. Do you have 12 arrows with you? ", npc, creature)

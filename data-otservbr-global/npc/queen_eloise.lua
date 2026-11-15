@@ -172,7 +172,8 @@ local node1 = keywordHandler:addKeyword({ "promot" }, StdModule.say, { npcHandle
 node1:addChildKeyword({ "yes" }, StdModule.promotePlayer, { npcHandler = npcHandler, monk = true, cost = 20000, level = 20, text = "Congratulations! You are now promoted." })
 node1:addChildKeyword({ "no" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Alright then, come back when you are ready.", reset = true })
 -- Postman
-keywordHandler:addKeyword({ "uniforms" }, StdModule.say, { npcHandler = npcHandler, text = "I remember about those uniforms, they had a camouflage inlay so they could be worn the inside out too. I will send some color samples via mail to Mr. Postner." }, function(player)
+-- FAMILY: "uniform" so the singular works too (2026-11-15)
+keywordHandler:addKeyword({ "uniform" }, StdModule.say, { npcHandler = npcHandler, text = "I remember about those uniforms, they had a camouflage inlay so they could be worn the inside out too. I will send some color samples via mail to Mr. Postner." }, function(player)
 	return player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission06) == 5
 end, function(player)
 	player:setStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission06, 6)

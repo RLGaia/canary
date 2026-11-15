@@ -16,7 +16,8 @@ function registerHealKeyword(keywordHandler, npcHandler, text, condition, effect
 end
 
 local travelDiscounts = {
-	["postman"] = { price = 10, storage = Storage.Quest.ExampleQuest, value = 1 },
+	-- FAMILY: Grand Postman (rank 3 of The Postman Missions) sails 10 gp cheaper (TibiaWiki BR/EN); upstream had no storage (2026-11-15)
+	["postman"] = { price = 10, storage = Storage.Quest.U7_24.ThePostmanMissions.Rank, value = 3 },
 	-- FAMILY: the steamships to Farmine use "new frontier" but it was never defined, so the 50 gp
 	-- discount after mission 2 (TibiaWiki EN Gurbasch/Brodrosch) never applied (2026-11-10)
 	["new frontier"] = { price = 50, storage = Storage.Quest.U8_54.TheNewFrontier.Mission02[1], value = 4 },
@@ -27,13 +28,13 @@ function StdModule.travelDiscount(npc, player, discounts)
 	local discount = 0
 	if type(discounts) == "string" then
 		discount = travelDiscounts[discounts]
-		if discount and discount.storage and player:getStorageValue(discount.storage) >= discount.value then -- FAMILY: "postman" has no storage (nil key)
+		if discount and discount.storage and player:getStorageValue(discount.storage) >= discount.value then -- FAMILY: skip a discount without a storage (nil key)
 			return discount.price
 		end
 	else
 		for i = 1, #discounts do
 			discount = travelDiscounts[discounts[i]]
-			if discount and discount.storage and player:getStorageValue(discount.storage) >= discount.value then -- FAMILY: "postman" has no storage (nil key)
+			if discount and discount.storage and player:getStorageValue(discount.storage) >= discount.value then -- FAMILY: skip a discount without a storage (nil key)
 				discountPrice = discountPrice + discount.price
 			end
 		end

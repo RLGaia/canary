@@ -3154,6 +3154,11 @@ Storage = {
 			Guards = 48786, -- Mission 02 bit mask: 1 Tony, 2 Hal, 4 Bruce, 8 Reed, 16 Barry, 32 Oliver, 64 Peter
 			Told = 48787, -- bit mask: 1 Azerus heard the Mission 07 report of Palimuth's side
 		},
+		-- FAMILY: The Postman Missions Quest fixes (lib/others/family_postman.lua)
+		FamilyPostman = {
+			Bones = 48774, -- Mission 04: bones handed to Kevin so far (one by one or all)
+			LokurSent = 48775, -- Mission 07: 1 = Lokur sent the player to Kroox
+		},
 		U14_15 = { -- update 14.15 - Reserved Storages 49101 - 49150
 			TheWayOfTheMonk = {
 				QuestLine = 49101,

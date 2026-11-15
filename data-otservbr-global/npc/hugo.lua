@@ -114,12 +114,12 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	if MsgContains(message, "uniforms") then
+	if MsgContains(message, "uniforms") or (Family.postmanFixes and MsgContains(message, "uniform")) then -- FAMILY: "uniform" too
 		if player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission06) == 1 then
 			npcHandler:say("A new uniform for the post officers? I am sorry but my dog ate the last dress pattern we used. You need to supply us with a new dress pattern.", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		end
-	elseif MsgContains(message, "dress pattern") then
+	elseif MsgContains(message, "dress pattern") or (Family.postmanFixes and FamilyPostman.dressPattern(message)) then -- FAMILY: "dress patterns" too
 		if npcHandler:getTopic(playerId) == 1 then
 			npcHandler:say("It was ... wonderous beyond wildest imaginations! I have no clue where Kevin Postner got it from. Better ask him.", npc, creature)
 			player:setStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission06, 2)

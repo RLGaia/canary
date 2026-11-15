@@ -68,6 +68,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Kevin's quest dialogue is ours (lib/others/family_postman.lua); upstream code below is the fallback
+	if Family.postmanFixes then
+		return FamilyPostman.kevin(npc, creature, message, npcHandler)
+	end
+
 	if MsgContains(message, "mission") then
 		if player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission01) < 1 then
 			npcHandler:say("You are not a member of our guild yet! We have high standards for our members. To rise in our guild is a difficult but rewarding task. Are you interested in joining?", npc, creature)
@@ -301,6 +306,14 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 	return true
 end
+
+-- FAMILY: greeting and basic answers from the TibiaWiki EN transcript (2026-11-15)
+keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "I am the head of the Tibian Postmaster's Guild." })
+keywordHandler:addKeyword({ "postmaster" }, StdModule.say, { npcHandler = npcHandler, text = "We are a powerful organisation that is vital part of Tibian society. It's a honour and a privilege to be a member." })
+keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "My name is Kevin. Kevin Postner, that is." })
+npcHandler:setMessage(MESSAGE_GREET, "Greetings |PLAYERNAME|, what brings you here?")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye.")
+npcHandler:setMessage(MESSAGE_WALKAWAY, "Good bye.")
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)

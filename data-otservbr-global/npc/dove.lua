@@ -58,6 +58,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Postman quest measurements (lib/others/family_postman.lua)
+	if Family.postmanFixes and FamilyPostman.officer(npc, creature, message, npcHandler) then
+		return true
+	end
+
 	if MsgContains(message, "measurements") then
 		if player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission07) >= 1 and player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.MeasurementsDove) ~= 1 then
 			npcHandler:say("Oh no! I knew that day would come! I am slightly above the allowed weight and if you can't supply me with some grapes to slim down I will get fired. Do you happen to have some grapes with you? ", npc, creature)

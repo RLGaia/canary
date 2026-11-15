@@ -63,6 +63,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Postman quest measurements (lib/others/family_postman.lua)
+	if Family.postmanFixes and FamilyPostman.officer(npc, creature, message, npcHandler) then
+		return true
+	end
+
 	-- Parse bank
 	npc:parseBank(message, npc, creature, npcHandler)
 	-- Parse guild bank

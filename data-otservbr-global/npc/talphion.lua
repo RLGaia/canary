@@ -57,7 +57,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	if MsgContains(message, "dress pattern") then
+	if MsgContains(message, "dress pattern") or (Family.postmanFixes and FamilyPostman.dressPattern(message)) then -- FAMILY: "dress patterns" too
 		if player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission06) == 3 then
 			if npcHandler:getTopic(playerId) < 1 then
 				npcHandler:say("DRESS FLATTEN? WHO WANTS ME TO FLATTEN A DRESS?", npc, creature)
@@ -66,13 +66,13 @@ local function creatureSayCallback(npc, creature, type, message)
 				npcHandler:say("A PRESS LANTERN? NEVER HEARD ABOUT IT!", npc, creature)
 				npcHandler:setTopic(playerId, 2)
 			elseif npcHandler:getTopic(playerId) == 2 then
-				npcHandler:say("CHESS? I DONT PLAY CHESS!", npc, creature)
+				npcHandler:say("CHESS? I DON'T PLAY CHESS!", npc, creature) -- FAMILY: text as in BR
 				npcHandler:setTopic(playerId, 3)
 			elseif npcHandler:getTopic(playerId) == 3 then
 				npcHandler:say("A PATTERN IN THIS MESS?? HEY DON'T INSULT MY MACHINE HALL!", npc, creature)
 				npcHandler:setTopic(playerId, 4)
 			elseif npcHandler:getTopic(playerId) == 4 then
-				npcHandler:say("AH YES! I WORKED ON THE DRESS PATTERN FOR THOSE UNIFORMS. STAINLESS TROUSERES, STEAM DRIVEN BOOTS! ANOTHERMARVEL TO BEHOLD! I'LL SENT A COPY TO KEVIN IMEDIATELY!", npc, creature)
+				npcHandler:say("AH YES! I WORKED ON THE DRESS PATTERN FOR THOSE UNIFORMS. STAINLESS TROUSERS, STEAM DRIVEN BOOTS! ANOTHER MARVEL TO BEHOLD! I'LL SEND A COPY TO KEVIN IMMEDIATELY!", npc, creature) -- FAMILY: text as in BR
 				player:setStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Mission06, 4)
 				npcHandler:setTopic(playerId, 0)
 			end

@@ -15,3 +15,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_order_of_the_lion.lua") -- FAMILY: 
 dofile(DATA_DIRECTORY .. "/lib/others/family_new_frontier.lua") -- FAMILY: The New Frontier Quest fixes (Mission 5 talks, Ongulf, Zurak, Chrak)
 dofile(DATA_DIRECTORY .. "/lib/others/family_pirates_tail.lua") -- FAMILY: A Pirate's Tail Quest, Eustacio and the Pirat raids
 dofile(DATA_DIRECTORY .. "/lib/others/family_horse_station.lua") -- FAMILY: Horse Station wild horses (sugar oat taming, horse groups)
+dofile(DATA_DIRECTORY .. "/lib/others/family_postman.lua") -- FAMILY: The Postman Missions Quest fixes (Kevin, officers, Noodles, A Strange Fellow)

@@ -149,4 +149,5 @@ FamilyChangelog = {
 	{ "2026-11-12", "Newspaper sellers now stand still at each city's depot, next to the post officer or at the depot entrance. City walkers no longer get stuck in lines: they spread over the streets, step aside for each other and walk around whoever stands in the way. Their tips no longer repeat until you have heard all that fit your level." },
 	{ "2026-11-12", "Newspaper sellers now stroll a little around their depot spot, never into a door, a locker niche or the stairs, and stay put while you talk to them." },
 	{ "2026-11-12", "Cobra Bastion: the chess board now reacts when the last piece or the cheesy figurine is placed (before, nothing happened even with the right moves)." },
+	{ "2026-11-15", "The Postman Missions: Kevin now gives the real Post Horn, takes bones one by one or all at once, and no longer restarts a mission when you ask him again. The six post officers give their measurements in any order (Lokur first sends you to Kroox), Noodles can be sniffed in any order, and Grand Postmen now sail 10 gold cheaper." },
 }
