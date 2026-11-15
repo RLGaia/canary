@@ -489,6 +489,9 @@ QuestDoorAction = {
 			{ x = 33271, y = 31657, z = 8 },
 			{ x = 33284, y = 31791, z = 13 },
 			{ x = 33307, y = 32291, z = 7 },
+			-- FAMILY: royal mailboxes of TibiaWiki BR that had a sealed door with no action id (nobody could open it): Venore Draccoon cave, Rascacoon (2026-11-15)
+			{ x = 32964, y = 32084, z = 8 },
+			{ x = 33744, y = 31322, z = 7 },
 		},
 	},
 	-- The thieves guild door

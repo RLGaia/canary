@@ -58,12 +58,28 @@ local function greetCallback(npc, creature)
 	if player:getStorageValue(Storage.MarkwinGreeting) < 1 then
 		npcHandler:setMessage(MESSAGE_GREET, "Intruder! Guards, take him down!")
 		player:setStorageValue(Storage.MarkwinGreeting, 1)
-		local position
-		for x = -1, 1 do
-			for y = -1, 1 do
-				position = Position(32418 + x, 32147 + y, 15)
-				Game.createMonster(guards[math.random(3)], position)
-				position:sendMagicEffect(CONST_ME_TELEPORT)
+		if Family.postmanFixes then
+			-- FAMILY: 8 bodyguards, 4 archers, 2 guards and 2 mages (TibiaWiki EN; BR also 8); upstream made 9 random ones (2026-11-15)
+			local bodyguards = { "Minotaur Archer", "Minotaur Guard", "Minotaur Archer", "Minotaur Mage", "Minotaur Archer", "Minotaur Guard", "Minotaur Archer", "Minotaur Mage" }
+			local i = 0
+			for x = -1, 1 do
+				for y = -1, 1 do
+					if x ~= 0 or y ~= 0 then
+						i = i + 1
+						local position = Position(32418 + x, 32147 + y, 15)
+						Game.createMonster(bodyguards[i], position)
+						position:sendMagicEffect(CONST_ME_TELEPORT)
+					end
+				end
+			end
+		else
+			local position
+			for x = -1, 1 do
+				for y = -1, 1 do
+					position = Position(32418 + x, 32147 + y, 15)
+					Game.createMonster(guards[math.random(3)], position)
+					position:sendMagicEffect(CONST_ME_TELEPORT)
+				end
 			end
 		end
 		npcHandler:say("No! The hornless have reached my city! BODYGUARDS TO ME!", npc, creature)
@@ -72,7 +88,7 @@ local function greetCallback(npc, creature)
 		npcHandler:setMessage(MESSAGE_GREET, "Well ... you defeated my guards! Now everything is over! I guess I will have to answer your questions now.")
 		player:setStorageValue(Storage.MarkwinGreeting, 2)
 	elseif player:getStorageValue(Storage.MarkwinGreeting) == 2 then
-		npcHandler:setMessage(MESSAGE_GREET, "Oh its you again. What du you want, hornless messenger?")
+		npcHandler:setMessage(MESSAGE_GREET, "Oh its you again. What do you want, hornless messenger?") -- FAMILY: "du" typo (BR transcript)
 	end
 	return true
 end

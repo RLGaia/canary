@@ -151,4 +151,5 @@ FamilyChangelog = {
 	{ "2026-11-12", "Cobra Bastion: the chess board now reacts when the last piece or the cheesy figurine is placed (before, nothing happened even with the right moves)." },
 	{ "2026-11-15", "The Postman Missions: Kevin now gives the real Post Horn, takes bones one by one or all at once, and no longer restarts a mission when you ask him again. The six post officers give their measurements in any order (Lokur first sends you to Kroox), Noodles can be sniffed in any order, and Grand Postmen now sail 10 gold cheaper." },
 	{ "2026-11-15", "Post offices: from Assistant Postman (The Postman Missions) letters cost 5 gold and parcels 10 gold, as Kevin promises." },
+	{ "2026-11-15", "Royal mailboxes: the ones in the Venore Draccoon cave and on Rascacoon now open for Archpostmen too (their doors could never be opened). Markwin calls 8 bodyguards as in Tibia: 4 archers, 2 guards and 2 mages." },
 }
