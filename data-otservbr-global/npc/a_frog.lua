@@ -52,7 +52,25 @@ keywordHandler:addKeyword({ "talk" }, StdModule.say, { npcHandler = npcHandler, 
 keywordHandler:addKeyword({ "frog" }, StdModule.say, { npcHandler = npcHandler, text = "Finally someone notices I'm a FROG. Congratulations, you're VERY observant... *sigh*" })
 keywordHandler:addKeyword({ "quest" }, StdModule.say, { npcHandler = npcHandler, text = "A quest? Yeah I got a quest! Go and tell King Tibianus his son tried to kiss me again!" })
 keywordHandler:addKeyword({ "pyrale" }, StdModule.say, { npcHandler = npcHandler, text = "Pyrale? That idiot transformed me into an human once. But my wife came and kissed me, so I'm a frog again." })
-keywordHandler:addKeyword({ "ribbit" }, StdModule.say, { npcHandler = npcHandler, text = "Pyrale? That idiot transformed me into an human once. But my wife came and kissed me, so I'm a frog again." })
+-- FAMILY: TibiaWiki EN transcript (The Scatterbrained Sorcerer Quest): "ribbit" - "Ribbit." (upstream repeated the Pyrale line)
+keywordHandler:addKeyword({ "ribbit" }, StdModule.say, { npcHandler = npcHandler, text = "Ribbit." })
+
+-- FAMILY: The Scatterbrained Sorcerer Quest (lib/others/family_sorcerer.lua): "ribbit" greets him, and the
+-- spell "Eeny, meeny, miny, moe - I stay here and you will go!" swaps him with Eclesius' former assistant.
+if FamilySorcerer then
+	FamilySorcerer.setGreeter(npcHandler, function(npc, player, message)
+		if message and message:lower():find("ribbit", 1, true) then
+			return "Ribbit."
+		end
+	end, { "ribbit" })
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, function(npc, creature, type, message)
+		if not npcHandler:checkInteraction(npc, creature) then
+			return false
+		end
+		FamilySorcerer.frogSay(npc, creature, message, npcHandler)
+		return true
+	end)
+end
 
 npcHandler:setMessage(MESSAGE_GREET, "*sigh* Yet another dumb adventurer.")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Yeah, good bye and don't come again!")

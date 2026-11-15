@@ -59,6 +59,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: The Scatterbrained Sorcerer Quest, Mission 6: the old rags (lib/others/family_sorcerer.lua)
+	if FamilySorcerer and FamilySorcerer.bunnySay(npc, creature, message, npcHandler) then
+		return true
+	end
+
 	-- Check if the message contains "mission"
 	if MsgContains(message, "mission") then
 		if player:getStorageValue(Storage.Quest.U8_1.TowerDefenceQuest.Questline) < 1 then

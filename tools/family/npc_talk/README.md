@@ -109,3 +109,10 @@ below and above 1500 points (the secret), location with and without a raid, flin
 the TibiaWiki BR Eustacio page and the shortcut: `luajit tools/family/npc_talk/pirates_tail.lua`. The raids
 themselves are checked on the test server (`/piratraid`, 103 checks on 2026-11-10). Part 2a (same day, 156 checks in all):
 Tik'hi Tak'he's mission, trust points, the 1200 advance, wares, wisdom and every BR line, and Om'Wake Naha's BR lines. Part 2c (2026-11-11, 172 checks in all): every line of Eustacio's Spy Rat from the TibiaWiki EN spoiler transcript; the stealth mission itself is checked on the test server (52 checks). Part 3b (176 checks): Tik'hi's Rascoohan outfit after Ratmiral (BR line); the Tentugly and Ratmiral fights are checked on the test server (27 and 35 checks).
+
+`scatterbrained_sorcerer.lua` is The Scatterbrained Sorcerer Quest check (2026-11-15, 239 checks): one
+character plays the whole quest with Eclesius (greeting by level, the five daily tasks, missions 1-6,
+the laboratory Eclesius), Irmana, Amarie, Grodrik, Frodo, Xodet, Queen Eloise, Bunny Bonecrusher and
+both frogs; object steps are set as storages (the objects are checked by a server self-test):
+`luajit tools/family/npc_talk/scatterbrained_sorcerer.lua`. The fake player's KV store is `p.kvdata`
+(it was `p.kv`, which hid the `p:kv()` method).

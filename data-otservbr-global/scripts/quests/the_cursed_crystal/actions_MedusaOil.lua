@@ -9,6 +9,10 @@ local ItemsCursed = {
 local theCursedMedusa = Action()
 
 function theCursedMedusa.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: The Scatterbrained Sorcerer Quest - molten wax on a grave flower makes the special polish
+	if FamilySorcerer and FamilySorcerer.onMoltenWax and FamilySorcerer.onMoltenWax(player, item, target, toPosition) then
+		return true
+	end
 	if (item.itemid == 21506) and (target.itemid == 10420) then
 		if player:getStorageValue(Storage.Quest.U10_70.TheCursedCrystal.Oneeyedjoe) == 2 then
 			local playerPos = player:getPosition()

@@ -22,6 +22,13 @@ npcConfig.flags = {
 	floorchange = false,
 }
 
+-- FAMILY: TibiaWiki EN sound
+npcConfig.voices = {
+	interval = 15000,
+	chance = 30,
+	{ text = "One more drink and then I'll go home to my woman. ... sigh... I forgot - I don't have a woman." },
+}
+
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 
@@ -47,6 +54,12 @@ end
 
 npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
+end
+
+-- FAMILY: The Scatterbrained Sorcerer Quest (lib/others/family_sorcerer.lua): beer, women, wishes, dating,
+-- questionnaire and the "strange beer". Upstream he had no dialogue and was not placed on the map.
+if FamilySorcerer then
+	FamilySorcerer.setupGrodrik(keywordHandler, npcHandler)
 end
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)

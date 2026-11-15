@@ -206,6 +206,11 @@ local function creatureSayCallback(npc, creature, type, message)
 	local playerId = player:getId()
 	local playerSex = player:getSex()
 
+	-- FAMILY: The Scatterbrained Sorcerer Quest, Mission 1: the hats for Eclesius (lib/others/family_sorcerer.lua)
+	if FamilySorcerer and FamilySorcerer.irmanaSay(npc, creature, message, npcHandler) then
+		return true
+	end
+
 	if MsgContains(message, "fur") then
 		if player:getStorageValue(ThreatenedDreams.Mission01[1]) == 7 and player:getStorageValue(ThreatenedDreams.Mission01.PoacherNotes) == 1 then
 			npcHandler:say({

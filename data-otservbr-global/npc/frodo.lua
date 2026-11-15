@@ -85,6 +85,12 @@ keywordHandler:addKeyword({ "donald" }, StdModule.say, { npcHandler = npcHandler
 keywordHandler:addKeyword({ "baxter" }, StdModule.say, { npcHandler = npcHandler, text = "He's able to drink a bottle or two." })
 keywordHandler:addKeyword({ "bozo" }, StdModule.say, { npcHandler = npcHandler, text = "I am trying to hire him for an evening or two." })
 keywordHandler:addKeyword({ "eclesius" }, StdModule.say, { npcHandler = npcHandler, text = "Oh, that old guy! He's a good customer, that's for sure." })
+-- FAMILY: The Scatterbrained Sorcerer Quest, Mission 5 (TibiaWiki EN/BR transcript)
+local function familyMemoryMission(player)
+	return FamilySorcerer and FamilySorcerer.enabled() and FamilySorcerer.onMemoryMission(player)
+end
+keywordHandler:addKeyword({ "last night" }, StdModule.say, { npcHandler = npcHandler, text = "Yes, he was here last evening as well." }, familyMemoryMission)
+keywordHandler:addKeyword({ "talked" }, StdModule.say, { npcHandler = npcHandler, text = "Who he talked to? Hm... I'm not sure, there were a few people around. No girls or women though. Maybe just ask around for Eclesius." }, familyMemoryMission)
 keywordHandler:addKeyword({ "elane" }, StdModule.say, { npcHandler = npcHandler, text = "Can you believe that she actually told her guildfellows that alcohol is a bad thing?" })
 keywordHandler:addKeyword({ "galuna" }, StdModule.say, { npcHandler = npcHandler, text = "She makes excellent arrows and bows." })
 keywordHandler:addKeyword({ "gorn" }, StdModule.say, { npcHandler = npcHandler, text = "Many of his customers visit my Hut, too." })

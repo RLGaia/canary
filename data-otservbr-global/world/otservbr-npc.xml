@@ -3114,4 +3114,11 @@
 	<npc centerx="33857" centery="31333" centerz="9" radius="1">
 		<npc name="Eustacio's Spy Rat" x="0" y="0" z="9" spawntime="60" />
 	</npc>
+	<!-- FAMILY: The Scatterbrained Sorcerer Quest (2026-11-15): Grodrik in the Jolly Axeman tavern of Kazordoon and A Frog at the pond north of Thais (TibiaWiki EN positions); upstream had neither -->
+	<npc centerx="32636" centery="31879" centerz="9" radius="1">
+		<npc name="Grodrik" x="0" y="0" z="9" spawntime="60" />
+	</npc>
+	<npc centerx="32364" centery="32119" centerz="7" radius="1">
+		<npc name="A Frog" x="0" y="0" z="7" spawntime="60" />
+	</npc>
 </npcs>

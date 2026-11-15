@@ -63,20 +63,37 @@ end
 
 npcHandler:setMessage(MESSAGE_GREET, "Who are you? What do you want? You seem too experienced to become my assistant. Please leave.")
 
+-- FAMILY: The Scatterbrained Sorcerer Quest (lib/others/family_sorcerer.lua): greeting by quest state
+-- (TibiaWiki: "Hey, you! You look young and eager..."), the five daily tasks and the six missions.
+-- Upstream had only the greeting above, which sent everyone away.
+local function familyQuestOff()
+	return not (FamilySorcerer and FamilySorcerer.enabled())
+end
+if FamilySorcerer then
+	FamilySorcerer.setGreeter(npcHandler, FamilySorcerer.greetEclesius)
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, function(npc, creature, type, message)
+		if not npcHandler:checkInteraction(npc, creature) then
+			return false
+		end
+		FamilySorcerer.eclesiusSay(npc, creature, message, npcHandler)
+		return true
+	end)
+end
+
 -- Dialogue keywords the NPC answers on the official server
 keywordHandler:addKeyword({ "first dragon" }, StdModule.say, { npcHandler = npcHandler, text = "He was bested in combat, but the hero who killed him, was that humble that he never claimed the fame." })
 keywordHandler:addKeyword({ "assistant" }, StdModule.say, { npcHandler = npcHandler, text = "As my assistant you can carry out daily tasks and solve missions for me." })
 keywordHandler:addKeyword({ "eclesius" }, StdModule.say, { npcHandler = npcHandler, text = "Yes?" })
-keywordHandler:addKeyword({ "prevent" }, StdModule.say, { npcHandler = npcHandler, text = "What's wrong? Are you afraid to go down there? There's absolutely no reason for that. Me? Erm... my knees, you know. Stairs are such a trial for me. Go on! Secure the cage and calm the demon!" })
+keywordHandler:addKeyword({ "prevent" }, StdModule.say, { npcHandler = npcHandler, text = "What's wrong? Are you afraid to go down there? There's absolutely no reason for that. Me? Erm... my knees, you know. Stairs are such a trial for me. Go on! Secure the cage and calm the demon!" }, familyQuestOff) -- FAMILY: answered by the quest when it is on
 keywordHandler:addKeyword({ "turian" }, StdModule.say, { npcHandler = npcHandler, text = "Oh dear. It's all my fault that he is the way he is now. That much I can remember. <sniff>" })
 keywordHandler:addKeyword({ "venore" }, StdModule.say, { npcHandler = npcHandler, text = "It's to the far east of here. You can either reach it by ship or walk there, but it's QUITE a walk. I think." })
-keywordHandler:addKeyword({ "player" }, StdModule.say, { npcHandler = npcHandler, text = "Was that your name...? |PLAYERNAME|? Really? <scratches head> Fine then... hello |PLAYERNAME|!" })
+keywordHandler:addKeyword({ "player" }, StdModule.say, { npcHandler = npcHandler, text = "Was that your name...? |PLAYERNAME|? Really? <scratches head> Fine then... hello |PLAYERNAME|!" }, familyQuestOff) -- FAMILY: answered by the quest when it is on
 keywordHandler:addKeyword({ "sorry" }, StdModule.say, { npcHandler = npcHandler, text = "Yes, you SHOULD be sorry!" })
 keywordHandler:addKeyword({ "thais" }, StdModule.say, { npcHandler = npcHandler, text = "I moved away from there for a reason. I just can't remember what the reason was." })
 keywordHandler:addKeyword({ "thank" }, StdModule.say, { npcHandler = npcHandler, text = "What are you thanking me for? <scratches head>" })
 keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "My name is Eclesius. And I'm quite happy that my memory works almost all of the time." })
 keywordHandler:addKeyword({ "frog" }, StdModule.say, { npcHandler = npcHandler, text = "Oh dear. It's all my fault that he is the way he is now. That much I can remember. <sniff>" })
-keywordHandler:addKeyword({ "hint" }, StdModule.say, { npcHandler = npcHandler, text = "Hint? What kind of hint?" })
+keywordHandler:addKeyword({ "hint" }, StdModule.say, { npcHandler = npcHandler, text = "Hint? What kind of hint?" }, familyQuestOff) -- FAMILY: answered by the quest when it is on
 keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "I have a lot of work to do. I'm a very wise sorcerer, you see. So I'm busy creating magic fields, inventing new spells, reading books, summoning creatures... all very complex. That's why I need assistants for the easy work." })
 keywordHandler:addKeyword({ "key" }, StdModule.say, { npcHandler = npcHandler, text = "Where did I put that key, erm... I think it's somewhere in my lab. But then again my memory is not the best." })
 

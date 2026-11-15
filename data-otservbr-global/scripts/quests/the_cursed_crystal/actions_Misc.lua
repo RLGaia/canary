@@ -34,6 +34,10 @@ local function isVortexInArea(fromPos, toPos)
 end
 
 function cursedMiscItem.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: The Scatterbrained Sorcerer Quest - a honeycomb on the oven of Eclesius' laboratory (oven 2542 was not in the list below)
+	if FamilySorcerer and FamilySorcerer.onHoneycomb and FamilySorcerer.onHoneycomb(player, item, target, toPosition) then
+		return true
+	end
 	if item.itemid == 5902 then
 		if (target.itemid == 2535) or (target.itemid == 2537) or (target.itemid == 2539) or (target.itemid == 2541) then
 			item:remove(1)

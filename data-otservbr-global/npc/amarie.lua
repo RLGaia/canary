@@ -55,8 +55,14 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
--- Greeting message
-keywordHandler:addGreetKeyword({ "ashari" }, { npcHandler = npcHandler, text = "Greetings, |PLAYERNAME|." })
+-- FAMILY: The Scatterbrained Sorcerer Quest (lib/others/family_sorcerer.lua): her dialogue (study, poetry,
+-- dating, questionnaire, bug milk), with "ashari" as a greeting too. Upstream she had none.
+if FamilySorcerer then
+	FamilySorcerer.setupAmarie(keywordHandler, npcHandler)
+else
+	-- Greeting message
+	keywordHandler:addGreetKeyword({ "ashari" }, { npcHandler = npcHandler, text = "Greetings, |PLAYERNAME|." })
+end
 --Farewell message
 keywordHandler:addFarewellKeyword({ "asgha thrazi" }, { npcHandler = npcHandler, text = "Good bye, |PLAYERNAME|." })
 

@@ -194,7 +194,7 @@ function T.player(o)
 		log = {},
 		added = {},
 		removed = {},
-		kv = {},
+		kvdata = {}, -- the player's KV store (p:kv())
 	}
 	playersById[p.id] = p
 	local m = {}
@@ -273,7 +273,7 @@ function T.player(o)
 	function m:isPremium() return true end
 	function m:getGroup() return { getAccess = function() return false end } end
 	function m:kv()
-		local store = self.kv
+		local store = self.kvdata
 		local scope
 		scope = {
 			get = function(_, k) return store[k] end,

@@ -34,6 +34,10 @@ local MusicEffect = {
 
 local music = Action()
 function music.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: The Scatterbrained Sorcerer Quest - play the lyre in front of the demon cage (scripts/family/scatterbrained_sorcerer.lua)
+	if FamilySorcerer and FamilySorcerer.onMusic and FamilySorcerer.onMusic(player, item) then
+		return true
+	end
 	-- FAMILY: Oramond Four Demanding Statues - entertain the king statue with a lyre
 	if item.itemid == 2949 and FamilyOramondTasks and FamilyOramondTasks.playLyre then
 		FamilyOramondTasks.playLyre(player)

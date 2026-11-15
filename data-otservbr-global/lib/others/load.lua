@@ -16,3 +16,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_new_frontier.lua") -- FAMILY: The N
 dofile(DATA_DIRECTORY .. "/lib/others/family_pirates_tail.lua") -- FAMILY: A Pirate's Tail Quest, Eustacio and the Pirat raids
 dofile(DATA_DIRECTORY .. "/lib/others/family_horse_station.lua") -- FAMILY: Horse Station wild horses (sugar oat taming, horse groups)
 dofile(DATA_DIRECTORY .. "/lib/others/family_postman.lua") -- FAMILY: The Postman Missions Quest fixes (Kevin, officers, Noodles, A Strange Fellow)
+dofile(DATA_DIRECTORY .. "/lib/others/family_sorcerer.lua") -- FAMILY: The Scatterbrained Sorcerer Quest (Eclesius, Amarie, Grodrik, the frogs, Irmana, Xodet, Bunny)

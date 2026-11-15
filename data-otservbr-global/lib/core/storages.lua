@@ -1420,7 +1420,17 @@ Storage = {
 			ShadowsOfYalahar = {},
 			TheIsleOfEvil = {},
 			TheLightbearer = {},
-			TheScatterbrainedSorcerer = {},
+			-- FAMILY: The Scatterbrained Sorcerer Quest (2026-11-15; lib/others/family_sorcerer.lua). Upstream left it empty;
+			-- 42510-42516 are free numbers of this 8.5 block. Details (swept furniture, bats, questionnaire...) are in player KV family-sorcerer.
+			TheScatterbrainedSorcerer = {
+				Questline = 42510, -- 1 = Eclesius' assistant
+				Mission = 42511, -- missions 1-6, see FamilySorcerer.M
+				Sweep = 42512, -- daily tasks: 0 free, 1 taken, 2 done (report it), 3 reported today, 4 failed today
+				Polish = 42513,
+				Feed = 42514,
+				Exterminate = 42515,
+				Prevent = 42516,
+			},
 			TreasureHunt = {},
 		},
 		U8_54 = { -- update 8.54 - Reserved Storages 42551 - 42950
