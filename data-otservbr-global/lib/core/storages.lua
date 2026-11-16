@@ -1744,7 +1744,15 @@ Storage = {
 			RiverRunsDeepMiniWorldChange = {},
 			StampedeMiniWorldChange = {},
 			ThawingMiniWorldChange = {},
-			WarAgainstTheHive = {},
+			WarAgainstTheHive = { -- FAMILY: War Against the Hive Quest (lib/others/family_hive.lua)
+				Questline = 43700,
+				WarExp = 43701,
+				Favour = 43702,
+				Times = { Acid = 43703, Blind = 43704, Digestion = 43705, Disable = 43706, Kill = 43707, Break = 43708 },
+				Progress = { Acid = 43709, Blind = 43710, Digestion = 43711, Disable = 43712, Kill = 43713, Break = 43714 },
+				Pheromone = 43715,
+				QuitTime = 43716,
+			},
 		},
 		U9_5 = { -- update 9.5 - Reserved Storages 43751 - 43850
 			SpringIntoLife = {},

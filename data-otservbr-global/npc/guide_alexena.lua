@@ -128,6 +128,10 @@ keywordHandler:addKeyword({ "blessings" }, StdModule.say, { npcHandler = npcHand
 -- FAMILY: Pilgrimage of Ashes (lib/others/family_pilgrimage.lua)
 FamilyPilgrimage.addGuide(keywordHandler, npcHandler)
 
+-- FAMILY: keyword "hive" tells the Hive Born world change stage (lib/others/family_hive.lua)
+if FamilyHive then
+	FamilyHive.setupGuide(keywordHandler, npcHandler)
+end
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

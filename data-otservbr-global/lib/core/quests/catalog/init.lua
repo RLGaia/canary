@@ -58,6 +58,7 @@ local questModules = {
 	"057_the_order_of_the_lion", -- FAMILY: The Order of the Lion Quest (Bounac)
 	"058_a_pirates_tail", -- FAMILY: A Pirate's Tail Quest (Eustacio and the Pirat raids)
 	"059_the_scatterbrained_sorcerer", -- FAMILY: The Scatterbrained Sorcerer Quest (Eclesius)
+	"060_war_against_the_hive", -- FAMILY: War Against the Hive Quest (Orockle)
 }
 
 local catalog = dofile(CORE_DIRECTORY .. "/lib/core/quests/catalog.lua")

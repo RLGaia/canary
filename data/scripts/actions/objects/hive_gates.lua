@@ -16,6 +16,11 @@ function hiveGates.onUse(player, item, fromPosition, target, toPosition, isHotke
 		toPosition.x = position.x > toPosition.x and toPosition.x - 1 or toPosition.x + 1
 	end
 
+	-- FAMILY: War Against the Hive: pheromone and stage 3 to go in, always out again (lib/others/family_hive.lua)
+	if FamilyHive and FamilyHive.enabled() and not FamilyHive.gatePass(player, item:getId(), item:getPosition(), position) then
+		return true
+	end
+
 	player:teleportTo(toPosition)
 	toPosition:sendMagicEffect(CONST_ME_TELEPORT)
 	return true

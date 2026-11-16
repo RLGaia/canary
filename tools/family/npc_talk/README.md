@@ -124,3 +124,11 @@ the laboratory Eclesius), Irmana, Amarie, Grodrik, Frodo, Xodet, Queen Eloise, B
 both frogs; object steps are set as storages (the objects are checked by a server self-test):
 `luajit tools/family/npc_talk/scatterbrained_sorcerer.lua`. The fake player's KV store is `p.kvdata`
 (it was `p.kv`, which hid the `p:kv()` method).
+
+`war_against_the_hive.lua` is the War Against the Hive Quest check (2026-11-16, 131 checks): Orockle's
+greeting, fight, news, points, the mission lists of stage 1 and 2, the six missions (offer, items, reminder,
+report, experience, War Exp and Favour, quest log texts, the achievement at 10 reports), quit with one or
+several missions and the 30-minute wait, the pheromone reward, the Hive stages over many game days (10
+actions a day, stage 3 for 5 days, back to 2 or 1), the guides' `hive` keyword, the hive gate rule (in with
+pheromone at stage 3, always out) and every `{highlighted}` word:
+`luajit tools/family/npc_talk/war_against_the_hive.lua`.

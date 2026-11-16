@@ -72,6 +72,10 @@ local function creatureSayCallback(npc, creature, type, message)
 end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+-- FAMILY: War Against the Hive Quest (lib/others/family_hive.lua); upstream had the dialogue commented out
+if FamilyHive then
+	FamilyHive.setupOrockle(npcHandler)
+end
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 npcConfig.shop = {

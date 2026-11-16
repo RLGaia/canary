@@ -32293,8 +32293,12 @@
 		<attribute key="primarytype" value="quest items"/>
 		<attribute key="weight" value="150"/>
 	</item>
+	<!-- FAMILY: War Against the Hive: becomes a reagent flask again after 2 minutes (TibiaWiki EN) -->
 	<item id="14055" article="an" name="aggressive fluid">
 		<attribute key="primarytype" value="quest items"/>
+		<attribute key="decayTo" value="14054"/>
+		<attribute key="duration" value="120"/>
+		<attribute key="showduration" value="1"/>
 		<attribute key="description" value="It is unstable and will lose its aggressive properties soon"/>
 		<attribute key="weight" value="150"/>
 	</item>

@@ -85,7 +85,8 @@ function gooeyMass.onUse(player, item, fromPosition, target, toPosition, isHotke
 				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have found a " .. getItemName(setting.reward) .. ", but you have no room to take it")
 			end
 		else
-			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The " .. getItemName(setting.itemId) .. " is empty.")
+			-- FAMILY: setting.itemId does not exist (the message failed); the cell's own name
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The " .. item:getName() .. " is empty.")
 		end
 	end
 	return true
