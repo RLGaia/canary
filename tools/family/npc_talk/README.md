@@ -132,3 +132,8 @@ several missions and the 30-minute wait, the pheromone reward, the Hive stages o
 actions a day, stage 3 for 5 days, back to 2 or 1), the guides' `hive` keyword, the hive gate rule (in with
 pheromone at stage 3, always out) and every `{highlighted}` word:
 `luajit tools/family/npc_talk/war_against_the_hive.lua`.
+
+`white_raven.lua` is The White Raven Monastery Quest check (2026-11-16, 45 checks): Dalbrect's story,
+brooch (without and with it), friendship, passage and the 10-gold trip; Costello's Fugio question
+(not without a greeting, only once), the diary without and with the book, the blessed ankh, the lines
+after the quest, the quest log and every `{highlighted}` word: `luajit tools/family/npc_talk/white_raven.lua`.

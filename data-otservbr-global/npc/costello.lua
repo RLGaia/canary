@@ -49,7 +49,25 @@ local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	local playerId = player:getId()
 
-	if MsgContains(message, "fugio") then
+	-- FAMILY: answer only players he is talking to (he took "fugio"/"yes" said nearby without a greeting), 2026-11-16
+	if not npcHandler:checkInteraction(npc, creature) then
+		return false
+	end
+
+	local diaryState = player:getStorageValue(Storage.Quest.U7_24.TheWhiteRavenMonastery.Diary)
+	-- FAMILY: once the investigation is taken or done, "fugio" no longer asks again (a "yes" set the
+	-- quest log back to "Investigate the catacombs"); both lines are ours, 2026-11-16
+	if MsgContains(message, "fugio") and diaryState == 1 then
+		npcHandler:say("Please search the catacombs for brother Fugio. I fear for his soul.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "fugio") and diaryState >= 2 then
+		npcHandler:say("May the gods have mercy on brother Fugio's soul.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	-- FAMILY: after the reward, TibiaWiki BR's line, 2026-11-16
+	elseif MsgContains(message, "diary") and diaryState >= 2 then
+		npcHandler:say("Thank you again for handing me that diary.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "fugio") then
 		if player:getStorageValue(Storage.Quest.U7_24.FamilyBrooch.Brooch) == 1 then
 			npcHandler:say(
 				"To be honest, I fear the omen in my dreams may be true. \z
@@ -72,6 +90,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 3)
 		elseif cStorage == 2 then
 			npcHandler:say("I already filled your vial with holy water.", npc, creature)
+		else
+			-- FAMILY: outside Rest in Hallowed Ground, TibiaWiki BR's line, 2026-11-16
+			npcHandler:say("The holy water from our monastery is very special but no one knows why. Once their was a man who burnt himself by touching it. Later it turned out that he had killed several people.", npc, creature)
 		end
 	elseif MsgContains(message, "amanda") and npcHandler:getTopic(playerId) == 0 then
 		if player:getStorageValue(Storage.Quest.U8_1.RestInHallowedGround.Questline) == 1 then
@@ -83,6 +104,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U7_24.TheWhiteRavenMonastery.Diary, 1)
 			player:setStorageValue(Storage.Quest.U7_24.TheWhiteRavenMonastery.Door, 1)
 		elseif npcHandler:getTopic(playerId) == 2 then
+			npcHandler:setTopic(playerId, 0) -- FAMILY: the question ends here either way, 2026-11-16
 			if not player:removeItem(3212, 1) then
 				npcHandler:say("Uhm, as you wish.", npc, creature)
 				return true
@@ -111,7 +133,7 @@ local function creatureSayCallback(npc, creature, type, message)
 end
 
 npcHandler:setMessage(MESSAGE_GREET, "Welcome, |PLAYERNAME|! Feel free to tell me what has brought you here.")
-npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye. Come back soon.")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye, |PLAYERNAME|!") -- FAMILY: TibiaWiki BR and EN, 2026-11-16
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 

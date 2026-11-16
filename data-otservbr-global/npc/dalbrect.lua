@@ -116,9 +116,10 @@ keywordHandler:addKeyword({ "passage" }, StdModule.say, {
 	return player:getStorageValue(Storage.Quest.U7_24.TheWhiteRavenMonastery.Passage) ~= 1
 end)
 
+-- FAMILY: TibiaWiki BR and EN (quest page and transcript) line, 2026-11-16
 local travelNode = keywordHandler:addKeyword({ "passage" }, StdModule.say, {
 	npcHandler = npcHandler,
-	text = "Do you seek a passage to the isle of the kings for 10 gold coins?",
+	text = "Since you are my friend now I will sail you to the isle of the kings for 10 gold. Is that okay for you?",
 })
 travelNode:addChildKeyword({ "yes" }, StdModule.travel, {
 	npcHandler = npcHandler,
@@ -138,6 +139,12 @@ keywordHandler:addKeyword({ "name" }, StdModule.say, {
 	text = "My name is Dalbrect Windtrouser, of the once proud Windtrouser family.",
 })
 keywordHandler:addKeyword({ "hut" }, StdModule.say, {
+	npcHandler = npcHandler,
+	text = "I am merely a humble fisher now that nothing is left of my noble {legacy}.",
+})
+-- FAMILY: "job" answers like "hut" (TibiaWiki BR and EN), 2026-11-16. EN's "family" is left out:
+-- keywords answer before the brooch talk, so "family brooch" would get the legacy line.
+keywordHandler:addKeyword({ "job" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "I am merely a humble fisher now that nothing is left of my noble {legacy}.",
 })

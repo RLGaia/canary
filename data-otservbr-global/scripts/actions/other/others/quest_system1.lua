@@ -24,6 +24,15 @@ local tutorialIds = {
 	[50086] = 11,
 }
 
+-- FAMILY: copy a book's text too: the copies came blank (the monk's diary of The White Raven
+-- Monastery Quest lost "They Are Coming"), 2026-11-16
+local function familyCopyText(from, to)
+	local text = from:getAttribute(ITEM_ATTRIBUTE_TEXT)
+	if text and text ~= "" then
+		to:setAttribute(ITEM_ATTRIBUTE_TEXT, text)
+	end
+end
+
 local function copyContainerItem(originalContainer, newContainer)
 	for i = 0, originalContainer:getSize() - 1 do
 		local originalItem = originalContainer:getItem(i)
@@ -34,6 +43,7 @@ local function copyContainerItem(originalContainer, newContainer)
 		end
 		newItem:setActionId(originalItem:getActionId())
 		newItem:setAttribute(ITEM_ATTRIBUTE_DESCRIPTION, originalItem:getAttribute(ITEM_ATTRIBUTE_DESCRIPTION))
+		familyCopyText(originalItem, newItem) -- FAMILY
 
 		if originalItem:isContainer() then
 			copyContainerItem(Container(originalItem.uid), Container(newItem.uid))
@@ -81,6 +91,7 @@ function questSystem1.onUse(player, item, fromPosition, target, toPosition, isHo
 		if itemDescription then
 			reward:setAttribute(ITEM_ATTRIBUTE_DESCRIPTION, itemDescription)
 		end
+		familyCopyText(item, reward) -- FAMILY
 	else
 		local container = Container(item.uid)
 		if not container then
@@ -102,6 +113,7 @@ function questSystem1.onUse(player, item, fromPosition, target, toPosition, isHo
 			if newDescription then
 				newItem:setAttribute(ITEM_ATTRIBUTE_DESCRIPTION, newDescription)
 			end
+			familyCopyText(originalItem, newItem) -- FAMILY
 
 			if originalItem:isContainer() then
 				copyContainerItem(Container(originalItem.uid), Container(newItem.uid))

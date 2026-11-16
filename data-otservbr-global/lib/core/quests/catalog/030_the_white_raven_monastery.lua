@@ -8,7 +8,8 @@ local quest = {
 			storageId = Storage.Quest.U7_24.TheWhiteRavenMonastery.Passage,
 			missionId = 10315,
 			startValue = 1,
-			endValue = 2,
+			-- FAMILY: Dalbrect only ever sets 1, so with 2 the mission and the quest never showed as done, 2026-11-16
+			endValue = 1,
 			states = {
 				[1] = "You are a friend of Dalbrect. \z
 				Since you returned his family brooch he will sail you to the Isle of Kings unless you do something stupid.",
