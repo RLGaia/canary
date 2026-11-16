@@ -455,7 +455,6 @@ ledger:register()
 M.notes = {
 	{ pos = Position(33401, 32660, 5), text = "chef" }, -- kitchen book, next to the cauldron (BR)
 	{ pos = Position(33405, 32648, 4), text = "knightly" }, -- book in the locked room (BR)
-	{ pos = Position(33300, 31196, 9), text = "zao" }, -- Gaffir's secret room: almanac on the stand, the book on the left (BR)
 }
 
 local notes = Action()
@@ -492,7 +491,10 @@ M.carpet = {
 }
 M.secretRoom = { from = Position(33296, 31190, 9), to = Position(33308, 31202, 9) }
 M.secretArrival = Position(33302, 31197, 9)
-M.secretExit = Position(33394, 32670, 4) -- the fire portal's destination
+-- the fire portal's destination: in front of the room's exit, the opening in the west wall
+-- (Tibia video from Rodrigo, 2026-11-16; the map portal pointed at the carpet)
+M.secretExit = Position(33390, 32674, 4)
+M.firePortal = Position(33302, 31199, 9)
 M.secretTime = 3 * 60 -- seconds (EN)
 M.timeDistortAlmanac = 31908
 
@@ -542,17 +544,79 @@ for _, p in ipairs(M.carpet) do
 end
 carpet:register()
 
-local almanac = Action()
-function almanac.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+-- Note 4/4: the Time Distort Almanac on the stand (TibiaWiki EN) and the book shelf on the left
+-- (BR: "clicando no livro à esquerda") give a parchment once ("You have found a parchment.",
+-- Tibia video); afterwards Tibia's own line "The the Time Distort Almanac is empty.".
+-- Our map had a pickupable Spatial Warp Almanac on the stand; it becomes the Time Distort
+-- Almanac at startup.
+M.almanacStand = Position(33300, 31196, 9)
+M.zaoSpots = { M.almanacStand, Position(33299, 31197, 9), Position(33299, 31198, 9) }
+M.spatialWarpAlmanac = 28853
+
+function M.takeZaoNote(player)
+	local kv = player:kv():scoped("family-cobra")
+	if kv:get("zao-note") then
+		msg(player, "The the Time Distort Almanac is empty.")
+		return false
+	end
+	local note = player:addItem(2819, 1)
+	if not note then
+		player:sendCancelMessage("You have no room or not enough capacity to take it.") -- ours
+		return false
+	end
+	note:setAttribute(ITEM_ATTRIBUTE_TEXT, M.texts.zao)
+	kv:set("zao-note", 1)
+	msg(player, "You have found a parchment.")
+	return true
+end
+
+local zao = Action()
+function zao.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not on() then
+		return false
+	end
+	M.takeZaoNote(player)
+	return true
+end
+for _, p in ipairs(M.zaoSpots) do
+	zao:position(p)
+end
+zao:register()
+
+-- Avid Spectral Reader: read a Spatial Warp Almanac (Grand Master Oberon's loot, EN)
+-- inside the secret room (EN/BR); where it "takes" you is unknown, so you stay (ours)
+local warp = Action()
+function warp.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if not on() or not player:getPosition():isInRange(M.secretRoom.from, M.secretRoom.to) then
 		return false
 	end
 	player:getPosition():sendMagicEffect(CONST_ME_PURPLEENERGY)
 	player:addAchievement("Avid Spectral Reader")
+	msg(player, "The pages flicker and for a moment the room bends around you.") -- ours
 	return true
 end
-almanac:id(M.timeDistortAlmanac)
-almanac:register()
+warp:id(M.spatialWarpAlmanac)
+warp:register()
+
+function M.setupHideout()
+	local done = 0
+	local tile = Tile(M.almanacStand)
+	local book = tile and tile:getItemById(M.spatialWarpAlmanac)
+	if book then
+		book:transform(M.timeDistortAlmanac)
+		done = done + 1
+	elseif tile and not tile:getItemById(M.timeDistortAlmanac) then
+		Game.createItem(M.timeDistortAlmanac, 1, M.almanacStand)
+		done = done + 1
+	end
+	local ptile = Tile(M.firePortal)
+	local portal = ptile and ptile:getItemById(25053)
+	if portal and portal.setDestination then
+		portal:setDestination(M.secretExit)
+		done = done + 1
+	end
+	return done
+end
 
 -- Chess -----------------------------------------------------------------------------
 
@@ -790,7 +854,8 @@ function startup.onStartup()
 		return true
 	end
 	local done = M.setupMap()
-	logger.info("[Family] Cobra Bastion: {} doors set up", done)
+	local hideout = M.setupHideout()
+	logger.info("[Family] Cobra Bastion: {} doors set up, {} hideout fixes", done, hideout)
 	return true
 end
 startup:register()
