@@ -163,4 +163,5 @@ FamilyChangelog = {
 	{ "2026-11-16", "Hive bosses: Chopper, Fleshslicer, Maw, Mindmasher, Rotspit and Shadowstalker now live in the Hive underground while the Hive is in its third stage (back 2 hours after a kill, with dung balls for the war), and The Hungerer, The Manhunter or The Mean Masher sometimes appear on the bottom floor of the Hive Outpost." },
 	{ "2026-11-16", "Hot Cuisine Quest: Jean Pierre is home all year and cooks any dish he has taught you again whenever you bring the ingredients (no more once a year); he tells you which ingredients are missing, teaches the new Zaoan Sauce, gives Culinary Master, and the juice squeezer finally makes coconut milk." },
 	{ "2026-11-16", "Pot of Blackjack: a pot now lasts four gulps of 5000 health each, as in Tibia, instead of disappearing at the first one." },
+	{ "2026-11-16", "Market: it now also sells the quest items of the newer quests (among them the bottled dragon breath, the raccoon backpack and the Pirate's Tail necklaces, the transcendence potion, the Grimvale lizard trophies and the Postman items), like every other quest item." },
 }

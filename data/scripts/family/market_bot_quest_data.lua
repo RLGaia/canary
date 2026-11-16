@@ -45,6 +45,7 @@ return {
 	[948] = true, -- pure energy
 	[953] = true, -- nail
 	[1781] = true, -- small stone
+	[2469] = true, -- box
 	[2848] = true, -- purple tome
 	[2853] = true, -- bag
 	[2854] = true, -- backpack
@@ -98,6 +99,7 @@ return {
 	[3056] = true, -- bronze amulet
 	[3058] = true, -- strange symbol
 	[3059] = true, -- spellbook
+	[3065] = true, -- terra rod
 	[3066] = true, -- snakebite rod
 	[3068] = true, -- crystal wand
 	[3073] = true, -- wand of cosmic energy
@@ -116,8 +118,11 @@ return {
 	[3093] = true, -- club ring
 	[3097] = true, -- dwarven ring
 	[3098] = true, -- ring of healing
+	[3104] = true, -- banana skin
+	[3105] = true, -- dirty fur
 	[3114] = true, -- skull
 	[3115] = true, -- bone
+	[3120] = true, -- mouldy cheese
 	[3123] = true, -- worn leather boots
 	[3129] = true, -- some leaves
 	[3147] = true, -- blank rune
@@ -290,6 +295,7 @@ return {
 	[4839] = true, -- hydra egg
 	[4840] = true, -- spectral stone
 	[4842] = true, -- sheet of tracing paper
+	[4844] = true, -- elven poetry book
 	[4845] = true, -- dwarven pickaxe
 	[4852] = true, -- ectoplasm container
 	[4863] = true, -- butterfly conservation kit
@@ -321,8 +327,10 @@ return {
 	[5892] = true, -- huge chunk of crude iron
 	[5894] = true, -- bat wing
 	[5895] = true, -- fish fin
+	[5897] = true, -- wolf paw
 	[5898] = true, -- bonelord eye
 	[5899] = true, -- turtle shell
+	[5901] = true, -- wood
 	[5906] = true, -- demon dust
 	[5908] = true, -- obsidian knife
 	[5909] = true, -- white piece of cloth
@@ -409,6 +417,7 @@ return {
 	[7529] = true, -- piece of a broken amulet
 	[7530] = true, -- piece of a broken amulet
 	[7532] = true, -- Koshei's ancient amulet
+	[7643] = true, -- ultimate health potion
 	[7644] = true, -- antidote potion
 	[7773] = true, -- steel axe
 	[7774] = true, -- jagged sword
@@ -455,6 +464,7 @@ return {
 	[9088] = true, -- northern fishburger
 	[9106] = true, -- molten wax
 	[9114] = true, -- wooden ties
+	[9128] = true, -- hat for Eclesius
 	[9172] = true, -- prison cell key
 	[9308] = true, -- nautical map
 	[9389] = true, -- fan doll of King Tibianus
@@ -621,6 +631,7 @@ return {
 	[21203] = true, -- glooth bag
 	[21333] = true, -- belongings of a deceased
 	[21470] = true, -- simple arrow
+	[21766] = true, -- glass tube
 	[21801] = true, -- seacrest hair
 	[21975] = true, -- peacock feather fan
 	[21982] = true, -- nightmare teddy
@@ -672,6 +683,7 @@ return {
 	[31573] = true, -- sun medal
 	[31574] = true, -- sunray emblem
 	[31576] = true, -- the Regalia of Suon
+	[31678] = true, -- cobra crest
 	[34082] = true, -- soulcutter
 	[34083] = true, -- soulshredder
 	[34084] = true, -- soulbiter
@@ -690,8 +702,21 @@ return {
 	[34097] = true, -- pair of soulwalkers
 	[34098] = true, -- pair of soulstalkers
 	[34099] = true, -- soulbastion
+	[34100] = true, -- Katex' blood
+	[34101] = true, -- Utua's poison
+	[34102] = true, -- Yirkas' egg
+	[34103] = true, -- Srezz' eye
 	[35562] = true, -- quiver
+	[35577] = true, -- raccoon backpack
+	[35604] = true, -- sapphire necklace
+	[35605] = true, -- emerald necklace
+	[35606] = true, -- garnet necklace
+	[35607] = true, -- diamond necklace
+	[35608] = true, -- rhodolith necklace
+	[35609] = true, -- amethyst necklace
+	[44179] = true, -- bottled dragon breath
 	[48115] = true, -- taiyaki
+	[49271] = true, -- transcendence potion
 	[50263] = true, -- merudri scale mail
 	[50267] = true, -- boots of enlightenment
 	[50268] = true, -- robe of enlightenment
