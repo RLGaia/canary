@@ -57,6 +57,12 @@ travelNode:addChildKeyword({ "no" }, StdModule.say, { npcHandler = npcHandler, r
 keywordHandler:addKeyword({ "passage" }, StdModule.say, { npcHandler = npcHandler, text = "I can travel you to {Tibia}." })
 keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "I can travel you to {Tibia}." })
 
+-- FAMILY: no trip back for trespassers of the monks' floors until Costello's fine is paid
+-- (lib/others/family_white_raven.lua; TibiaWiki BR/EN line), 2026-11-16
+npcHandler:setCallback(CALLBACK_ON_SAY, function(npc, creature, msgType, message)
+	return FamilyWhiteRaven.captainJackOnSay(npc, Player(creature), message, npcHandler)
+end)
+
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

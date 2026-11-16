@@ -165,4 +165,5 @@ FamilyChangelog = {
 	{ "2026-11-16", "Pot of Blackjack: a pot now lasts four gulps of 5000 health each, as in Tibia, instead of disappearing at the first one." },
 	{ "2026-11-16", "Market: it now also sells the quest items of the newer quests (among them the bottled dragon breath, the raccoon backpack and the Pirate's Tail necklaces, the transcendence potion, the Grimvale lizard trophies and the Postman items), like every other quest item." },
 	{ "2026-11-16", "The White Raven Monastery Quest: the dead monk's diary is no longer blank (quest books from bodies and chests keep their text), Dalbrect offers his friends the trip with his real words, Costello no longer restarts the investigation when asked again, and the quest now shows as completed in the quest log." },
+	{ "2026-11-16", "Isle of the Kings: the bookcase next to Costello now hides Key 3350, which opens the way up to the monks' floors (with monks living there now). But beware: trespassers must pay Costello a fine (crime or absolution) before Captain Jack or Dalbrect will sail them again." },
 }

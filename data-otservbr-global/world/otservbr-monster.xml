@@ -187254,4 +187254,23 @@
 		<monster name="Quara Hydromancer" x="0" y="0" z="13" spawntime="90" />
 		<monster name="Quara Hydromancer" x="-1" y="-1" z="13" spawntime="90" />
 	</monster>
+	<!-- FAMILY: Isle of the Kings, monks on the monastery's restricted floors (2026-11-16; TibiaWiki BR/EN: monks live upstairs; number and places are ours). data-otservbr-global/lib/others/family_white_raven.lua -->
+	<monster centerx="32175" centery="31926" centerz="5" radius="2">
+		<monster name="Monk" x="0" y="0" z="5" spawntime="90" />
+	</monster>
+	<monster centerx="32172" centery="31930" centerz="5" radius="2">
+		<monster name="Monk" x="0" y="0" z="5" spawntime="90" />
+	</monster>
+	<monster centerx="32178" centery="31931" centerz="5" radius="2">
+		<monster name="Monk" x="0" y="0" z="5" spawntime="90" />
+	</monster>
+	<monster centerx="32175" centery="31934" centerz="5" radius="2">
+		<monster name="Monk" x="0" y="0" z="5" spawntime="90" />
+	</monster>
+	<monster centerx="32175" centery="31926" centerz="4" radius="2">
+		<monster name="Monk" x="0" y="0" z="4" spawntime="90" />
+	</monster>
+	<monster centerx="32179" centery="31930" centerz="4" radius="2">
+		<monster name="Monk" x="0" y="0" z="4" spawntime="90" />
+	</monster>
 </monsters>

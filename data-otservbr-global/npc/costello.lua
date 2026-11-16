@@ -136,6 +136,13 @@ npcHandler:setMessage(MESSAGE_GREET, "Welcome, |PLAYERNAME|! Feel free to tell m
 npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye, |PLAYERNAME|!") -- FAMILY: TibiaWiki BR and EN, 2026-11-16
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+-- FAMILY: trespassers of the monks' floors only hear about the fine (lib/others/family_white_raven.lua), 2026-11-16
+npcHandler:setCallback(CALLBACK_GREET, function(npc, creature)
+	return FamilyWhiteRaven.costelloGreet(npc, Player(creature), npcHandler)
+end)
+npcHandler:setCallback(CALLBACK_ON_SAY, function(npc, creature, msgType, message)
+	return FamilyWhiteRaven.costelloOnSay(npc, Player(creature), message, npcHandler)
+end)
 
 -- Dialogue keywords the NPC answers on the official server
 keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "My name is Costello." })

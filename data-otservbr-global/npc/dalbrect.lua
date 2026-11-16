@@ -108,6 +108,15 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
+-- FAMILY: no trip for trespassers of the monks' floors until Costello's fine is paid (TibiaWiki EN: Dalbrect
+-- refuses them; the line is ours; lib/others/family_white_raven.lua), 2026-11-16
+keywordHandler:addKeyword({ "passage" }, StdModule.say, {
+	npcHandler = npcHandler,
+	text = FamilyWhiteRaven.lines.dalbrect,
+}, function(player)
+	return FamilyWhiteRaven.dalbrectRefuses(player)
+end)
+
 keywordHandler:addKeyword({ "passage" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "I have only sailed to the isle of the kings once or twice. \z

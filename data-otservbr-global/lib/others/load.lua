@@ -20,3 +20,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_sorcerer.lua") -- FAMILY: The Scatt
 dofile(DATA_DIRECTORY .. "/lib/others/family_ice_islands.lua") -- FAMILY: The Ice Islands Quest fixes (Nilsor in any order, gathering, hoist, lore words)
 dofile(DATA_DIRECTORY .. "/lib/others/family_hive.lua") -- FAMILY: War Against the Hive Quest (Orockle, missions, Hive stages, hive gates, guides)
 dofile(DATA_DIRECTORY .. "/lib/others/family_hot_cuisine.lua") -- FAMILY: Hot Cuisine Quest review, dishes at any time (Jean Pierre)
+dofile(DATA_DIRECTORY .. "/lib/others/family_white_raven.lua") -- FAMILY: Isle of the Kings, Key 3350, trespassers and Costello's fine
