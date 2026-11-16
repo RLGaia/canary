@@ -70,7 +70,7 @@ NPCs (unrelated words, wrong word, present, secret word), Curos, Ztiss, Chrak an
 steps set as storages), with the TibiaWiki EN/BR lines, Ongulf's greeting per floor and the
 Melfar regression: `luajit tools/family/npc_talk/new_frontier.lua`.
 
-`ice_islands.lua` is The Ice Islands Quest check (2026-11-16, 165 checks; 364 with the EN transcripts):
+`ice_islands.lua` is The Ice Islands Quest check (2026-11-16, 172 checks; 371 with the EN transcripts; gathering by day/night and the 5-minute wait included):
 one character plays the Barbarian Test talk and the whole quest with Sven, Iskan, A Starving Dog,
 Hjaern, Siflind, Nilsor (ingredients in any order), Lurik, Nor and A Restless Soul, the real termite
 jug, paint, frost charm and hoist scripts and the gathering of Nilsor's ingredients, old characters in

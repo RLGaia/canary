@@ -86,7 +86,9 @@ local quest = {
 			states = {
 				[1] = "Nilsor needs 7 ingredients to cure his dogs: a part of the sun adorer cactus, a vial of geyser water, \z
 					fine sulphur of an inactive lava hole, a frostbite herb, a blossom of a purple kiss, a hydra tongue and \z
-					spores of a giant glimmercap mushroom. Bring them in any order and talk to him about each one.",
+					spores of a giant glimmercap mushroom. Bring them in any order and talk to him about each one. \z
+					The cactus, the blossom and the geyser water can only be taken by day, the frostbite herb by night, \z
+					and only one ingredient every 5 minutes.",
 				[2] = "You brought Nilsor 1 of the 7 ingredients for the medicine. Ask him about his mission to hear what is still missing.",
 				[3] = "You brought Nilsor 2 of the 7 ingredients for the medicine. Ask him about his mission to hear what is still missing.",
 				[4] = "You brought Nilsor 3 of the 7 ingredients for the medicine. Ask him about his mission to hear what is still missing.",

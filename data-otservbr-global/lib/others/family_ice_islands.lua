@@ -21,12 +21,20 @@
 --     Foolish Quest's sulphur once you had Ice Islands mission 5.
 -- Switch: Family.iceIslandsFixes (false = upstream code everywhere it is used).
 --
+-- Gathering rules (2026-11-16, asked by Rodrigo): one ingredient every 5 minutes, shared by the
+-- spoon, the knife and Nilsor's waterskin ("You might try again later.": EN; BR "tempo de espera
+-- compartilhado de 5 minutos"); the sun adorer cactus, the purple kiss and the geyser only by day,
+-- the frostbite herb only by night (BR; EN says it for the purple kiss and the herb). Tibian day
+-- 06:00-18:00 world time, as Family.isNight. The wrong-time messages are ours.
+-- Switch: Family.iceIslandsGatherRules.
+--
 -- Lore words of Sven, Hjaern, Siflind and Nilsor from the EN transcripts.
 -- Switch: Family.iceIslandsAnswers.
 
 Family = Family or {}
 Family.iceIslandsFixes = true
 Family.iceIslandsAnswers = true
+Family.iceIslandsGatherRules = true
 
 FamilyIceIslands = FamilyIceIslands or {}
 local F = FamilyIceIslands
@@ -287,13 +295,59 @@ local function revert(position, fromId, toId)
 end
 
 F.gathering = {
-	-- target item id: tool, ingredient index, message, effect, transform (temporarily)
+	-- target item id: tool, ingredient index, message, effect, transform (temporarily), time of day
 	[3920] = { tool = SPOONS, index = 7, text = "You retrieve spores from a mushroom.", effect = "red" },
 	[390] = { tool = SPOONS, index = 3, text = "You retrieve a fine sulphur from a lava hole.", effect = "red" },
-	[7261] = { tool = KNIFES, index = 4, text = "You cut a leaf from a frostbite herb.", effect = "blue" },
-	[3647] = { tool = KNIFES, index = 1, text = "You cut a flower from a cactus.", effect = "green", transform = 3646 },
-	[3753] = { tool = KNIFES, index = 5, text = "You cut a flower from a bush.", effect = "green", transform = 3750 },
+	[7261] = { tool = KNIFES, index = 4, text = "You cut a leaf from a frostbite herb.", effect = "blue", time = "night" },
+	[3647] = { tool = KNIFES, index = 1, text = "You cut a flower from a cactus.", effect = "green", transform = 3646, time = "day" },
+	[3753] = { tool = KNIFES, index = 5, text = "You cut a flower from a bush.", effect = "green", transform = 3750, time = "day" },
 }
+
+F.GATHER_WAIT = 5 * 60 -- seconds between two ingredients (EN/BR)
+
+function F.isNight()
+	local minutes = getWorldTime()
+	return minutes < 6 * 60 or minutes > 18 * 60
+end
+
+-- Time of day and the shared wait. Returns true when the player may gather now; else says why.
+function F.mayGather(player, time)
+	if not Family.iceIslandsGatherRules then
+		return true
+	end
+	if time == "day" and F.isNight() then
+		player:say("You can only do this during the day.", TALKTYPE_MONSTER_SAY) -- ours
+		return false
+	elseif time == "night" and not F.isNight() then
+		player:say("You can only do this during the night.", TALKTYPE_MONSTER_SAY) -- ours
+		return false
+	end
+	local last = tonumber(kv(player):get("gathered")) or 0
+	if os.time() < last + F.GATHER_WAIT then
+		player:say("You might try again later.", TALKTYPE_MONSTER_SAY) -- EN
+		return false
+	end
+	return true
+end
+
+function F.gathered(player)
+	kv(player):set("gathered", os.time())
+end
+
+-- Nilsor's waterskin on an inactive geyser (scripts/quests/the_ice_islands_quest/actions_cure.lua).
+function F.fillWaterskin(player, item, toPosition)
+	if not F.needed(player, 2) or player:getItemCount(F.ingredients[2].item) > 0 then
+		return true -- nothing needed: the waterskin stays empty
+	end
+	if not F.mayGather(player, "day") then
+		return true
+	end
+	toPosition:sendMagicEffect(CONST_ME_MAGIC_BLUE)
+	player:say("You take some hot water from the geyser.", TALKTYPE_MONSTER_SAY)
+	item:transform(F.ingredients[2].item)
+	F.gathered(player)
+	return true
+end
 
 function F.gather(player, item, target, toPosition)
 	if not Family.iceIslandsFixes or not target or not target.getId then
@@ -309,6 +363,10 @@ function F.gather(player, item, target, toPosition)
 		-- not for this quest now: the 3920 mushroom stays silent as upstream, the others go on to their other quests
 		return targetId == 3920
 	end
+	if not F.mayGather(player, g.time) then
+		return true
+	end
+	F.gathered(player)
 	player:addItem(ing.item, 1)
 	local effects = { red = CONST_ME_MAGIC_RED, blue = CONST_ME_MAGIC_BLUE, green = CONST_ME_MAGIC_GREEN }
 	toPosition:sendMagicEffect(effects[g.effect])

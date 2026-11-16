@@ -303,21 +303,50 @@ end
 
 -- ------------------------------------------------------------------ gathering the ingredients
 do
+	local worldMinutes = 12 * 60
+	getWorldTime = function() return worldMinutes end
 	local g = player({ storage = { [S.Questline] = 21 } })
 	local function target(id) return { itemid = id, getId = function() return id end, transform = function() end } end
 	local function tool(id) return { itemid = id, getId = function() return id end } end
+	local function said() return g.said[#g.said] or "" end
+	local function wait() g:kv():scoped():set("gathered", os.time() - F.GATHER_WAIT) end
 	check("Gather: spores with a spoon", F.gather(g, tool(3468), target(3920), pos()) and g.items[7251] == 1)
 	check("Gather: no second spores while carrying them", F.gather(g, tool(3468), target(3920), pos()) and g.items[7251] == 1)
 	g.items[7251] = 0
-	check("Gather: lost spores can be gathered again (upstream: once per character)", F.gather(g, tool(3468), target(3920), pos()) and g.items[7251] == 1)
+	check("Gather: lost spores again, but only after 5 minutes (EN message)", F.gather(g, tool(3468), target(3920), pos()) and (g.items[7251] or 0) == 0 and said() == "You might try again later.", said())
+	wait()
+	check("Gather: lost spores after the wait (upstream: once per character)", F.gather(g, tool(3468), target(3920), pos()) and g.items[7251] == 1)
+	check("Gather: the wait is shared with the knife", F.gather(g, tool(3469), target(3753), pos()) and (g.items[7249] or 0) == 0 and said() == "You might try again later.", said())
+	wait()
 	check("Gather: sulphur with a spoon", F.gather(g, tool(3468), target(390), pos()) and g.items[7247] == 1)
-	check("Gather: cactus with the squeezing gear (BR)", F.gather(g, tool(9596), target(3647), pos()) and g.items[7245] == 1)
-	check("Gather: frostbite herb with a knife", F.gather(g, tool(3469), target(7261), pos()) and g.items[7248] == 1)
-	check("Gather: blossom with the whacking driller (knife)", F.gather(g, tool(9598), target(3753), pos()) and g.items[7249] == 1)
+	wait()
+	check("Gather: cactus with the squeezing gear by day (BR)", F.gather(g, tool(9596), target(3647), pos()) and g.items[7245] == 1)
+	wait()
+	check("Gather: frostbite herb refused by day (BR/EN)", F.gather(g, tool(3469), target(7261), pos()) and (g.items[7248] or 0) == 0 and has(said(), "during the night"), said())
+	worldMinutes = 22 * 60
+	check("Gather: frostbite herb by night", F.gather(g, tool(3469), target(7261), pos()) and g.items[7248] == 1)
+	wait()
+	check("Gather: purple kiss refused by night (BR/EN)", F.gather(g, tool(9598), target(3753), pos()) and (g.items[7249] or 0) == 0 and has(said(), "during the day"), said())
+	worldMinutes = 7 * 60
+	check("Gather: blossom with the whacking driller (knife) by day", F.gather(g, tool(9598), target(3753), pos()) and g.items[7249] == 1)
 	check("Gather: no spoon in the whacking driller (BR)", not F.gather(g, tool(9598), target(390), pos()))
+	-- geyser water with the real script
+	dofile("data-otservbr-global/scripts/quests/the_ice_islands_quest/actions_cure.lua")
+	wait()
+	worldMinutes = 3 * 60
+	g.items[7286] = 1
+	useItem(g, 7286, { itemid = 7106 })
+	check("Geyser: refused by night (BR)", g.items[7286] == 1 and has(said(), "during the day"), said())
+	worldMinutes = 13 * 60
+	useItem(g, 7286, { itemid = 7106 })
+	check("Geyser: water by day", g.items[7286] == 0 and g.items[7246] == 1)
+	g.items[7286], g.items[7246] = 1, 0
+	useItem(g, 7286, { itemid = 7106 })
+	check("Geyser: the shared wait", g.items[7286] == 1 and said() == "You might try again later.", said())
 	local done = player({ storage = { [S.Questline] = 29 } })
 	check("Gather: lava hole after the mission goes on to What a Foolish Quest", not F.gather(done, tool(3468), target(390), pos()) and (done.items[7247] or 0) == 0)
 	check("Gather: cactus after the mission goes on to other quests", not F.gather(done, tool(3469), target(3647), pos()))
+	worldMinutes = 12 * 60
 end
 
 -- ------------------------------------------------------------------ The Secret of Helheim
