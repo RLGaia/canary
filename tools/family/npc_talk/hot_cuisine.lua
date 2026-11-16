@@ -272,6 +272,49 @@ do
 	Family.hotCuisineAnytime = true
 end
 
+-- ---------------------------------------------------------------- Pot of Blackjack: 4 gulps (EN)
+do
+	local onUse
+	local savedAction = Action
+	Action = function()
+		local a = {}
+		function a:id() end
+		function a:register() onUse = self.onUse end
+		return a
+	end
+	CONST_ME_MAGIC_GREEN = CONST_ME_MAGIC_GREEN or 13
+	TALKTYPE_MONSTER_SAY = TALKTYPE_MONSTER_SAY or 36
+	MESSAGE_EVENT_ADVANCE = MESSAGE_EVENT_ADVANCE or 19
+	dofile("data/scripts/actions/items/pot_of_blackjack.lua")
+	Action = savedAction
+	local eater = player({ level = 100, health = 100, maxHealth = 20000 })
+	local exhausted = false
+	eater.hasExhaustion = function() return exhausted end
+	eater.setExhaustion = function() exhausted = true end
+	eater.say = function() end
+	local pots = 2
+	local pot = { remove = function() pots = pots - 1 end }
+	local healed = true
+	for gulp = 1, 4 do
+		exhausted = false
+		eater.health = 100
+		onUse(eater, pot)
+		healed = healed and eater.health == 5100
+		local msg = eater.log[#eater.log]
+		if gulp < 4 then
+			check(("blackjack gulp %d: still some left, pot kept"):format(gulp), pots == 2 and msg:find("still some blackjack", 1, true), msg)
+		else
+			check("blackjack gulp 4: no leftovers, pot gone", pots == 1 and msg:find("No leftovers!", 1, true), msg)
+		end
+	end
+	check("blackjack heals 5000 every gulp", healed)
+	onUse(eater, pot)
+	check("blackjack: 10-minute food wait", pots == 1 and eater.log[#eater.log]:find("wait", 1, true))
+	exhausted = false
+	onUse(eater, pot)
+	check("blackjack: the next pot starts again at gulp 1", pots == 1 and eater.log[#eater.log]:find("still some blackjack", 1, true))
+end
+
 -- ---------------------------------------------------------------- {words}
 npc.path = "data-otservbr-global/lib/others/family_hot_cuisine.lua"
 T.checkHints(npc, function()
