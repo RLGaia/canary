@@ -447,6 +447,11 @@ function H.gatePass(player, itemId, gatePos, fromPos)
 	if player:getGroup():getAccess() then
 		return true
 	end
+	-- only the Hive on Quirefang: the hive gates of the Hive Outpost (Vandura) stay open to everyone
+	local a = H.AREA
+	if gatePos.x < a.x1 or gatePos.x > a.x2 or gatePos.y < a.y1 or gatePos.y > a.y2 then
+		return true
+	end
 	local key, axis = gateKey(itemId, gatePos)
 	local db = H.kv(player)
 	local outside = tonumber(db:get(key))
