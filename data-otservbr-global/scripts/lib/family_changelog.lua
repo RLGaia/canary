@@ -156,4 +156,5 @@ FamilyChangelog = {
 	{ "2026-11-15", "The Scatterbrained Sorcerer: Samael now screams from his cage (heard near the cellar, in the Thais sewers and in the Thais prison), and the dating questionnaire can also have tolerance or loneliness as the common answer." },
 	{ "2026-11-15", "The Scatterbrained Sorcerer: the third mission now takes you into Eclesius' crack in the space-time continuum, a small room in the void under his house, instead of his laboratory." },
 	{ "2026-11-16", "Cobra Bastion: in Gaffir's secret room the almanac now gives the last note as a parchment, and the fire portal takes you back in front of the exit of Gaffir's room instead of onto the carpet." },
+	{ "2026-11-16", "Blood Brothers Quest: Armenius' cellar (where he shows his true face) is now the whole room, as in Tibia: its western half with the barrels, two wall torches and a blue forcefield that takes you back out to the tavern." },
 }

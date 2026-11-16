@@ -24,7 +24,8 @@
 --   * The courtyard door (32953,31451,4) opens after Julius' crest (BR).
 --   * His True Face: on the second "alori mort" Armenius may show his true face
 --     (FamilyBloodBrothers.TRUE_FACE_CHANCE, ours; EN: "very rarely") and you fight him in his
---     cellar under the tavern (32856-32861,31321-31326,8), teleported out when he dies (EN).
+--     cellar under the tavern (32852-32861,31321-31326,8, completed at startup), teleported out
+--     when he dies (EN) or through the blue forcefield on its west side.
 -- Lines marked "ours" are not in either wiki.
 
 local B = FamilyBloodBrothers
@@ -105,14 +106,101 @@ for key, room in pairs(B.rooms) do
 	room.key = key
 end
 
+-- Armenius' cellar. Our map has only the eastern six of its ten columns (x 32856-32861; x 32852-32855
+-- have no tiles, and the west wall, two torches and the exit are missing). The room as in Tibia
+-- (TibiaWiki EN "Armenius True Face.png" and a 2026 video from Rodrigo): the tavern's footprint one
+-- floor down, west wall at x 32851 with two torches, brown barrels in the north-west, pale barrels
+-- in the south-west and a blue magic forcefield on the west side. B.buildCellar() adds the missing
+-- part at startup, wall pieces copied from the tavern above (z7).
 B.cellar = {
-	from = Position(32856, 31321, 8),
+	from = Position(32852, 31321, 8),
 	to = Position(32861, 31326, 8),
 	player = Position(32857, 31325, 8),
 	monster = Position(32857, 31322, 8),
 	out = Position(32857, 31328, 7),
+	exit = Position(32852, 31323, 8), -- magic forcefield (1949) back to the tavern
 	minutes = 5, -- ours
 }
+
+local VOID, WOOD = 4427, 8308 -- red earth around the cellar, wooden floor
+local CELLAR_PARTS = {
+	-- { x, y, ground, items... } on floor 8
+	{ 32851, 31320, VOID, 8203 }, -- north-west corner post (z7: 8203)
+	{ 32852, 31320, VOID, 8202 },
+	{ 32853, 31320, VOID, 8202 },
+	{ 32854, 31320, VOID, 8202 },
+	{ 32855, 31320, VOID, 8202 },
+	{ 32851, 31321, VOID, 8201 },
+	{ 32851, 31322, VOID, 8201, 2931 }, -- lit torch bearer (z7 and the video)
+	{ 32851, 31323, VOID, 8201 },
+	{ 32851, 31324, VOID, 8201 },
+	{ 32851, 31325, VOID, 8201, 2931 },
+	{ 32851, 31326, VOID, 8201 },
+	{ 32851, 31327, VOID, 8206 }, -- south-west corner (z7: 8206)
+	{ 32852, 31327, WOOD, 8202 },
+	{ 32853, 31327, WOOD, 8202 },
+	{ 32854, 31327, WOOD, 8202 },
+	{ 32855, 31327, WOOD, 8202 },
+	{ 32856, 31327, WOOD, 8202 },
+	{ 32852, 31321, WOOD, 2519, 2519 }, -- brown barrels (2519) in the north-west
+	{ 32853, 31321, WOOD, 2519 },
+	{ 32852, 31322, WOOD, 2519 },
+	{ 32852, 31324, WOOD, 2523 }, -- pale barrels (2523) in the south-west
+	{ 32852, 31325, WOOD, 2523 },
+	{ 32853, 31325, WOOD, 2523 },
+}
+
+-- returns the number of squares changed (0 when the map already has the room)
+function B.buildCellar()
+	local first = Tile(Position(32852, 31321, 8))
+	if first and first:getGround() then
+		return 0
+	end
+	local placed = {}
+	local function ensureGround(pos, ground)
+		local tile = Tile(pos) or Game.createTile(pos)
+		if tile and not tile:getGround() then
+			Game.createItem(ground, 1, pos)
+		end
+		return tile
+	end
+	local n = 0
+	for _, part in ipairs(CELLAR_PARTS) do
+		local pos = Position(part[1], part[2], 8)
+		ensureGround(pos, part[3])
+		for i = 4, #part do
+			Game.createItem(part[i], 1, pos)
+		end
+		placed[pos.x .. ":" .. pos.y] = true
+		n = n + 1
+	end
+	-- wooden floor for the rest of the room
+	for x = 32852, 32861 do
+		for y = 31321, 31326 do
+			if not placed[x .. ":" .. y] then
+				local tile = Tile(Position(x, y, 8))
+				if not tile or not tile:getGround() then
+					ensureGround(Position(x, y, 8), WOOD)
+					n = n + 1
+				end
+			end
+		end
+	end
+	-- red earth for the empty squares around it (the void the client draws around the room)
+	for x = 32847, 32866 do
+		for y = 31314, 31331 do
+			local tile = Tile(Position(x, y, 8))
+			if not tile or not tile:getGround() then
+				ensureGround(Position(x, y, 8), VOID)
+			end
+		end
+	end
+	local exit = Game.createItem(1949, 1, B.cellar.exit)
+	if exit and exit.setDestination then
+		exit:setDestination(B.cellar.out)
+	end
+	return n
+end
 
 local function isPlayerOk(creature)
 	return creature and creature:isPlayer()
@@ -680,7 +768,7 @@ end
 
 function B.leaveCellar()
 	local c = B.cellar
-	for _, p in ipairs(Game.getSpectators(Position(32858, 31323, 8), false, true, 4, 4, 4, 4)) do
+	for _, p in ipairs(Game.getSpectators(Position(32856, 31323, 8), false, true, 6, 6, 4, 4)) do
 		if B.inBox(p:getPosition(), c.from, c.to) then
 			p:teleportTo(c.out)
 			c.out:sendMagicEffect(CONST_ME_TELEPORT)
@@ -750,6 +838,10 @@ function check.onStartup()
 	end
 	if missing == 0 then
 		logger.info("[FamilyBloodBrothers] castle checked")
+	end
+	local built = B.buildCellar()
+	if built > 0 then
+		logger.info("[FamilyBloodBrothers] Armenius' cellar completed ({} squares)", built)
 	end
 	return true
 end
