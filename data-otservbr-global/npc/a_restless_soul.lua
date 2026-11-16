@@ -51,9 +51,13 @@ local function greetCallback(npc, creature)
 
 	if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) < 37 then
 		npcHandler:setMessage(MESSAGE_GREET, "Uhhhh...")
-		return false
+		-- FAMILY: upstream returned false here, so "Uhhhh..." was never said, yet the talk started silently
+		return Family ~= nil and Family.iceIslandsFixes == true
 	elseif player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 37 then
 		npcHandler:setMessage(MESSAGE_GREET, "Ahhhh! At last someone that can listen to my {story}!")
+	else
+		-- FAMILY: upstream kept the greeting of the last player who talked to him (ours, 2026-11-16)
+		npcHandler:setMessage(MESSAGE_GREET, "Hjaern and the other shamans must learn about it! Hurry before its too late.")
 	end
 	return true
 end
@@ -77,6 +81,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 38)
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission10, 2) -- Questlog The Ice Islands Quest, Formorgar Mines 2: Ghostwhisperer
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission11, 1) -- Questlog The Ice Islands Quest, Formorgar Mines 3: The Secret
+			player:addAchievement("Ghostwhisperer") -- FAMILY: TibiaWiki EN (2026-11-16)
+		elseif player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) > 37 then
+			npcHandler:say("Their plan is to create a new demon army for their master to conquer the world. Hjaern and the other shamans must learn about it! Hurry before its too late.", npc, creature) -- FAMILY: EN line again
 		end
 	end
 

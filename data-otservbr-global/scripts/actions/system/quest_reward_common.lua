@@ -37,6 +37,13 @@ They are fighting about power and influence but unity is the key to success. Our
 All our rituals and procedures rooted on unity and sharing, they can't neglect that.
 ]],
 	},
+	-- FAMILY: Instructions to the Formorgar Mines Hoist (TibiaWiki EN book text, 2026-11-16)
+	[6214] = {
+		text = [[
+.... the lever points  to the left, the hoist will bring you one level higher. If it points to the right you will go one level deeper.
+
+These are the construction plans of the hoist. You now understand the mechanism and can use it according to your wishes.]],
+	},
 	[6183] = {
 		text = [[
 Looks like the fox is out!

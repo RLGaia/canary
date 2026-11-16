@@ -1982,7 +1982,9 @@ ChestUnique = {
 		itemPos = { x = 32027, y = 31104, z = 11 },
 		reward = { { 2820, 1 } },
 		weight = 0.50,
-		storage = Storage.Quest.U8_0.TheIceIslands.FormorgarGlacierChest,
+		-- FAMILY: the box of the Formorgar Mines Hoist instructions (TibiaWiki EN 32029,31110,11); upstream set
+		-- FormorgarGlacierChest, which the hoist never checked (2026-11-16). Text in quest_reward_common.lua.
+		storage = Storage.Quest.U8_0.TheIceIslands.FormorgarMinesHoistChest,
 	},
 	-- Shards of Ancient Winters Quest
 	[6215] = {

@@ -64,7 +64,12 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 0)
 			player:addItem(7281, 1)
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission08, 3) -- Questlog The Ice Islands Quest, The Contact
+		elseif Family and Family.iceIslandsFixes and player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission08) == 3 then
+			npcHandler:say("I gave it to you already. Now leave before they see us!", npc, creature) -- FAMILY: ours (2026-11-16)
 		end
+	elseif Family and Family.iceIslandsAnswers and MsgContains(message, "loud") then
+		-- FAMILY: his greeting highlights {loud} (ours, 2026-11-16)
+		npcHandler:say("Psst! If the raiders hear us, we are both dead. What do you want?", npc, creature)
 	end
 	return true
 end

@@ -967,8 +967,16 @@ function onUseSpoon(player, item, fromPosition, target, toPosition, isHotkey)
 		return false
 	end
 
+	-- FAMILY: The Ice Islands Quest, Cure the Dogs: spores and fine sulphur while Nilsor needs them
+	-- (lib/others/family_ice_islands.lua); the upstream blocks below gave each only once per character
+	-- and the lava hole block swallowed What a Foolish Quest's sulphur.
+	local familyIce = Family and Family.iceIslandsFixes
+	if familyIce and FamilyIceIslands.gather(player, item, target, toPosition) then
+		return true
+	end
+
 	local targetId = target:getId()
-	if targetId == 3920 then
+	if targetId == 3920 and not familyIce then
 		if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.SporesMushroom) < 1 then
 			player:addItem(7251, 1)
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.SporesMushroom, 1)
@@ -983,7 +991,7 @@ function onUseSpoon(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 
 	-- The Ice Islands Quest - Cure the Dogs
-	if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) >= 21 then
+	if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) >= 21 and not familyIce then -- FAMILY: see above
 		if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.SulphurLava) < 1 then
 			player:addItem(7247, 1) -- fine sulphur
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.SulphurLava, 1)
@@ -1065,6 +1073,12 @@ function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHot
 	if FamilyAncientFeud and FamilyAncientFeud.onChop and FamilyAncientFeud.onChop(player, item, target) then
 		return true
 	end
+	-- FAMILY: The Ice Islands Quest, Cure the Dogs: cactus, frostbite herb and purple kiss blossom while
+	-- Nilsor needs them, also with the squeezing gear (lib/others/family_ice_islands.lua)
+	local familyIce = Family and Family.iceIslandsFixes
+	if familyIce and FamilyIceIslands.gather(player, item, target, toPosition) then
+		return true
+	end
 	if not table.contains({ 3469, 9594, 9598 }, item.itemid) then
 		return false
 	end
@@ -1107,7 +1121,7 @@ function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHot
 	local targetId = target:getId()
 
 	--The Ice Islands Quest - Cure the Dogs
-	if targetId == 7261 then
+	if targetId == 7261 and not familyIce then -- FAMILY: see above
 		if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) >= 21 then
 			if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.FrostbiteHerb) < 1 then
 				player:addItem(7248, 1)
@@ -1116,7 +1130,7 @@ function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHot
 				player:say("You cut a leaf from a frostbite herb.", TALKTYPE_MONSTER_SAY)
 			end
 		end
-	elseif targetId == 3647 then
+	elseif targetId == 3647 and not familyIce then -- FAMILY: see above
 		if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) >= 21 then
 			if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.FlowerCactus) < 1 then
 				player:addItem(7245, 1)
@@ -1127,7 +1141,7 @@ function onUseKitchenKnife(player, item, fromPosition, target, toPosition, isHot
 				player:say("You cut a flower from a cactus.", TALKTYPE_MONSTER_SAY)
 			end
 		end
-	elseif targetId == 3753 then
+	elseif targetId == 3753 and not familyIce then -- FAMILY: see above
 		if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) >= 21 then
 			if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.FlowerBush) < 1 then
 				player:addItem(7249, 1)

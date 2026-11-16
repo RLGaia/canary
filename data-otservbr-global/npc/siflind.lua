@@ -62,6 +62,23 @@ local function creatureSayCallback(npc, creature, type, message)
 		if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 5 then
 			npcHandler:say("I heard you have already helped our cause. Are you interested in another mission, even when it requires you to travel to a distant land?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
+		elseif Family and Family.iceIslandsFixes and player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 6 then
+			-- FAMILY: upstream answered "no mission" while the termites mission ran (ours, from her EN lines)
+			if player:getItemCount(7243) + player:getItemCount(7244) == 0 then
+				npcHandler:say("You lost the jug? I can sell you another one for 1000 gold. Just ask me about a {jug}.", npc, creature)
+			else
+				npcHandler:say("Use the jug on one of the termite hills in the jungle of Tiquanda. Then release the termites on the bottom of a mast in the hull of the hunters' ship on Tyrsung and report to me about your mission.", npc, creature)
+			end
+			npcHandler:setTopic(playerId, 0)
+		elseif Family and Family.iceIslandsFixes and player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 8 then
+			-- FAMILY: as above; a lost vial of paint had no replacement (ours)
+			if player:getItemCount(7253) == 0 then
+				player:addItem(7253, 1)
+				npcHandler:say("The paint ran dry? Take this vial of paint. Travel to Tyrsung and ruin as many pelts of baby seals as possible before the paint runs dry or freezes.", npc, creature)
+			else
+				npcHandler:say("Travel to Tyrsung and ruin as many pelts of baby seals as possible before the paint runs dry or freezes. Then return here to report about your mission.", npc, creature)
+			end
+			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 7 then
 			npcHandler:say("Well done. The termites caused just the distraction that we needed. Are you ready for the next step of my plan?", npc, creature)
 			npcHandler:setTopic(playerId, 3)
@@ -133,6 +150,9 @@ local function creatureSayCallback(npc, creature, type, message)
 				npcHandler:say("Here you are.", npc, creature)
 				npcHandler:setTopic(playerId, 0)
 				player:addItem(7243, 1)
+			else
+				npcHandler:say("You don't have enough money.", npc, creature) -- FAMILY: ours, upstream said nothing
+				npcHandler:setTopic(playerId, 0)
 			end
 		elseif npcHandler:getTopic(playerId) == 3 then
 			npcHandler:say("Good! Now listen. To protect the animals there, we have to harm the profit of the hunters. Therefor, I ask you to ruin their best source of earnings. Are you willing to do that?", npc, creature)
@@ -144,7 +164,12 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission04, 1) -- Questlog The Ice Islands Quest, Nibelor 3: Artful Sabotage
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 5 then -- Wings
-			if player:removeItem(5894, 5) then
+			if player:removeItem(5894, 5) and Family and Family.iceIslandsFixes then
+				-- FAMILY: the next ingredient is named with the delivery, as in TibiaWiki EN/BR (2026-11-16)
+				npcHandler:say("Thats just what I needed. The next items I need are 4 bear paws. Bring them here to learn about the next ingredients.", npc, creature) -- EN
+				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 13)
+				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission05, 2) -- Questlog The Ice Islands Quest, Nibelor 4: Berserk Brewery
+			elseif not (Family and Family.iceIslandsFixes) and player:removeItem(5894, 5) then
 				npcHandler:say("Thank you very much.", npc, creature)
 				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 12)
 				npcHandler:setTopic(playerId, 0)
@@ -153,7 +178,12 @@ local function creatureSayCallback(npc, creature, type, message)
 			end
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 6 then -- Paws
-			if player:removeItem(5896, 4) then
+			if player:removeItem(5896, 4) and Family and Family.iceIslandsFixes then
+				-- FAMILY: the next ingredient is named with the delivery, as in TibiaWiki EN/BR (2026-11-16)
+				npcHandler:say("They are in a good condition. The next items I need are 3 bonelord eyes. Bring them here to learn about the next ingredients.", npc, creature) -- EN
+				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 15)
+				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission05, 3) -- Questlog The Ice Islands Quest, Nibelor 4: Berserk Brewery
+			elseif not (Family and Family.iceIslandsFixes) and player:removeItem(5896, 4) then
 				npcHandler:say("Thank you very much.", npc, creature)
 				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 14)
 				npcHandler:setTopic(playerId, 0)
@@ -162,7 +192,12 @@ local function creatureSayCallback(npc, creature, type, message)
 			end
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 7 then -- Eyes
-			if player:removeItem(5898, 3) then
+			if player:removeItem(5898, 3) and Family and Family.iceIslandsFixes then
+				-- FAMILY: the next ingredient is named with the delivery, as in TibiaWiki EN/BR (2026-11-16)
+				npcHandler:say("You did a good job. The next items I need are 2 fish fins. Bring them here to learn about the next ingredient.", npc, creature) -- EN
+				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 17)
+				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission05, 4) -- Questlog The Ice Islands Quest, Nibelor 4: Berserk Brewery
+			elseif not (Family and Family.iceIslandsFixes) and player:removeItem(5898, 3) then
 				npcHandler:say("Thank you very much.", npc, creature)
 				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 16)
 				npcHandler:setTopic(playerId, 0)
@@ -171,7 +206,12 @@ local function creatureSayCallback(npc, creature, type, message)
 			end
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 8 then -- Fins
-			if player:removeItem(5895, 2) then
+			if player:removeItem(5895, 2) and Family and Family.iceIslandsFixes then
+				-- FAMILY: the next ingredient is named with the delivery, as in TibiaWiki EN/BR (2026-11-16)
+				npcHandler:say("You did a good job. The last item I need is a green dragon scale. Bring it here so I can finish the elixir.", npc, creature) -- EN
+				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 19)
+				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission05, 5) -- Questlog The Ice Islands Quest, Nibelor 4: Berserk Brewery
+			elseif not (Family and Family.iceIslandsFixes) and player:removeItem(5895, 2) then
 				npcHandler:say("Thank you very much.", npc, creature)
 				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 18)
 				npcHandler:setTopic(playerId, 0)
@@ -212,6 +252,63 @@ local function creatureSayCallback(npc, creature, type, message)
 end
 
 npcHandler:setMessage(MESSAGE_GREET, "Be greeted, |PLAYERNAME|. If you are in need of potions or magical equipment, just ask me about my {offers}.")
+
+-- FAMILY: her words from the TibiaWiki EN transcript (2026-11-16; lib/others/family_ice_islands.lua).
+-- Quest words (mission, jug, animal cure) stay in the callback above.
+if Family and Family.iceIslandsAnswers then
+	npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye and take care, |PLAYERNAME|.")
+	local function line(words, text)
+		keywordHandler:addKeyword(words, StdModule.say, { npcHandler = npcHandler, text = text })
+	end
+	line({ "offers" }, "I'm selling spirit, health and mana potions, runes, wands, rods and spellbooks. If you'd like to see all of my offers, ask me for a {trade}.")
+	line({ "runes" }, "I'm selling spirit, health and mana potions, runes, wands, rods and spellbooks. If you'd like to see all of my offers, ask me for a {trade}.")
+	line({ "potions" }, "We offer health, spirit and mana potions in up to four sizes: normal, strong, great and ultimate. Ask me for a {trade} to see my offers.")
+	line({ "name" }, "I am Siflind, my child.")
+	line({ "news" }, "News are usually bad news in these times. So be happy if there aren't any news.")
+	line({ "how are you" }, "The years have been gracious to me, thanks my child.")
+	line({ "job" }, "I am a shaman. That should tell you everything you want to know, my child. But I also sell some potions, wands and runes.")
+	line({ "shaman" }, "We are the spiritual shepherds of humanity.")
+	line({ "rumours" }, {
+		"I don't think much of rumours but in fact there is a story that always comes to my mind. It is more a tale than a rumour, but anyway ...... it says the chakoyas have not always been that hostile. ...",
+		"There must have been an incident that shook their trust in manhood so strongly that it would last forever. Imagine that we could be friends if only that incident never happened ......... whatever that was.",
+	})
+	line({ "thais" }, "Thais is far away.")
+	line({ "venore" }, "Venore is far away.")
+	line({ "edron" }, "We hear stories about such distant places now and then.")
+	line({ "port hope" }, "We hear stories about such distant places now and then.")
+	line({ "carlin" }, "Those women don't even know whom they are annoying. Else they'd run and hide.")
+	line({ "svargrond" }, "The city seems to have brought the needed stability and peace to my people.")
+	line({ "barbarian test" }, "Some people are granted the position of an honourary barbarian.")
+	line({ "honourary" }, "Some people are granted the position of an honourary barbarian.")
+	line({ "join" }, "Some people are granted the position of an honourary barbarian.")
+	line({ "barbarian" }, "We barbarians are proud people.")
+	line({ "nibelor" }, "This is a place of spirituality. I assume that this seems boring for someone as young as you are, my child.")
+	line({ "tyrsung" }, "Foreign hunters have set up their camp there. They are hunting the animals there with no mercy. Maybe someone in Svargrond can bring you there.")
+	for _, god in ipairs({ "gods", "uman", "zathroth", "banor" }) do
+		line({ god }, "The gods only care for those who take care of their own.")
+	end
+	line({ "leader" }, "Sven the Younger has been our {jarl} for quite a while and he is the best jarl I have ever seen.")
+	line({ "jarl" }, "The jarl Sven the Younger has learned a lot since his youth. I know him since he was a reckless young hunter. Since then, he has grown and learned much and became a true role model for all young men and women.")
+	line({ "king" }, "We don't have any need for kings and queens in our lands, my child.")
+	line({ "queen" }, "We don't have any need for kings and queens in our lands, my child.")
+	line({ "ferumbras" }, "Isn't it sad to hear about such a fallen creature.")
+	line({ "excalibug" }, "It's not here I guess.")
+	line({ "cult" }, "I heard a secretive group of people passed {Svargrond} a while ago. Later others followed. We don't know why they came here and where they went.")
+	line({ "mines" }, "If these mines are really that vital, they will be recaptured one day.")
+	line({ "druids" }, "Druids are not that different from us shamans.")
+	line({ "raiders" }, "They are probably so lost and desperate that they cannot see what is best for them. Instead they listen to false promises.")
+	line({ "camps" }, "The raiders have finally built some steady camps on their own. Considering the whole disagreement which took place about the building of {Svargrond}, it's obvious that things have changed drastically here.")
+	line({ "chakoyas" }, "The chakoyas can be a terrible menace if they aren't kept away.")
+	line({ "bonelords" }, "I have never seen such a creature.")
+	line({ "yeti" }, "Even an old woman like me has not seen a yeti yet. However, this does not mean that they don't exist.")
+	line({ "years of serpents" }, "Nobody knows what really happened in the past. Perhaps one day, we will find out the cause for the appearance of the sea serpents and the reason that let them vanish again.")
+	line({ "chyll" }, "The north wind hardly notices us humans with our fears and hopes. It's up to us to keep ourselves safe in this wind. We shamans try to help our fellow humans on this path to the best of our abilities.")
+	line({ "everspring" }, "The afterlife shouldn't concern you too much. Take care about your life and things will work out.")
+	line({ "enemies" }, "Be careful while exploring. Monsters and raiders are not the only dangers you might have to face. The environment can become an enemy itself.")
+	line({ "monsters" }, "Monster hunting is quite profitable. If you manage to survive that is.")
+	line({ "dwarf" }, "They have no business here.")
+	line({ "elf" }, "They have no business here.")
+end
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

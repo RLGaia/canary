@@ -81,7 +81,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		npcHandler:setTopic(playerId, 2)
 	elseif MsgContains(message, "mission") then
 		if player:getStorageValue(Storage.Quest.U8_0.BarbarianTest.Questline) >= 8 then -- if Barbarian Test absolved
-			if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 1 then
+			if Family and Family.iceIslandsFixes and player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 1 and player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission01) == 1 then
+				-- FAMILY: upstream offered the mission again while it ran (ours, from his EN lines, 2026-11-16)
+				npcHandler:say("Did you find the boy? He should be somewhere north west of the town. Call him by his name 'Sniffler' and tell him you got meat for him. After he has eaten the meat, return here to talk to me about your mission.", npc, creature)
+				npcHandler:setTopic(playerId, 0)
+			elseif player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 1 then
 				npcHandler:say({
 					"Well, one of the boys has run away. I think he got the scent of some beast. He's young and inexperienced so I can't blame the cub ...",
 					"I would like you to see after him. He should be somewhere north west of the town. He is probably marking his territory so you should be able to find his trace. Are you willing to do that?",

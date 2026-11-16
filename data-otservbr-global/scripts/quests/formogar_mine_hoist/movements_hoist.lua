@@ -6,7 +6,20 @@ function hoist.onStepIn(creature, item, position, fromPosition)
 		return true
 	end
 
-	if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.FormorgarMinesHoistSkeleton) ~= 1 or player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.FormorgarMinesHoistChest) ~= 1 then
+	-- FAMILY: upstream wanted the map and a box storage that nothing set, so nobody could use the hoist.
+	-- TibiaWiki EN/BR: the floor plan works the first floor (uid 3059), the instructions the second and
+	-- third (3060, 3061); lib/others/family_ice_islands.lua (2026-11-16)
+	local allowed
+	if Family and Family.iceIslandsFixes then
+		if item.uid == 3059 then
+			allowed = FamilyIceIslands.hoistMap(player)
+		else
+			allowed = FamilyIceIslands.hoistInstructions(player)
+		end
+	else
+		allowed = player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.FormorgarMinesHoistSkeleton) == 1 and player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.FormorgarMinesHoistChest) == 1
+	end
+	if not allowed then
 		player:teleportTo(fromPosition)
 		player:getPosition():sendMagicEffect(CONST_ME_POFF)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You must first find the hoist instruction before using it.")

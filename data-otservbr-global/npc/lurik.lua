@@ -58,6 +58,38 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: The Ice Islands Quest steps (upstream branches, moved here unchanged) so that they can come
+	-- before the Explorer Society reminders: upstream, a running Explorer Society mission hid them (2026-11-16)
+	local function iceIslandsMission()
+		if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 32 then
+			npcHandler:say({
+				"You are the one who became an honorary barbarian! The one who made friends with the grim local musher and helped the shamans of Nibelor! The one they call old bearhugg ... erm ... I mean indeed I might have a mission for someone like you ...",
+				"We are trying to find out what is happening in the raider camps. Through our connection to the shamans we could get a covered contact in their majorcamp far to the south. We equipped our contact with a memory crystal so he could report all he knew ...",
+				"We need you to recover this crystal. Travel to the southern camp of the raiders and find our contact man there. Get the memory crystal and bring ithere. The society and the shamans will then decide our next steps. Do you think you can do this?",
+			}, npc, creature)
+			npcHandler:setTopic(playerId, 2)
+		elseif player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 33 then
+			npcHandler:say("Have you retrieved the memory crystal?", npc, creature)
+			npcHandler:setTopic(playerId, 3)
+		elseif player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 34 and player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.MemoryCrystal) > os.time() then
+			npcHandler:say("Give me some more time!", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		elseif player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 34 and player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.MemoryCrystal) < os.time() then
+			npcHandler:say({
+				"The information was quite useful. What worries me most are not the raiders but those that have driven them from the old mines...",
+				"We need to investigate the mines. Most entrances collapsed due to the lack of maintenance but there should be some possibilities to get in ...",
+				"In case you find a door, Ill tell you the old trick of the Carlin mining company to open it <whisper> <whisper>. Find some hint or someone who is willing to talk about what is going on there.",
+			}, npc, creature)
+			npcHandler:setTopic(playerId, 0)
+			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 35)
+			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission09, 1) -- Questlog The Ice Islands Quest, Formorgar Mines 1: The Mission
+			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.FormorgarMinesDoor, 1)
+		else
+			return false
+		end
+		return true
+	end
+
 	if MsgContains(message, "mission") then
 		-- FAMILY: upstream offered the mission only when it was already accepted (TheIslandofDragons == 57,
 		-- which only accepting sets), so The Island of Dragons and The Ice Music never started. Now offered
@@ -70,7 +102,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		local ftState = player:getStorageValue(ft)
 		local ftOn = Family and Family.frozenTrench
 		local ftReady = ftOn and ftState < 1 and player:getStorageValue(ES.CalassaQuest) >= 3 and (player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission11) >= 2 or player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) >= 39)
-		if ftOn and ftState == 2 then
+		local iiQ = player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline)
+		local iiFirst = Family and Family.iceIslandsFixes and (iiQ == 32 or iiQ == 34 or (iiQ == 33 and player:getItemCount(7281) > 0))
+		if iiFirst and iceIslandsMission() then
+			-- FAMILY: The Ice Islands Quest first when the step can go on (offer, crystal carried, report)
+		elseif ftOn and ftState == 2 then
 			npcHandler:say({
 				"These are horrible news. I wonder if there was a malfunction of the diving helmet ...",
 				"In any case, a horrible death for that poor explorer. ...",
@@ -140,29 +176,15 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U7_6.ExplorerSociety.TheIceMusic, 62)
 			player:setStorageValue(Storage.Quest.U7_6.ExplorerSociety.QuestLine, 62)
 			player:setStorageValue(Storage.Quest.U7_6.ExplorerSociety.IceMusicDoor, 1)
-		elseif player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 32 then
-			npcHandler:say({
-				"You are the one who became an honorary barbarian! The one who made friends with the grim local musher and helped the shamans of Nibelor! The one they call old bearhugg ... erm ... I mean indeed I might have a mission for someone like you ...",
-				"We are trying to find out what is happening in the raider camps. Through our connection to the shamans we could get a covered contact in their majorcamp far to the south. We equipped our contact with a memory crystal so he could report all he knew ...",
-				"We need you to recover this crystal. Travel to the southern camp of the raiders and find our contact man there. Get the memory crystal and bring ithere. The society and the shamans will then decide our next steps. Do you think you can do this?",
-			}, npc, creature)
-			npcHandler:setTopic(playerId, 2)
-		elseif player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 33 then
-			npcHandler:say("Have you retrieved the memory crystal?", npc, creature)
-			npcHandler:setTopic(playerId, 3)
-		elseif player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 34 and player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.MemoryCrystal) > os.time() then
-			npcHandler:say("Give me some more time!", npc, creature)
+		elseif iceIslandsMission() then
+			-- FAMILY: The Ice Islands Quest steps, see iceIslandsMission above
+		elseif Family and Family.iceIslandsFixes and iiQ == 35 then
+			-- FAMILY: ours, from his EN lines (2026-11-16)
+			npcHandler:say("We need to investigate the old mines. Find a way in and find some hint or someone who is willing to talk about what is going on there.", npc, creature)
 			npcHandler:setTopic(playerId, 0)
-		elseif player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) == 34 and player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.MemoryCrystal) < os.time() then
-			npcHandler:say({
-				"The information was quite useful. What worries me most are not the raiders but those that have driven them from the old mines...",
-				"We need to investigate the mines. Most entrances collapsed due to the lack of maintenance but there should be some possibilities to get in ...",
-				"In case you find a door, Ill tell you the old trick of the Carlin mining company to open it <whisper> <whisper>. Find some hint or someone who is willing to talk about what is going on there.",
-			}, npc, creature)
+		elseif Family and Family.iceIslandsFixes and iiQ >= 36 and iiQ <= 38 then
+			npcHandler:say("The shamans of Nibelor know more about the spirits of the mines than we do. Hjaern will tell you what to do.", npc, creature) -- FAMILY: ours (2026-11-16)
 			npcHandler:setTopic(playerId, 0)
-			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 35)
-			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission09, 1) -- Questlog The Ice Islands Quest, Formorgar Mines 1: The Mission
-			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.FormorgarMinesDoor, 1)
 		elseif ftOn and ftState == 1 then
 			-- ours: what to do while the mission runs
 			npcHandler:say("Get old Buddel to bring you to Tyrsung and sneak to the southern coast, where the ship of the Venorean hunters anchors. Wear your helmet of the deep, jump into the water from the planks south of the ship and find out what has happened to our explorer down in the Frozen Trench.", npc, creature)
@@ -198,6 +220,10 @@ local function creatureSayCallback(npc, creature, type, message)
 				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 34)
 				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission08, 4) -- Questlog The Ice Islands Quest, The Contact
 				player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.MemoryCrystal, os.time() + 5 * 60)
+				npcHandler:setTopic(playerId, 0)
+			elseif Family and Family.iceIslandsFixes then
+				-- FAMILY: ours (2026-11-16); TibiaWiki EN: Black Bert sells a lost memory crystal
+				npcHandler:say("You don't have it with you. Our contact man is in the southern camp of the raiders. If you lost the crystal, ask Black Bert in Thais, he trades with such things.", npc, creature)
 				npcHandler:setTopic(playerId, 0)
 			end
 		elseif npcHandler:getTopic(playerId) == 4 then

@@ -15,8 +15,14 @@ function iceAntHill.onUse(player, item, fromPosition, target, toPosition, isHotk
 			toPosition:sendMagicEffect(CONST_ME_HITAREA)
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline, 7)
 			player:setStorageValue(Storage.Quest.U8_0.TheIceIslands.Mission03, 3) -- Questlog The Ice Islands Quest, Nibelor 2: Ecological Terrorism
-			player:say("You released ants on the hill.", TALKTYPE_MONSTER_SAY)
-			player:removeItem(7243, 1)
+			if Family and Family.iceIslandsFixes then
+				-- FAMILY: upstream removed an empty jug (7243) and left the full one in the backpack (2026-11-16)
+				player:say("You release the termites on the bottom of the mast.", TALKTYPE_MONSTER_SAY) -- ours
+				item:remove(1)
+			else
+				player:say("You released ants on the hill.", TALKTYPE_MONSTER_SAY)
+				player:removeItem(7243, 1)
+			end
 		end
 	end
 

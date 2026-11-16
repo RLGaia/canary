@@ -58,6 +58,12 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: The Ice Islands Quest, Nibelor 5: the seven ingredients in any order, "medicine",
+	-- answers for every step (lib/others/family_ice_islands.lua, 2026-11-16)
+	if FamilyIceIslands and FamilyIceIslands.nilsor(npc, creature, message, npcHandler) then
+		return true
+	end
+
 	if MsgContains(message, "svargrond") or MsgContains(message, "passage") then
 		npcHandler:say("Do you want to travel to Svargrond?", npc, creature)
 		npcHandler:setTopic(playerId, 10)
@@ -225,6 +231,53 @@ local function creatureSayCallback(npc, creature, type, message)
 end
 
 npcHandler:setMessage(MESSAGE_GREET, "Greetings, traveller |PLAYERNAME|. Is there anything I can {do for you}?")
+
+-- FAMILY: his words from the TibiaWiki EN transcript (2026-11-16; lib/others/family_ice_islands.lua).
+-- Not "svargrond" or "passage": they offer the travel (upstream).
+if Family and Family.iceIslandsAnswers then
+	npcHandler:setMessage(MESSAGE_FAREWELL, "Bye, |PLAYERNAME|.")
+	local function line(words, text)
+		keywordHandler:addKeyword(words, StdModule.say, { npcHandler = npcHandler, text = text })
+	end
+	line({ "do for you" }, "I see after the dogs. I try to be a good friend and pack leader for them. Oh and I can offer you a passage to {Svargrond}.")
+	line({ "job" }, "I see after the dogs. I try to be a good friend and pack leader for them. Oh and I can offer you a passage to {Svargrond}.")
+	line({ "jarl" }, "Having a jarl as a leader seems acceptable, at least for human standards.")
+	line({ "leader" }, "Having a jarl as a leader seems acceptable, at least for human standards.")
+	line({ "king" }, "Only humans could come up with a concept where heritage replaces competence.")
+	line({ "queen" }, "Only humans could come up with a concept where heritage replaces competence.")
+	for _, city in ipairs({ "thais", "carlin", "venore" }) do
+		line({ city }, "Such far away places are of no concern here.")
+	end
+	line({ "edron" }, "I don't care about far away places.")
+	line({ "port hope" }, "I don't care about far away places.")
+	line({ "monsters" }, "The humans are the true monsters.")
+	line({ "news" }, "I don't care much about the gossip that people are constantly spreading.")
+	line({ "rumours" }, "Okay, I tell you what.......A fisherman from Svargrond was near Okolnir when he saw it. A frozen dragon! But all of a sudden it was gone. The question is did that poor dead creature disappear or was that fisherman telling lies?")
+	for _, god in ipairs({ "gods", "uman", "zathroth", "banor" }) do
+		line({ god }, "To worship some distant gods seems more useless to me than the howling of a wolf to the moon.")
+	end
+	line({ "how are you" }, "I am fine as long as my dogs are fine.")
+	line({ "druids" }, "The druids are not that far away from the truth we have already seen.")
+	line({ "ferumbras" }, "A perfect example of what is wrong with humanity.")
+	line({ "excalibug" }, "I have no idea.")
+	line({ "enemies" }, "There are several natural threats.")
+	line({ "barbarians" }, "A barbarian can be as mean and destructive as any other human.")
+	line({ "elf" }, "They seem to be just another human breed.")
+	line({ "dwarf" }, "They seem to be just another human breed.")
+	line({ "bonelord" }, "Such creatures seem unnatural to me.")
+	line({ "yeti" }, "Humans would be well advised to leave the elusive yeti alone.")
+	line({ "chakoya" }, "The chakoyas have a strong brute side. It would be wrong to condemn them for that.")
+	line({ "sea serpents" }, "I don't know why they disappeared so suddenly. I hope nothing bad happened to those poor creatures.")
+	line({ "cult" }, "Humans sometimes get strange ideas if they are too ambitious.")
+	line({ "mines" }, "I couldn't care less about the fate of those mines.")
+	line({ "nibelor" }, "Here we have some peace from the daily life of our fellow humans that would only distract us.")
+	line({ "shamans" }, "We are the contact to the spirit world as well as the protector of the natural balance.")
+	line({ "camps" }, "The raiders seem to have several bigger camps. Though, I have no clue where they are.")
+	line({ "raiders" }, "The raiders are sometimes worse than rabid wolves. They even kill for the killing sake.")
+	line({ "join" }, "I heard you can become a honourary barbarian by passing a test. Better ask the jarl about it.")
+	line({ "chyll" }, "The wisdom of the north wind is beyond our comprehension. We are all but snowflakes in the wind.")
+	line({ "dogs" }, "They are my family. Don't you dare to harm one of them!") -- ours
+end
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

@@ -13,7 +13,7 @@ local quest = {
 				[1] = "Find Sniffler the husky of Iskan. He should be somewhere north west of the town. \z
 					He is probably marking his territory so you should be able to find his trace. \z
 					Call him sniffler and feed him with meat.",
-				[2] = "Tell Iskan that you found and feed Sniffler",
+				[2] = "Tell Iskan that you found and fed Sniffler.",
 				[3] = "You are now a friend of Iskan and can ask him for a passage to Nibelor. \z
 					You should ask Hjaern in Nibelor if you can help him.",
 			},
@@ -25,11 +25,11 @@ local quest = {
 			startValue = 1,
 			endValue = 5,
 			states = {
-				[1] = "Chakoyas may use the ice for a passage to the west and attack Svargrond. Use the rocks at east \z
-					of nibelor on at least three of these places and the chakoyas probably won't be able to pass the ice.",
-				[2] = "You have broke 1 of 3 icepassages",
-				[3] = "You have broke 2 of 3 icepassages",
-				[4] = "You have broke 3 of 3 icepassages! Tell Hjaern your mission!",
+				[1] = "Chakoyas may use the ice for a passage to the west and attack Svargrond. Use a pick on at least three of the unstable places \z
+					in the ice east of Nibelor and the chakoyas probably won't be able to pass the ice.",
+				[2] = "You have broken 1 of 3 ice passages.",
+				[3] = "You have broken 2 of 3 ice passages.",
+				[4] = "You have broken 3 of 3 ice passages! Report to Hjaern about your mission.",
 				[5] = "You should ask Silfind if you can help her in some matters.",
 			},
 		},
@@ -40,12 +40,12 @@ local quest = {
 			startValue = 1,
 			endValue = 3,
 			states = {
-				[1] = "Siflind send you to travel to a distant land to get ants from an Ant-Hill to \z
+				[1] = "Siflind sent you to travel to a distant land to get ants from an Ant-Hill to \z
 					perform ecological terrorism on some pirates on Tyrsung. Just use the jug on an anthill.",
 				[2] = "Now head back to Svargrond and go to Buddel, the drunk sailor in southern Svargrond, \z
 					and ask him to take you to Tyrsung. Now go all the way to the southern shores \z
-					where you find a outpost. Go to the bottom deck and use the jug with the western mast",
-				[3] = "Go tell Siflind that you released the ants and aks her for mission!",
+					where you find an outpost. Go to the bottom deck and use the jug with the western mast",
+				[3] = "Tell Siflind that you released the termites and ask her for another mission.",
 			},
 		},
 		[4] = {
@@ -57,7 +57,7 @@ local quest = {
 			states = {
 				[1] = "Siflind gave you a Vial of Paint to use on some Baby Seals. \z
 					Go back to Tyrsung and follow the shore from Buddel south. Use the Vial of Paint on three of these seals.",
-				[2] = "Go tell Siflind that you painted the seals and aks her for mission!",
+				[2] = "Tell Siflind that you painted the seals and ask her for another mission.",
 			},
 		},
 		[5] = {
@@ -67,12 +67,12 @@ local quest = {
 			startValue = 1,
 			endValue = 6,
 			states = {
-				[1] = "The first things needed are 5 bat wings to brew a berserker elixir. Bring her them!",
-				[2] = "The next items Siflind need are 4 bear paws. Bring her them!",
-				[3] = "The next items Siflind need are 3 bonelord eyes. Bring her them!",
-				[4] = "The next items Siflind need are 2 fish fins. Bring her them!",
-				[5] = "The next item Siflind need is a green dragon scale. Bring her that!",
-				[6] = "You helped Siflind to defend Svargrond. Now Nilsor need help, go ask him for mission.",
+				[1] = "The first things Siflind needs to brew a berserker elixir are 5 bat wings. Bring them to her!",
+				[2] = "The next items Siflind needs are 4 bear paws. Bring them to her!",
+				[3] = "The next items Siflind needs are 3 bonelord eyes. Bring them to her!",
+				[4] = "The next items Siflind needs are 2 fish fins. Bring them to her!",
+				[5] = "The last item Siflind needs is a green dragon scale. Bring it to her!",
+				[6] = "You helped Siflind to defend Svargrond. Now Nilsor needs help, go and ask him for a mission.",
 			},
 		},
 		[6] = {
@@ -81,25 +81,20 @@ local quest = {
 			missionId = 10238,
 			startValue = 1,
 			endValue = 8,
+			-- FAMILY: Nilsor takes the ingredients in any order (lib/others/family_ice_islands.lua);
+			-- the state is 1 + the number he has (2026-11-16)
 			states = {
-				[1] = "To cure Nilsor dogs, bring him the 1st of 7 ingredients: a Part of the Sun Adorer Cactus. \z
-					Only an ordinary kitchen knife will be precise enough to produce the ingredient weneed.",
-				[2] = "To cure Nilsor dogs, bring him the 2nd of 7 ingredients: Geyser Water in a Waterskin. \z
-					Use it on a geyser that is NOT active. The water of active geysers is far too hot.",
-				[3] = "To cure Nilsor dogs, bring him the 3rd of 7 ingredients: Fine Sulphur. \z
-					Use an ordinary kitchen spoon on an inactive lava hole.",
-				[4] = "To cure Nilsor dogs, bring him the 4th of 7 ingredients: the Frostbite Herb. \z
-					You can find it on mountain peaks. You will need to cut it with a fine kitchen knife.",
-				[5] = "To cure Nilsor dogs, bring him the 5th of 7 ingredients: Purple Kiss Blossom. \z
-					The purple kiss is a plant that grows in a place called jungle. \z
-					You will have to use a kitchen knife to harvest its blossom.",
-				[6] = "To cure Nilsor dogs, bring him the 6th of 7 ingredients: the Hydra Tongue. \z
-					The hydra tongue is a common pest plant in warmer regions. You might find one in a shop.",
-				[7] = "To cure Nilsor dogs, bring him the 7th of 7 ingredients: Spores of a Giant Glimmercap Mushroom. \z
-					The giant glimmercap mushroom exists in caves and other preferably warm and humid places. \z
-					Use an ordinary kitchen spoon on a mushroom to collectits spores.",
-				[8] = "You found all ingredients to cure Nilsor dogs, ask him for mission. \z
-				You can now travel by Dog Sleds to Inukaya.",
+				[1] = "Nilsor needs 7 ingredients to cure his dogs: a part of the sun adorer cactus, a vial of geyser water, \z
+					fine sulphur of an inactive lava hole, a frostbite herb, a blossom of a purple kiss, a hydra tongue and \z
+					spores of a giant glimmercap mushroom. Bring them in any order and talk to him about each one.",
+				[2] = "You brought Nilsor 1 of the 7 ingredients for the medicine. Ask him about his mission to hear what is still missing.",
+				[3] = "You brought Nilsor 2 of the 7 ingredients for the medicine. Ask him about his mission to hear what is still missing.",
+				[4] = "You brought Nilsor 3 of the 7 ingredients for the medicine. Ask him about his mission to hear what is still missing.",
+				[5] = "You brought Nilsor 4 of the 7 ingredients for the medicine. Ask him about his mission to hear what is still missing.",
+				[6] = "You brought Nilsor 5 of the 7 ingredients for the medicine. Ask him about his mission to hear what is still missing.",
+				[7] = "You brought Nilsor 6 of the 7 ingredients for the medicine. Ask him about his mission to hear what is still missing.",
+				[8] = "You brought Nilsor all ingredients to cure his dogs. Talk to him about the medicine. \z
+					You can now travel by dog sled to Inukaya.",
 			},
 		},
 		[7] = {
@@ -110,7 +105,7 @@ local quest = {
 			endValue = 3,
 			states = {
 				[1] = "Hjaern might have a mission for you. So maybe you go and talk to him.",
-				[2] = "Hjaern send you to find someone in Svargrond who can give you a passage to Helheim and seek the reason for the unrest there.",
+				[2] = "Hjaern sent you to find someone in Svargrond who can give you a passage to Helheim and seek the reason for the unrest there.",
 				[3] = "You discovered the necromantic altar and should report Hjaern about it.",
 			},
 		},
@@ -138,7 +133,7 @@ local quest = {
 			states = {
 				[1] = "Find the entrance of the Formorgar Mines. \z
 				Find some hint or someone who is willing to talk about what is going on there.",
-				[2] = "You found a old and tattered written paper in a skeleton next to a Restless Soul, \z
+				[2] = "You found an old and tattered written paper in a skeleton next to a Restless Soul, \z
 				you can only make out a signature: Tylaf, apprentice of Hjaern. Ask Hjaern about Tylaf.",
 			},
 		},
@@ -150,7 +145,7 @@ local quest = {
 			endValue = 2,
 			states = {
 				[1] = "Go back to the mine and ask the restless soul about his story.",
-				[2] = "You already have listen to his story!",
+				[2] = "You have already listened to his story!",
 			},
 		},
 		[11] = {
@@ -160,9 +155,9 @@ local quest = {
 			startValue = 1,
 			endValue = 2,
 			states = {
-				[1] = "The Cultists plan is to create a new demon army for their master to conquer the world. \z
+				[1] = "The cultists' plan is to create a new demon army for their master to conquer the world. \z
 				Hjaern and the other shamans must learn about it! Hurry before its too late.",
-				[2] = "The Cultists plan is to create a new demon army for their master to conquer the world. \z
+				[2] = "The cultists' plan is to create a new demon army for their master to conquer the world. \z
 				Hjaern and the other shamans are already informed!",
 			},
 		},

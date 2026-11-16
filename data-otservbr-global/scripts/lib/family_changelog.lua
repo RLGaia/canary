@@ -157,4 +157,5 @@ FamilyChangelog = {
 	{ "2026-11-15", "The Scatterbrained Sorcerer: the third mission now takes you into Eclesius' crack in the space-time continuum, a small room in the void under his house, instead of his laboratory." },
 	{ "2026-11-16", "Cobra Bastion: in Gaffir's secret room the almanac now gives the last note as a parchment, and the fire portal takes you back in front of the exit of Gaffir's room instead of onto the carpet." },
 	{ "2026-11-16", "Blood Brothers Quest: Armenius' cellar (where he shows his true face) is now the whole room, as in Tibia: its western half with the barrels, two wall torches and a blue forcefield that takes you back out to the tavern." },
+	{ "2026-11-16", "The Ice Islands Quest: the Formorgar Mines hoist works again, Nilsor takes his seven ingredients in any order and lost ingredients, a lost frost charm or vial of paint can be replaced; the Norseman addons come right with the shards; Sven, Hjaern, Siflind and Nilsor talk about much more." },
 }
