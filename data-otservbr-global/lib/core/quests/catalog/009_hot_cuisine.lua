@@ -8,9 +8,9 @@ local quest = {
 			storageId = Storage.Quest.U8_5.HotCuisineQuest.QuestLog,
 			missionId = 1070,
 			startValue = 1,
-			endValue = 16,
+			endValue = 17, -- FAMILY: 17 after the Zaoan Sauce (2026-11-16; family_hot_cuisine.lua)
 			states = {
-				[1] = "You've become the apprentice of Maltre Jean Pierre. \z
+				[1] = "You've become the apprentice of Maitre Jean Pierre. \z
 					The first dish he will teach you to prepare is Rotworm Stew. Bring him the ingredients he told you.",
 				[2] = "You have completed the first dish, the second dish he will teach you to prepare is Hydra Tongue Salad. \z
 					Bring him the ingredients he told you.",
@@ -31,7 +31,7 @@ local quest = {
 				[10] = "You have completed the ninth dish, the tenth dish he will teach you to prepare is Carrot Cake. \z
 					Bring him the ingredients he told you.",
 				[11] = "You have completed the tenth dish. You are now able to obtain the cookbook from \z
-					Jean Pierre's room upstairs.",
+					Jean Pierre's room upstairs. Ask him about his menu for more dishes.",
 				[12] = "The eleventh dish he will teach you to prepare is Coconut Shrimp Bake. \z
 					Bring him the ingredients he told you.",
 				[13] = "You have completed the eleventh dish, the twelfth dish he will teach you to prepare is Blackjack. \z
@@ -40,7 +40,12 @@ local quest = {
 					prepare is Demonic Candy Balls. Bring him the ingredients he told you.",
 				[15] = "You have completed the thirteenth dish, the fourteenth dish he will teach you to \z
 					prepare is Sweet Mangonaise Elixir. Bring him the ingredients he told you.",
-				[16] = "You have completed all the dishes. You are now able to make all the dishes in any order you want.",
+				-- FAMILY: Zaoan Sauce, the 15th dish, and no yearly limit (2026-11-16)
+				[16] = "You have completed the fourteenth dish and may take the second cookbook from Jean Pierre's room \z
+					upstairs. The fifteenth dish he will teach you to prepare is Zaoan Sauce. \z
+					Bring him the ingredients he told you.",
+				[17] = "You have completed all the dishes. You can cook any of them with Jean Pierre again whenever you \z
+					like, just bring him the ingredients.",
 			},
 		},
 	},

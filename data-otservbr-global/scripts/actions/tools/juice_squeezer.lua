@@ -11,7 +11,9 @@ function juiceSqueezer.onUse(player, item, fromPosition, target, toPosition, isH
 
 	if table.contains(fruits, target.itemid) and player:removeItem(2874, 1, 0) then
 		target:remove(1)
-		player:addItem(2874, target.itemid == 3589 and 14 or 21)
+		-- FAMILY: coconut milk (fluid 15) from a coconut, fruit juice (14) from the other fruits, as in TibiaWiki BR/EN
+		-- (2026-11-16; upstream gave fruit juice for a coconut and fluid 21 for the rest, so no coconut milk for Hot Cuisine)
+		player:addItem(2874, target.itemid == 3589 and 15 or 14)
 		return true
 	end
 end

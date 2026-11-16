@@ -83,6 +83,11 @@ NOT_QUEST = {
     5905: "vampire dust (from vampire corpses, only asked for by an NPC)",
 }
 
+# Quest ingredients with no other source on this server: they get sell offers too (reviewed by hand).
+ASKED_FOR = {
+    48115: "taiyaki (Jean Pierre's Zaoan Sauce; the Candia lakes are not fished here, 2026-11-16)",
+}
+
 
 def map_chest_contents(path):
     data = open(path, "rb").read()
@@ -178,6 +183,8 @@ def main():
             for p in PATTERNS:
                 for m in p.finditer(txt):
                     note(int(m.group(1)), base)
+    for iid in ASKED_FOR:
+        note(iid, "asked for by a quest NPC")
     for iid in NOT_QUEST:
         sources.pop(iid, None)
 

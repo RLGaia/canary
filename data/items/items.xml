@@ -80485,6 +80485,11 @@ Granted by TibiaGoals.com"/>
 			<attribute key="slot" value="backpack"/>
 		</attribute>
 	</item>
+	<!-- FAMILY: Hot Cuisine Quest, an ingredient of the Zaoan Sauce (2026-11-16; TibiaWiki EN: food, 8.00 oz) -->
+	<item id="48115" article="a" name="taiyaki" plural="taiyakis">
+		<attribute key="primarytype" value="food"/>
+		<attribute key="weight" value="800"/>
+	</item>
 	<item id="48116" article="a" name="gummy rotworm" plural="gummy rotworms">
 		<attribute key="loottype" value="creature products" />
 		<attribute key="primarytype" value="food"/>
@@ -84622,6 +84627,12 @@ Granted by TibiaGoals.com"/>
 		<attribute key="primarytype" value="soul cores"/>
 		<attribute key="description" value="Offers a soul to the Soulpit. Combine with an exalted core to turn it into a lesser soul core."/>
 		<attribute key="weight" value="100"/>
+	</item>
+	<!-- FAMILY: Hot Cuisine Quest, the 15th dish (2026-11-16; TibiaWiki EN: food, 4.00 oz, Fist Fighting +10 for one hour) -->
+	<item id="50334" article="a" name="zaoan sauce">
+		<attribute key="primarytype" value="food"/>
+		<attribute key="description" value="This sauce is said to be the pinnacle of the culinary sweet and sour sensation. Eating it will have beneficial effects on the harmony and balance of body and soul."/>
+		<attribute key="weight" value="400"/>
 	</item>
 	<item id="51259" article="a" name="reality splinter">
 		<attribute key="primarytype" value="creature products"/>

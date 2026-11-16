@@ -451,6 +451,7 @@ return {
 	[9084] = true, -- veggie casserole
 	[9085] = true, -- filled jalapeno peppers
 	[9086] = true, -- blessed steak
+	[9087] = true, -- carrot cake
 	[9088] = true, -- northern fishburger
 	[9106] = true, -- molten wax
 	[9114] = true, -- wooden ties
@@ -690,6 +691,7 @@ return {
 	[34098] = true, -- pair of soulstalkers
 	[34099] = true, -- soulbastion
 	[35562] = true, -- quiver
+	[48115] = true, -- taiyaki
 	[50263] = true, -- merudri scale mail
 	[50267] = true, -- boots of enlightenment
 	[50268] = true, -- robe of enlightenment
@@ -699,4 +701,5 @@ return {
 	[50273] = true, -- nunchaku of enlightenment
 	[50274] = true, -- coned hat of enlightenment
 	[50289] = true, -- yalahari footwraps
+	[50334] = true, -- zaoan sauce
 }

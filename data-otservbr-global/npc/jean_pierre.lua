@@ -109,6 +109,16 @@ local function greetCallback(npc, creature)
 	local player = Player(creature)
 	local playerId = player:getId()
 
+	-- FAMILY: Hot Cuisine review and no yearly limit (2026-11-16; lib/others/family_hot_cuisine.lua)
+	if Family.hotCuisine then
+		if FamilyHotCuisine.isOpen() then
+			FamilyHotCuisine.greet(npcHandler, npc, player)
+		else
+			endConversationWithDelay(npcHandler, npc, creature)
+		end
+		return true
+	end
+
 	local currentDate = os.time()
 	local currentDateTable = os.date("*t", currentDate)
 
@@ -127,6 +137,11 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	if not npcHandler:checkInteraction(npc, creature) then
 		return false
+	end
+
+	-- FAMILY: see greetCallback
+	if Family.hotCuisine then
+		return FamilyHotCuisine.onSay(npcHandler, npc, creature, message)
 	end
 
 	local currentDate = os.time()

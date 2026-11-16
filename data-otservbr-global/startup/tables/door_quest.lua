@@ -583,11 +583,19 @@ QuestDoorAction = {
 		itemPos = { { x = 31978, y = 32856, z = 3 } },
 	},
 	-- Hot cuisine door
+	-- FAMILY: one door per cookbook (2026-11-16; family_hot_cuisine.lua). On our map the chest behind
+	-- 33065,32531 holds Cookbook I (after the Carrot Cake), the one behind 33065,32529 Cookbook II
+	-- (after the Sweet Mangonaise Elixir); upstream opened both after the Carrot Cake.
 	[Storage.Quest.U8_5.HotCuisineQuest.CookbookDoor] = {
 		itemId = false,
 		itemPos = {
-			{ x = 33065, y = 32529, z = 5 },
 			{ x = 33065, y = 32531, z = 5 },
+		},
+	},
+	[Storage.Quest.U8_5.HotCuisineQuest.CookbookDoor2] = {
+		itemId = false,
+		itemPos = {
+			{ x = 33065, y = 32529, z = 5 },
 		},
 	},
 	-- The annihilator door

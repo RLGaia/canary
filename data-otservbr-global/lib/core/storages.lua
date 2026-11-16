@@ -1230,6 +1230,7 @@ Storage = {
 				LastInteractionDate13 = 42162,
 				LastInteractionDate14 = 42163,
 				LastInteractionDate15 = 42164,
+				CookbookDoor2 = 42231, -- FAMILY: Cookbook II door after the Sweet Mangonaise Elixir (family_hot_cuisine.lua)
 			},
 			KillingInTheNameOf = {
 				LugriNecromancers = 42165,
