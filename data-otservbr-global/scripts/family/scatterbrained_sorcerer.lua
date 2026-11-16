@@ -1,5 +1,5 @@
--- Gaia Family server: The Scatterbrained Sorcerer Quest - objects, doors, kills and the
--- laboratory scene (2026-11-15). Ours, not upstream. Story, dialogue and storages:
+-- Gaia Family server: The Scatterbrained Sorcerer Quest - objects, doors, kills, the
+-- space-time continuum scene and Samael (2026-11-15). Ours, not upstream. Story, dialogue and storages:
 -- data-otservbr-global/lib/others/family_sorcerer.lua (FamilySorcerer).
 --
 -- Eclesius' house south of Thais (our map): ground floor 32284-32294,32289-32295,7 (his room in
@@ -628,18 +628,43 @@ rags:id(I.rags)
 rags:register()
 
 -- ---------------------------------------------------------------------------
--- Mission 3: the laboratory scene (our map has no space-time continuum room)
+-- Mission 3: the space-time continuum scene (custom map, see FS.scenePlaces)
 -- ---------------------------------------------------------------------------
+-- The crack in the space-time continuum: our custom map world/custom/family-continuum.otbm
+-- (tools/family/otbm/continuum_room.py), floor 14 below the house, laid out as the TibiaWiki EN
+-- screenshots show it: each subject appears three squares above its lever, the result above the
+-- middle one, Eclesius waits in the corridor. Its void squares carry action id 42517.
 FS.scenePlaces = {
-	levers = { left = pos(32289, 32291, 8), middle = pos(32290, 32291, 8), right = pos(32291, 32291, 8) },
-	arrive = pos(32290, 32292, 8),
-	grodrik = pos(32289, 32293, 8),
-	amarie = pos(32291, 32293, 8),
-	result = pos(32290, 32293, 8),
-	eclesius = pos(32292, 32294, 8),
+	levers = { left = pos(32287, 32290, 14), middle = pos(32290, 32290, 14), right = pos(32293, 32290, 14) },
+	arrive = pos(32290, 32291, 14),
+	grodrik = pos(32287, 32287, 14),
+	amarie = pos(32293, 32287, 14),
+	result = pos(32290, 32287, 14),
+	eclesius = pos(32290, 32293, 14),
 	back = pos(32290, 32292, 7),
+	room = { 32277, 32278, 32303, 32305, 14 }, -- x1, y1, x2, y2, z (room and the void around it)
+	voidAid = 42517,
 }
 local SP = FS.scenePlaces
+
+function FS.inContinuum(p)
+	local r = SP.room
+	return inBox(p, r[1], r[2], r[3], r[4], r[5])
+end
+
+-- the void around the room cannot be walked on
+local void = MoveEvent()
+function void.onStepIn(creature, item, position, fromPosition)
+	if fromPosition and not samePos(fromPosition, position) and FS.inContinuum(fromPosition) then
+		creature:teleportTo(fromPosition, true)
+	else
+		creature:teleportTo(SP.arrive)
+	end
+	return true
+end
+void:type("stepin")
+void:aid(SP.voidAid)
+void:register()
 local LEVER, LEVER_PULLED = 2772, 2773
 FS.SCENE_SECONDS = 15 * 60
 FS.sceneResults = { "Toad", "Gozzler", "Mutated Human" } -- TibiaWiki EN
@@ -699,13 +724,13 @@ function FS.endScene(player, takeUp)
 	elseif m == M.SCENE then
 		FS.setMission(player, M.BONUS)
 	end
-	if inBox(player:getPosition(), 32284, 32289, 32294, 32296, 8) then
+	if FS.inContinuum(player:getPosition()) then
 		player:teleportTo(SP.back)
 		SP.back:sendMagicEffect(CONST_ME_TELEPORT)
 	end
 end
 
--- npc: the Eclesius the player talks to; he comes along to the laboratory and goes back home after
+-- npc: the Eclesius the player talks to; he comes along to the continuum and goes back home after
 -- (a second Eclesius would take his name: Npc("Eclesius") found nobody after it was removed).
 function FS.startScene(player, npc)
 	if scene then
@@ -718,7 +743,7 @@ function FS.startScene(player, npc)
 	for _, at in pairs(SP.levers) do
 		local tile = Tile(at)
 		if not tile then
-			logger.error("[FamilySorcerer] laboratory square {} missing", at:toString())
+			logger.error("[FamilySorcerer] continuum square {} missing (world/custom/family-continuum.otbm)", at:toString())
 			return false
 		end
 		Game.createItem(LEVER, 1, at)
@@ -891,7 +916,7 @@ function login.onLogin(player)
 	local m = FS.mission(player)
 	if (m == M.SCENE or m == M.RESULT) and not (scene and scene.playerId == player:getId()) then
 		FS.setMission(player, m == M.RESULT and M.BACK or M.BONUS)
-		if inBox(player:getPosition(), 32284, 32289, 32294, 32296, 8) then
+		if FS.inContinuum(player:getPosition()) then
 			player:teleportTo(SP.back)
 		end
 	end

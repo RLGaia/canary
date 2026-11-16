@@ -9,18 +9,19 @@
 -- transcripts to complete it (NPC lines, object messages, note texts, item ids). Where they
 -- differ: greeting by level (EN: under 20 "young and eager", from 20 "a bit old"; BR shows only
 -- the first), Mission 4 reward (BR 500 experience, EN 1000: BR used), the elf and dwarf answers
--- (EN gives two answer sets per character: "blue eyes" or "chocolate" in common; the BR list of
--- other common answers - tolerance, lonely - has no lines, so not used). Lines marked "ours"
--- are not on either wiki.
+-- (EN gives two answer sets per character: "blue eyes" or "chocolate" in common; BR also names
+-- tolerance and lonely as common answers without lines, so those lines are ours). Lines marked
+-- "ours" are not on either wiki.
 --
--- Rodrigo's choices (2026-11-15): the space-time continuum room of Mission 3 is not on our
--- map, so Eclesius takes you to his laboratory (one floor down) where three levers appear for
--- the scene; killing the white cat in the attic costs only that day's Exterminate task
--- (Tibia: 30 days).
+-- Mission 3: the "small crack in the space-time continuum" under the house was not on our map;
+-- it is a custom map since 2026-11-15 (world/custom/family-continuum.otbm, built by
+-- tools/family/otbm/continuum_room.py from the TibiaWiki EN screenshots, floor 14 below the
+-- house). Rodrigo's choice (2026-11-15): killing the white cat in the attic costs only that
+-- day's Exterminate task (Tibia: 30 days).
 --
 -- Daily tasks open again at the server save (06:00), like the Venore tasks.
 -- Storages: Storage.Quest.U8_5.TheScatterbrainedSorcerer; details in player KV family-sorcerer.
--- Objects, doors, kills and the laboratory scene: scripts/family/scatterbrained_sorcerer.lua.
+-- Objects, doors, kills and the continuum scene: scripts/family/scatterbrained_sorcerer.lua.
 -- NPC files that call this: eclesius, amarie, grodrik, a_confused_frog, a_frog, irmana, xodet,
 -- frodo, queen_eloise, bunny_bonecrusher.
 -- Switch: Family.scatterbrainedSorcerer (false = the NPCs as upstream, objects do nothing).
@@ -54,7 +55,7 @@ FS.M = {
 	POTIONS = 15,
 	BOTH_DRUNK = 16,
 	BONUS = 17, -- "MUAHAHA! My plan worked!" (Matchmaker)
-	SCENE = 18, -- in the laboratory with the levers
+	SCENE = 18, -- in the space-time continuum with the levers
 	RESULT = 19, -- the middle lever was pulled
 	BACK = 20,
 	DATING_DONE = 21,
@@ -272,7 +273,7 @@ local missionTexts = {
 	[M.POTIONS] = "Get Amarie and Grodrik to drink one dose of Eclesius' love potion each, without telling them what it is.",
 	[M.BOTH_DRUNK] = "Both love birds drank the potion. Report to Eclesius.",
 	[M.BONUS] = "Eclesius' plan worked. Ask him how to go on.",
-	[M.SCENE] = "Pull the levers in Eclesius' laboratory: first the left, then the right, then the middle one.",
+	[M.SCENE] = "Pull the levers in the space-time continuum under Eclesius' house: first the left, then the right, then the middle one.",
 	[M.RESULT] = "The experiment did not go as planned. Talk to Eclesius.",
 	[M.BACK] = "Eclesius wants to forget the whole mess. Ask him for your reward.",
 	[M.DATING_DONE] = "The dwarf and the elf hopefully don't remember anything.",
@@ -548,7 +549,7 @@ function FS.greetEclesius(npc, player)
 	FS.refresh(player)
 	local m = FS.mission(player)
 	if npc:getPosition().z ~= 7 then
-		-- the Eclesius of the laboratory scene
+		-- the Eclesius of the continuum scene
 		if m == M.SCENE then
 			return "Ah, there you are. I hope your journey was safe and hasn't cost you any body parts. Now, muahaha, the best part of my plan! Are you listening?", T.MISSION
 		elseif m == M.RESULT then
@@ -655,7 +656,7 @@ local function finishTask(npc, creature, player, npcHandler, task)
 	return true
 end
 
--- the laboratory scene (scripts/family/scatterbrained_sorcerer.lua sets these)
+-- the continuum scene (scripts/family/scatterbrained_sorcerer.lua sets these)
 -- FS.startScene(player) -> true when the player was taken down
 -- FS.endScene(player, takeUp)
 
@@ -954,7 +955,7 @@ local function missionYes(npc, creature, player, npcHandler)
 			end
 			return tell("Hmm, the crack in the space-time continuum seems to be busy right now. Let's try again in a moment.") -- ours
 		end
-		-- the Eclesius of the laboratory: "Are you listening?"
+		-- the Eclesius in the continuum: "Are you listening?"
 		FS.setMission(player, M.SCENE)
 		FS.kv(player):set("sceneListening", 1)
 		return tell({
@@ -1049,7 +1050,7 @@ function FS.eclesiusSay(npc, creature, message, npcHandler)
 		return false
 	end
 
-	-- the laboratory scene: "Ready to go up?"
+	-- the continuum scene: "Ready to go up?"
 	if topic == T.SCENE_UP then
 		if contains(msg, "yes") then
 			npcHandler:setTopic(id, 0)
@@ -1258,7 +1259,7 @@ function FS.eclesiusSay(npc, creature, message, npcHandler)
 		end
 	end
 
-	-- the laboratory Eclesius: "Are you listening?" / "Is that the result?" also after a new greeting
+	-- the continuum Eclesius: "Are you listening?" / "Is that the result?" also after a new greeting
 	if npc:getPosition().z ~= 7 and (m == M.SCENE or m == M.RESULT) and contains(msg, "yes") then
 		if m == M.SCENE and FS.kvNumber(player, "sceneListening") == 1 then
 			say(npcHandler, npc, creature, "First the left lever, then the right lever, and once both subjects are there, the one in the middle. Go on!") -- ours

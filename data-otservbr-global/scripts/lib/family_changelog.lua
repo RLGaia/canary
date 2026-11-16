@@ -154,4 +154,5 @@ FamilyChangelog = {
 	{ "2026-11-15", "Royal mailboxes: the ones in the Venore Draccoon cave and on Rascacoon now open for Archpostmen too (their doors could never be opened). Markwin calls 8 bodyguards as in Tibia: 4 archers, 2 guards and 2 mages." },
 	{ "2026-11-15", "The Scatterbrained Sorcerer: Eclesius south of Thais finally hires assistants. Five daily tasks in his house and six missions that take you to Venore, Ab'Dendriel, Kazordoon, Carlin and back." },
 	{ "2026-11-15", "The Scatterbrained Sorcerer: Samael now screams from his cage (heard near the cellar, in the Thais sewers and in the Thais prison), and the dating questionnaire can also have tolerance or loneliness as the common answer." },
+	{ "2026-11-15", "The Scatterbrained Sorcerer: the third mission now takes you into Eclesius' crack in the space-time continuum, a small room in the void under his house, instead of his laboratory." },
 }
