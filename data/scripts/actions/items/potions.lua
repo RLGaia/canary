@@ -13,7 +13,9 @@ mastermind:setParameter(CONDITION_PARAM_BUFF_SPELL, true)
 
 local transcendence = Condition(CONDITION_ATTRIBUTES)
 transcendence:setParameter(CONDITION_PARAM_TICKS, 10 * 60 * 1000)
-transcendence:setParameter(CONDITION_PARAM_SUBID, AttrSubId_JeanPierreMelee)
+-- FAMILY: the Zaoan Sauce's sub id (data-otservbr-global/scripts/family/hot_cuisine.lua), so the potion breaks the
+-- sauce's effect as in TibiaWiki EN (2026-11-16); upstream named AttrSubId_JeanPierreMelee, which does not exist (nil)
+transcendence:setParameter(CONDITION_PARAM_SUBID, 48601)
 transcendence:setParameter(CONDITION_PARAM_SKILL_FIST, 4)
 transcendence:setParameter(CONDITION_PARAM_BUFF_SPELL, true)
 

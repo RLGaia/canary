@@ -3,7 +3,8 @@
 -- Ours, not upstream: v3.6.1 knows the item (client data) but nothing uses it. TibiaWiki EN and BR:
 -- Fist Fighting +10 for one hour, the 10-minute wait of the Hot Cuisine dishes. Same pattern as the
 -- other dishes (data/scripts/actions/items/carrot_cake.lua). Its own condition sub id, so it stacks
--- with the Veggie Casserole (melee). The messages are ours.
+-- with the Veggie Casserole (melee); the Transcendence Potion uses the same one, so drinking it breaks
+-- the sauce's effect (TibiaWiki EN; data/scripts/actions/items/potions.lua). The messages are ours.
 -- Switch: Family.hotCuisine (lib/others/family_hot_cuisine.lua).
 
 if not Family.hotCuisine then
@@ -11,7 +12,7 @@ if not Family.hotCuisine then
 end
 
 local ZAOAN_SAUCE = 50334
-local SUBID = 48601 -- any number not used by another attribute condition
+local SUBID = 48601 -- shared only with the Transcendence Potion (potions.lua)
 
 local fistCondition = Condition(CONDITION_ATTRIBUTES)
 fistCondition:setParameter(CONDITION_PARAM_SUBID, SUBID)
