@@ -900,6 +900,143 @@ end
 login:register()
 
 -- ---------------------------------------------------------------------------
+-- Samael, the demon in the cage (TibiaWiki EN): never seen, only heard from outside the
+-- cellar, from a cave of the Thais sewers and from the Thais prison. EN puts him one square
+-- east of the bars (32303,32290,9), which has no ground on our map, so he waits inside the cage.
+-- An invisible creature of our own speaks his ten EN sounds to the players in those places.
+-- ---------------------------------------------------------------------------
+FS.samael = {
+	at = pos(32301, 32290, 9),
+	-- hearing places: x1, y1, x2, y2, z
+	heard = {
+		{ 32284, 32286, 32302, 32297, 9 }, -- outside his cellar (EN 32293,32293,9)
+		{ 32297, 32253, 32311, 32267, 9 }, -- the cave in the Thais sewers (EN 32304,32260,9)
+		{ 32320, 32267, 32334, 32281, 9 }, -- the Thais prison (EN 32327,32274,9)
+	},
+	minSeconds = 60,
+	maxSeconds = 150, -- ours
+	sounds = {
+		"AAARRRRRRRR! YOU WILL PAY SO DEARLY FOR THIS!",
+		"ARE YOU INSANE TRYING TO TRAP ME HERE?!",
+		"I'M THE LORD OF ALL LORDS! LET ME OUT OF HERE!",
+		"I HATE YOU ALL!",
+		"JUST YOU WAIT FOR ME.",
+		"RAHHHH!",
+		"THIS PUNY PRISON WILL NEVER HOLD ME!",
+		"WHEN I GET OUT OF HERE....",
+		"YOU CALLED ME, NOW YOU WILL TAKE RESPONSIBILITY.",
+		"YOU HAVE NO IDEA WHAT YOU'VE DONE.",
+	},
+}
+local SA = FS.samael
+
+do
+	local mType = Game.createMonsterType("Samael")
+	local monster = {}
+	monster.description = "Samael"
+	monster.experience = 0
+	monster.outfit = { lookType = 0, lookTypeEx = 0 }
+	monster.health = 1000000
+	monster.maxHealth = 1000000
+	monster.race = "fire"
+	monster.corpse = 0
+	monster.speed = 0
+	monster.manaCost = 0
+	monster.changeTarget = { interval = 4000, chance = 0 }
+	monster.strategiesTarget = { nearest = 100 }
+	monster.flags = {
+		summonable = false,
+		attackable = false,
+		hostile = false,
+		convinceable = false,
+		pushable = false,
+		rewardBoss = false,
+		illusionable = false,
+		canPushItems = false,
+		canPushCreatures = false,
+		staticAttackChance = 100,
+		targetDistance = 1,
+		runHealth = 0,
+		healthHidden = true,
+		isBlockable = false,
+		canWalkOnEnergy = false,
+		canWalkOnFire = false,
+		canWalkOnPoison = false,
+	}
+	monster.light = { level = 0, color = 0 }
+	monster.loot = {}
+	monster.attacks = {}
+	monster.defenses = { defense = 0, armor = 0, mitigation = 0 }
+	monster.elements = {}
+	monster.immunities = {}
+	mType:register(monster)
+end
+
+local samaelId, nextScream = nil, 0
+
+local function samael()
+	local creature = samaelId and Creature(samaelId)
+	if creature then
+		return creature
+	end
+	creature = Game.createMonster("Samael", SA.at, false, true)
+	if not creature then
+		return nil
+	end
+	local invisible = Condition(CONDITION_INVISIBLE)
+	invisible:setTicks(-1)
+	creature:addCondition(invisible)
+	samaelId = creature:getId()
+	return creature
+end
+FS.getSamael = samael
+
+-- the players who hear him now
+function FS.samaelListeners()
+	local list = {}
+	for _, player in ipairs(Game.getPlayers()) do
+		local p = player:getPosition()
+		for _, box in ipairs(SA.heard) do
+			if inBox(p, box[1], box[2], box[3], box[4], box[5]) then
+				list[#list + 1] = player
+				break
+			end
+		end
+	end
+	return list
+end
+
+-- one scream to everyone who hears him; returns the text (nil when nobody is there)
+function FS.samaelScream(text)
+	local listeners = FS.samaelListeners()
+	if #listeners == 0 then
+		return nil
+	end
+	local creature = samael()
+	if not creature then
+		return nil
+	end
+	text = text or SA.sounds[math.random(#SA.sounds)]
+	for _, player in ipairs(listeners) do
+		creature:say(text, TALKTYPE_MONSTER_YELL, false, player, SA.at)
+	end
+	return text
+end
+
+local screams = GlobalEvent("FamilySorcererSamael")
+function screams.onThink(interval)
+	if not on() or os.time() < nextScream then
+		return true
+	end
+	if FS.samaelScream() then
+		nextScream = os.time() + math.random(SA.minSeconds, SA.maxSeconds)
+	end
+	return true
+end
+screams:interval(10000)
+screams:register()
+
+-- ---------------------------------------------------------------------------
 -- startup
 -- ---------------------------------------------------------------------------
 local startup = GlobalEvent("FamilySorcererStartup")
@@ -956,6 +1093,10 @@ function startup.onStartup()
 		end
 	end
 	local notes = writeNotes()
+	local hidden = samael()
+	if not hidden then
+		logger.warn("[FamilySorcerer] Samael could not be placed at {}", SA.at:toString())
+	end
 	addEvent(function()
 		-- the bats and the cat that were already in the attic
 		local spectators = Game.getSpectators(pos(32287, 32292, 5), false, false, 6, 6, 4, 4)
@@ -965,7 +1106,7 @@ function startup.onStartup()
 			end
 		end
 	end, 5000)
-	logger.info("[FamilySorcerer] Eclesius' house checked ({} missing), {} notes written", missing, notes)
+	logger.info("[FamilySorcerer] Eclesius' house checked ({} missing), {} notes written, Samael {}", missing, notes, hidden and "in his cage" or "missing")
 	return true
 end
 startup:register()

@@ -439,6 +439,43 @@ check("M6 done", eclesius:say(p, "mission"), "Now I can sleep with a clear consc
 T.check("M6 reward 750, quest done", p.money - money == 750 and mission(p) == M.FROG_DONE)
 check("after the quest", eclesius:say(p, "mission"), "my {tasks} still need doing")
 
+-- the other two common answers (TibiaWiki BR names them; lines ours)
+for _, case in ipairs({
+	{ variant = 3, question = "What's an important character trait for you?", amarie = "portion of tolerance", grodrik = "portion of tolerance", answer = "a portion of tolerance" },
+	{ variant = 4, question = "What's your greatest fear?", amarie = "lonely forever", grodrik = "old and lonely", answer = "they are lonely" },
+}) do
+	local q = T.player({ level = 30, name = "Variant" .. case.variant })
+	q.storage[S.Questline] = 1
+	q.storage[S.Mission] = M.QUESTIONNAIRE
+	q.kvdata.variant = case.variant
+	amarie:say(q, "hi")
+	amarie:say(q, "yes")
+	check("variant " .. case.variant .. ": Amarie", amarie:say(q, case.question), case.amarie)
+	check("variant " .. case.variant .. ": Amarie's blue eyes question is not common", amarie:say(q, "What physical attribute should your ideal partner have?"), "handsome face")
+	amarie:bye(q)
+	grodrik:say(q, "hi")
+	grodrik:say(q, "yes")
+	check("variant " .. case.variant .. ": Grodrik", grodrik:say(q, case.question), case.grodrik)
+	check("variant " .. case.variant .. ": Grodrik's love is beer", grodrik:say(q, "Tell me something you love."), "Beer of course!")
+	grodrik:bye(q)
+	eclesius:say(q, "hi")
+	eclesius:say(q, "mission")
+	eclesius:say(q, "no")
+	eclesius:say(q, "yes")
+	check("variant " .. case.variant .. ": blue eyes refused", eclesius:say(q, "blue eyes"), "I don't think that's something")
+	eclesius:say(q, "mission")
+	eclesius:say(q, "no")
+	eclesius:say(q, "yes")
+	check("variant " .. case.variant .. ": accepted", eclesius:say(q, case.answer), "something we can easily build on")
+	eclesius:bye(q)
+end
+local seen = {}
+for _ = 1, 200 do
+	local q = T.player({ level = 30, name = "Roll" })
+	seen[FS.variant(q)] = true
+end
+T.check("all four variants are drawn", seen[1] and seen[2] and seen[3] and seen[4] and true)
+
 -- quest log texts
 T.check("quest log: tasks", has(FS.describeTasks(p), "Sweep the house"))
 T.check("quest log: finished mission 1 keeps its text", has(FS.describeMission(p, 2), "dark hat"))

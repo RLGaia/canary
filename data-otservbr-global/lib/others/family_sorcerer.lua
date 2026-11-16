@@ -934,7 +934,7 @@ local function missionYes(npc, creature, player, npcHandler)
 		player:removeItem(I.grodrikAxe, 1)
 		FS.setMission(player, M.QUESTIONNAIRE)
 		local kv = FS.kv(player)
-		kv:set("variant", math.random(1, 2))
+		kv:set("variant", math.random(1, FS.VARIANTS))
 		kv:set("askedAmarie", 0)
 		kv:set("askedGrodrik", 0)
 		say(npcHandler, npc, creature, "And you've also brought a personal item from each of them. Very, very good, let me take them and put them here, yes. Hehe. What do you think, based on their personalities, could the dwarf and elf in question get on with each other?")
@@ -1331,17 +1331,31 @@ FS.questions = {
 	{ words = { "greatest fear", "fear" } },
 }
 
--- variant 1: both like blue eyes (question 3); variant 2: both like chocolate (question 4)
+-- Answers by variant (FS.variant, one per character): 1 both like blue eyes (question 3),
+-- 2 both like chocolate (question 4) - the two EN answer sets; 3 "a portion of tolerance"
+-- (question 6) and 4 "lonely" (question 8), which TibiaWiki BR names as other common answers
+-- without their lines: those lines are ours.
 FS.answers = {
 	amarie = {
 		"You should always strive for harmony in a relationship to avoid arguments and fights. Harmony is important!",
 		"A lush, green meadow in the middle of a forest... <dreams>",
 		{ "There's more important things than a person's appearance. But if I had to choose, I'd say sparkling blue eyes, just like the ocean on a sunny day.", "Uhm... well, I look at a person's face first. A handsome face would be a definite plus." },
 		{ "As you can see... I love books.", "<blushes> My secret addiction... is chocolate. Luckily it's so rare, or else I'd eat it all day." },
+		-- (questions 3 and 4 with two entries: variants 3 and 4 use the first set without the common one, see FS.pick)
 		"I don't like fire very much... it poses a threat to my beloved trees, the beautiful grass and my precious books. I've lost too many things due to fires.",
-		"I think I'd choose patience as an answer to this one. Patience promotes tolerance which prevents arguments and thus ensures harmony.",
+		{
+			"I think I'd choose patience as an answer to this one. Patience promotes tolerance which prevents arguments and thus ensures harmony.",
+			"I think I'd choose patience as an answer to this one. Patience promotes tolerance which prevents arguments and thus ensures harmony.",
+			"A good portion of tolerance. Nobody is perfect, you know. Loving someone means accepting their little quirks... even if they leave crumbs in my books.", -- ours
+			"I think I'd choose patience as an answer to this one. Patience promotes tolerance which prevents arguments and thus ensures harmony.",
+		},
 		"I love all colours! It's so hard to choose one! But I think... my favourite colour for today is green. Green like the trees, like balance and relaxation.",
-		"I try to stay in control of my fears. But if you ask me like that... it really makes me shiver when I hear the name of Ferumbras. <shudders>",
+		{
+			"I try to stay in control of my fears. But if you ask me like that... it really makes me shiver when I hear the name of Ferumbras. <shudders>",
+			"I try to stay in control of my fears. But if you ask me like that... it really makes me shiver when I hear the name of Ferumbras. <shudders>",
+			"I try to stay in control of my fears. But if you ask me like that... it really makes me shiver when I hear the name of Ferumbras. <shudders>",
+			"My greatest fear? <looks at her books> Growing old here, all alone, without anyone to share my poems with. Staying lonely forever... <shivers>", -- ours
+		},
 	},
 	grodrik = {
 		"The most important thing in a relationship is to always have a good supply of beer. Solves almost all problems!",
@@ -1349,26 +1363,57 @@ FS.answers = {
 		{ "Well, looks aren't everything, you know. But apart from the typical dwarvish attributes I'm also really fond of blue eyes.", "Of course... a pretty, long and well-combed beard! Also I have a weakness for tiny toes." },
 		{ "Well, duh. Beer of course! I love beer! The only thing I love more than a pint of beer is two pints of beer!", "Hrmrhm. Let's think about this one strategically. I guess I'm going to be matched up with a woman. What do women always say? Chocolate! So... put chocolate there as an answer." },
 		"I don't like the fact that some weapons get rusty. Rust is a curse for any smith.",
-		"I get angry when someone lies to me. Lies are bad. So put down honesty.",
+		{
+			"I get angry when someone lies to me. Lies are bad. So put down honesty.",
+			"I get angry when someone lies to me. Lies are bad. So put down honesty.",
+			"A good portion of tolerance! My woman would have to put up with my snoring, my beer and my axe collection. Not everyone can do that.", -- ours
+			"I get angry when someone lies to me. Lies are bad. So put down honesty.",
+		},
 		"Red. Red like fire, and red like my favourite kind of steel.",
-		"Dwarfs have no fear!! Well... for some reason, jesters give me the creeps.",
+		{
+			"Dwarfs have no fear!! Well... for some reason, jesters give me the creeps.",
+			"Dwarfs have no fear!! Well... for some reason, jesters give me the creeps.",
+			"Dwarfs have no fear!! Well... for some reason, jesters give me the creeps.",
+			"Dwarfs have no fear!! Well... <hicks> except maybe ending up old and lonely in this tavern, with nobody to brew beer for. Don't write that down! ...Alright, write it down.", -- ours
+		},
 	},
 }
 
+FS.VARIANTS = 4
+
 function FS.variant(player)
 	local v = FS.kvNumber(player, "variant")
-	if v ~= 1 and v ~= 2 then
-		v = math.random(1, 2)
+	if v < 1 or v > FS.VARIANTS then
+		v = math.random(1, FS.VARIANTS)
 		FS.kv(player):set("variant", v)
 	end
 	return v
 end
 
-function FS.commonAnswer(player)
-	if FS.variant(player) == 1 then
-		return { word = "blue eye", question = 3 }
+-- the answer of one variant: four entries = one per variant; two entries (questions 3 and 4) =
+-- the common one for its own variant, else the other one
+function FS.pick(answer, question, variant)
+	if type(answer) ~= "table" then
+		return answer
 	end
-	return { word = "chocolate", question = 4 }
+	if #answer >= FS.VARIANTS then
+		return answer[variant]
+	end
+	if (question == 3 and variant == 1) or (question == 4 and variant == 2) then
+		return question == 3 and answer[1] or answer[2]
+	end
+	return question == 3 and answer[2] or answer[1]
+end
+
+FS.commonAnswers = {
+	{ word = "blue eye", question = 3 },
+	{ word = "chocolate", question = 4 },
+	{ word = "tolerance", question = 6 },
+	{ word = "lonel", question = 8 }, -- lonely, loneliness
+}
+
+function FS.commonAnswer(player)
+	return FS.commonAnswers[FS.variant(player)]
 end
 
 function FS.askedBoth(player, question)
@@ -1381,10 +1426,7 @@ function FS.answerQuestion(player, who, message)
 	for index, q in ipairs(FS.questions) do
 		for _, word in ipairs(q.words) do
 			if msg:find(word, 1, true) then
-				local answer = FS.answers[who][index]
-				if type(answer) == "table" then
-					answer = answer[FS.variant(player)]
-				end
+				local answer = FS.pick(FS.answers[who][index], index, FS.variant(player))
 				local key = who == "amarie" and "askedAmarie" or "askedGrodrik"
 				local mask = FS.kvNumber(player, key)
 				if not FS.hasBit(mask, index - 1) then

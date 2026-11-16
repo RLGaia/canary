@@ -153,4 +153,5 @@ FamilyChangelog = {
 	{ "2026-11-15", "Post offices: from Assistant Postman (The Postman Missions) letters cost 5 gold and parcels 10 gold, as Kevin promises." },
 	{ "2026-11-15", "Royal mailboxes: the ones in the Venore Draccoon cave and on Rascacoon now open for Archpostmen too (their doors could never be opened). Markwin calls 8 bodyguards as in Tibia: 4 archers, 2 guards and 2 mages." },
 	{ "2026-11-15", "The Scatterbrained Sorcerer: Eclesius south of Thais finally hires assistants. Five daily tasks in his house and six missions that take you to Venore, Ab'Dendriel, Kazordoon, Carlin and back." },
+	{ "2026-11-15", "The Scatterbrained Sorcerer: Samael now screams from his cage (heard near the cellar, in the Thais sewers and in the Thais prison), and the dating questionnaire can also have tolerance or loneliness as the common answer." },
 }
