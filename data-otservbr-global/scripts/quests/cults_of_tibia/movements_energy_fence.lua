@@ -32,8 +32,27 @@ function energyFence.onStepIn(creature, item, position, fromPosition)
 	local family = Family and Family.cultsOfTibia
 	local firstStorage = family and Storage.Quest.U11_40.CultsOfTibia.Humans.Decaying or Storage.Quest.U11_40.CultsOfTibia.Humans.Vaporized
 	local secondStorage = family and Storage.Quest.U11_40.CultsOfTibia.Humans.Vaporized or Storage.Quest.U11_40.CultsOfTibia.Humans.Decaying
+	-- FAMILY (2026-11-17): a barrier passed once stays open; souls of its colour absorbed too long ago fade
+	-- (BR: the absorbed energy is lost if you take too long; FamilyCults.soulsFaded)
+	local function familyReady(colour, storage)
+		if not family then
+			return player:getStorageValue(storage) == 10
+		end
+		if FamilyCults.barrierPassed(player, colour) then
+			return true
+		end
+		if FamilyCults.soulsFaded(player, colour) then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The power of the " .. colour .. " souls you absorbed has faded away. You took too long.") -- ours
+			return false
+		end
+		if player:getStorageValue(storage) == 10 then
+			FamilyCults.passBarrier(player, colour)
+			return true
+		end
+		return false
+	end
 	if position == firstCheck or position == Position(firstCheck.x + 1, firstCheck.y, firstCheck.z) or position == Position(firstCheck.x + 2, firstCheck.y, firstCheck.z) then
-		if player:getStorageValue(firstStorage) == 10 then
+		if familyReady("decaying", firstStorage) then
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, family and "With you being the vessel binding the power of decaying souls, you step through the magic barrier." or "With you being the vessel binding the power of whitered souls, you step through the magic barrier.")
 			player:getPosition():sendMagicEffect(CONST_ME_ENERGYHIT)
 		else
@@ -41,7 +60,7 @@ function energyFence.onStepIn(creature, item, position, fromPosition)
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The combined powers of decaying souls roaming these halls may help breach this barrier, it needs but a vessel to bind them.")
 		end
 	elseif position == secondCheck or position == Position(secondCheck.x + 1, secondCheck.y, secondCheck.z) or position == Position(secondCheck.x + 2, secondCheck.y, secondCheck.z) then
-		if player:getStorageValue(secondStorage) == 10 then
+		if familyReady("withering", secondStorage) then
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "With you being the vessel binding the power of withered souls, you step through the magic barrier.")
 			player:getPosition():sendMagicEffect(CONST_ME_ENERGYHIT)
 		else

@@ -111428,7 +111428,7 @@
 	</monster>
 	<monster centerx="33260" centery="32119" centerz="10" radius="3">
 		<monster name="Goldhanded Cultist" x="-1" y="2" z="10" spawntime="60" />
-		<monster name="Goldhanded Cultist" x="-1" y="3" z="10" spawntime="60" />
+		<monster name="Goldhanded Cultist Bride" x="-1" y="3" z="10" spawntime="60" />
 	</monster>
 	<monster centerx="33267" centery="32119" centerz="10" radius="3">
 		<monster name="Goldhanded Cultist" x="1" y="1" z="10" spawntime="60" />
@@ -111438,7 +111438,7 @@
 	</monster>
 	<monster centerx="33302" centery="32119" centerz="10" radius="3">
 		<monster name="Goldhanded Cultist" x="-1" y="1" z="10" spawntime="60" />
-		<monster name="Goldhanded Cultist" x="0" y="1" z="10" spawntime="60" />
+		<monster name="Goldhanded Cultist Bride" x="0" y="1" z="10" spawntime="60" />
 	</monster>
 	<monster centerx="33340" centery="32119" centerz="10" radius="2">
 		<monster name="Demon" x="-1" y="-1" z="10" spawntime="60" />
@@ -111695,12 +111695,12 @@
 	</monster>
 	<monster centerx="33232" centery="32140" centerz="10" radius="3">
 		<monster name="Goldhanded Cultist" x="2" y="0" z="10" spawntime="60" />
-		<monster name="Goldhanded Cultist" x="-2" y="2" z="10" spawntime="60" />
+		<monster name="Goldhanded Cultist Bride" x="-2" y="2" z="10" spawntime="60" />
 		<monster name="Goldhanded Cultist" x="0" y="3" z="10" spawntime="60" />
 	</monster>
 	<monster centerx="33260" centery="32140" centerz="10" radius="3">
 		<monster name="Goldhanded Cultist" x="3" y="-3" z="10" spawntime="60" />
-		<monster name="Goldhanded Cultist" x="-1" y="-1" z="10" spawntime="60" />
+		<monster name="Goldhanded Cultist Bride" x="-1" y="-1" z="10" spawntime="60" />
 		<monster name="Goldhanded Cultist" x="2" y="-1" z="10" spawntime="60" />
 	</monster>
 	<monster centerx="33357" centery="32141" centerz="10" radius="1">
@@ -112020,7 +112020,7 @@
 	</monster>
 	<monster centerx="33225" centery="32168" centerz="10" radius="3">
 		<monster name="Goldhanded Cultist" x="-2" y="0" z="10" spawntime="60" />
-		<monster name="Goldhanded Cultist" x="3" y="2" z="10" spawntime="60" />
+		<monster name="Goldhanded Cultist Bride" x="3" y="2" z="10" spawntime="60" />
 	</monster>
 	<monster centerx="33267" centery="32168" centerz="10" radius="3">
 		<monster name="Goldhanded Cultist" x="-2" y="2" z="10" spawntime="60" />

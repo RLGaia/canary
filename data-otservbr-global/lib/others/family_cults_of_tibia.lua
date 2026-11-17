@@ -27,6 +27,9 @@
 --     lost charge, 5 minutes to use the glowing amulet (EN).
 --   * Final battle: the Zarcorix of Yalahar disappears when the Corruptor of
 --     Souls dies (EN; upstream looked in the wrong room).
+--   * Added the same day (Rodrigo: "proceed"): the Goldhanded Cultist Bride
+--     (monster file, 5 museum spots), Enraged Sand Broods in the Sandking's
+--     second stage, and souls that fade after 10 minutes (BR; time ours).
 --
 -- Switch: Family.cultsOfTibia (false = upstream behaviour where the files
 -- check it: quest log start, ice death, Humans barriers and remains,
@@ -71,6 +74,50 @@ end
 F.decayingSoul = 25778
 F.witheringSoul = 25777
 F.soulSeconds = 20 -- EN: "You have 20 seconds to collect (by stepping on) them before they vanish."
+
+-- BR: "se voce demorar para passa-los, a energia absorvida sera resetada e voce tera de recomecar". No wiki
+-- gives the time; ours: the souls of a colour fade 10 minutes after the last one of that colour, until you
+-- have passed its barrier once (EN: "Once you have access to the third floor"), which then stays open.
+F.soulFadeSeconds = 10 * 60
+F.souls = {
+	decaying = { storage = function() return S().Humans.Decaying end, key = "decaying" },
+	withering = { storage = function() return S().Humans.Vaporized end, key = "withering" },
+}
+
+local function soulKV(player)
+	return player:kv():scoped("family-cults")
+end
+
+-- Called before a soul is counted and at the barrier: true when the souls of this colour faded now.
+function F.soulsFaded(player, colour)
+	local c = F.souls[colour]
+	if soulKV(player):get(c.key .. "-passed") then
+		return false
+	end
+	local last = soulKV(player):get(c.key .. "-at")
+	if not last then
+		-- souls gathered before this rule (or none yet): their time starts now
+		soulKV(player):set(c.key .. "-at", os.time())
+		return false
+	end
+	if player:getStorageValue(c.storage()) > 0 and os.time() - last > F.soulFadeSeconds then
+		player:setStorageValue(c.storage(), 0)
+		return true
+	end
+	return false
+end
+
+function F.soulAbsorbed(player, colour)
+	soulKV(player):set(F.souls[colour].key .. "-at", os.time())
+end
+
+function F.barrierPassed(player, colour)
+	return soulKV(player):get(F.souls[colour].key .. "-passed") == true
+end
+
+function F.passBarrier(player, colour)
+	soulKV(player):set(F.souls[colour].key .. "-passed", true)
+end
 
 -- The Denominator ------------------------------------------------------------
 -- Both wikis: five questions about your three-digit number XYZ (each digit

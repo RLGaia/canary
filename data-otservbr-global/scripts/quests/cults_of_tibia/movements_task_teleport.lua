@@ -2,12 +2,14 @@ local setting = {
 	[32415] = {
 		storage = Storage.Quest.U11_40.CultsOfTibia.Humans.Decaying,
 		max = 10,
+		colour = "decaying",
 		text = "You absorb the energetic remains of this decaying soul. Its power is very fragile and fleeting.",
 		effect = CONST_ME_GREEN_ENERGY_SPARK,
 	},
 	[32414] = {
 		storage = Storage.Quest.U11_40.CultsOfTibia.Humans.Vaporized,
 		max = 10,
+		colour = "withering",
 		text = "You absorb the energetic remains of this withering soul. Its power is very fragile and fleeting.",
 		effect = CONST_ME_BLUE_ENERGY_SPARK,
 	},
@@ -36,6 +38,11 @@ function taskTeleport.onStepIn(creature, item, position, fromPosition)
 	for index, value in pairs(setting) do
 		local teleport = Tile(position):getItemById(index)
 		if teleport then
+			-- FAMILY (2026-11-17): souls absorbed too long ago have faded (FamilyCults.soulsFaded)
+			local family = Family and Family.cultsOfTibia
+			if family and FamilyCults.soulsFaded(player, value.colour) then
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The power of the " .. value.colour .. " souls you absorbed before has faded away.") -- ours
+			end
 			local storage = (player:getStorageValue(value.storage) < 0 and 0 or player:getStorageValue(value.storage))
 			local attribute = teleport:getCustomAttribute("task") or ""
 			if attribute:find(player:getName()) or storage >= value.max then
@@ -45,6 +52,9 @@ function taskTeleport.onStepIn(creature, item, position, fromPosition)
 			attribute = string.format("%s, %s", attribute, player:getName())
 			teleport:setCustomAttribute("task", attribute)
 			player:setStorageValue(value.storage, storage + 1)
+			if family then
+				FamilyCults.soulAbsorbed(player, value.colour)
+			end
 			player:getPosition():sendMagicEffect(value.effect)
 			teleport:remove()
 			player:say(value.text, TALKTYPE_MONSTER_SAY)

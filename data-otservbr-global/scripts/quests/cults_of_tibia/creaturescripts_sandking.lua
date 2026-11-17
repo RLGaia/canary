@@ -47,6 +47,37 @@ local function spawnSandMonster(name, _time)
 	return true
 end
 
+-- FAMILY (2026-11-17): Enraged Sand Broods during the second stage (the three Sandkings), as both wikis say
+-- (EN: "During this stage Enraged Sand Broods will start spawning"; BR: "ainda havera algumas Enraged Sand
+-- Broods"); their corpses heal the Sandking like the other broods' corpses. How many and how often is ours:
+-- one every 10 seconds while the stage lasts and a player is in the room, at most 4 alive at a time.
+local function familyEnragedBroods()
+	if Game.getStorageValue("sandking") ~= 4 then
+		return
+	end
+	local from, to = Position(33087, 31848, 15), Position(33109, 31871, 15)
+	if not isPlayerInArea(from, to) then
+		return
+	end
+	local alive = 0
+	for x = from.x, to.x do
+		for y = from.y, to.y do
+			local tile = Tile(Position(x, y, 15))
+			local c = tile and tile:getTopCreature()
+			if c and c:isMonster() and c:getName():lower() == "enraged sand brood" then
+				alive = alive + 1
+			end
+		end
+	end
+	if alive < 4 then
+		local brood = Game.createMonster("Enraged Sand Brood", Position(math.random(33092, 33105), math.random(31853, 31865), 15))
+		if brood then
+			brood:registerEvent("SandkingDeath")
+		end
+	end
+	addEvent(familyEnragedBroods, 10000)
+end
+
 local sandkingThink = CreatureEvent("SandkingThink")
 function sandkingThink.onThink(creature)
 	if not creature:isMonster() then
@@ -94,6 +125,9 @@ function sandkingThink.onThink(creature)
 				monster:beginSharedLife(tm)
 				monster:registerEvent("SharedLife")
 			end
+			if Family and Family.cultsOfTibia then
+				addEvent(familyEnragedBroods, 5000)
+			end
 		end
 	end
 	return true
@@ -106,7 +140,8 @@ function sandkingDeath.onDeath(creature, attacker, corpse)
 	if not creature:isMonster() then
 		return true
 	end
-	if creature:getName():lower() == "sand brood" then
+	local broodName = creature:getName():lower()
+	if broodName == "sand brood" or broodName == "enraged sand brood" then -- FAMILY (2026-11-17): enraged broods too
 		addEvent(function(position, corpseid)
 			local tile = Tile(position)
 			if tile then
