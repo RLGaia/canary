@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!-- FAMILY (2026-11-17): not in upstream. TibiaWiki BR "Invasões em Liberty Bay" (the four leaders' places) and EN "Vandura Raids"
+	     (messages and times). The four leaders come every time (ours: the wikis say not all may appear); pirate numbers are ours. -->
+	<announce delay="1000" type="event" message="Pirates are launching a surprise attack on Liberty Bay! Take care, they seem to be everywhere." />
+	<areaspawn delay="5000" fromx="32357" fromy="32830" fromz="7" tox="32363" toy="32836" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="5000" fromx="32343" fromy="32839" fromz="7" tox="32349" toy="32845" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="5000" fromx="32304" fromy="32860" fromz="7" tox="32310" toy="32866" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="5000" fromx="32272" fromy="32870" fromz="7" tox="32278" toy="32876" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="5000" fromx="32240" fromy="32868" fromz="7" tox="32246" toy="32874" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="5000" fromx="32218" fromy="32863" fromz="7" tox="32224" toy="32869" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="5000" fromx="32285" fromy="32774" fromz="7" tox="32287" toy="32776" toz="7">
+		<monster name="Lethal Lissy" amount="1" />
+	</areaspawn>
+	<areaspawn delay="5000" fromx="32342" fromy="32850" fromz="7" tox="32344" toy="32852" toz="7">
+		<monster name="Deadeye Devious" amount="1" />
+	</areaspawn>
+	<areaspawn delay="5000" fromx="32304" fromy="32861" fromz="7" tox="32306" toy="32863" toz="7">
+		<monster name="Brutus Bloodbeard" amount="1" />
+	</areaspawn>
+	<areaspawn delay="9000" fromx="32357" fromy="32830" fromz="7" tox="32363" toy="32836" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="9000" fromx="32343" fromy="32839" fromz="7" tox="32349" toy="32845" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="9000" fromx="32304" fromy="32860" fromz="7" tox="32310" toy="32866" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="9000" fromx="32272" fromy="32870" fromz="7" tox="32278" toy="32876" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="9000" fromx="32240" fromy="32868" fromz="7" tox="32246" toy="32874" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="9000" fromx="32218" fromy="32863" fromz="7" tox="32224" toy="32869" toz="7">
+		<monster name="Pirate Marauder" minamount="0" maxamount="1" />
+		<monster name="Pirate Cutthroat" minamount="0" maxamount="1" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<announce delay="600000" type="event" message="Pirates have invaded the fortress." />
+	<areaspawn delay="600000" fromx="32404" fromy="32820" fromz="4" tox="32406" toy="32822" toz="4">
+		<monster name="Ron the Ripper" amount="1" />
+	</areaspawn>
+	<areaspawn delay="600000" fromx="32401" fromy="32817" fromz="4" tox="32409" toy="32825" toz="4">
+		<monster name="Pirate Marauder" minamount="1" maxamount="2" />
+		<monster name="Pirate Cutthroat" minamount="1" maxamount="2" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+	</areaspawn>
+</raid>

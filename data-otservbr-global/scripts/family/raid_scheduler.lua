@@ -95,6 +95,8 @@ R.bossRaids = {
 	{ raid = "Apprentice Sheng", group = "common", bosses = { "Apprentice Sheng" } },
 	{ raid = "Teleskor", group = "common", bosses = { "Teleskor" } },
 	{ raid = "Dharalion", group = "common", bosses = { "Dharalion" } },
+	-- FAMILY (2026-11-17): the pirate leaders' raid in Liberty Bay (common: ours, so the Pirate Outfit hat can be finished)
+	{ raid = "Liberty Bay Pirate Bosses", group = "common", bosses = { "Lethal Lissy", "Deadeye Devious", "Brutus Bloodbeard", "Ron the Ripper" } },
 }
 
 -- Bosses with no raid file, created by this file. Fields:

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!-- FAMILY (2026-11-17): not in upstream. TibiaWiki BR "Invasões em Liberty Bay" (place, messages) and EN "Vandura Raids" (times).
+	     Creature numbers are ours. -->
+	<announce delay="1000" type="event" message="Sails sighted northwest of Liberty Bay." />
+	<announce delay="300000" type="event" message="Pirates are attacking the plantations of Liberty Bay." />
+	<areaspawn delay="300000" fromx="32205" fromy="32741" fromz="7" tox="32213" toy="32749" toz="7">
+		<monster name="Pirate Marauder" minamount="1" maxamount="2" />
+		<monster name="Pirate Cutthroat" minamount="1" maxamount="2" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="360000" fromx="32205" fromy="32741" fromz="7" tox="32213" toy="32749" toz="7">
+		<monster name="Pirate Marauder" minamount="1" maxamount="2" />
+		<monster name="Pirate Cutthroat" minamount="1" maxamount="2" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+	<areaspawn delay="420000" fromx="32205" fromy="32741" fromz="7" tox="32213" toy="32749" toz="7">
+		<monster name="Pirate Marauder" minamount="1" maxamount="2" />
+		<monster name="Pirate Cutthroat" minamount="1" maxamount="2" />
+		<monster name="Pirate Buccaneer" minamount="0" maxamount="1" />
+		<monster name="Pirate Corsair" minamount="0" maxamount="1" />
+		<monster name="Smuggler" minamount="0" maxamount="1" />
+	</areaspawn>
+</raid>

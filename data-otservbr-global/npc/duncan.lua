@@ -60,7 +60,8 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	local storage = Storage.Quest.U7_8.PirateOutfits.PirateSabreAddon
 
-	if table.contains({ "outfit", "addon" }, message) and player:getStorageValue(Storage.Quest.U7_8.PirateOutfits.PirateBaseOutfit) == 1 then
+	-- FAMILY (2026-11-17): MsgContains (was an exact match, so "Addon" as in the wikis got no answer)
+	if (MsgContains(message, "outfit") or MsgContains(message, "addon")) and player:getStorageValue(Storage.Quest.U7_8.PirateOutfits.PirateBaseOutfit) == 1 then
 		npcHandler:say("You're talking about my sabre? Well, even though you earned our trust, you'd have to fulfill a task first before you are granted to wear such a sabre.", npc, creature)
 	elseif MsgContains(message, "mission") then
 		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 9 then
@@ -102,7 +103,7 @@ local function creatureSayCallback(npc, creature, type, message)
 	elseif MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 1 then
 			npcHandler:say({
-				"Listen, the task is not that hard. Simply prove that you are with us and not with the pirates from Nargor by bringingme some of their belongings. ...",
+				"Listen, the task is not that hard. Simply prove that you are with us and not with the pirates from Nargor by bringing me some of their belongings. ...",
 				"Bring me 100 of their eye patches, 100 of their peg legs and 100 of their hooks, in that order. ...",
 				"Have you understood everything I told you and are willing to handle this task?",
 			}, npc, creature)
@@ -131,7 +132,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		elseif npcHandler:getTopic(playerId) == 5 then
 			if player:removeItem(6097, 100) then
 				player:setStorageValue(storage, 4)
-				npcHandler:say("I see, I see. Well done. Go to Morgan and tell him this codeword: 'firebird'. He'll know what to do.", creature)
+				npcHandler:say("I see, I see. Well done. Go to Morgan and tell him this codeword: 'firebird'. He'll know what to do.", npc, creature) -- FAMILY: npc was missing, so the codeword was never said
 				npcHandler:setTopic(playerId, 0)
 			else
 				npcHandler:say("You don't have it...", npc, creature)

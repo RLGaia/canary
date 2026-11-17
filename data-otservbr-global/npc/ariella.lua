@@ -139,6 +139,7 @@ local function creatureSayCallback(npc, creature, type, message)
 					player:addOutfitAddon(155, 2)
 					player:addOutfitAddon(151, 2)
 					player:setStorageValue(Storage.Quest.U7_8.PirateOutfits.PirateHatAddon, 1)
+					FamilyMerianaRebels.checkSwashbuckler(player) -- FAMILY: both pirate addons give Swashbuckler (BR)
 				end
 			else
 				npcHandler:say("You do not have all the required items.", npc, creature)

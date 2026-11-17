@@ -404,8 +404,11 @@ function boss.onStepIn(creature, item, position, fromPosition)
 			player:teleportTo(bosses[a].playerPosition)
 			bosses[a].playerPosition:sendMagicEffect(CONST_ME_TELEPORT)
 			local monster
-			if player:getPosition() == Position({ x = 31978, y = 32853, z = 1 }) then
-				local randomBoss = math.random(4)
+			-- FAMILY (2026-11-17): upstream checked the player's position here, after the teleport had
+			-- already moved him into the room, so the pirate leaders' list was passed as one name and no
+			-- boss ever came (Ray's hideout gave nothing). A list of names now picks one at random.
+			if type(bosses[a].bossName) == "table" then
+				local randomBoss = math.random(#bosses[a].bossName)
 				monster = Game.createMonster(bosses[a].bossName[randomBoss], bosses[a].bossPosition)
 			else
 				monster = Game.createMonster(bosses[a].bossName, bosses[a].bossPosition)

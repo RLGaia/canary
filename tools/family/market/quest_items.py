@@ -86,6 +86,8 @@ NOT_QUEST = {
 # Quest ingredients with no other source on this server: they get sell offers too (reviewed by hand).
 ASKED_FOR = {
     48115: "taiyaki (Jean Pierre's Zaoan Sauce; the Candia lakes are not fished here, 2026-11-16)",
+    6125: "tortoise egg from Nargor (Duncan; the nests script names it in a variable, 2026-11-17)",
+    6100: "the Lethal Lissy's shirt (Ariella's pirate hat; its three sibling items are listed through the Nargor boss room chest, 2026-11-17)",
 }
 
 

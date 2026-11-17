@@ -146,6 +146,13 @@ upstream's old reputation 13, the lost letter and whisper beer, Chondur's counte
 quest log states. The map objects (plans, nests, Marina's turtle, mushroom portal, catapult, parrot's tree)
 need the real map and are checked in a server self-test: `luajit tools/family/npc_talk/shattered_isles.lua`.
 
+`meriana_rebels.lua` (2026-11-17, 42 checks): Raymond Striker's pirate task (accept, four reports: the
+hideout three times, then money only; 10,000 exp and 5,000 gold each) with the sealed door's rule, Duncan's
+sabre task (`Addon`, eye patches, peg legs, hooks, the codeword), Morgan's `firebird`, Ariella's hat and
+Swashbuckler in either order, with the TibiaWiki BR lines. The hideout door, the boss room chest, the
+leaders' teleporter and the Liberty Bay pirate raids are checked in a server self-test:
+`luajit tools/family/npc_talk/meriana_rebels.lua`.
+
 `wiki_alignment.lua` (2026-11-17, 14 checks) covers the spots where earlier reviews had kept our server's
 behaviour and Rodrigo asked to follow the wikis: Venore Daily Tasks (20 hours per task, bonus once per round,
 old reported tasks free), Pilgrimage of Ashes (gold only when started below level 25, the BR offer line from

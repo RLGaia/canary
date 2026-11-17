@@ -283,7 +283,10 @@ return {
 	[3606] = true, -- egg
 	[3659] = true, -- blue rose
 	[3661] = true, -- grave flower
+	[3723] = true, -- white mushroom
 	[3725] = true, -- brown mushroom
+	[3728] = true, -- dark mushroom
+	[3732] = true, -- green mushroom
 	[3734] = true, -- blood herb
 	[4050] = true, -- spirit cage
 	[4827] = true, -- whisper moss
@@ -353,8 +356,10 @@ return {
 	[5947] = true, -- Elane's crossbow
 	[5949] = true, -- beach backpack
 	[5954] = true, -- demon horn
+	[6093] = true, -- crystal ring
 	[6096] = true, -- pirate hat
 	[6099] = true, -- Brutus Bloodbeard's hat
+	[6100] = true, -- the Lethal Lissy's shirt
 	[6101] = true, -- Ron the Ripper's sabre
 	[6102] = true, -- Deadeye Devious' eye patch
 	[6105] = true, -- Striker's favourite pillow
@@ -726,5 +731,6 @@ return {
 	[50273] = true, -- nunchaku of enlightenment
 	[50274] = true, -- coned hat of enlightenment
 	[50289] = true, -- yalahari footwraps
+	[50313] = true, -- sensing crown
 	[50334] = true, -- zaoan sauce
 }

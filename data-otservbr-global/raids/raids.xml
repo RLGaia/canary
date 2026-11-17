@@ -47,6 +47,10 @@
 	<raid name="Quaras" file="liberty_bay/quaras.xml" interval2="500" margin="71582" />
 	<raid name="Tigers" file="liberty_bay/tigers.xml" interval2="500" margin="71582" />
 	<raid name="Tortoise" file="liberty_bay/tortoises.xml" interval2="500" margin="71582" />
+	<!-- FAMILY (2026-11-17): the three Liberty Bay pirate raids of Tibia (TibiaWiki BR "Invasões em Liberty Bay", EN "Vandura Raids"); the pirate leaders' items are needed for the Pirate Outfit hat -->
+	<raid name="Liberty Bay Pirates" file="liberty_bay/pirates.xml" interval2="500" margin="71582" />
+	<raid name="Liberty Bay Pirate Bosses" file="liberty_bay/pirate_bosses.xml" interval2="500" margin="71582" />
+	<raid name="Liberty Bay Plantation Pirates" file="liberty_bay/pirate_plantations.xml" interval2="500" margin="71582" />
 	<!-- Port Hope -->
 	<raid name="Kongras" file="port_hope/kongras.xml" interval2="500" margin="71582" />
 	<raid name="Lizards" file="port_hope/lizards.xml" interval2="500" margin="71582" />

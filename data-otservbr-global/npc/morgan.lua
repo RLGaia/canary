@@ -65,6 +65,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:addOutfitAddon(155, 1)
 			player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
 			npcHandler:say("Ahh. So Duncan sent you, eh? You must have done something really impressive. Okay, take this fine sabre from me, mate.", npc, creature)
+			FamilyMerianaRebels.checkSwashbuckler(player) -- FAMILY: both pirate addons give Swashbuckler (BR)
 		end
 	elseif MsgContains(message, "mission") then
 		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 6 then
