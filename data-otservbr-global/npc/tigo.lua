@@ -50,65 +50,67 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
-local function greetCallback(npc, creature)
-	local player = Player(creature)
-
-	-- No setTopic here: NpcHandler:setInteraction() resets the topic to 0 right
-	-- after CALLBACK_GREET, so the chain has to be seeded from the "barkless" branch.
-	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.Mission) < 2 then
-		npcHandler:setMessage(MESSAGE_GREET, "There, there initiate. You will now become one of us, as so many before you. One of the {Barkless}. Walk with us and you will walk tall my friend.")
+-- FAMILY (2026-11-17): Tigo answers as on TibiaWiki BR (Tigo page, lines marked BR): one greeting for
+-- everybody, the words name, job, penitent, judge, pure, trial and barkless at any time (upstream wanted
+-- barkless -> purest -> trial in a row), and his farewell. Any quest word starts the mission and opens the
+-- trial building (EN spoiler: "you must ask for a mission before you can enter the building").
+local function familyStartBarkless(player)
+	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.Mission) < 1 then
+		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.Mission, 1)
 	end
-
-	return true
+	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.TrialAccessDoor) < 1 then
+		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.TrialAccessDoor, 1)
+	end
+	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Questline) < 1 then
+		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Questline, 1)
+	end
 end
 
 local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
-	local playerId = player:getId()
 
 	if not npcHandler:checkInteraction(npc, creature) then
 		return false
 	end
 
-	-- Tigo is the cult's entry point: he starts the mission and opens the trial
-	-- building himself. Guarded writes, so repeating the dialogue never rolls back.
-	if MsgContains(message, "barkless") and player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.Mission) < 2 then
-		npcHandler:say({ "You are now one of us. Learn to endure this world's suffering in every facet and take delight in the soothing eternity that waits for the {purest} of us on the other side." }, npc, creature)
-		if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.Mission) < 1 then
-			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.Mission, 1)
-		end
-		if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.TrialAccessDoor) < 1 then
-			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.TrialAccessDoor, 1)
-		end
-		if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Questline) < 1 then
-			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Questline, 1)
-		end
-		npcHandler:setTopic(playerId, 1)
-	elseif MsgContains(message, "purest") and npcHandler:getTopic(playerId) == 1 then
-		npcHandler:say({ "Purification is but one of the difficult steps on your way to the other side. The {trial} of tar, sulphur and ice." }, npc, creature)
-		npcHandler:setTopic(playerId, 2)
-	elseif MsgContains(message, "trial") and npcHandler:getTopic(playerId) == 2 then
+	if MsgContains(message, "name") then
+		npcHandler:say("My name is Tigo, Beacon of the Barkless.", npc, creature) -- BR
+	elseif MsgContains(message, "job") then
+		npcHandler:say("I am Beacon of the Barkless and one of the first to join the circle of the {Penitent}. Only one of us can be Beacon. My job is to gather like-minded and oversee their material sacrifices.", npc, creature) -- BR
+	elseif MsgContains(message, "penitent") then
+		npcHandler:say({
+			"The Penitent is the first and truest of the Barkless. Our spiritual leader. He walked the face of this world in suffering and pain for us to be freed from misery on the other side. ...",
+			"Only he can {judge} if our brothers and sisters are pure enough to approach him.",
+		}, npc, creature) -- BR
+	elseif MsgContains(message, "judge") then
+		npcHandler:say("When you are free from vanity and fortune, you shall receive purification. Then, and only then, the Penitent will judge you. Survive the {trial} of tar, sulphur and ice.", npc, creature) -- BR
+	elseif MsgContains(message, "pure") or MsgContains(message, "purest") then
+		npcHandler:say("Purification is but one of the difficult steps on your way to the other side. The {trial} of tar, sulphur and ice.", npc, creature) -- BR
+	elseif MsgContains(message, "trial") then
 		npcHandler:say({
 			"The trial consists of three steps. The trial of tar, where you will suffer unbearable heat and embrace the stigma of misfortune. ...",
-			"The trial of sulphur, where you will bathe in burning sulphur and embrace the stigma of vanity. Then, there is the trial of purification. The truest of us will be purified to face judgement from the {Penitent}.",
+			"The trial of sulphur, where you will bathe in burning sulphur and embrace the stigma of vanity. Then, there is the trial of purification. The truest of us will be purified to face judgement from the {Penitent}. ...",
 			"To purge your soul, your body will have to be near absolute zero, the point where life becomes impossible. ...",
-			"Something about you is different.  I know that you will find a way to return even if you should die during the purification. And if you do... Leiden will become aware of you and retreat. ...",
-			"If he does, follow him into his own chambers. Barkless are neither allowed to go near the throne room, aside from being judged, nor can we actually enter it.",
-			"He should be easy to defeat with his back to the wall, find him - and delvier us from whatever became of the Penitent.",
-		}, npc, creature)
-		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.TrialAccessDoor, 1)
-		npcHandler:setTopic(playerId, 0)
+			"Something about you is different. I know that you will find a way to return even if you should die during the purification. And if you do... Leiden will become aware of you and retreat. ...",
+			"If he does, follow him into his own chambers. Barkless are neither allowed to go near the throne room, aside from being judged, nor can we actually enter it. ...",
+			"He should be easy to defeat with his back to the wall, find him - and deliver us from whatever became of the Penitent.",
+		}, npc, creature) -- BR
+		familyStartBarkless(player)
+	elseif MsgContains(message, "barkless") or MsgContains(message, "mission") then
+		npcHandler:say("You are now one of us. Learn to endure this world's suffering in every facet and take delight in the soothing eternity that waits for the {purest} of us on the other side.", npc, creature) -- BR
+		familyStartBarkless(player)
 	end
 
 	return true
 end
 
+npcHandler:setMessage(MESSAGE_GREET, "There, there initiate. You will now become one of us, as so many before you. One of the {Barkless}. Walk with us and you will walk tall my friend.") -- BR
+npcHandler:setMessage(MESSAGE_FAREWELL, "Az'edail (savour pain), my brother.") -- BR
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Well, bye then.")
 
 npcHandler:setCallback(CALLBACK_SET_INTERACTION, onAddFocus)
 npcHandler:setCallback(CALLBACK_REMOVE_INTERACTION, onReleaseFocus)
 
-npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

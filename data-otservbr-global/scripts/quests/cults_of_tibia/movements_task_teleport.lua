@@ -2,16 +2,21 @@ local setting = {
 	[32415] = {
 		storage = Storage.Quest.U11_40.CultsOfTibia.Humans.Decaying,
 		max = 10,
-		text = "You absorb the energetic remains of this decaying soul. Its power is very fragile and fleeting",
+		text = "You absorb the energetic remains of this decaying soul. Its power is very fragile and fleeting.",
 		effect = CONST_ME_GREEN_ENERGY_SPARK,
 	},
 	[32414] = {
 		storage = Storage.Quest.U11_40.CultsOfTibia.Humans.Vaporized,
 		max = 10,
-		text = "You absorb the energetic remains of this whitering soul. Its power is very fragile and fleeting.",
+		text = "You absorb the energetic remains of this withering soul. Its power is very fragile and fleeting.",
 		effect = CONST_ME_BLUE_ENERGY_SPARK,
 	},
 }
+
+-- FAMILY (2026-11-17): the cultists now leave the real soul remains (EN item pages: 25778 decaying,
+-- green; 25777 withering, blue) instead of the unnamed vortexes 32415/32414
+setting[25778] = setting[32415]
+setting[25777] = setting[32414]
 
 local taskTeleport = MoveEvent()
 

@@ -13,7 +13,7 @@ local configQuest = {
 			"Your body is heating up, the air around you is flickering.", -- 30/60 seconds
 			"The heat is now unbearable, the blood in your body feels like lava. There's almost no strength left in you - act quickly!", -- 90 seconds
 			"Embrace the stigma of bad fortune. The tar does not feel so hot anymore. You passed the tar trial.", -- step on the first tile
-			"Your body reacts to this strange green substance as you reach out to touch it. You feel an urge for more of this energy.", -- step on the second tile
+			"You are now ready to prove your worth. Take heart and cross the threshold of tar.", -- step on the second tile (FAMILY 2026-11-17: EN spoiler; upstream had the cult symbol line here)
 			"The tar covering you has cooled down and fell off for the most part. Your body is not heated up anymore.", -- didn't step in time
 		},
 	},

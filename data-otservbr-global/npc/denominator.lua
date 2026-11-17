@@ -47,6 +47,101 @@ end
 
 local playerLastResp = {}
 
+-- FAMILY (2026-11-17): the Denominator asks as the wikis say (EN spoiler, BR quest page): five questions
+-- in a row about your own three-digit number from the lever (the sums of two digits, the digit sum,
+-- divisible by 3, divisible by 5, prime, prime twin; the last one is always the number). Upstream asked
+-- three of them about the first answer instead of the number, had "divisible by 2", counted every prime as
+-- a prime twin, and never opened the lower door. Before the lever: "The number has not been set." (BR).
+-- About two minutes for the answers (BR), counted from the first question; after that the number is lost
+-- and the lever has to be pulled again. A wrong answer ends the talk; you may start again in time.
+-- Questions and checks: FamilyCults (lib/others/family_cults_of_tibia.lua).
+local MOTA = Storage.Quest.U11_40.CultsOfTibia.MotA
+local familyQuiz = {} -- [playerId] = { list = {question indexes}, step = n }
+
+local function familyExpired(player)
+	local started = player:getStorageValue(MOTA.QuestionId)
+	return started > 1000 and os.time() - started > FamilyCults.quizSeconds
+end
+
+local function familyGreet(npc, creature)
+	local player = Player(creature)
+	local mission = player:getStorageValue(MOTA.Mission)
+	if mission == 13 and familyExpired(player) then
+		player:setStorageValue(MOTA.Mission, 12)
+		player:setStorageValue(MOTA.QuestionId, 0)
+		mission = 12
+	end
+	if mission == 12 then
+		npcHandler:setMessage(MESSAGE_GREET, "The number has not been set.") -- BR
+	elseif mission == 13 then
+		npcHandler:setMessage(MESSAGE_GREET, "Enter answers for the following {questions}:")
+	else
+		npcHandler:setMessage(MESSAGE_GREET, "Greetings.")
+	end
+	return true
+end
+
+local function familyShutDown(npc, creature, text)
+	npcHandler:say(text, npc, creature)
+	familyQuiz[creature:getId()] = nil
+	npcHandler:resetNpc(creature)
+	npcHandler:removeInteraction(npc, creature)
+end
+
+local function familyAsk(npc, creature, quiz)
+	local index = quiz.step <= #quiz.list and quiz.list[quiz.step] or 0
+	npcHandler:say(FamilyCults.question(index).text, npc, creature)
+end
+
+local function familySay(npc, creature, type, message)
+	local player = Player(creature)
+	local playerId = player:getId()
+	if not npcHandler:checkInteraction(npc, creature) then
+		return false
+	end
+	if player:getStorageValue(MOTA.Mission) ~= 13 then
+		return true
+	end
+	if familyExpired(player) then
+		player:setStorageValue(MOTA.Mission, 12)
+		player:setStorageValue(MOTA.QuestionId, 0)
+		familyShutDown(npc, creature, "Time is up. The number has not been set.") -- ours
+		return true
+	end
+	local quiz = familyQuiz[playerId]
+	if not quiz then
+		if MsgContains(message, "questions") then
+			npcHandler:say("Ready to {start}?", npc, creature)
+			npcHandler:setTopic(playerId, 2)
+		elseif npcHandler:getTopic(playerId) == 2 and (MsgContains(message, "start") or MsgContains(message, "yes")) then
+			if player:getStorageValue(MOTA.QuestionId) <= 1000 then
+				player:setStorageValue(MOTA.QuestionId, os.time())
+			end
+			quiz = { list = FamilyCults.pickQuestions(), step = 1 }
+			familyQuiz[playerId] = quiz
+			familyAsk(npc, creature, quiz)
+		end
+		return true
+	end
+	local index = quiz.step <= #quiz.list and quiz.list[quiz.step] or 0
+	if not FamilyCults.checkAnswer(player, FamilyCults.question(index), message) then
+		familyShutDown(npc, creature, "Wrong. SHUT DOWN.")
+		return true
+	end
+	if index == 0 then
+		familyQuiz[playerId] = nil
+		npcHandler:say("Correct. The lower door is now open. The druid of Crunor lies.", npc, creature)
+		player:setStorageValue(MOTA.Mission, 14)
+		player:setStorageValue(MOTA.AccessDoorDenominator, 1)
+		player:setStorageValue(MOTA.QuestionId, 0)
+		return true
+	end
+	quiz.step = quiz.step + 1
+	npcHandler:say("Correct.", npc, creature)
+	familyAsk(npc, creature, quiz)
+	return true
+end
+
 local function greetCallback(npc, creature)
 	local playerId = creature:getId()
 
@@ -267,8 +362,13 @@ npcHandler:setMessage(MESSAGE_WALKAWAY, "Well, bye then.")
 npcHandler:setCallback(CALLBACK_SET_INTERACTION, onAddFocus)
 npcHandler:setCallback(CALLBACK_REMOVE_INTERACTION, onReleaseFocus)
 
-npcHandler:setCallback(CALLBACK_GREET, greetCallback)
-npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+if Family and Family.cultsOfTibia then
+	npcHandler:setCallback(CALLBACK_GREET, familyGreet)
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, familySay)
+else
+	npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+	npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+end
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

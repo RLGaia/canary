@@ -26,10 +26,19 @@ function glowingRubbishAmulet.onDeath(creature, _corpse, _lastHitKiller, mostDam
 			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Misguided.Monsters, mStg + 1)
 
 			if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Misguided.Monsters) >= 10 then
-				amulet:remove()
-				local it = player:addItem(25297, 1)
-				if it then
-					it:decay()
+				if Family and Family.cultsOfTibia then
+					-- FAMILY (2026-11-17): charged in place on the neck, 5 minutes to use it (EN)
+					amulet:transform(FamilyCults.glowingAmulet)
+					local stamp = os.time()
+					player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Misguided.Time, stamp)
+					player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The amulet is fully charged and begins to glow violently. Use it on a misguided creature to reveal what is behind it.") -- ours
+					FamilyCults.watchGlowingAmulet(player:getId(), stamp)
+				else
+					amulet:remove()
+					local it = player:addItem(25297, 1)
+					if it then
+						it:decay()
+					end
 				end
 			end
 		end

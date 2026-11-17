@@ -52,15 +52,25 @@ function iceDeath.onStepIn(creature, item, position, fromPosition)
 				player:removeCondition(conditionType)
 			end
 		end
-		condition:setOutfit(player:getSex() == PLAYERSEX_FEMALE and 4247 or 4240)
-		player:addCondition(condition)
+		-- FAMILY (2026-11-17): no corpse outfit; the player comes back in the temple (FamilyCults.purificationDeath)
+		if not (Family and Family.cultsOfTibia) then
+			condition:setOutfit(player:getSex() == PLAYERSEX_FEMALE and 4247 or 4240)
+			player:addCondition(condition)
+		end
 		local it = Game.createItem(player:getSex() == PLAYERSEX_FEMALE and 4247 or 4240, 1, player:getPosition())
 		if it then
 			it:decay()
 		end
-		player:addHealth(-player:getHealth() + 1)
+		if Family and Family.cultsOfTibia then
+			FamilyCults.purificationDeath(player)
+		else
+			player:addHealth(-player:getHealth() + 1)
+		end
 		player:sendTextMessage(MESSAGE_BEYOND_LAST, "You were killed by something evil and others.")
-		player:sendTextMessage(MESSAGE_BEYOND_LAST, "You are still blessed with Wisdom of Solitude, Spark of the Phoenix, Fire of the Suns, Spiritual Shielding, Embrace of Tibia, Heart of the Mountain, Blood of the Mountain, and Twist of Fate.")
+		-- FAMILY (2026-11-17): the upstream line listed eight blessings whether you had them or not
+		if not (Family and Family.cultsOfTibia) then
+			player:sendTextMessage(MESSAGE_BEYOND_LAST, "You are still blessed with Wisdom of Solitude, Spark of the Phoenix, Fire of the Suns, Spiritual Shielding, Embrace of Tibia, Heart of the Mountain, Blood of the Mountain, and Twist of Fate.")
+		end
 		player:sendTextMessage(MESSAGE_BEYOND_LAST, "You lost 0 experience and 0.00% of all of your skills.")
 		player:sendTextMessage(MESSAGE_BEYOND_LAST, "You did not lose any items.")
 		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Barkless.Mission, 3)

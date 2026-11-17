@@ -9,6 +9,19 @@ local function fallFloor(pid, id)
 		return true
 	end
 
+	-- FAMILY (2026-11-17): only the rubbish amulet that is being charged falls off, with Tibia's message, and
+	-- its charge is lost (both wikis); the moment stays upstream's chance (no wiki gives the time).
+	if Family and Family.cultsOfTibia then
+		if id ~= FamilyCults.rubbishAmulet or player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Misguided.Mission) ~= 3 then
+			return true
+		end
+		if math.random(0, 100) <= 2 and math.max(player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Misguided.Monsters), 0) > 0 then
+			FamilyCults.amuletFellOff(player, amulet)
+			return true
+		end
+		addEvent(fallFloor, 10000, player:getId(), id)
+		return true
+	end
 	local chance = math.random(0, 100)
 	if chance <= 2 then
 		amulet:moveTo(player:getPosition())

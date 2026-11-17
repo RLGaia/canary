@@ -23,11 +23,11 @@ function looktype.onStepIn(creature, item, position, fromPosition)
 	if position == secondCheck or position == Position(secondCheck.x + 1, secondCheck.y, secondCheck.z) then
 		if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Orcs.LookType) < 2 then
 			if creature:getOutfit().lookType == 2 then
-				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "With the help off the might of an orc warlod you are able to pass this rift.")
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "With the help of the might of an orc warlord you are able to pass this rift.")
 				player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Orcs.LookType, 2)
 			else
 				player:teleportTo(fromPosition, true)
-				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You need the might of an orc warlod to pass this rift.")
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You need the might of an orc warlord to pass this rift.")
 			end
 		end
 	end

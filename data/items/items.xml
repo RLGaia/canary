@@ -48490,7 +48490,7 @@ hands of its owner. Granted by TibiaRoyal.com"/>
 	</item>
 	<item id="25305" article="a" name="tool for analyzing fluids">
 		<attribute key="description" value="With this tool it is possible to analyze fluids in a very comfortable way"/>
-		<attribute key="weight" value="1800"/>
+		<attribute key="weight" value="180"/><!-- FAMILY (2026-11-17): 1.80 oz (EN) -->
 	</item>
 	<item id="25306" article="a" name="loupe">
 		<attribute key="primarytype" value="quest items"/>
@@ -49069,8 +49069,9 @@ hands of its owner. Granted by TibiaRoyal.com"/>
 		<attribute key="weight" value="10"/>
 	</item>
 	<item fromid="25775" toid="25776" name="RESERVED SPRITE"/>
-	<item id="25777" name="remains of a decaying soul"/>
-	<item id="25778" name="remains of a withering soul"/>
+	<!-- FAMILY (2026-11-17): names were swapped; EN item pages and the client lights: 25777 withering (blue), 25778 decaying (green) -->
+	<item id="25777" name="remains of a withering soul"/>
+	<item id="25778" name="remains of a decaying soul"/>
 	<item id="25779" article="a" name="swan feather cloak">
 		<attribute key="primarytype" value="armors"/>
 		<attribute key="description" value="It was carefully crafted out of one hundred swan maiden feathers"/>
@@ -84623,6 +84624,17 @@ Granted by TibiaGoals.com"/>
 	</item>
 	<item id="50308" article="a" name="monk pedestal">
 		<attribute key="primarytype" value="artificial tiles"/>
+	</item>
+	<!-- FAMILY (2026-11-17): the monks' Cults of Tibia reward and its tree (EN: Sensing Crown, Magical Tree (Monk)) -->
+	<item id="50313" article="a" name="sensing crown">
+		<attribute key="primarytype" value="helmets"/>
+		<attribute key="weight" value="1000"/>
+		<attribute key="script" value="moveevent">
+			<attribute key="slot" value="head"/>
+		</attribute>
+	</item>
+	<item id="50314" article="a" name="your magical tree">
+		<attribute key="description" value="This certainly is no ordinary tree, yet it looks exactly like one and smells invigoratingly fresh."/>
 	</item>
 	<item id="50330" article="an" name="monk's apparition soul core">
 		<attribute key="primarytype" value="soul cores"/>

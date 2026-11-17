@@ -50,22 +50,41 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY (2026-11-17): Angelo reviewed against the EN transcript (Cults of Tibia Quest/Spoiler, lines
+-- marked EN) and TibiaWiki BR. "results" and "worried" work without asking about the project and MoTA
+-- first (EN: "Ask him about results and then tell him he should be worried"), "mission" starts it too
+-- (BR: "Hi - Mission - Yes"), his lines after the counteragent and after the Sandking come with "hi" (EN),
+-- and once the Sandking is dead he does not talk any more (both wikis); the Patron of the Arts steps that
+-- need him then go on by themselves (BR: "apenas tente falar com ele e em seguida colete a Lupa na caixa").
+local LIFE = Storage.Quest.U11_40.CultsOfTibia.Life
+local MOTA = Storage.Quest.U11_40.CultsOfTibia.MotA
+local REFUSE = "Just get out of my way! You killed this beautiful creature. I have nothing more to say. Damn druid of Crunor!" -- EN
+
 local function greetCallback(npc, creature)
-	local playerId = creature:getId()
 	local player = Player(creature)
+	local life = player:getStorageValue(LIFE.Mission)
+	local mota = player:getStorageValue(MOTA.Mission)
 
-	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission) == 1 then
-		npcHandler:setMessage(MESSAGE_GREET, "The Druid of Crunor? He told you that a new cave appeared here? That's right. I'm the head of a {project} that tries to find out more about this new {area}.")
-	elseif player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission) == 9 then
-		npcHandler:setMessage(MESSAGE_GREET, "Just get out of my way! You killed this beautiful creature. I have nothing more to say. Damn druid of Crunor!")
-	elseif player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission) > 1 then
-		npcHandler:setMessage(MESSAGE_GREET, "How is your {mission} going?")
-	elseif player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission) < 1 then
-		npcHandler:setMessage(MESSAGE_GREET, "The Druid of Crunor? He told you that a new cave appeared here? That's right. I'm the head of a project that tries to find out more about this new area.")
+	if life >= 8 then
+		npcHandler:setMessage(MESSAGE_GREET, REFUSE)
+		if life == 8 then
+			player:setStorageValue(LIFE.Mission, 9)
+		end
+		if mota == 6 then
+			player:setStorageValue(MOTA.Mission, 7)
+		elseif mota == 10 then
+			player:setStorageValue(MOTA.Mission, 11)
+		end
+	elseif life == 7 then
+		npcHandler:setMessage(MESSAGE_GREET, "What has happened? You applied the counteragent to the oasis and then it was destroyed by a sandstorm? Keep on investigating the place.") -- EN
+	elseif life >= 3 or (mota >= 6 and mota <= 11) then
+		npcHandler:setMessage(MESSAGE_GREET, "How is your {mission} going?") -- EN
+	else
+		npcHandler:setMessage(MESSAGE_GREET, "The Druid of Crunor? He told you that a new {cave} appeared here? That's right. I'm the head of a {project} that tries to find out more about this new area.") -- EN
 	end
-
 	return true
 end
+
 local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	local playerId = player:getId()
@@ -74,76 +93,71 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission) == 3 then
-		if MsgContains(message, "mission") then
-			npcHandler:say("The scientists are still missing? You just found some strange green shining mummies and a big oasis? I give you this analysis tool for the water of the oasis. Maybe that's the key. Could you bring me a sample of this water?", npc, creature)
-			npcHandler:setTopic(playerId, 15)
-		elseif MsgContains(message, "yes") and npcHandler:getTopic(playerId) == 15 then
-			npcHandler:say("Very good. Hopefully analysing this sample will get us closer to the solution of this mistery.", npc, creature)
-			player:addItem(25305, 1)
-			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission, 4)
-		end
+	local life = player:getStorageValue(LIFE.Mission)
+	local mota = player:getStorageValue(MOTA.Mission)
+
+	if life >= 8 then
+		npcHandler:say(REFUSE, npc, creature)
+		npcHandler:removeInteraction(npc, creature)
+		return true
 	end
 
-	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission) == 5 then
-		if MsgContains(message, "mission") then
-			npcHandler:say("Do you have the sample I asked you for?", npc, creature)
-			npcHandler:setTopic(playerId, 16)
-		elseif MsgContains(message, "yes") and npcHandler:getTopic(playerId) == 16 then
-			npcHandler:say("Thanks a lot. Let me check the result. Well, I think you need the counteragent. Please apply it to the oasis!", npc, creature)
-			player:addItem(25304, 1)
-			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission, 6)
-		end
-	end
-
-	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission) == 7 then
-		if MsgContains(message, "mission") then
-			npcHandler:say("What has happened? You applied the counteragent to the oasis and then it was destroyed by a sandstorm? Keep on investigating the place.", npc, creature)
-			npcHandler:setTopic(playerId, 17)
-		end
-	end
-
-	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission) == 8 then
-		npcHandler:say("Just get out of my way! You killed this beautiful creature. I have nothing more to say. Damn druid of Crunor!", npc, creature)
-		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission, 9)
-	end
-
-	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) == 6 then
-		if MsgContains(message, "magnifier") then
-			npcHandler:say("{Gareth} told you that there are rumours about fake artefacts in the MoTA? And it is your task to check that with a magnifier? I see. I don't need one right now, so you can have one of mine. You find one in the crate over there.", npc, creature)
-			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission, 7)
-		end
-	end
-
-	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) == 10 then
-		if MsgContains(message, "artefact") then
-			npcHandler:say("So you found out that one artefact in the MoTA is fake? And {Gareth} sent you to me to get a new artefact as a replacement? Sorry, I hardly know you so I don't trust you. I won't help you with that!", npc, creature)
-			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission, 11)
-		end
-	end
-
-	if MsgContains(message, "project") then
-		npcHandler:say("The project is called 'Sandy {Cave} Project' and is funded by the {MoTA}. Its goal is the investigation of this {cave}.", npc, creature)
-		npcHandler:setTopic(playerId, 2)
-	elseif npcHandler:getTopic(playerId) == 2 and MsgContains(message, "mota") then
-		npcHandler:say("MoTA is short for the recently founded Museum of Tibian Arts. We work together in close collaboration. New {results} are communicated to the museum instantly.", npc, creature)
-		npcHandler:setTopic(playerId, 3)
-	elseif npcHandler:getTopic(playerId) == 3 and MsgContains(message, "results") then
-		npcHandler:say("We have no scientific results so far to reach our {goal}, because my workers aren't back yet. Should I be {worried}?", npc, creature)
-		npcHandler:setTopic(playerId, 4)
-	elseif npcHandler:getTopic(playerId) == 4 and MsgContains(message, "worried") then
-		npcHandler:say("Then I have to find out why they don't return. But I'm old and my back aches. Would you like to go there and look for my workers?", npc, creature)
-		npcHandler:setTopic(playerId, 5)
-	elseif npcHandler:getTopic(playerId) == 5 and MsgContains(message, "yes") then
-		npcHandler:say("Fantastic! Go there and then tell me what you've seen. I've opened the door for you. Take care of yourself!", npc, creature)
-		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission, 2)
-		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.AccessDoor, 1)
+	if life == 3 and MsgContains(message, "mission") then
+		npcHandler:say("The scientists are still missing? You just found some strange green-shining mummies and a big oasis? I give you this analysis tool for the water of the oasis. Maybe that's the key. Could you bring me a sample of this water?", npc, creature) -- EN
+		npcHandler:setTopic(playerId, 15)
+	elseif life == 3 and npcHandler:getTopic(playerId) == 15 and MsgContains(message, "yes") then
+		npcHandler:say("Very good! Hopefully, analysing this sample will get us closer to the solution of this mystery.", npc, creature) -- EN
+		player:addItem(25305, 1)
+		player:setStorageValue(LIFE.Mission, 4)
 		npcHandler:setTopic(playerId, 0)
-	elseif npcHandler:getTopic(playerId) == 2 and MsgContains(message, "cave") then
-		npcHandler:say("We don't know exactly why this cave has now exposed an entry via the {dark pyramid}. It seems that the cave already existed for a long time, however, without a connection to our world. Maybe some smaller earth movements have changed the situation.", npc, creature)
-		npcHandler:setTopic(playerId, 11)
-	elseif npcHandler:getTopic(playerId) == 11 and MsgContains(message, "dark pyramid") then
-		npcHandler:say("We don't know yet to wich extent the cave and the dark pyramid belong together. Thisi s what we try to find out. Maybe the history of this place has to be rewritten.", npc, creature)
+	elseif life == 5 and MsgContains(message, "mission") then
+		npcHandler:say("Do you have the sample I asked you for?", npc, creature) -- EN
+		npcHandler:setTopic(playerId, 16)
+	elseif life == 5 and npcHandler:getTopic(playerId) == 16 and MsgContains(message, "yes") then
+		npcHandler:say("Thanks a lot. Let me check the result. Well, I think you need this counteragent. Please apply it to the oasis!", npc, creature) -- EN
+		player:addItem(25304, 1)
+		player:setStorageValue(LIFE.Mission, 6)
+		npcHandler:setTopic(playerId, 0)
+	elseif life == 7 and MsgContains(message, "mission") then
+		npcHandler:say("What has happened? You applied the counteragent to the oasis and then it was destroyed by a sandstorm? Keep on investigating the place.", npc, creature) -- EN
+		npcHandler:setTopic(playerId, 0)
+	elseif mota == 6 and MsgContains(message, "magnifier") then
+		npcHandler:say("{Gareth} told you that there are rumours about fake artefacts in the MoTA? And it is your task to check that with a magnifier? I see. I don't need one right now, so you can have one of mine. You find one in the crate over there.", npc, creature) -- BR
+		player:setStorageValue(MOTA.Mission, 7)
+		npcHandler:setTopic(playerId, 0)
+	elseif mota == 10 and (MsgContains(message, "artefact") or MsgContains(message, "artifact")) then
+		npcHandler:say("So you found out that one artefact in the MoTA is fake? And {Gareth} sent you to me to get a new artefact as a replacement? Sorry, I hardly know you, so I don't trust you. I won't help you with that!", npc, creature) -- BR
+		player:setStorageValue(MOTA.Mission, 11)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "gareth") then
+		npcHandler:say("Gareth is the curator of the {MoTA}. Our project sends him all new results.", npc, creature) -- ours
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "project") then
+		npcHandler:say("The project is called 'Sandy Cave Project' and is funded by the {MoTA}. Its goal is the investigation of this {cave}.", npc, creature) -- EN
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "dark pyramid") then
+		npcHandler:say("We don't know yet to which extent the cave and the dark pyramid belong together. This is what we try to find out. Maybe the history of this place has to be rewritten.", npc, creature) -- EN
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "cave") then
+		npcHandler:say("We don't know exactly why this {cave} has now exposed an entry via the {dark pyramid}. It seems that the cave already existed for a long time, however, without a connection to our world. Maybe some smaller earth movements have changed the situation.", npc, creature) -- EN
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "mota") then
+		npcHandler:say("MoTA is short for the recently founded Museum of Tibian Arts. We work together in close collaboration. New {results} are communicated to the museum instantly.", npc, creature) -- EN
+		npcHandler:setTopic(playerId, 0)
+	elseif life < 2 and MsgContains(message, "results") then
+		npcHandler:say("We have no scientific results so far to reach our goal, because my workers aren't back yet. Should I be {worried}?", npc, creature) -- EN
+		npcHandler:setTopic(playerId, 4)
+	elseif life < 2 and (MsgContains(message, "worried") or MsgContains(message, "mission")) then
+		npcHandler:say("Then I have to find out why they don't return. But I'm old and my back aches. Would you like to go there and look for my workers?", npc, creature) -- EN
+		npcHandler:setTopic(playerId, 5)
+	elseif life < 2 and npcHandler:getTopic(playerId) == 5 and MsgContains(message, "yes") then
+		npcHandler:say("Fantastic! Go there and then tell me what you've seen. I've opened the door for you. Take care of yourself!", npc, creature) -- EN
+		player:setStorageValue(LIFE.Mission, 2)
+		player:setStorageValue(LIFE.AccessDoor, 1)
+		FamilyCults.startQuestline(player)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "mission") then
+		npcHandler:say("Go on with what you are doing and come back when you have news.", npc, creature) -- ours
 		npcHandler:setTopic(playerId, 0)
 	end
 

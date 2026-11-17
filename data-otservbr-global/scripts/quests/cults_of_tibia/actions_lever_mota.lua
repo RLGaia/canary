@@ -55,6 +55,7 @@ function cultsOfTibiaLeverMota.onUse(player, item, fromPosition, itemEx, toPosit
 	player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Stone2, stone2)
 	player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Stone3, stone3)
 	player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.AccessDoorGareth, -1)
+	player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.QuestionId, 0) -- FAMILY (2026-11-17): a new number gets a new time for the Denominator's questions
 
 	if missionStatus == 12 then
 		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission, 13)

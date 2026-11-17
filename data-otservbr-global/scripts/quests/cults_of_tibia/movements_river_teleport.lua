@@ -7,7 +7,7 @@ function riverTeleport.onStepIn(creature, item, position, fromPosition)
 	end
 
 	if not player:canFightBoss("The Sandking") then
-		player:sendCancelMessage("You need to wait for 10 hours to face this boss again.")
+		player:sendCancelMessage("You need to wait before facing The Sandking again.") -- FAMILY (2026-11-17): the wait is not 10 hours
 		player:teleportTo(fromPosition)
 		return false
 	end

@@ -59,14 +59,15 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	local valuePicture = 10000
 
-	if MsgContains(message, "has the cat got your tongue?") and player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) == 4 then
+	-- FAMILY (2026-11-17): the code words work with or without the question mark (EN transcript has none)
+	if MsgContains(message, "has the cat got your tongue") and player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) == 4 then
 		npcHandler:say("Nice. You like your picture, haa? Give me 10,000 gold and I will deliver it to the museum. Do you {pay}?", npc, creature)
 		npcHandler:setTopic(playerId, 2)
 		npcHandler:setTopic(playerId, 2)
 	elseif MsgContains(message, "pay") or MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 2 then
 			if (player:getMoney() + player:getBankBalance()) >= valuePicture then
-				npcHandler:say("Well done. The picture will be delivered to the museum as last as possible.", npc, creature)
+				npcHandler:say("Well done. The picture will be delivered to the museum as fast as possible.", npc, creature)
 				npcHandler:setTopic(playerId, 0)
 				npcHandler:setTopic(playerId, 0)
 				player:removeMoneyBank(valuePicture)
@@ -81,7 +82,7 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Hiho Storm Killer! Welcome to Kazordoon furniture store.")
+npcHandler:setMessage(MESSAGE_GREET, "Hiho |PLAYERNAME|! Welcome to Kazordoon furniture store.") -- FAMILY (2026-11-17): the wiki player was called Storm Killer
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Well, bye then.")
 
 npcHandler:setCallback(CALLBACK_SET_INTERACTION, onAddFocus)

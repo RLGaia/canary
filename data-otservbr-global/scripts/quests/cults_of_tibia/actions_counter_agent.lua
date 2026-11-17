@@ -29,6 +29,7 @@ function cultsOfTibiaCounter.onUse(player, item, fromPosition, target, toPositio
 
 	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission) == 6 then
 		if target:getPosition() == sqm or target:getPosition() == Position(sqm.x, sqm.y + 1, sqm.z) or target:getPosition() == Position(sqm.x, sqm.y + 2, sqm.z) then
+			item:remove(1) -- FAMILY (2026-11-17): the pink fluid is used up (EN: "Temporarily obtained")
 			player:teleportTo(destino)
 			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission, 7)
 			for i, position in pairs(config) do

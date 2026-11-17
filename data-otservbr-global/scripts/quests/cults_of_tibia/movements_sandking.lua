@@ -7,7 +7,7 @@ function sandking.onStepIn(creature, item, position, fromPosition)
 
 	if creature:getName():lower() == "the sandking" then
 		item:remove()
-		creature:addHealth(math.random(100, 1000))
+		creature:addHealth(7500) -- FAMILY (2026-11-17): EN "it will heal for 7500 hitpoints" (BR: about 7,000); upstream 100-1000
 	end
 	return true
 end

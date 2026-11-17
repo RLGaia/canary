@@ -27,7 +27,22 @@ function bossesCults.onDeath(creature)
 	if boss.createNew then
 		Game.setStorageValue("CheckTile", -1)
 		Game.createMonster(boss.createNew, boss.pos)
-		if removeMonster then
+		-- FAMILY (2026-11-17): the Zarcorix of Yalahar disappears when the Corruptor of Souls dies (EN). Upstream tested an
+		-- undefined global and looked in the lever room; now the boss room itself (as the lever clears it).
+		if Family and Family.cultsOfTibia then
+			for _x = 33023, 33052 do
+				for _y = 31904, 31932 do
+					local tile = Tile(Position(_x, _y, 15))
+					if tile then
+						for _, c in ipairs(tile:getCreatures() or {}) do
+							if c:isMonster() and c:getName():lower() == boss.removeMonster then
+								c:remove()
+							end
+						end
+					end
+				end
+			end
+		elseif removeMonster then
 			for _x = boss.area1.x, boss.area2.x, 1 do
 				for _y = boss.area1.y, boss.area2.y, 1 do
 					for _z = boss.area1.z, boss.area2.z, 1 do

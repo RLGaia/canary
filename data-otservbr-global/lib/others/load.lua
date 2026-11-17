@@ -22,3 +22,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_hive.lua") -- FAMILY: War Against t
 dofile(DATA_DIRECTORY .. "/lib/others/family_hot_cuisine.lua") -- FAMILY: Hot Cuisine Quest review, dishes at any time (Jean Pierre)
 dofile(DATA_DIRECTORY .. "/lib/others/family_white_raven.lua") -- FAMILY: Isle of the Kings, Key 3350, trespassers and Costello's fine
 dofile(DATA_DIRECTORY .. "/lib/others/family_shattered_isles.lua") -- FAMILY: The Shattered Isles Quest (Meriana) fixes: Nargor plans and nests, Marina's turtle, Sebastian, mushroom portal, NPC dead ends
+dofile(DATA_DIRECTORY .. "/lib/others/family_cults_of_tibia.lua") -- FAMILY: Cults of Tibia Quest review (Gerimor, cults, Denominator, rubbish amulet, ice death)

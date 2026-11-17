@@ -3,8 +3,10 @@ function cultsOfTibiaCrate.onUse(player, item, fromPosition, target, toPosition,
 	local posCrate = Position(33300, 32277, 12)
 	-- Document
 	if item:getPosition() == posCrate then
-		if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) == 7 then
-			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Perfect! You took a wonderful loupe from this crate.")
+		-- FAMILY (2026-11-17): after the Sandking Angelo does not talk, so the crate works straight away (EN)
+		local familyRefused = Family and Family.cultsOfTibia and player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) == 6 and player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Life.Mission) >= 8
+		if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) == 7 or familyRefused then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Perfect! You took a wonderful loupe from the crate.")
 			player:addItem(25306, 1)
 			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission, 8)
 		elseif player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) > 7 then

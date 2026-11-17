@@ -58,7 +58,8 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	if MsgContains(message, "pass") then
+	-- FAMILY (2026-11-17): EN transcript answers his "So, just passing through?" with "yes" (BR: "pass")
+	if MsgContains(message, "pass") or MsgContains(message, "yes") then
 		npcHandler:say({
 			"Yes, yes. Or wait - why do you want to.. ah what does it matter. So you want to get through these {caves}, fine. But be warned! ...",
 			"...wait a second, I lost it. What was I going to say again? Ah yes - DANGEROUS! These. Caves. Are. Dangerous. No way you get out alive. Ever. Again. ...",
@@ -69,9 +70,10 @@ local function creatureSayCallback(npc, creature, type, message)
 		if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.Misguided.Mission) < 2 then
 			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Misguided.Mission, 2)
 			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Misguided.AccessDoor, 1)
+			FamilyCults.startQuestline(player)
 		end
 		npcHandler:setTopic(playerId, 0)
-	elseif MsgContains(message, "cave") then
+	elseif MsgContains(message, "cave") or MsgContains(message, "caves") then
 		npcHandler:say("I was stationed in this cave to... guard something. Right now I am not even sure what that was.", npc, creature)
 		npcHandler:setTopic(playerId, 0)
 	elseif MsgContains(message, "job") then
@@ -85,7 +87,7 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Hm? Oh! Oh, yes a... visitor! Intruder? Benefactor...? Wha- what are you? If you want to pass through this cave, I may have to disappoint you. Or maybe not. It... depends. So, just passing through?")
+npcHandler:setMessage(MESSAGE_GREET, "Hm? Oh! Oh, yes a... visitor! Intruder? Benefactor...? Wha- what are you? If you want to {pass} through this {cave}, I may have to disappoint you. Or maybe not. It... depends. So, just passing through?")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Well, bye then.")
 
 npcHandler:setCallback(CALLBACK_SET_INTERACTION, onAddFocus)

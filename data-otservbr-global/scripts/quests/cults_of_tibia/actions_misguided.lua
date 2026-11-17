@@ -49,7 +49,12 @@ function cultsOfTibiaMisguided.onUse(player, item, position, target, targetPosit
 	local map = (type(Game.getStorageValue("cultsMap")) == "string" and Game.getStorageValue("cultsMap") or "illusion")
 	if creature:getName():lower() == "misguided bully" or creature:getName():lower() == "misguided thief" then
 		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Misguided.Monsters, 0)
-		item:remove(1)
+		if Family and Family.cultsOfTibia then
+			item:transform(FamilyCults.rubbishAmulet)
+		else
+			item:remove(1)
+		end
+		local kind = creature:getName():lower() == "misguided thief" and "thief" or "bully" -- FAMILY (2026-11-17): read before the creature is removed
 		local pos = creature:getPosition()
 		Game.createItem(25298, 1, pos)
 		creature:remove()
@@ -59,12 +64,20 @@ function cultsOfTibiaMisguided.onUse(player, item, position, target, targetPosit
 			newCreature:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 		end
 
-		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You paralyse the bully and the amulet reveals the true face of the creature behind the possession of this misguided creature.")
-		local it = player:addItem(25296, 1)
+		-- FAMILY (2026-11-17): thief or bully as the creature was (EN "You paralyze the bully/thief ..."), the amulet
+		-- turns back into a rubbish amulet where it was, with EN's message; upstream put a new one in the backpack.
+		local family = Family and Family.cultsOfTibia
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, family and ("You paralyse the " .. kind .. " and the amulet reveals the true face of the creature behind the possession of this misguided creature.") or "You paralyse the bully and the amulet reveals the true face of the creature behind the possession of this misguided creature.")
 		if map == "illusion" then
 			changeMap("reality")
 		end
-		it:decay()
+		if family then
+			player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.Misguided.Time, 0)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The amulet you are wearing suddenly feels quite cool and emits a strange light.") -- EN
+		else
+			local it = player:addItem(25296, 1)
+			it:decay()
+		end
 	end
 
 	return true

@@ -79,19 +79,21 @@ local function creatureSayCallback(npc, creature, type, message)
 	local value = 10000
 
 	if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) < 2 then
-		if MsgContains(message, "patrons") then
+		-- FAMILY (2026-11-17): "patron"/"support" too, and "yes" pays (EN: "Become a patron ... Confirm your choice with yes")
+		if MsgContains(message, "patrons") or MsgContains(message, "patron") or MsgContains(message, "support") then
 			npcHandler:say("If you like to, you can pay some gold to become a patron of the arts for this wonderful museum. The price is 10,000 gold. Your personal gain will be priceless. Do you want to {pay}?", npc, creature)
 			npcHandler:setTopic(playerId, 2)
-		elseif MsgContains(message, "pay") and npcHandler:getTopic(playerId) == 2 then
+		elseif (MsgContains(message, "pay") or MsgContains(message, "yes")) and npcHandler:getTopic(playerId) == 2 then
 			if (player:getMoney() + player:getBankBalance()) >= value then
 				npcHandler:say({
-					"This is a very wise decision. You won't regret it. Congratulations! As your first task I like you to investigate the crime scene of a theft wich occurred last night. ...",
-					"A very varuable artefact has been stolen. I open the door for you. You can find the room on the same floor as we are right now.",
+					"This is a very wise decision. You won't regret it. Congratulations! As your first task I like you to investigate the crime scene of a theft which occurred last night. ...",
+					"A very valuable artefact has been stolen. I open the door for you. You can find the room on the same floor as we are right now.",
 				}, npc, creature)
 				player:removeMoneyBank(value)
 				player:addItem(25689, 1)
 				player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission, 2)
 				player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.AccessDoorInvestigation, 1)
+				FamilyCults.startQuestline(player)
 				npcHandler:setTopic(playerId, 3)
 			else
 				npcHandler:say("You don't have enough money.", npc, creature)
@@ -99,24 +101,24 @@ local function creatureSayCallback(npc, creature, type, message)
 			end
 		end
 	elseif MsgContains(message, "mission") and player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) == 3 then
-		npcHandler:say("They want us to buy the picture back. Unfortunately this artefact is so important that I don't see an alternative. Please got to Iwar in Kazordoon and pay the money.", npc, creature)
+		npcHandler:say("They want us to buy the picture back. Unfortunately this artefact is so important that I don't see an alternative. Please go to Iwar in Kazordoon and pay the money.", npc, creature)
 		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission, 4)
 		npcHandler:setTopic(playerId, 1)
 	elseif MsgContains(message, "mission") and player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) == 5 then
 		npcHandler:say({
-			"Nice! I'm really happy to have the picture back. First of all I have to check if everything's fine. Then I'll put it back on its place. For now, I'd like you to find out if some rumours about fake pictures in the MOTA are true. ...",
-			"Some say one of the small pictures in the entrance hall here is fake. For this reason you have to go to my friend {Angelo} and ask him to get a {magnifier} for the investigation.",
+			"Nice. I'm really happy to have the picture back. First of all I have to check if everything's fine. Then I'll put it back on its place. For now I'd like you to find out if some rumours about fake pictures in the MOTA are true. ...",
+			"Some say one of the small pictures in the entrance hall here is fake. For this reason you have to go to my friend {Angelo} and ask him to get a {magnifier} for the investigation. ...",
 			"Then do your job here in the museum and come back.",
 		}, npc, creature)
 		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission, 6)
 		npcHandler:setTopic(playerId, 1)
 	elseif MsgContains(message, "mission") and player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) == 9 then
-		npcHandler:say("So the rumours are true. How could this happen? I'll keep the picture at its place until we've got a replacement. Please fo to {Angelo} and ask him if he has a new artefact for our museum.", npc, creature)
+		npcHandler:say("So the rumours are true. How could this happen? I'll keep the picture at its place until we've got a replacement. Please go to {Angelo} and ask him if he has a new artefact for our museum.", npc, creature)
 		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission, 10)
 		npcHandler:setTopic(playerId, 0)
 	elseif MsgContains(message, "mission") and player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission) == 11 then
 		npcHandler:say({
-			"You're back, nice. Angelo's team hasn't found an artefact yet? I thought the progress would be faster. Anyway thanks for you efforts. ...",
+			"You're back, nice. Angelo's team hasn't found an artefact yet? I thought the progress would be faster. Anyway thanks for your efforts. ...",
 			"I have no work for you right now. If you like to, you can have a look at the last floor. I open the door for you.",
 		}, npc, creature)
 		player:setStorageValue(Storage.Quest.U11_40.CultsOfTibia.MotA.Mission, 12)

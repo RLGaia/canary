@@ -71,7 +71,7 @@ keywordHandler:addKeyword({ "me" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
 		"I'm a member of a circle of persons, that joined wisdom and resources for a common purpose. Let's say, we have an eye on the greater picture in the matters of our world. ...",
-		"We are watching and evaluating what is happening in our world.	Trying to avert the worst and offering a helping hand where we deem it needed. ...",
+		"We are watching and evaluating what is happening in our world. Trying to avert the worst and offering a helping hand where we deem it needed. ...",
 		"We usually avoid to interfere directly in the affairs of the world and vain politics are not our concern at all.",
 	},
 })
@@ -97,7 +97,7 @@ keywordHandler:addKeyword({ "approaches" }, StdModule.say, {
 keywordHandler:addKeyword({ "dawn" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
-		"Even we know the individual that was somewhat of our funder, only as the wise man. ...",
+		"Even we know the individual that was somewhat of our founder, only as the wise man. ...",
 		"He was the first to bring bright and dedicated minds together, to bring at least a little order and guidance into troubled and chaotic times. ...",
 		"The order predates mankind and never bothered to give itself a name. Such assumptions of pretence and vanity have no place in our mindset.",
 	},
@@ -106,7 +106,7 @@ keywordHandler:addKeyword({ "dawn" }, StdModule.say, {
 keywordHandler:addKeyword({ "guidance" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
-		"Most times we are silent watchers and keeper of knowledge that share what they have learned with each other. We are more concerned about knowledge and wisdom and power means little to us. ...",
+		"Most times we are silent watchers and keepers of knowledge that share what they have learned with each other. We are more concerned about knowledge and wisdom and power means little to us. ...",
 		"To solve problems we usually try to convince the right people to do the right thing. We usually even lack the means for a more direct interference.",
 	},
 })
@@ -123,6 +123,50 @@ keywordHandler:addKeyword({ "interfere" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "Interference comes in different forms. In this particular case there is sadly little time for subtlety and a more direct approach is necessary.",
 })
+
+-- FAMILY (2026-11-17): lore words from TibiaWiki BR (Gerimor page) and the EN transcript, missing upstream
+local familyLore = {
+	{ "approach", "This time I'm looking for heroes. Men and women of action that are capable of dealing with a quite physical {threat}." },
+	{ "threat", "I can sense the spirits of nature are in disarray. This is not a mere imbalance of life and death, this is something more disruptive and {abominable}." },
+	{ "abominable", {
+		"It is like nothing I have sensed before or had been recorded. ...",
+		"Not only has some kind of layer formed that slightly muffles all things natural, there are also culminations of this force forming all over the world. ...",
+		"And as horrible as it feels, I can reach out and sense that {something} is nurturing these nodes, that are a defilement of all that is right and natural.",
+	} },
+	{ "something", {
+		"A sinister force is at work here. While some of those nodes of unnatural taint are spreading randomly, waning and waxing with no pattern, ...",
+		"there are others, more persistent, more permanent and constantly {growing}.",
+	} },
+	{ "growing", "It is like something is stabilizing them on purpose. In the light of recent {events} this even makes some sort of sense." },
+	{ "events", "When the mortal magician Ferumbras tried to attain godhood, he fractured the fabric of reality. His actions opened our world to an ever hungry {intruder} that seemingly lusted for our world since aeons." },
+	{ "intruder", {
+		"This ancient force from beyond is something absolutely foreign, defying all our concepts of existence, purpose and comprehension. ...",
+		"What is clear though, is that this contact is {devastating} for our world and our existence.",
+	} },
+	{ "devastating", {
+		"As I said, the thing from beyond defies all tries of comprehension, but its presence and influence are something we would perceive as disruptive, destructive and nihilistic. ...",
+		"Its very existence drains our world, disrupts the laws of nature and those of the gods. ...",
+		"And whatever its intentions are, if it's even capable of intention, what it does ultimately means the end of {existence} as we know it.",
+	} },
+	{ "existence", {
+		"Even with this dire perspective, there seem to be some sentient efforts on behalf of this force to further its goals. ...",
+		"We can only guess what the motive for some twisted individuals might be to serve such a threat to everything, but my recent scrying has revealed a sentient {power} that is furthering those goals.",
+	} },
+	{ "power", {
+		"Ancient stories speak vaguely of the fall of the Yalahari and how they probably succumbed to the mind twisting force from beyond. ...",
+		"Maybe again some have fallen to that low and allied themselves to that horrible entity. Perhaps it's, as some say, the Yalahari themself that are returning in service of their master. ...",
+		"Perhaps it is something unspeakable that Yalahari and other fallen have become after exposure to that {fiend} from beyond.",
+	} },
+	{ "fiend", "Regardless of the nature of the enemy, there is something evil abound. I and my colleagues have pooled our resources, contacts, informants and allies and looked into that {matter}." },
+	{ "matter", "We located the places where this abominable forces had taken a {foothold} and had them investigated." },
+	{ "foothold", {
+		"It seems in recent times several cults have risen into prominence in these areas. ...",
+		"Cults that seem not to revere to known gods or their aspects but to some more obscure powers.",
+	} },
+}
+for _, entry in ipairs(familyLore) do
+	keywordHandler:addKeyword({ entry[1] }, StdModule.say, { npcHandler = npcHandler, text = entry[2] })
+end
 
 keywordHandler:addKeyword({ "feyrist" }, StdModule.say, {
 	npcHandler = npcHandler,
@@ -210,7 +254,7 @@ keywordHandler:addKeyword({ "cults" }, StdModule.say, {
 	text = {
 		"It doesn't seem that the cults share a common theme or object of reverence but there has to be some connection beyond being at the centre of culminations of disruptive power from beyond. ...",
 		"The connection is of second thought though. Connected or not, they further the death of our world. That alone makes it imperative to dig those cults out and destroy their cores. ...",
-		"We won't be able to rout our each and any movement but if we manage to neutralize the worst, we gain some time and deny the enemy much of its leverage on the future of our world.",
+		"We won't be able to root out each and any movement but if we manage to neutralize the worst, we gain some time and deny the enemy much of its leverage on the future of our world.",
 	},
 })
 
@@ -240,15 +284,15 @@ keywordHandler:addKeyword({ "works" }, StdModule.say, {
 	text = {
 		"We haven't completely figured out what our enemy exactly is. For one, this thing defies all laws of nature and comprehension, ...",
 		"that understanding it is either impossible or twist a mind in ways that are not meant to be. Also the Yalahari who figured out way too much about the thing, became tainted and changed by this knowledge ...",
-		"And ultimately not only fell and became his, they also provided the thing with something of their own, be it knowledge, understanding or even direction, purpose. ...",
+		"and ultimately not only fell and became his, they also provided the thing with something of their own, be it knowledge, understanding or even direction, purpose. ...",
 		"In some way their tainted knowledge brought the unthinkable into a resemblance of existence. ...",
-		"That is why we cant dabble too much in figuring this out and rather concentrate on our fight to severe its ties to our world.",
+		"That is why we can't dabble too much in figuring this out and rather concentrate on our fight to sever its {ties} to our world.",
 	},
 })
 
 keywordHandler:addKeyword({ "ties" }, StdModule.say, {
 	npcHandler = npcHandler,
-	text = "I have several missions available that deal with servering the ties of the corrupting influence on our world.",
+	text = "I have several missions available that deal with severing the ties of the corrupting influence on our world.",
 })
 
 local config = {
@@ -256,7 +300,7 @@ local config = {
 		["minotaurs"] = {
 			text = {
 				"This is an animal-like cult. Only minotaurs can be found there, but no idea what there are expecting and what they are worshipping. ...",
-				"Maybe they are a bit different to the creatures you already know. Would you like to dinf out more for me?",
+				"Maybe they are a bit different to the creatures you already know. Would you like to find out more for me?",
 			},
 			completeText = {
 				"You have found the source of power which strengthened the minotaurs. Thanks a lot! Here your reward.",
@@ -268,7 +312,7 @@ local config = {
 		["prosperity"] = {
 			text = {
 				"The alleged incentive to follow this cult is infinite prosperity. Therefore most of the worshippers are already very rich citizens of Tibia. ...",
-				"This cult is abandoned in the recently opened new museum in Thais. This can be entered in the Thais exhibition. Would you like to have a look at this cult?",
+				"This cult is located in the recently opened new museum in Thais. This can be entered in the Thais exhibition. Would you like to have a look at this cult?",
 			},
 			completeText = {
 				"Thanks a lot. As I already supposed the museum is just a disguise. ...",
@@ -280,7 +324,7 @@ local config = {
 		},
 		["barkless"] = {
 			text = {
-				"However, recently they became more prominent as their leader seems to hava taken a turn for the worse. Rumors of violent acts and disappearing people are linked to this cult. ...",
+				"However, recently they became more prominent as their leader seems to have taken a turn for the worse. Rumors of violent acts and disappearing people are linked to this cult. ...",
 				"Someone... Should look into that, don't you think?",
 			},
 			completeText = {
@@ -304,7 +348,7 @@ local config = {
 		},
 		["life"] = {
 			text = {
-				"Its worshippers wish for eternal, life free of pain and sorrow. The entrance to this cult can be found in the dark pyramid. Would you life to investigate it for me?",
+				"Its worshippers wish for eternal, life free of pain and sorrow. The entrance to this cult can be found in the dark pyramid. Would you like to investigate it for me?",
 			},
 			completeText = {
 				"Thanks a lot. You have revealed the mystery of this cult and killed the sandking. ...",
@@ -329,7 +373,7 @@ local config = {
 		["humans"] = {
 			text = {
 				"It's a forbidden and abandoned place but... There is an ancient temple of Zathroth beneath Carlin. Some say it's not that abandoned anymore. ...",
-				"Voices, flickering lights in the dead of night, and even a strange gate like sphere wich leads to who knows where. I can't really request this from you but... Someone should take a look, or not?",
+				"Voices, flickering lights in the dead of night, and even a strange gate like sphere which leads to who knows where. I can't really request this from you but... Someone should take a look, or not?",
 			},
 			completeText = {
 				"Zathroth wasn't behind this after all. That's good... what's not good is that we have to deal with an unknown power now, let's hope for the best.",
@@ -353,7 +397,8 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	if MsgContains(message, "missions") then
+	-- FAMILY (2026-11-17): BR players say "mission" (TibiaWiki BR: "Jogador: Mission"), EN "missions"
+	if MsgContains(message, "missions") or MsgContains(message, "mission") then
 		if player:getStorageValue(Storage.Quest.U11_40.CultsOfTibia.FinalBoss.Mission) > 2 then
 			npcHandler:say("You have already fulfilled your job to my full satisfaction. The cults are investigated and the final boss is eliminated. I have nothing more for you to do. Fare you well!", npc, creature)
 			npcHandler:setTopic(playerId, 0)
@@ -427,6 +472,7 @@ local function creatureSayCallback(npc, creature, type, message)
 				[VOCATION.BASE_ID.DRUID] = { itemId = 26187, itemName = "leaf crown" },
 				[VOCATION.BASE_ID.PALADIN] = { itemId = 26189, itemName = "incandescent crown" },
 				[VOCATION.BASE_ID.KNIGHT] = { itemId = 26188, itemName = "iron crown" },
+				[VOCATION.BASE_ID.MONK] = { itemId = 50313, itemName = "sensing crown" }, -- FAMILY (2026-11-17): monks get the Sensing Crown (both wikis, since 15.00)
 			}
 			local vocationId = player:getVocation():getBaseId()
 			local reward = vocationRewards[vocationId]

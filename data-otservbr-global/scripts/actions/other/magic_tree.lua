@@ -7,6 +7,9 @@ local itemInfos = {
 	[26188] = { 26192, 29428 },
 	[26194] = { 26190, 29426 },
 	[26190] = { 26194, 29426 },
+	-- FAMILY (2026-11-17): the monks' Sensing Crown and its tree (EN); the free storage 43717 of U9_4 keeps its exhaustion
+	[50313] = { 50314, 43717 },
+	[50314] = { 50313, 43717 },
 }
 
 local storageValues = {}
