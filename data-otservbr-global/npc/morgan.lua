@@ -74,6 +74,15 @@ local function creatureSayCallback(npc, creature, type, message)
 				"Of course it's a long journey but you asked for it. You will have to prove us your worth. Are you up to that?",
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 2)
+		elseif FamilyShatteredIsles.enabled() and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 7 then
+			-- FAMILY (2026-11-17): a new letter if it was lost. BR: possible after 7 days (Mission - No - Yes);
+			-- here at once. Lines ours.
+			if player:getItemCount(3506) > 0 then
+				npcHandler:say("Please deliver my letter to old Eremo on Cormaya.", npc, creature)
+			else
+				npcHandler:say("You lost my letter? <sigh> Shall I write you another one?", npc, creature)
+				npcHandler:setTopic(playerId, 2)
+			end
 		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 8 then
 			npcHandler:say("Thank you for delivering my letter to Eremo. I have no more missions for you.", npc, creature)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 9)
@@ -132,7 +141,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		npcHandler:setTopic(playerId, 1)
 	elseif MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 2 then
-			if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 6 then
+			if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 6 or player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 7 then -- FAMILY: 7 = replacement letter
 				npcHandler:say("Alright, we will see. Here, take this letter and deliver it safely to old Eremo on Cormaya.", npc, creature)
 				player:addItem(3506, 1)
 				player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 7)

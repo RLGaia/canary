@@ -92,7 +92,8 @@ childTravelKeyword:addChildKeyword({ "yes" }, StdModule.travel, {
 	cost = 180,
 	discount = "postman",
 	destination = function(player)
-		return math.random(8) == 1 and Position(32161, 32558, 6) or Position(32310, 32210, 6)
+		-- FAMILY (2026-11-17): the storm to Goroma only from level 20 (BR and EN: minimum level 20).
+		return player:getLevel() >= 20 and math.random(8) == 1 and Position(32161, 32558, 6) or Position(32310, 32210, 6)
 	end,
 })
 childTravelKeyword:addChildKeyword({ "no" }, StdModule.say, { npcHandler = npcHandler, reset = true, text = "We would like to serve you some time." })

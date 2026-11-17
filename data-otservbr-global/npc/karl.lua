@@ -64,7 +64,8 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 1)
 		end
 	elseif MsgContains(message, "whisper beer") then
-		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 4 then
+		-- FAMILY (2026-11-17): also sells another bottle while Ariella still waits for it (lost bottle).
+		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 4 or (FamilyShatteredIsles.enabled() and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 5 and player:getItemCount(6106) == 0) then
 			npcHandler:say("Do you want to buy a bottle of our finest whisper beer for 80 gold?", npc, creature)
 			npcHandler:setTopic(playerId, 2)
 		end
@@ -78,7 +79,7 @@ local function creatureSayCallback(npc, creature, type, message)
 			end
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 2 then
-			if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 4 then
+			if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 4 or player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 5 then -- FAMILY: see above
 				if player:removeMoneyBank(80) then
 					npcHandler:say("Here. Don't take it into the city though.", npc, creature)
 					player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 5)

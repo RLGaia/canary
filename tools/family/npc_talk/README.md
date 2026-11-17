@@ -137,3 +137,11 @@ pheromone at stage 3, always out) and every `{highlighted}` word:
 brooch (without and with it), friendship, passage and the 10-gold trip; Costello's Fugio question
 (not without a greeting, only once), the diary without and with the book, the blessed ankh, the lines
 after the quest, the quest log, the Isle of the Kings trespassers (fine by level, Costello's talk, Captain Jack and Dalbrect refusing, paying) and every `{highlighted}` word: `luajit tools/family/npc_talk/white_raven.lua`.
+
+`shattered_isles.lua` is The Shattered Isles Quest ("Meriana Quest") check (2026-11-17, 85 checks): one
+character from Eleonore's ring to Ray's Pirate Outfit with the TibiaWiki BR lines (Eleonore, Charlotta,
+Waverider, Ray, Marina, Ocelus, Ariella, Karl, Morgan, Eremo, Duncan, Chondur, Sandra, Sebastian,
+Vulturenose, Klaus), the BR route that goes to Ocelus first, Duncan's egg before and after the catapult,
+upstream's old reputation 13, the lost letter and whisper beer, Chondur's counterspell after a "no" and the
+quest log states. The map objects (plans, nests, Marina's turtle, mushroom portal, catapult, parrot's tree)
+need the real map and are checked in a server self-test: `luajit tools/family/npc_talk/shattered_isles.lua`.

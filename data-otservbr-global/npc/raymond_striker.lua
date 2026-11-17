@@ -59,27 +59,30 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 
 	if MsgContains(message, "eleonore") then
-		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid) < 1 then
+		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ADjinnInLove) < 5 then -- FAMILY: was APoemForTheMermaid < 1 (silent after talking to Marina)
 			npcHandler:say("Eleonore ... Yes, I remember her... vaguely. She is a pretty girl ... but still only a girl and now I am in love with a beautiful and passionate woman. A true {mermaid} even.", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		end
 	elseif MsgContains(message, "mission") then
-		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid) < 1 then
+		-- FAMILY (2026-11-17): Ray is enchanted until Marina accepts Ocelus' date (ADjinnInLove 5).
+		-- Upstream freed him when Ocelus took the poem (APoemForTheMermaid 3), before the date.
+		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ADjinnInLove) < 5 then
 			npcHandler:say("Don't ask about silly missions. All I can think about is this lovely {mermaid}.", npc, creature)
 			npcHandler:setTopic(playerId, 1)
-		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid) == 3 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) < 1 then
+		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) < 1 then -- FAMILY: was APoemForTheMermaid == 3 (see above)
 			npcHandler:say("Ask around in the settlement where you can help out. If you have proven your worth I might have some missions for you.", npc, creature)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 1)
-		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 13 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission1) < 1 then
+		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) >= 13 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission1) < 1 then -- FAMILY: 13 or 14 (Friendly)
 			npcHandler:say({
 				"Indeed, I could use some help. The evil pirates of Nargor have convinced an alchemist from Edron to supply them with a substance called Fafnar's Fire ...",
 				"It can burn even on water and is a threat to us all. I need you to travel to Edron and pretend to the alchemist Sandra that you are the one whom the other pirates sent to get the fire ...",
 				"When she asks for a payment, tell her 'Your continued existence is payment enough'. That should enrage any member of the Edron academy enough to refuse any further deals with the pirates.",
 			}, npc, creature)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission1, 1)
+			FamilyShatteredIsles.raiseReputation(player, 14) -- FAMILY: shows Friendly for characters with upstream's 13
 		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission1) == 2 then
 			npcHandler:say("I think that means 'mission accomplished'. Hehe. I guess that will put an end to their efforts to buy any alchemical substance from Edron.", npc, creature)
-			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 15)
+			FamilyShatteredIsles.raiseReputation(player, 15) -- FAMILY: never lowers it (was a plain set)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission1, 3)
 		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission1) == 3 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission2) < 1 then
 			npcHandler:say({
@@ -93,9 +96,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			}, npc, creature)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.AccessToNargor, 1)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission2, 1)
-		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission2) == 2 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 16 then
+		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission2) == 2 then -- FAMILY: was also reputation == 16
 			npcHandler:say("You did it! Excellent!", npc, creature)
-			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 18)
+			FamilyShatteredIsles.raiseReputation(player, 18) -- FAMILY: Cordial
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission2, 3)
 		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission2) == 3 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission3) < 1 then
 			npcHandler:say({
@@ -113,7 +116,7 @@ local function creatureSayCallback(npc, creature, type, message)
 				"If we could convince him that you fulfilled that mission, the pirates will have the party of their lives. This would beour chance for a sneak attack to damage their boats and steal their plunder! ...",
 				"Obtain this mission from him and learn what he needs as a proof. Then return to me and report to me about yourmission so we can formulate an appropriate plan.",
 			}, npc, creature)
-			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 20)
+			FamilyShatteredIsles.raiseReputation(player, 20) -- FAMILY: Loyal
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission3, 3)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission4, 1)
 		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission4) == 2 then
@@ -127,21 +130,25 @@ local function creatureSayCallback(npc, creature, type, message)
 				"So take this as your very own ship. Oh, and remind me about the pirate outfit sometime.",
 			}, npc, creature)
 			player:addItem(2994, 1)
-			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 21)
+			FamilyShatteredIsles.raiseReputation(player, 21)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission4, 5)
 		end
 	elseif MsgContains(message, "mermaid") then
-		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid) < 1 then
-			if npcHandler:getTopic(playerId) == 1 then
-				npcHandler:say("The mermaid is the most beautiful creature I have ever met. She is so wonderful. It was some kind of magic as we first met. A look in her eyes and I suddenly knew there would be never again another woman in my life but her.", npc, creature)
-				npcHandler:setTopic(playerId, 0)
+		-- FAMILY (2026-11-17): enchanted until Marina's date, ashamed afterwards (BR: Hi - Mermaid).
+		-- Upstream answered only right after "eleonore", and said the ashamed line while Ray was
+		-- still enchanted (APoemForTheMermaid 1) but never after the date.
+		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ADjinnInLove) == 5 then
+			npcHandler:say("I am deeply ashamed that I lacked the willpower to resist her spell. Thank you for your help in that matter. Now my head is once more free to think about our {mission}.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+		else
+			npcHandler:say("The mermaid is the most beautiful creature I have ever met. She is so wonderful. It was some kind of magic as we first met. A look in her eyes and I suddenly knew there would be never again another woman in my life but her.", npc, creature)
+			npcHandler:setTopic(playerId, 0)
+			if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid) < 1 then
+				player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.DefaultStart, 1)
 				player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid, 1)
 			end
-		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid) == 1 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) < 1 then
-			npcHandler:say("I am deeply ashamed that I lacked the willpower to resist her spell. Thank you for your help in that matter. Now my head is once more free to think about our {mission}.", npc, creature)
-			npcHandler:setTopic(playerId, 1)
 		end
-	elseif MsgContains(message, "pirate outfit") then
+	elseif MsgContains(message, "outfit") then -- FAMILY: was "pirate outfit"; EN: player says "outfit"
 		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.AccessToLagunaIsland) == 1 and player:getStorageValue(Storage.Quest.U7_8.PirateOutfits.PirateBaseOutfit) < 1 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission4) == 5 then
 			npcHandler:say("Ah, right! The pirate outfit! Here you go, now you are truly one of us.", npc, creature)
 			player:addOutfit(151)

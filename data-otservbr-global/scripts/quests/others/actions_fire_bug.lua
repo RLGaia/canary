@@ -61,9 +61,11 @@ function othersFireBug.onUse(player, item, fromPosition, target, toPosition, isH
 		createTeleport:setDestination(Position(32857, 32234, 11))
 		return true
 	elseif target.uid == 2273 then
-		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission2) == 1 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 15 then
+		-- FAMILY (2026-11-17): only Ray's Mission 2 counts; upstream also needed reputation 15, which
+		-- Duncan's tortoise egg changed to 16 (catapult could no longer be burned).
+		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission2) == 1 then
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission2, 2)
-			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 16)
+			FamilyShatteredIsles.raiseReputation(player, 16)
 			toPosition:sendMagicEffect(CONST_ME_HITBYFIRE)
 			return true
 		else

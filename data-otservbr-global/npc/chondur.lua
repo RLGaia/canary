@@ -162,7 +162,12 @@ local function handleOtherMessages(npcHandler, npc, creature, message, playerId)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 12)
 			npcHandler:setTopic(playerId, 0)
 		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 12 then
-			npcHandler:say("Did you bring five pirate voodoo dolls?", npc, creature)
+			-- FAMILY (2026-11-17): one doll at a time, as in both wikis (upstream: all five at once).
+			if FamilyShatteredIsles.dollsGiven(player) >= FamilyShatteredIsles.dollsNeeded - 1 then
+				npcHandler:say("Did you bring the last of the required voodoo dolls?", npc, creature)
+			else
+				npcHandler:say("Did you bring one of the required pirate voodoo dolls?", npc, creature)
+			end
 			npcHandler:setTopic(playerId, 8)
 		end
 	elseif MsgContains(message, "yes") then
@@ -182,9 +187,17 @@ local function handleOtherMessages(npcHandler, npc, creature, message, playerId)
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 8 then
 			if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 12 then
-				if player:removeItem(5810, 5) then
-					npcHandler:say("Finally I can put an end to that curse. I thank you so much.", npc, creature)
-					player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 13)
+				if player:removeItem(FamilyShatteredIsles.dollItem, 1) then -- FAMILY: one doll per answer
+					local given = FamilyShatteredIsles.dollsGiven(player) + 1
+					if given < FamilyShatteredIsles.dollsNeeded then
+						FamilyShatteredIsles.setDollsGiven(player, given)
+						npcHandler:say("Now I can weaken that curse a bit. Thank you.", npc, creature)
+					else
+						FamilyShatteredIsles.setDollsGiven(player, 0)
+						npcHandler:say("Finally I can put an end to that curse. I thank you so much.", npc, creature)
+						-- FAMILY: 14 = Friendly in the quest log (upstream set 13, which shows nothing)
+						player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 14)
+					end
 					npcHandler:setTopic(playerId, 0)
 				else
 					npcHandler:say("You don't have it...", npc, creature)
@@ -202,8 +215,7 @@ local function handleOtherMessages(npcHandler, npc, creature, message, playerId)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheCounterspell, 1)
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 11 then
-			if player:getItemCount(4330) > 0 then
-				player:removeItem(4330, 1)
+			if FamilyShatteredIsles.takeCorpse(player, 1) then -- FAMILY: fresh corpse too
 				player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheCounterspell, 2)
 				npcHandler:say("Very good! <mumble> 'Your soul shall be protected!' Now, I need a fresh dead rat.", npc, creature)
 				return true
@@ -213,8 +225,7 @@ local function handleOtherMessages(npcHandler, npc, creature, message, playerId)
 			end
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 12 then
-			if player:getItemCount(3994) > 0 then
-				player:removeItem(3994, 1)
+			if FamilyShatteredIsles.takeCorpse(player, 2) then -- FAMILY: fresh corpse too
 				player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheCounterspell, 3)
 				npcHandler:say("Very good! <chants and dances> 'You shall face black magic without fear!' Now, I need a fresh dead black sheep.", npc, creature)
 				return true
@@ -224,8 +235,7 @@ local function handleOtherMessages(npcHandler, npc, creature, message, playerId)
 			end
 			npcHandler:setTopic(playerId, 0)
 		elseif npcHandler:getTopic(playerId) == 13 then
-			if player:getItemCount(4095) > 0 then
-				player:removeItem(4095, 1)
+			if FamilyShatteredIsles.takeCorpse(player, 3) then -- FAMILY: fresh corpse too
 				player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheCounterspell, 4)
 				npcHandler:say("Very good! <stomps staff on ground> 'EVIL POWERS SHALL NOT KEEP YOU ANYMORE! SO BE IT!'", npc, creature)
 				return true
@@ -262,7 +272,7 @@ local function handleOtherMessages(npcHandler, npc, creature, message, playerId)
 		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.DragahsSpellbook) == -1 then
 			npcHandler:say("You should not talk about things you don't know anything about.", npc, creature)
 			return true
-		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheCounterspell) == -1 then
+		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheCounterspell) <= 0 then -- FAMILY: was == -1; a "no" left 0 and no answer ever again
 			npcHandler:say("You mean, you are interested in a counterspell to cross the energy barrier on Goroma?", npc, creature)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheCounterspell, 0)
 			npcHandler:setTopic(playerId, 9)

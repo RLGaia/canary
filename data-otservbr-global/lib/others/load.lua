@@ -21,3 +21,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_ice_islands.lua") -- FAMILY: The Ic
 dofile(DATA_DIRECTORY .. "/lib/others/family_hive.lua") -- FAMILY: War Against the Hive Quest (Orockle, missions, Hive stages, hive gates, guides)
 dofile(DATA_DIRECTORY .. "/lib/others/family_hot_cuisine.lua") -- FAMILY: Hot Cuisine Quest review, dishes at any time (Jean Pierre)
 dofile(DATA_DIRECTORY .. "/lib/others/family_white_raven.lua") -- FAMILY: Isle of the Kings, Key 3350, trespassers and Costello's fine
+dofile(DATA_DIRECTORY .. "/lib/others/family_shattered_isles.lua") -- FAMILY: The Shattered Isles Quest (Meriana) fixes: Nargor plans and nests, Marina's turtle, Sebastian, mushroom portal, NPC dead ends

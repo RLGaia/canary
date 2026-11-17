@@ -13,7 +13,13 @@ function rake.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	elseif target.itemid == 6094 then
 		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheGovernorDaughter) == 1 then
 			toPosition:sendMagicEffect(CONST_ME_POFF)
-			Game.createItem(6093, 1, Position(32422, 32770, 1))
+			-- FAMILY (2026-11-17): the ring goes into the backpack when the rake is carried (BR: "se você
+			-- utilizar o Rake fora de sua mochila, o ring cairá no chão"); upstream always dropped it.
+			local carrier = item:getTopParent()
+			local carried = carrier and carrier.isPlayer and carrier:isPlayer() and carrier:getId() == player:getId()
+			if not (FamilyShatteredIsles.enabled() and carried and player:addItem(6093, 1)) then
+				Game.createItem(6093, 1, Position(32422, 32770, 1))
+			end
 			player:say("You have found a ring.", TALKTYPE_MONSTER_SAY)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheGovernorDaughter, 2)
 		end

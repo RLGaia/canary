@@ -58,13 +58,22 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
-	if MsgContains(message, "eleonore") then
-		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid) == 2 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ADjinnInLove) < 1 then
+	-- FAMILY (2026-11-17): Ocelus answers "mermaid" right away (BR route: Hi - Mermaid - Date - Yes);
+	-- upstream needed "eleonore" first and Marina's talk about Ray (BR: both optional). After the date
+	-- he answers with his EN transcript lines.
+	if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ADjinnInLove) == 5 and (MsgContains(message, "mermaid") or MsgContains(message, "marina")) then
+		npcHandler:say("Marina and I have arranged a date already, I am so excited.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ADjinnInLove) == 5 and MsgContains(message, "raymond striker") then
+		npcHandler:say("Now that Marina and me have arranged a date, I hope this human is forgotten soon.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
+	elseif MsgContains(message, "eleonore") then
+		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.AccessToMeriana) == 1 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ADjinnInLove) < 1 then -- FAMILY: was APoemForTheMermaid == 2
 			npcHandler:say("I heard the birds sing about her beauty. But how could a human rival the enchanting beauty of a {mermaid}?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		end
 	elseif MsgContains(message, "mermaid") or MsgContains(message, "marina") then
-		if npcHandler:getTopic(playerId) == 1 then
+		if npcHandler:getTopic(playerId) == 1 or (player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.AccessToMeriana) == 1 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ADjinnInLove) < 1) then -- FAMILY: also without "eleonore" first
 			npcHandler:say({
 				"Oh yes, I noticed that lovely mermaid. From afar of course. I would not dare to step into the eyes of such a lovely creature. ...",
 				"... I guess I am quite shy. Oh my, if I were not blue, I would turn red now. If there would be someone to arrange a {date} with her.",
@@ -83,6 +92,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		if npcHandler:getTopic(playerId) == 3 then
 			npcHandler:say("Thank you. How ironic, a human granting a djinn a wish.", npc, creature)
 			npcHandler:setTopic(playerId, 0)
+			-- FAMILY: the quest log starts here when Ray and Marina were skipped
+			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.DefaultStart, 1)
+			if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid) < 2 then
+				player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid, 2)
+			end
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ADjinnInLove, 1)
 		elseif npcHandler:getTopic(playerId) == 4 then
 			if player:removeItem(6119, 1) then

@@ -97,6 +97,15 @@ local function addTravelKeyword(keyword, cost, destination)
 end
 
 addTravelKeyword("liberty bay", 50, Position(32316, 32702, 7))
+-- FAMILY (2026-11-17): Nargor only for those Ray or Duncan sent there (BR: "Se você se provar
+-- confiável, ele pode levar você para Nargor"). Upstream's travel keyword answered before the
+-- check in creatureSayCallback, so he sailed everyone. Refusal line ours.
+keywordHandler:addKeyword({ "nargor" }, StdModule.say, {
+	npcHandler = npcHandler,
+	text = "Nargor? That's the nest of those cutthroats. I only sail there on Captain Striker's orders.",
+}, function(player)
+	return player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.AccessToNargor) ~= 1
+end)
 addTravelKeyword("nargor", 50, Position(32025, 32812, 7))
 
 -- Basic

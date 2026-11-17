@@ -136,29 +136,34 @@ local quest = {
 			name = "Reputation in Sabrehaven: Suspicious",
 			storageId = Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven,
 			missionId = 10273,
-			startValue = 2,
+			-- FAMILY (2026-11-17): states follow the order the NPCs use (Ariella, Ariella, Morgan, Duncan,
+			-- Chondur, as in both wikis); upstream's texts were in another order (state 4 named Morgan while
+			-- Ariella's whisper beer was due). State 1 is ours, in upstream's wording.
+			startValue = 1,
 			endValue = 13,
 			states = {
+				[1] = "Ask around in Sabrehaven and surroundings whether the people there might have missions for you. \z
+				This will improve your reputation and earn their trust.",
 				[2] = "Ariella asked you for a few days of adequate supply. \z
 				Help her and improve your reputation in Sabrehaven.",
 				[3] = "You have finished one mission. Ask around in Sabrehaven and surroundings whether the \z
 				people there might have missions for you. This will improve your reputation and earn their trust.",
-				[4] = "Morgan asked you to deliver a letter safely to old Eremo on Cormaya. \z
-				Help him and improve your reputation in Sabrehaven.",
-				[5] = "You delivered the letter safely to old Eremo. Report back to Morgan and \z
-				improve your reputation in Sabrehaven.",
+				[4] = "Ariella asked you to bring a sample of whisper beer from a secret whisper bar in Carlin. \z
+				Help her and improve your reputation in Sabrehaven.",
+				[5] = "Take the sample of whisper beer to Ariella. Help her and improve your reputation in Sabrehaven.",
 				[6] = "You have finished two missions. Ask around in Sabrehaven and surroundings \z
 				whether the people there might have missions for you. This will improve your reputation and earn their trust.",
-				[7] = "Duncan requested an atlas of the explorers society. Help him and improve your reputation in Sabrehaven.",
-				[8] = "You have finished three missions. Ask around in Sabrehaven and surroundings whether the \z
+				[7] = "Morgan asked you to deliver a letter safely to old Eremo on Cormaya. \z
+				Help him and improve your reputation in Sabrehaven.",
+				[8] = "You delivered the letter safely to old Eremo. Report back to Morgan and \z
+				improve your reputation in Sabrehaven.",
+				[9] = "You have finished three missions. Ask around in Sabrehaven and surroundings whether the \z
 				people there might have missions for you. This will improve your reputation and earn their trust.",
-				[9] = "Chondur asked at least five pirate voodoo dolls to lift the curse. Help him and improve \z
+				[10] = "Duncan requested an atlas of the explorers society. Help him and improve your reputation in Sabrehaven.",
+				[11] = "You have finished four missions. Ask around in Sabrehaven and surroundings whether the \z
+				people there might have missions for you. This will improve your reputation and earn their trust.",
+				[12] = "Chondur asked at least five pirate voodoo dolls to lift the curse. Help him and improve \z
 				your reputation in Sabrehaven.",
-				[10] = "You have finished four missions. Ask around in Sabrehaven and surroundings whether the \z
-				people there might have missions for you. This will improve your reputation and earn their trust.",
-				[11] = "Ariella asked you to bring a sample of whisper beer from a secret whisper bar in Carlin. \z
-				Help her and improve your reputation in Sabrehaven.",
-				[12] = "Take the sample of whisper beer to Ariella. Help her and improve your reputation in Sabrehaven.",
 			},
 		},
 		[12] = {

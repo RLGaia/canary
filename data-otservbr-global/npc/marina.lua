@@ -67,8 +67,10 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 4)
 		end
 	elseif MsgContains(message, "raymond striker") then
-		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid) == 1 then
+		-- FAMILY (2026-11-17): also when Ray was not asked first (BR: talking to Ray and Marina is optional).
+		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.AccessToMeriana) == 1 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid) < 2 then
 			npcHandler:say("<giggles> I think he has a crush on me. Well, silly man, it is only for his own good. This way he can get accustomed to TRUE beauty. And I won't give him up anymore now that he is mine.", npc, creature)
+			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.DefaultStart, 1)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.APoemForTheMermaid, 2)
 			npcHandler:setTopic(playerId, 0)
 		end

@@ -70,7 +70,9 @@ local function creatureSayCallback(npc, creature, type, message)
 		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) == 10 then
 			npcHandler:say("Did you get an atlas of the explorers society as I requested?", npc, creature)
 			npcHandler:setTopic(playerId, 6)
-		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission2) > 0 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TortoiseEggNargorDoor) < 0 then
+		-- FAMILY (2026-11-17): the egg mission opens with the Friendly reputation (EN: "as soon as you have
+		-- earned 'Friendly'"); upstream waited for Ray's Mission 2.
+		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven) >= 13 and player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TortoiseEggNargorDoor) < 0 then
 			npcHandler:say("You did some impressive things. I think people here start considering you as one of us. But these are dire times and everyone of us is expected to give his best and even exceed himself. Do you think you can handle that?", npc, creature)
 			npcHandler:setTopic(playerId, 7)
 		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TortoiseEggNargorDoor) == 1 then
@@ -154,6 +156,7 @@ local function creatureSayCallback(npc, creature, type, message)
 					"I will ask Sebastian to bring you there. Travel to Nargor, find their tortoise eggs and bring me at least one of them.",
 				}, npc, creature)
 				player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TortoiseEggNargorDoor, 1)
+				player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.AccessToNargor, 1) -- FAMILY: "I will ask Sebastian to bring you there" (EN: gives Nargor access)
 				npcHandler:setTopic(playerId, 0)
 			end
 		elseif npcHandler:getTopic(playerId) == 8 then
@@ -161,7 +164,8 @@ local function creatureSayCallback(npc, creature, type, message)
 				if player:removeItem(6125, 1) then
 					npcHandler:say("A real tortoise egg ... I guess you are more accustomed to rescue some noblewoman in distress but you did something goodtoday.", npc, creature)
 					player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TortoiseEggNargorDoor, 2)
-					player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.ReputationInSabrehaven, 16)
+					-- FAMILY: no reputation change (EN: side mission, no direct reward). Upstream set 16,
+					-- which blocked the catapult (it needed 15) or lowered Cordial/Loyal again.
 					if player:getStorageValue(Storage.Quest.U8_0.TheIceIslands.Questline) >= 9 then -- FAMILY: was Storage.TheIceIslands (nil: Lua error, no achievement)
 						player:addAchievement("Animal Activist")
 					end
