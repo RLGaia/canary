@@ -10,12 +10,13 @@
 --                can of oil he gives you
 --   pathfinder   bring his grind stone to Scott the Scout (north) and his
 --                pathfinder kit to Frank the Plank (south)
--- In Tibia each task can be done again 20 hours later; here everything opens again
--- at the server save (06:00), like the daily reward (Rodrigo's choice). A task taken
--- but not finished keeps its progress over the reset. The bonus is for the three
--- tasks reported in the same game day. Norman's offers use the TibiaWiki lines; the
--- other lines are ours (TibiaWiki has no transcript of them). There is no time limit
--- in the charlatan cave (TibiaQA: 5 minutes in Tibia).
+-- Each task can be done again 20 hours after it was reported (TibiaWiki BR: "A cada
+-- 20 horas"; 2026-11-17: until then everything opened at the 06:00 server save, a
+-- default taken when Rodrigo did not answer). The bonus is for the three tasks done
+-- in one go: all three reported and no bonus since the first of them. The charlatan
+-- cave throws you out after 5 minutes (TibiaQA; since 2026-11-17, before no limit).
+-- Norman's offers use the TibiaWiki lines; the other lines are ours (TibiaWiki has
+-- no transcript of them).
 --
 -- The NPC files of Norman, Scott and Frank call FamilyVenoreTasks.setupNorman /
 -- setupScott / setupFrank (they had no dialogue at all). The hidden hole, the can of
@@ -44,6 +45,9 @@ FamilyVenoreTasks = {
 	READY = 2,
 	REPORTED = 3,
 	order = { "sabotage", "maintenance", "pathfinder" },
+	cooldown = 20 * 3600, -- BR
+	caveSeconds = 5 * 60, -- TibiaQA
+	caveExit = Position(33028, 32141, 7), -- next to the hidden hole
 }
 
 local V = FamilyVenoreTasks
@@ -68,20 +72,30 @@ function V.day(now)
 	return os.date("%Y-%m-%d", now - hour * 3600)
 end
 
--- A new game day frees the tasks reported before it and the bonus.
+-- A reported task is free again 20 hours after its report (no time stored = reported
+-- before 2026-11-17: free).
 function V.refresh(player)
 	local kv = player:kv():scoped(KV_SCOPE)
-	local today = V.day()
-	if kv:get("day") == today then
-		return
-	end
-	kv:set("day", today)
+	local now = os.time()
 	for _, task in ipairs(V.order) do
 		if player:getStorageValue(V.storage(task)) == V.REPORTED then
-			player:setStorageValue(V.storage(task), V.FREE)
+			local at = kv:get("reported-" .. task)
+			if not at or now >= at + V.cooldown then
+				player:setStorageValue(V.storage(task), V.FREE)
+			end
 		end
 	end
-	player:setStorageValue(S().Bonus, 0)
+end
+
+-- Seconds until a reported task opens again.
+function V.waitLeft(player, task)
+	local at = player:kv():scoped(KV_SCOPE):get("reported-" .. task) or 0
+	return math.max(0, at + V.cooldown - os.time())
+end
+
+function V.hoursText(seconds)
+	local hours = math.ceil(seconds / 3600)
+	return hours <= 1 and "about an hour" or ("about " .. hours .. " hours")
 end
 
 function V.state(player, task)
@@ -197,7 +211,7 @@ end
 function V.describe(player, task)
 	local state = V.state(player, task)
 	if state == V.REPORTED then
-		return "Done for today. Norman the Foreman has new work after the server save (06:00)."
+		return "Done. Norman the Foreman has new work for you in " .. V.hoursText(V.waitLeft(player, task)) .. "."
 	end
 	if task == "sabotage" then
 		if state == V.ACTIVE then
@@ -242,6 +256,7 @@ function V.report(player)
 	for _, task in ipairs(V.order) do
 		if V.state(player, task) == V.READY then
 			setState(player, task, V.REPORTED)
+			player:kv():scoped(KV_SCOPE):set("reported-" .. task, os.time())
 			if task == "maintenance" then
 				player:removeItem(V.items.oil, 1)
 			end
@@ -261,10 +276,22 @@ function V.allReported(player)
 	return true
 end
 
+-- The bonus counts once for each round of three: claimed after the first report of the round.
+function V.bonusTaken(player)
+	local kv = player:kv():scoped(KV_SCOPE)
+	local first
+	for _, task in ipairs(V.order) do
+		local at = kv:get("reported-" .. task) or 0
+		first = first and math.min(first, at) or at
+	end
+	return (kv:get("bonus-at") or 0) >= (first or 0)
+end
+
 function V.claimBonus(player)
-	if not V.allReported(player) or player:getStorageValue(S().Bonus) == 1 then
+	if not V.allReported(player) or V.bonusTaken(player) then
 		return false
 	end
+	player:kv():scoped(KV_SCOPE):set("bonus-at", os.time())
 	player:setStorageValue(S().Bonus, 1)
 	reward(player, V.gold, V.experience)
 	return true
@@ -314,7 +341,7 @@ local function reportText(paid)
 		return nil
 	end
 	local total = #paid * V.gold
-	return string.format("Good work on the %s! Here's your pay: %d gold and some experience. Ask me about the {bonus} once all three tasks are done today.", table.concat(paid, " and the "), total)
+	return string.format("Good work on the %s! Here's your pay: %d gold and some experience. Ask me about the {bonus} once all three tasks are done.", table.concat(paid, " and the "), total)
 end
 
 function V.setupNorman(keywordHandler, npcHandler)
@@ -340,7 +367,7 @@ function V.setupNorman(keywordHandler, npcHandler)
 			if state == V.READY then
 				npcHandler:say(reportText(V.report(player)), npc, player)
 			elseif state == V.REPORTED then
-				npcHandler:say("You did that already today. Come back after the next shift starts (06:00), I'll have more work then.", npc, player)
+				npcHandler:say("You did that already. Come back in " .. V.hoursText(V.waitLeft(player, task)) .. ", I'll have more work then.", npc, player)
 			else
 				npcHandler:say("You're still on it. " .. V.describe(player, task), npc, player)
 			end
@@ -387,8 +414,8 @@ function V.setupNorman(keywordHandler, npcHandler)
 		return true
 	end)
 	bonus:addChildKeyword({ "yes" }, function(npc, player)
-		if player:getStorageValue(Storage.Quest.FamilyVenoreTasks.Bonus) == 1 and V.allReported(player) then
-			npcHandler:say("You got your bonus today already. Greedy, aren't we?", npc, player)
+		if V.allReported(player) and V.bonusTaken(player) then
+			npcHandler:say("You got your bonus already. Greedy, aren't we?", npc, player)
 		elseif V.claimBonus(player) then
 			npcHandler:say("All three in one day! That's what I call a worker. Here's your bonus: 250 gold and some experience.", npc, player)
 		else

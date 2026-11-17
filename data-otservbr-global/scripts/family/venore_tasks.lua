@@ -16,6 +16,21 @@ Family.venoreDailyTasks = true
 
 local V = FamilyVenoreTasks
 
+-- The cave throws you out after 5 minutes (TibiaQA; 2026-11-17). Message ours.
+local function caveTimeUp(playerId, visit)
+	local player = Player(playerId)
+	if not player or player:kv():scoped("family-venore-tasks"):get("cave-visit") ~= visit then
+		return
+	end
+	local pos = player:getPosition()
+	if pos.z ~= V.caveEntry.z or pos:getDistance(V.caveEntry) > 25 then
+		return -- already left the cave
+	end
+	player:teleportTo(V.caveExit)
+	V.caveExit:sendMagicEffect(CONST_ME_POFF)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The cave's air grows thin. You scramble back up through the mud.")
+end
+
 local hole = MoveEvent()
 
 function hole.onStepIn(creature, item, position, fromPosition)
@@ -28,7 +43,10 @@ function hole.onStepIn(creature, item, position, fromPosition)
 	end
 	player:teleportTo(V.caveEntry)
 	V.caveEntry:sendMagicEffect(CONST_ME_POFF)
-	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The mud gives way and you slide down into a cave. Somewhere ahead you hear little charlatans giggling.")
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The mud gives way and you slide down into a cave. Somewhere ahead you hear little charlatans giggling. You have 5 minutes.")
+	local visit = os.time()
+	player:kv():scoped("family-venore-tasks"):set("cave-visit", visit)
+	addEvent(caveTimeUp, V.caveSeconds * 1000, player:getId(), visit)
 	return true
 end
 

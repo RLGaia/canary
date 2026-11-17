@@ -14160,7 +14160,8 @@
 	<item id="4851" article="a" name="smashed stone head">
 		<attribute key="primarytype" value="refuse"/>
 		<attribute key="description" value="It seems to repair itself rapidly."/>
-		<attribute key="duration" value="30"/>
+		<!-- FAMILY (2026-11-17): 60 s as TibiaWiki BR (EN: 40 s); upstream 30 s -->
+		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="4850"/>
 	</item>
 	<item id="4852" article="an" name="ectoplasm container">

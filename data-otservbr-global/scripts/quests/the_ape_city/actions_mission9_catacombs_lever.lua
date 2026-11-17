@@ -27,7 +27,9 @@ function lever.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		player:say("It doesn't move.", TALKTYPE_MONSTER_SAY)
 		return true
 	end
-	addEvent(revertLever, 10 * 60 * 1000, toPosition)
+	-- FAMILY (2026-11-17): 3 minutes (BR: pull the 6 levers "em um tempo de 2~3 minutos"; EN: "a limited
+	-- amount of time"); upstream 10 minutes.
+	addEvent(revertLever, 3 * 60 * 1000, toPosition)
 	return item:transform(2773)
 end
 

@@ -145,3 +145,9 @@ Vulturenose, Klaus), the BR route that goes to Ocelus first, Duncan's egg before
 upstream's old reputation 13, the lost letter and whisper beer, Chondur's counterspell after a "no" and below level 35, Jack Fate's Goroma price and the
 quest log states. The map objects (plans, nests, Marina's turtle, mushroom portal, catapult, parrot's tree)
 need the real map and are checked in a server self-test: `luajit tools/family/npc_talk/shattered_isles.lua`.
+
+`wiki_alignment.lua` (2026-11-17, 14 checks) covers the spots where earlier reviews had kept our server's
+behaviour and Rodrigo asked to follow the wikis: Venore Daily Tasks (20 hours per task, bonus once per round,
+old reported tasks free), Pilgrimage of Ashes (gold only when started below level 25, the BR offer line from
+level 25) and Dalbrect's `family`. `ice_islands.lua` now also checks Buddel (Tyrsung after Siflind, name game),
+Lurik (join, rank) and Dankwart, and replays their EN transcripts with the transcripts folder.

@@ -244,9 +244,85 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
+-- FAMILY (2026-11-17): lore words from the TibiaWiki EN transcript (Lurik/Transcripts, general
+-- keywords); upstream had one of them. Quest words stay with the quest code.
+keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "My name is Lurik. Odd enough you ask though. People hardly do that nowadays. I feel as if my name was  painted above my head or something." })
+keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, text = "I am the local contact of the explorer's society. I just love it to be at the frontier of all known lands." })
+keywordHandler:addKeyword({ "king" }, StdModule.say, { npcHandler = npcHandler, text = "No kings or queens rule these remote lands." })
+keywordHandler:addKeyword({ "queen" }, StdModule.say, { npcHandler = npcHandler, text = "No kings or queens rule these remote lands." })
+keywordHandler:addKeyword({ "enemies" }, StdModule.say, { npcHandler = npcHandler, text = "This is a dangerous, unforgiving land. If you leave the city, you will have to deal with creatures that survive in this harsh environment. They are for sure a challenge for the unwary." })
+keywordHandler:addKeyword({ "gods" }, StdModule.say, { npcHandler = npcHandler, text = { "We know of father Chyll and his freezing breath. We care little for other gods. It is foolish to meddle with beings that are so powerful ...", "We leave it to the druids and shamans to handle such affairs." } })
+keywordHandler:addKeyword({ "chyll" }, StdModule.say, { npcHandler = npcHandler, text = "Father north wind is called Chyll by our people. He is an unforgiving hunter. He knows no mercy with the weak ..." })
+keywordHandler:addKeyword({ "ferumbras" }, StdModule.say, { npcHandler = npcHandler, text = "Even here we heard about this powerful man. Travellers from the south only dare to whisper his name." })
+keywordHandler:addKeyword({ "excalibug" }, StdModule.say, { npcHandler = npcHandler, text = { "On the campfire, there are numerous tales about this weapon. It's told that it has been missing since ages ...", "In my opinion, the power and fame of a weapon shouldn't exceed the power and fame of it's wielder. And I have not heard of any hero whose fame would surpass that of excalibug." } })
+keywordHandler:addKeyword({ "news" }, StdModule.say, { npcHandler = npcHandler, text = "At this remote spot, news are old news. Did you hear that quara attacked Liberty Bay?" })
+keywordHandler:addKeyword({ "how are you" }, StdModule.say, { npcHandler = npcHandler, text = "I am fine. Thank you. There is a bit less work here than I had expected but I am sure we will have some intriguing discoveries just waiting for us." })
+keywordHandler:addKeyword({ "dwarf" }, StdModule.say, { npcHandler = npcHandler, text = "I met some of those little people in the past. Considering our experience with the chakoyas, we don't underestimate someone just for its look. And those dwarfs proved indeed to be powerful, courageous and enduring." })
+keywordHandler:addKeyword({ "elf" }, StdModule.say, { npcHandler = npcHandler, text = "Some time ago, a few elves came here but they could not stand the cold and so they left pretty soon. Most likely it was Nibelor in which they have been interested.}}" })
+keywordHandler:addKeyword({ "city" }, StdModule.say, { npcHandler = npcHandler, text = { "This city has seen much in the few days of its existence. At first it was a little trading spot where ships form Carlin landed. Later it became a deposit for ore that has been mined in the mountains ...", "Then local people joined the traders from Carlin and supplied them with fish, furs and meat ...", "Soon it became a small settlement and the locals, fascinated with the abundance of wood the traders brought with them, begun to build houses ...", "It became a centre of conflict when some barbarians decided it was wrong to settle in a town and later on struggled to survive when the contact to Carlin was lost for decades ...", "Today, the city got a little boost by the presence of foreigners here. But only the future will tell what the fate of this city will be." } })
+keywordHandler:addKeyword({ "druids" }, StdModule.say, { npcHandler = npcHandler, text = "Most shaman and druids of our people live on the sacred isle Nibelor. There, they divine the future, calm the wrath of father Chyll and prepare the dead for their last travel to the lands of Everspring." })
+keywordHandler:addKeyword({ "shamans" }, StdModule.say, { npcHandler = npcHandler, text = "Most shaman and druids of our people live on the sacred isle Nibelor. There, they divine the future, calm the wrath of father Chyll and prepare the dead for their last travel to the lands of Everspring." })
+keywordHandler:addKeyword({ "nibelor" }, StdModule.say, { npcHandler = npcHandler, text = "Nibelor has always been a sacred place for our people. The druids and shamans live there." })
+keywordHandler:addKeyword({ "everspring" }, StdModule.say, { npcHandler = npcHandler, text = { "Everspring is the realm of the dead. It is a place of peace and harmony where those who boldly braved the challenges of life dwell for eternity and share stories at the campfires after a hunt ...", "Every true barbarian that is properly brought into afterlife will join the great hunt in Everspring where the animals are fat and have the thickest furs." } })
+keywordHandler:addKeyword({ "cult" }, StdModule.say, { npcHandler = npcHandler, text = "I don't care what people who come here believe in. If they provoke father Chyll, he will take care of them on his own. If their gods prove to be more powerful than Chyll, they might deserve to live." })
+keywordHandler:addKeyword({ "jarl" }, StdModule.say, { npcHandler = npcHandler, text = "The jarl is a kind of chieftain of the local people here. If you haven't done yet, talk to him. If you want to be accepted by the people here, you will have to ask the jarl for the barbarian test." })
+keywordHandler:addKeyword({ "barbarian" }, StdModule.say, { npcHandler = npcHandler, text = "A true barbarian is something special among our people. Everyone who wants to become a barbarian will have to pass the barbarian test." })
+keywordHandler:addKeyword({ "barbarian test" }, StdModule.say, { npcHandler = npcHandler, text = "All of our juveniles have to take the barbarian test to become a true member of our community. Foreigners who manage to master the test might become honorary barbarians and gain the respect of our people." })
+keywordHandler:addKeyword({ "people" }, StdModule.say, { npcHandler = npcHandler, text = "The people here seem to be a bit uncivilised on the first glance. Rest rest assured that they are hospitable and generous if you earn their respect in some way." })
+keywordHandler:addKeyword({ "raiders" }, StdModule.say, { npcHandler = npcHandler, text = { "Those barbarian who did oppose the building of this settlements call themselves raiders. They consist of some major and minor clans. ...", "It's said that they are lead by a shaman woman, who has celebrated her 100th birthday a long time ago, but I am not sure how believable such records are." } })
+keywordHandler:addKeyword({ "mines" }, StdModule.say, { npcHandler = npcHandler, text = { "A long time ago when the trade with Carlin was flourishing, people actually worked in the mines. During the years of the serpents, the mines had been abandoned. ...", "Later, the raiders took shelter there, although they blame us for living in a fortified city ...", "Now, the traders of Carlin are back but some other foreigners seem to have claimed the mines from the raiders ...", "It's neither our business nor would we have the manpower to help them to recapture the mines. Also, if they do not have the strength to get the mines back on their own, they don't deserve them anyway." } })
+keywordHandler:addKeyword({ "years of serpents" }, StdModule.say, { npcHandler = npcHandler, text = { "It was an astonishing phenomenon. For decades, sea serpents made it impossible to reach these northern isles by ship ...", "The most puzzling part of this event is probably the fact that sea serpents usually prefer a southern climate ...", "However, almost over night the sea serpents seemed to be gone and the contact between Carlin and the isles here could finally be reestablished." } })
+keywordHandler:addKeyword({ "chakoya" }, StdModule.say, { npcHandler = npcHandler, text = { "It's a shame I still have not seen a living chakoya. I could examine some dead specimen though and I have seen some of their victims ...", "It's hard to believe that such a small creature is such a terrible threat but for all I can tell they are indeed quite dangerous." } })
+keywordHandler:addKeyword({ "yeti" }, StdModule.say, { npcHandler = npcHandler, text = "The yetis are mythical beasts. Only few that encountered those creatures lived to tell the tale. The chakoyas worship them as divine beings, although they have no real relations to them, as far as we can tell.}}" })
+keywordHandler:addKeyword({ "carlin" }, StdModule.say, { npcHandler = npcHandler, text = "We are friends of the Carliners. Still we don't allow their politics to influence our way to handle things here." })
+keywordHandler:addKeyword({ "edron" }, StdModule.say, { npcHandler = npcHandler, text = "We have heard only little about this far away place." })
+keywordHandler:addKeyword({ "port hope" }, StdModule.say, { npcHandler = npcHandler, text = "We have heard only little about this far away place." })
+keywordHandler:addKeyword({ "venore" }, StdModule.say, { npcHandler = npcHandler, text = "We did not allow them to stay here. This had nothing to do with our friendship with Carlin but for the way they handled things and their harmful approach to go hunting." })
+keywordHandler:addKeyword({ "thais" }, StdModule.say, { npcHandler = npcHandler, text = "We understand that our friends from Carlin are wary with the realm ruled by Thais but this is not of our concern." })
+
 npcHandler:setMessage(MESSAGE_GREET, "Welcome to the {explorer society} headquarter of Svargrond, |PLAYERNAME|!")
--- FAMILY: his greeting offers {explorer society} but nothing answered it; our line (2026-11-01)
-keywordHandler:addKeyword({ "explorer society" }, StdModule.say, { npcHandler = npcHandler, text = "The explorer society explores all the lands of Tibia. Here in Svargrond we study the ice islands and the seas around them. If you are one of us, ask me for a {mission}." })
+-- FAMILY: his greeting offers {explorer society}; nothing answered it (2026-11-01, our line), the EN
+-- transcript's lines since 2026-11-17, with join, rank and badge (EN; rank by the society's quest line,
+-- ranks as in family_explorer_society.lua; badge only for novices in EN, the same line for all ranks).
+local explorerText = {
+	"Our noble society is dedicated to explore the unknown. No location is too remote for our members to travel there ...",
+	"No beast is too wild to be hunted. No treasure buried too deep to be unearthed ...",
+	"Only the most dedicated and fearless adventurers may join our ranks.",
+}
+keywordHandler:addKeyword({ "explorer society" }, StdModule.say, { npcHandler = npcHandler, text = explorerText })
+keywordHandler:addKeyword({ "explorer's society" }, StdModule.say, { npcHandler = npcHandler, text = explorerText })
+local function explorerLine(player)
+	local es = Storage.Quest.U7_6.ExplorerSociety
+	local questLine = player:getStorageValue(es.QuestLine)
+	if player:getStorageValue(es.JoiningTheExplorers) < 5 or questLine < 5 then
+		return nil
+	end
+	return questLine
+end
+keywordHandler:addKeyword({ "join" }, function(npc, creature)
+	local player = Player(creature)
+	if explorerLine(player) then
+		npcHandler:say("But you are already a member, " .. player:getName() .. ".", npc, creature)
+	else
+		npcHandler:say({ "Only the most dedicated and fearless adventurers may join our ranks." }, npc, creature)
+	end
+	return true
+end)
+keywordHandler:addKeyword({ "rank" }, function(npc, creature)
+	local player = Player(creature)
+	local line = explorerLine(player)
+	local rank
+	if line then
+		rank = (line >= 44 and "an explorer") or (line >= 35 and "a relic hunter") or (line >= 26 and "a journeyman") or "a novice"
+	end
+	if rank then
+		npcHandler:say("You are " .. rank .. " of the explorer's society.", npc, creature)
+	else
+		npcHandler:say("You are not a member of the explorer's society.", npc, creature) -- ours
+	end
+	return true
+end)
+keywordHandler:addKeyword({ "badge" }, StdModule.say, { npcHandler = npcHandler, text = "You have no special badge earned yet." })
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

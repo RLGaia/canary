@@ -66,6 +66,10 @@ local function creatureSayCallback(npc, creature, type, message)
 
 		npcHandler:say("What? You want me to examine a brooch?", npc, creature)
 		npcHandler:setTopic(playerId, 1)
+	elseif message:lower():match("^%s*family%s*$") then
+		-- FAMILY (2026-11-17): EN transcript "Legacy or family"; only the bare word, so "family brooch"
+		-- still reaches the brooch above (a keyword would answer first).
+		npcHandler:say("Once my family was once noble and wealthy, but {fate} turned against us and threw us into poverty.", npc, creature)
 	elseif MsgContains(message, "yes") then
 		if npcHandler:getTopic(playerId) == 1 then
 			if player:getItemCount(3205) == 0 then

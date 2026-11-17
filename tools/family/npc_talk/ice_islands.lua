@@ -103,6 +103,8 @@ local hjaern = T.load(NPC .. "hjaern.lua")
 local siflind = T.load(NPC .. "siflind.lua")
 local nilsor = T.load(NPC .. "nilsor.lua")
 local lurik = T.load(NPC .. "lurik.lua")
+local buddel = T.load(NPC .. "buddel.lua")
+local dankwart = T.load(NPC .. "dankwart.lua")
 local nor = T.load(NPC .. "nor.lua")
 local soul = T.load(NPC .. "a_restless_soul.lua")
 local duncan = T.load(NPC .. "duncan.lua")
@@ -547,9 +549,52 @@ T.checkHints(nilsor, fresh, { cactus = true, water = true, sulphur = true, herb 
 T.checkHints(iskan, fresh)
 T.checkHints(nor, fresh)
 
+-- ------------------------------------------------------------------ Lurik, Buddel, Dankwart (2026-11-17)
+do
+	local pl = fresh()
+	pl.name = "Tester"
+	buddel:say(pl, "hi")
+	local n1 = buddel:say(pl, "name")
+	local n2 = buddel:say(pl, "Tester")
+	local n3 = buddel:say(pl, "tester")
+	check("Buddel: name game asks (EN)", has(n1, "everyone calls me Buddel") and has(n2, "Ahh, Tester. And you?"), n2)
+	check("Buddel: same name twice (EN)", has(n3, "You are also called Tester?!?!?") and has(n3, "both of you will come"), n3)
+	buddel:bye(pl)
+	buddel:say(pl, "hi")
+	buddel:say(pl, "name")
+	local o1 = buddel:say(pl, "Bob")
+	local o2 = buddel:say(pl, "Alice")
+	check("Buddel: other names (EN)", has(o1, "Aha! And you?") and has(o2, "this is a funny name you have"), o2)
+	buddel:bye(pl)
+	local s0 = fresh()
+	s0.storage[Storage.Quest.U8_0.BarbarianTest.Questline] = 8
+	s0.storage[Storage.Quest.U8_0.TheIceIslands.Questline] = 5
+	buddel:say(s0, "hi")
+	local t0 = buddel:say(s0, "tyrsung")
+	check("Buddel: no Tyrsung before Siflind's mission (EN)", has(t0, "Ask Siflind"), t0)
+	buddel:bye(s0)
+	s0.storage[Storage.Quest.U8_0.TheIceIslands.Questline] = 6
+	buddel:say(s0, "hi")
+	t0 = buddel:say(s0, "tyrsung")
+	check("Buddel: Tyrsung after Siflind's mission", has(t0, "Big, big island east of here"), t0)
+	buddel:bye(s0)
+	local es = Storage.Quest.U7_6.ExplorerSociety
+	local m = fresh()
+	m.name = "Tester"
+	m.storage[es.JoiningTheExplorers] = 5
+	m.storage[es.QuestLine] = 5
+	lurik:say(m, "hi")
+	check("Lurik: join as member (EN)", has(lurik:say(m, "join"), "But you are already a member, Tester."))
+	check("Lurik: rank novice (EN)", has(lurik:say(m, "rank"), "You are a novice of the explorer's society."))
+	lurik:bye(m)
+	local dk = fresh()
+	check("Dankwart: greeting (EN)", has(dankwart:say(dk, "hi"), "Hi there and welcome to my tavern. Have a drink."))
+	dankwart:bye(dk)
+end
+
 -- ------------------------------------------------------------------ EN transcripts, line by line
 if transcripts then
-	local npcs = { Sven = sven, Hjaern = hjaern, Siflind = siflind, Nilsor = nilsor, Iskan = iskan }
+	local npcs = { Sven = sven, Hjaern = hjaern, Siflind = siflind, Nilsor = nilsor, Iskan = iskan, Lurik = lurik, Buddel = buddel, Dankwart = dankwart }
 	-- words that are quest steps or offers, checked above (or answered differently on purpose)
 	local skip = {
 		hi = true, bye = true, yes = true, no = true, mission = true, test = true, mead = true, hug = true,
@@ -577,7 +622,7 @@ if transcripts then
 			for _, pr in ipairs(pairsList) do
 				for word in (pr[1] .. " or "):gmatch("(.-)%s+or%s+") do
 					word = word:lower():gsub("^%s+", ""):gsub("%s+$", "")
-					if word ~= "" and not skip[word] then
+					if word ~= "" and not skip[word] and not word:find("''", 1, true) and not word:find("<", 1, true) then -- conditions and names: checked below
 						local pl = fresh()
 						pl.name = "Tester"
 						talk:say(pl, "hi")

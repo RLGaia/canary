@@ -3,9 +3,11 @@
 -- TibiaWiki ("Pilgrimage of Ashes Quest"): a guide tells you about the
 -- pilgrimage; at each of the five sacred places the priest blesses you for
 -- 1,000 gold less (once per blessing) when you ask for your "mission"; with all
--- five blessings, a guide pays 20 platinum coins. Here the reward is paid at
--- every level (in Tibia only below level 25), and having blessings before the
--- start does not matter: you only need all five at the end.
+-- five blessings, a guide pays 20 platinum coins, but only to those who started
+-- the pilgrimage below level 25 (BR: "Jogadores de level 25 ou superior nao
+-- receberao a recompensa em dinheiro"; 2026-11-17, before that every level was
+-- paid). Having blessings before the start does not matter: you only need all
+-- five at the end.
 --
 -- Used by the 13 guide NPCs (FamilyPilgrimage.addGuide) and by Norf, Humphrey,
 -- Edala, Pydar and Eremo (FamilyPilgrimage.addPriest). Loaded from
@@ -14,6 +16,8 @@
 FamilyPilgrimage = {
 	discount = 1000,
 	reward = { id = 3035, count = 20 }, -- platinum coins
+	rewardBelowLevel = 25, -- level when starting (BR)
+	kvScope = "family-pilgrimage",
 	blessings = {
 		[5] = { name = "spiritual shielding", where = "Norf in the White Flower Temple south of Thais" },
 		[6] = { name = "embrace of Tibia", where = "Humphrey at the stone circle north of Carlin" },
@@ -52,7 +56,10 @@ end
 function P.addGuide(keywordHandler, npcHandler)
 	local node = keywordHandler:addKeyword({ "pilgrimage" }, function(npc, player, message, keywords, parameters, node)
 		local state = P.state(player)
-		if state < 1 then
+		if state < 1 and player:getLevel() >= P.rewardBelowLevel then
+			-- BR (Guide Luke, "Iniciando apos o Level 25"): only the discount for experienced adventurers
+			npcHandler:say("Nowadays I do offer a pilgrimage as a quest even for experienced adventurerers but as you are experienced enough I will only grant a little discount on the blessings. Are you interested?", npc, player)
+		elseif state < 1 then
 			npcHandler:say({
 				"The Pilgrimage of Ashes leads you to the five sacred places of the blessings: Norf in the White Flower Temple south of Thais, Humphrey at the stone circle north of Carlin, Edala in the Sun Tower near Ab'Dendriel, Kawill and Pydar in Kazordoon, and the hermit Eremo on his island near Cormaya. ...",
 				"Ask each of them for your {mission}, and they will bless you for 1,000 gold less. Come back to any guide when you have all five blessings. Do you want to go on the pilgrimage?",
@@ -61,9 +68,18 @@ function P.addGuide(keywordHandler, npcHandler)
 			local missing = P.missing(player)
 			if #missing == 0 then
 				player:setStorageValue(storages().Mission, 2)
-				player:addItem(P.reward.id, P.reward.count)
 				player:getPosition():sendMagicEffect(CONST_ME_HOLYAREA)
-				npcHandler:say("You carry all five blessings! Your pilgrimage of ashes is complete. Take these 20 platinum coins, pilgrim.", npc, player)
+				-- started before 2026-11-17 (no mark): judged by the level now
+				local young = player:kv():scoped(P.kvScope):get("started-young")
+				if young == nil then
+					young = player:getLevel() < P.rewardBelowLevel
+				end
+				if young then
+					player:addItem(P.reward.id, P.reward.count)
+					npcHandler:say("You carry all five blessings! Your pilgrimage of ashes is complete. Take these 20 platinum coins, pilgrim.", npc, player)
+				else
+					npcHandler:say("You carry all five blessings! Your pilgrimage of ashes is complete. May they protect you well, pilgrim.", npc, player)
+				end
 			else
 				npcHandler:say("You still need the blessing of: " .. table.concat(missing, "; ") .. ".", npc, player)
 			end
@@ -76,6 +92,7 @@ function P.addGuide(keywordHandler, npcHandler)
 	end, {})
 	node:addChildKeyword({ "yes" }, function(npc, player)
 		player:setStorageValue(storages().Mission, 1)
+		player:kv():scoped(P.kvScope):set("started-young", player:getLevel() < P.rewardBelowLevel)
 		if player:getStorageValue(Storage.Quest.U8_1.TibiaTales.DefaultStart) < 1 then
 			player:setStorageValue(Storage.Quest.U8_1.TibiaTales.DefaultStart, 1)
 		end
