@@ -126,7 +126,10 @@ node26:addChildKeyword({ "yes" }, StdModule.learnSpell, { npcHandler = npcHandle
 local node27 = keywordHandler:addKeyword({ "wound cleansing" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Would you like to learn {wound cleansing} magic spell for free?" })
 node27:addChildKeyword({ "yes" }, StdModule.learnSpell, { npcHandler = npcHandler, premium = false, spellName = "wound cleansing", vocation = { 4, 8 }, price = 0, level = 8 })
 
-keywordHandler:addKeyword({ "spells" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I can teach you {healing}, {support} and {attack} spells. I can also tell you which spells are available at your {level}." })
+-- FAMILY (2026-11-17): since update 15.22 Puffels teaches no one (TibiaWiki BR: spells are learned
+-- automatically, as our free_spells.lua does); his BR lines for spell/job/disturbing. Before, he
+-- offered knight spells ("I can teach you...").
+keywordHandler:addKeyword({ "spells" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Not really. Due to some new &#&$*# academy rules I'm not allowed to teach anyone now. Me! .. ah, whatever. Better than having to only teach knights, I tell you!" })
 keywordHandler:addAliasKeyword({ "spell" }) -- FAMILY: "spell" did not match "spells"
 keywordHandler:addKeyword({ "healing" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Healing spells: {Bruise Bane}, {Cure Bleeding}, {Cure Poison}, {Fair Wound Cleansing}, {Intense Recovery}, {Intense Wound Cleansing}, {Recovery}, {Wound Cleansing}." })
 keywordHandler:addKeyword({ "support" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Support spells: {Charge}, {Find Fiend}, {Find Person}, {Great Light}, {Haste}, {Levitate}, {Light}, {Magic Rope}, {Summon Knight Familiar}." })
@@ -160,7 +163,7 @@ nodeLevels:addChildKeyword({ "1" }, StdModule.say, { npcHandler = npcHandler, on
 
 keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I am Magister Puffels, any problem with that?" })
 -- FAMILY: "job" and "disturbing" were one keyword (both words needed); now each works
-keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "I have to teach the spells of least importance to some fools. Well, let's face it - to knights." })
+keywordHandler:addKeyword({ "job" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Well, I used to teach some fools. However these day are now finally over! Where was the cheese wheel again?" }) -- FAMILY: BR (15.22)
 keywordHandler:addAliasKeyword({ "disturbing" })
 keywordHandler:addKeyword({ "spells" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "Guess what, smartypants. I'm the wrong teacher for you. Go see Ursula or Zoltan if you want to broaden your horizon." })
 keywordHandler:addKeyword({ "ferumbras" }, StdModule.say, { npcHandler = npcHandler, onlyFocus = true, text = "The day will come even he makes a fatal casting mistake... I know what I am talking about." })

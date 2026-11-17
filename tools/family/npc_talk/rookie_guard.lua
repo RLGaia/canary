@@ -349,21 +349,9 @@ local function norm0(s)
 	return norm(s)
 end
 local KEPT = {
-	-- lines we keep different on purpose (start of the wiki line, normalized -> why)
-	[norm0("Carry one stone to each of the four catapults")] = "two of four are enough (BR text, EN spoiler); Norma's bar is north",
-	[norm0("Use the stone on the catapult to load the catapult.")] = "asks for two catapults",
-	[norm0("Greetings, Player. I've heard a loud rumbling")] = "asks for two catapults",
-	[norm0("Greetings, Jogador. I've heard a loud rumbling")] = "asks for two catapults",
-	[norm0("Well done! The villagers are much safer now that all catapults")] = "two catapults",
-	[norm0("Ah, that came with confidence.")] = "'a sword': the wooden sword is gone since Dawnport (EN history)",
-	[norm0("You can find rats in the sewers.")] = "'infestation' typo fixed",
-	[norm0("Take this star ring.")] = "the star ring runs for a limited time here (items.xml), so the longer upstream text",
-	[norm0("That's very courageous. I mark the spider lair")] = "'I'll mark' and a torch tip",
-	[norm0("Are you ready go go?")] = "wiki typo",
-	[norm0("Great job down there! You do deserve a reward")] = "names the platinum coin (100 gold, EN reward)",
-	[norm0("It's probably safer to get used to depositing")] = "'on your bank account'",
-	[norm0("This brass helmet will make sure")] = "'I probably should have'",
-	[norm0("However, I can give you something for protection")] = "'as it usually would do'",
+	-- lines we keep different on purpose (start of the wiki line, normalized -> why); since 2026-11-17
+	-- (follow the wikis) only placeholders and wiki typos of lines checked in the other wiki
+	[norm0("That's very courageous. I mark the spider lair on your map. If you leave the village to the north again like before, but walk north-west and cross the bridge, you will find it. ... Vascalir:")] = "BR joins two lines into one (both checked in EN)",
 	[norm0("Here, let me take that old coat of yours.")] = "BR only; EN has the shorter line we use",
 	[norm0("Would you really like to deposit x gold?")] = "BR placeholder (EN 100 gold is checked)",
 	[norm0("Alright, we have added the amount of x+50 gold")] = "BR placeholder (EN 150 gold is checked)",

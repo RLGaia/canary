@@ -133,7 +133,7 @@ end)
 keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
-		"Take this star ring. When you wear it in your ring slot, it will improve the effect of food that you have eaten for a limited time. So as long as you're not hungry, you will have increased hitpoint regeneration. ...",
+		"Take this star ring. When you wear it in your ring slot, it will improve the effect of food that you have eaten. So as long as you're not hungry, you will have increased hitpoint regeneration. ...",
 		"It makes sense to undress it when you have full hitpoints, so that the effect of the ring won't be wasted. ...",
 		"There are a lot of different rings in Tibia, but this one only works as long as you haven't learnt a vocation, so don't be afraid to use it. ...",
 		"Anyway, thanks so much for your help. I can brew a lot of potions from these herbs. If you're in the area and find yourself in need of potions, don't hesitate to drop by and ask me for a {trade}. ...",

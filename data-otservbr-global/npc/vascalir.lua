@@ -1,3 +1,5 @@
+-- FAMILY (2026-11-17): Vascalir's and Hyacinth's lines word for word as TibiaWiki BR/EN (Rodrigo: follow
+-- the wikis), also where Tibia's own text says "all four catapults" while two are enough (BR, EN).
 -- FAMILY: The Rookie Guard Quest can be started at any level (Rodrigo, 2026-11-06). Upstream refuses
 -- it above level 5, which our 50x experience reaches after a few rats. The level 8 warning (finish
 -- before level 9 or delete the quest) is skipped too: nothing stops the quest at level 9.
@@ -91,7 +93,7 @@ local function greetCallback(npc, creature)
 		npcHandler:setMessage(MESSAGE_GREET, "Greetings, |PLAYERNAME|. Your task is still not done - do you remember everything you need to do?")
 		-- Finishing mission 2
 	elseif player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission02) == 4 then
-		npcHandler:setMessage(MESSAGE_GREET, "Greetings, |PLAYERNAME|. I've heard a loud rumbling from the roof - I hope the stones didn't fall on your toes. Have you loaded at least two catapults?")
+		npcHandler:setMessage(MESSAGE_GREET, "Greetings, |PLAYERNAME|. I've heard a loud rumbling from the roof - I hope the stones didn't fall on your toes. Have you loaded all four catapults?")
 		-- Finished mission 2 but not started mission 3
 	elseif player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission02) == 5 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission03) == -1 then
 		npcHandler:setMessage(MESSAGE_GREET, "Greetings, |PLAYERNAME|. Actually I have some more equipment I could give to you, but first I want to see how you fight. You have fought before, haven't you?")
@@ -228,8 +230,8 @@ local mission2Accept = mission2:addChildKeyword(
 			"Great. We best start by reinforcing our defences. There are four large catapults positioned on roofs high over the village. If you want to fight, you have to build up some muscles. ...",
 			"Go into the barn just a few steps to the north-west of here and down the ladder into the cellar. You'll find a huge stone pile down there. Use it to pick up one of the big stones. ...",
 			"They are really heavy, so make sure you have lots of space in your inventory. ...",
-			"Carry one stone to at least two of the four catapults located on Norma's roof to the north, this academy and Obi's roof to the south. ...",
-			"Use the stone on the catapult to load it. You can load each catapult only once, so try spotting two different catapults. Have you understood all of that?",
+			"Carry one stone to each of the four catapults located on Norma's roof to the south, this academy and Obi's roof to the south. ...",
+			"Use the stone on the catapult to load the catapult. You can load each catapult only once, so try spotting all four different catapults. Have you understood all of that?",
 		},
 	},
 	nil,
@@ -254,8 +256,8 @@ mission2Accept:addChildKeyword({ "no" }, StdModule.say, {
 	text = {
 		"Let me explain again then. We best start by reinforcing our defences. There are four large catapults positioned on roofs high over the village. If you want to fight, you have to build up some muscles. ...",
 		"Go into the barn just a few steps to the north-west of here and down the ladder into the cellar. You'll find a huge stone pile down there. Use it to pick up one of the big stones. ...",
-		"Carry one stone to at least two of the four catapults located on Norma's roof to the north, this academy and Obi's roof to the south. ...",
-		"Use the stone on the catapult to load it. You can load each catapult only once, so try spotting two different catapults. Have you understood all of that?",
+		"Carry one stone to each of the four catapults located on Norma's roof to the south, this academy and Obi's roof to the south. ...",
+		"Use the stone on the catapult to load the catapult. You can load each catapult only once, so try spotting all four different catapults. Have you understood all of that?",
 	},
 	moveup = 1,
 })
@@ -282,8 +284,8 @@ keywordHandler:addKeyword({ "no" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
 		"Let me explain again then. Go into the barn just a few steps to the north-west of here and down the ladder into the cellar. You'll find a huge stone pile down there. Use it to pick up one of the big stones. ...",
-		"Carry one stone to at least two of the four catapults located on Norma's roof to the north, this academy and Obi's roof to the south. ...",
-		"Use the stone on the catapult to load it. You can load each catapult only once, so try spotting two different catapults. Good luck!",
+		"Carry one stone to each of the four catapults located on Norma's roof to the south, this academy and Obi's roof to the south. ...",
+		"Use the stone on the catapult to load the catapult. You can load each catapult only once, so try spotting all four different catapults. Good luck!",
 	},
 }, mission2Running)
 
@@ -291,7 +293,7 @@ keywordHandler:addKeyword({ "no" }, StdModule.say, {
 keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
-		"Well done! The villagers are much safer now that the catapults are ready to fire. You also look like you've built some muscles. ...",
+		"Well done! The villagers are much safer now that all catapults are ready to fire. You also look like you've built some muscles. ...",
 		"Great - so the piece of equipment I just gave you will not go to waste. Take this studded shield and put it to good use! ...",
 		"Actually I have some more equipment I could give to you, but first I want to see how you fight. You have fought before, haven't you?",
 	},
@@ -314,8 +316,8 @@ end)
 local mission3 = keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
-		"Ah, that came with confidence. Suited monsters to do some basic fighting would be rats - they actually fight back, but they don't hit that hard. Just make sure you wear your new studded shield and a sword. ...",
-		"You can find rats in the sewers. In case you might think so, this task is not a lame excuse to help us with some rat infestation, we got the rat population quite under control. ...",
+		"Ah, that came with confidence. Suited monsters to do some basic fighting would be rats - they actually fight back, but they don't hit that hard. Just make sure you wear your new studded shield and wooden sword. ...",
+		"You can find rats in the sewers. In case you might think so, this task is not a lame excuse to help us with some rat infestion, we got the rat population quite under control. ...",
 		"Also please don't come carrying their dead bodies - what adventurers somehow tend to do for some reason. Maybe they think they're cats? I'm going to believe you, promise. ...",
 		"So, back to the topic - please kill 5 rats and then come back to me. Shouldn't be too hard, should it? Just pay attention they don't trap you in a narrow passage and take on one at a time. ...",
 		"If you run low on health, go on full defence - click the little shield icon - and leave the dungeon. Nothing corwardish about running, because dying hurts. Are you ready to go?",
@@ -358,8 +360,8 @@ mission3:addChildKeyword(
 mission3:addChildKeyword({ "no" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
-		"I'll explain it again then. Suited monsters to do some basic fighting would be rats - they actually fight back, but they don't hit that hard. Just make sure you wear your new studded shield and a sword. ...",
-		"You can find rats in the sewers. In case you might think so, this task is not a lame excuse to help us with some rat infestation, we got the rat population quite under control. ...",
+		"I'll explain it again then. Suited monsters to do some basic fighting would be rats - they actually fight back, but they don't hit that hard. Just make sure you wear your new studded shield and wooden sword. ...",
+		"You can find rats in the sewers. In case you might think so, this task is not a lame excuse to help us with some rat infestion, we got the rat population quite under control. ...",
 		"So, back to the topic - please kill 5 rats and then come back to me. Shouldn't be too hard, should it? Just pay attention they don't trap you in a narrow passage and take on one at a time. ...",
 		"If you run low on health, go on full defence - click the little shield icon - and leave the dungeon. Nothing corwardish about running, because dying hurts. Are you ready to go?",
 	},
@@ -434,7 +436,7 @@ keywordHandler:addAliasKeyword({ "no" })
 keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
-		"That's very courageous. I'll mark the spider lair on your map. If you leave the village to the north again like before, but walk north-west and cross the bridge, you will find it. ...",
+		"That's very courageous. I mark the spider lair on your map. If you leave the village to the north again like before, but walk north-west and cross the bridge, you will find it. ...",
 		"Listen, I have some more important information regarding your task. It will likely be dark in the cave, so maybe you'll want to buy a torch or two from Al Dee's shop to the left of the barn. ...",
 		"The spider queen is far too strong for you to fight and if she catches you, you might end up in her stomach. The good news is that she is almost blind and relies on her sense of smelling to find her prey. ...",
 		"Deep in her lair you'll find some blue greasy stones. If you use them, you'll rub some of the smelly grease on your body. From that moment on you'll be invisible to her, but only for a short time. ...",
@@ -486,7 +488,7 @@ local mission7 = keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 		"You HAVE to go down there and look for our copy of the book of orc language - while I'm thinking of a reason why I can't go myself. ...",
 		"Just kidding, I need to find out just how the trolls got in there before they wreak more havoc. I think there's something bigger behind all this. ...",
 		"The vault is likely set on fire - be careful down there, and don't run into open fire, it can and will hurt you. There should be a rune in the vault that can at least weaken fire, just in case. ...",
-		"Are you ready to go?",
+		"Are you ready go go?",
 	},
 }, function(player)
 	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission06) == 7 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission07) == -1
@@ -539,7 +541,7 @@ keywordHandler:addAliasKeyword({ "no" })
 keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
-		"Great job down there! You do deserve a reward for your courage. Here is a platinum coin for you, worth 100 gold coins. Let me take a look at the book... ...",
+		"Great job down there! You do deserve a reward for your courage. Here is some gold for you. Let me take a look at the book... ...",
 		"Argh... the pages are barely readable anymore. I was trying to figure out a way to get into the orc fortress by maybe using their language... but that won't work now I fear. ...",
 		"We do have to stop the trolls though before taking care of the orcs. I found their tunnel in the northern ruins. Are you prepared for your next mission?",
 	},
@@ -557,7 +559,7 @@ end)
 keywordHandler:addKeyword({ "no" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = {
-		"Oh, but you have it! <snags it from you> Great job down there! You do deserve a reward for your courage. Here is a platinum coin for you, worth 100 gold coins. Let me take a look at the book... ...",
+		"Oh, but you have it! <snags it from you> Great job down there! You do deserve a reward for your courage. Here is some gold for you. Let me take a look at the book... ...",
 		"Argh... the pages are barely readable anymore. I was trying to figure out a way to get into the orc fortress by maybe using their language... but that won't work now I fear. ...",
 		"We do have to stop the trolls though before taking care of the orcs. I found their tunnel in the northern ruins. Are you prepared for your next mission?",
 	},
@@ -578,7 +580,7 @@ keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 		"First things first. I think by now you should have gathered some money, and it's better to play things safely instead of rushing into the trolls' lair. You might have seen the Bank of Rookgaard downstairs. ...",
 		"Each Tibian inhabitant has a bank account where you can store your money safely - so in case you die, you won't lose it. ...",
 		"You don't have to worry about item loss here on Rookgaard, but as soon as you grow stronger and learn a vocation, it can happen to you that you lose some of your items when dying. ...",
-		"It's probably safer to get used to depositing all of your money on your bank account before you leave for a hunt. ...",
+		"It's probably safer to get used to depositing all of your money on the bank before you leave for a hunt. ...",
 		"Go downstairs and talk to Paulie. I'm sure he can explain to you everything you need to know, and he might also give you a small bonus for your account.",
 	},
 }, function(player)
@@ -625,7 +627,7 @@ end)
 -- Mission 9: Finish - Accept Reward (Brass helmet)
 keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 	npcHandler = npcHandler,
-	text = "This brass helmet will make sure you don't hurt your head. I probably should have given that to you BEFORE you made a rocky tunnel collapse! Take your well-deserved break. Once you're ready for the next mission, talk to me again.",
+	text = "This brass helmet will make sure you don't hurt your head. Probably I should have given that to you BEFORE you made a rocky tunnel collapse! Take your well-deserved break. Once you're ready for the next mission, talk to me again.",
 	ungreet = true,
 }, function(player)
 	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission09) == 9
@@ -765,7 +767,7 @@ local mission11 = keywordHandler:addKeyword({ "yes" }, StdModule.say, {
 		"I'm happy to hear that! <whistles> We already have the paralyse trap and the fleshy bone, and now we need one final ingredient to weaken Kraknaknork so that you stand a chance against him. ...",
 		"Wasp poison! There are many toxic creatures - like snakes or poison spiders - but none is as deadly as the wasp. At least none on Rookgaard. If we could poison Kraknaknork with it, I think he won't be able to make use of his spells for quite a while. ...",
 		"The only problem is - to get it, you need to get close to a wasp, kill it and extract some poison from its dead body. Wasps are located on the north-western side of Rookgaard, which is quite dangerous. ...",
-		"However, I can give you something for protection - a silver amulet. As long as you wear it, poison can't harm you as much as it usually would do. I'll also give you the flask which you have to use on a fresh, dead wasp. Are you prepared for that mission?",
+		"However, I can give you something for protection - a silver amulet. As long as you wear it, poison can't harm you as much as it would usually do. I'll also give you the flask which you have to use on a fresh, dead wasp. Are you prepared for that mission?",
 	},
 }, function(player)
 	return player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission10) == 3 and player:getStorageValue(Storage.Quest.U9_1.TheRookieGuard.Mission11) == -1
