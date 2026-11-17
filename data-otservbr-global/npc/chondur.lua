@@ -272,6 +272,10 @@ local function handleOtherMessages(npcHandler, npc, creature, message, playerId)
 		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.DragahsSpellbook) == -1 then
 			npcHandler:say("You should not talk about things you don't know anything about.", npc, creature)
 			return true
+		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheCounterspell) <= 0 and player:getLevel() < FamilyShatteredIsles.counterspellLevel then
+			-- FAMILY (2026-11-17): level 35 (EN spoiler; BR silent). Line ours.
+			npcHandler:say("You are not strong enough yet, child. Behind that barrier you would perish. Come back when you are more experienced.", npc, creature)
+			return true
 		elseif player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheCounterspell) <= 0 then -- FAMILY: was == -1; a "no" left 0 and no answer ever again
 			npcHandler:say("You mean, you are interested in a counterspell to cross the energy barrier on Goroma?", npc, creature)
 			player:setStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheCounterspell, 0)

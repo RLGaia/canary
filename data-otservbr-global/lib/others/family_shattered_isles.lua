@@ -54,6 +54,39 @@ S.merianaTurtle = { x = 32340, y = 32537, z = 7 }
 S.lagunaLanding = { x = 32359, y = 32901, z = 7 }
 S.turtleRefused = { x = 32340, y = 32540, z = 7 }
 
+-- Teleportation Hub of the Forbidden Islands (2026-11-17, Rodrigo: "follow the wikis"). EN
+-- (Teleportation Hub, The Shattered Isles Quest/Spoiler): in each island's hub room the left portal
+-- goes to the previous island and the right one to the next; going through an island's left portal
+-- for the first time is what lets you use the right portal that leads to that island. Upstream they
+-- were plain map teleports, open to everyone. At startup the six portals get our action ids and
+-- lose their map destination, so this script decides. The locked message is ours (no wiki has one).
+-- key = the island the portal leads to or unlocks; unlocks = going through it unlocks that island.
+S.hub = {
+	{ aid = 48781, pos = { x = 32046, y = 32559, z = 8 }, to = { x = 31948, y = 32554, z = 8 }, needs = "ramoa" }, -- Goroma right -> Ramoa
+	{ aid = 48782, pos = { x = 31937, y = 32555, z = 8 }, to = { x = 32036, y = 32558, z = 8 }, unlocks = "ramoa" }, -- Ramoa left -> Goroma
+	{ aid = 48783, pos = { x = 31954, y = 32555, z = 8 }, to = { x = 31919, y = 32659, z = 8 }, needs = "talahu" }, -- Ramoa right -> Talahu
+	{ aid = 48784, pos = { x = 31912, y = 32656, z = 8 }, to = { x = 31948, y = 32554, z = 8 }, unlocks = "talahu" }, -- Talahu left -> Ramoa
+	{ aid = 48785, pos = { x = 31929, y = 32656, z = 8 }, to = { x = 32021, y = 32680, z = 8 }, needs = "malada" }, -- Talahu right -> Malada
+	{ aid = 48786, pos = { x = 32010, y = 32677, z = 8 }, to = { x = 31919, y = 32659, z = 8 }, unlocks = "malada" }, -- Malada left -> Talahu
+}
+S.hubLockedText = "The teleporter does not react. You have to reach this island the long way first."
+
+function S.hubUnlocked(player, island)
+	return player:kv():scoped(S.kvScope):get("hub-" .. island) == true
+end
+
+function S.unlockHub(player, island)
+	player:kv():scoped(S.kvScope):set("hub-" .. island, true)
+end
+
+-- Jack Fate's storm on the Liberty Bay - Thais route: EN "~8% chance to strand on Goroma" (upstream
+-- 1 in 8 = 12.5%), from level 20 (BR and EN). It still happens after Goroma access (both wikis).
+S.stormChance = 8
+S.stormLevel = 20
+
+-- Chondur's counterspell: level 35 (EN spoiler, "You must be level 35 or higher"; BR says nothing).
+S.counterspellLevel = 35
+
 -- Chondur takes the pirate voodoo dolls one at a time (both wikis), five in all.
 S.dollItem = 5810
 S.dollsNeeded = 5

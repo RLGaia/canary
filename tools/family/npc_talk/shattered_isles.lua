@@ -209,7 +209,10 @@ local u = player({ storage = { [SI.ADjinnInLove] = 5, [SI.ReputationInSabrehaven
 r = talk(u, "raymond_striker", { "hi", "mission" })
 T.check("upstream's 13 still gets mission 1 and shows Friendly", has(r[2], "Fafnar's Fire") and rep(u) == 14, r[2])
 -- Chondur: "no" to the counterspell question, then again
-local cs = player({ storage = { [SI.DragahsSpellbook] = 1 } })
+local low = player({ level = 34, storage = { [SI.DragahsSpellbook] = 1 } })
+ch = talk(low, "chondur", { "hi", "counterspell" })
+T.check("Chondur: no counterspell below level 35 (EN)", has(ch[2], "not strong enough") and (low.storage[SI.TheCounterspell] or -1) == -1, ch[2])
+local cs = player({ level = 35, storage = { [SI.DragahsSpellbook] = 1 } })
 ch = talk(cs, "chondur", { "hi", "counterspell", "no" })
 ch = talk(cs, "chondur", { "hi", "counterspell", "yes", "yes" })
 T.check("Chondur: counterspell after a 'no' (BR lines)", has(ch[2], "interested in a counterspell") and has(ch[4], "fresh dead black sheep, in that order") and cs.storage[SI.TheCounterspell] == 1, ch[2])
@@ -219,6 +222,18 @@ cs.items[4095] = 1
 ch = talk(cs, "chondur", { "hi", "counterspell", "yes", "counterspell", "yes", "counterspell", "yes" })
 T.check("Chondur: chicken, rat, black sheep (BR)", has(ch[3], "Your soul shall be protected") and has(ch[5], "You shall face black magic without fear") and has(ch[7], "EVIL POWERS SHALL NOT KEEP YOU ANYMORE"), ch[7])
 T.check("counterspell done", cs.storage[SI.TheCounterspell] == 4)
+
+-- Jack Fate (Liberty Bay): Goroma for 500 gold after access (BR and EN)
+local jf = T.load("data-otservbr-global/npc/jack_fate.lua")
+local j0 = player({ money = 1000 })
+local jr = jf:say(j0, "hi"); jr = jf:say(j0, "goroma")
+T.check("Jack Fate: Goroma unknown before access (upstream)", has(jr, "Never heard about a place like this"), jr)
+jf:say(j0, "bye")
+local j1 = player({ money = 1000, storage = { [SI.AccessToGoroma] = 1 } })
+jf:say(j1, "hi")
+jr = jf:say(j1, "goroma")
+T.check("Jack Fate: Goroma for 500 gold (BR/EN)", has(jr, "Goroma for 500 gold"), jr)
+jf:say(j1, "bye")
 
 -- Quest log -------------------------------------------------------------------------------------------
 local catalog = dofile("data-otservbr-global/lib/core/quests/catalog/025_the_shattered_isles.lua")

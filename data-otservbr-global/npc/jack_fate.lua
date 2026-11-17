@@ -78,7 +78,8 @@ addTravelKeyword("venore", 180, Position(32954, 32022, 6))
 addTravelKeyword("port hope", 50, Position(32527, 32784, 6))
 addTravelKeyword("darashia", 200, Position(33289, 32480, 6))
 addTravelKeyword("ankrahmun", 90, Position(33092, 32883, 6))
-addTravelKeyword("goroma", 0, Position(32161, 32558, 6), "Ugh. You really want to go back to Goroma? I'll surely have to repair my ship afterwards, so I won't charge. Okay?")
+-- FAMILY (2026-11-17): 500 gold as in both wikis (upstream: free, "I won't charge").
+addTravelKeyword("goroma", 500, Position(32161, 32558, 6))
 addTravelKeyword("yalahar", 275, Position(32816, 31272, 6), nil, function(player)
 	return player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.SearoutesAroundYalahar.LibertyBay) ~= 1 and player:getStorageValue(Storage.Quest.U8_4.InServiceOfYalahar.SearoutesAroundYalahar.TownsCounter) < 5
 end)
@@ -92,8 +93,9 @@ childTravelKeyword:addChildKeyword({ "yes" }, StdModule.travel, {
 	cost = 180,
 	discount = "postman",
 	destination = function(player)
-		-- FAMILY (2026-11-17): the storm to Goroma only from level 20 (BR and EN: minimum level 20).
-		return player:getLevel() >= 20 and math.random(8) == 1 and Position(32161, 32558, 6) or Position(32310, 32210, 6)
+		-- FAMILY (2026-11-17): the storm to Goroma only from level 20 (BR and EN) and ~8% (EN; upstream 1 in 8).
+		local S = FamilyShatteredIsles
+		return player:getLevel() >= S.stormLevel and math.random(100) <= S.stormChance and Position(32161, 32558, 6) or Position(32310, 32210, 6)
 	end,
 })
 childTravelKeyword:addChildKeyword({ "no" }, StdModule.say, { npcHandler = npcHandler, reset = true, text = "We would like to serve you some time." })
