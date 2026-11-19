@@ -936,7 +936,8 @@ function onUseCrowbar(player, item, fromPosition, target, toPosition, isHotkey)
 				toPosition:sendMagicEffect(CONST_ME_MAGIC_BLUE)
 			end
 		end
-	elseif target:getActionId() == 40041 and target.itemid == 4848 then
+	-- FAMILY: read actionid as a property; creatures (a crowbar or tool gear used on a player, monster or NPC) have no getActionId method, which raised a Lua error
+	elseif target.actionid == 40041 and target.itemid == 4848 then
 		-- The ape city - mission 7
 		local apeCityStorage = player:getStorageValue(Storage.Quest.U7_6.TheApeCity.Casks)
 		if apeCityStorage < 3 then
