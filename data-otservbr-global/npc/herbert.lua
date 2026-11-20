@@ -58,6 +58,32 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: TibiaWiki EN transcript (letter, gold, yes) (lib/others/family_thieves_guild.lua)
+	if Family and Family.thievesGuild then
+		local m6 = player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission06)
+		if MsgContains(message, "letter") and m6 == 1 then
+			npcHandler:say("Well it's a simple letter from Venore for Chantalle. But I can't give it to you. The trust in a postman is of more value than gold, you know?", npc, creature)
+			npcHandler:setTopic(playerId, 1)
+		elseif MsgContains(message, "gold") and npcHandler:getTopic(playerId) == 1 then
+			npcHandler:say("Uh, about how much gold are we talking here? About 1000?", npc, creature)
+			npcHandler:setTopic(playerId, 2)
+		elseif MsgContains(message, "yes") and npcHandler:getTopic(playerId) == 2 then
+			npcHandler:setTopic(playerId, 0)
+			if m6 ~= 1 then
+				return true
+			end
+			if player:removeMoneyBank(1000) then
+				player:addItem(7940, 1)
+				npcHandler:say("Well, in that case you may deliver that letter to Chantalle. Here it is and now let me count my glittering gold.", npc, creature)
+			else
+				npcHandler:say("You don't have enough money.", npc, creature) -- ours
+			end
+		elseif npcHandler:getTopic(playerId) == 2 then
+			npcHandler:setTopic(playerId, 0)
+		end
+		return true
+	end
+
 	if MsgContains(message, "letter") then
 		if player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission06) == 1 then
 			npcHandler:say("You would like Chantalle's letter? only if you are willing to pay a price. {gold} maybe?", npc, creature)
@@ -80,6 +106,10 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
+-- FAMILY: greeting from the TibiaWiki EN transcript (he would rather be an actor)
+if Family and Family.thievesGuild then
+	npcHandler:setMessage(MESSAGE_GREET, "At last! The audience arrives!")
+end
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

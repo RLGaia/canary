@@ -97,7 +97,8 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 1)
 		end
 	elseif MsgContains(message, "yes") then
-		if npcHandler:getTopic(playerId) == 1 then
+		-- FAMILY: also after "gold" (topic 2), as in the TibiaWiki EN transcript; upstream went nowhere
+		if npcHandler:getTopic(playerId) == 1 or npcHandler:getTopic(playerId) == 2 then
 			npcHandler:say("Well, rich and generous people are always welcome in the palace.If you donate 1000 gold to a fund I oversee, I'll give you an invitation, ok?", npc, creature)
 			npcHandler:setTopic(playerId, 3)
 		elseif npcHandler:getTopic(playerId) == 3 then

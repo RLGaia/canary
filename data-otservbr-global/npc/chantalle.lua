@@ -61,14 +61,22 @@ local function creatureSayCallback(npc, creature, type, message)
 	if MsgContains(message, "key") then
 		if player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission06) == 1 then
 			local headItem = player:getSlotItem(CONST_SLOT_HEAD)
-			if headItem and headItem.itemid == 3576 and player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Rank) == 5 and player:getSex() ~= PLAYERSEX_FEMALE then
+			-- FAMILY: archpostman or higher (Rank 5+)
+			if headItem and headItem.itemid == 3576 and player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Rank) >= 5 and player:getSex() ~= PLAYERSEX_FEMALE then
 				player:addItem(7934)
 				player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission06, 2)
 				npcHandler:say("Oh my! You look so great in your uniform! You archpostmen are not only daring but also handsome. Here take it, that's the key you wanted. Just promise to visit me now and then!", npc, creature)
 			elseif player:removeItem(7939, 1) then
 				player:addItem(7934)
 				player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission06, 2)
-				npcHandler:say("Oh my, such a lovely necklace! Here take it, that's the key you wanted. Now let me admire my precious necklace alone.", npc, creature)
+				-- FAMILY: TibiaWiki EN transcript lines (necklace and refusal)
+				if Family and Family.thievesGuild then
+					npcHandler:say("Oh what a beautiful piece of jewellery! How did you know how much I wanted that? However, you know what I want and I know you want the key to the living room. There's our deal.", npc, creature)
+				else
+					npcHandler:say("Oh my, such a lovely necklace! Here take it, that's the key you wanted. Now let me admire my precious necklace alone.", npc, creature)
+				end
+			elseif Family and Family.thievesGuild then
+				npcHandler:say("Are you insane?! I'd never misuse the trust placed upon me and hand you Master Loveless' key! I'm not as bribeable as Herbert, this bad example of a postman - despite his handsome uniform.", npc, creature)
 			else
 				npcHandler:say("I am sorry, I am not interested in your money. Maybe you should try your luck with Herbert, the postman instead.", npc, creature)
 			end
@@ -77,6 +85,10 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
+-- FAMILY: greeting from TibiaWiki BR and EN
+if Family and Family.thievesGuild then
+	npcHandler:setMessage(MESSAGE_GREET, "Hello.")
+end
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)

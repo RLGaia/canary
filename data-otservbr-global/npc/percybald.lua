@@ -67,7 +67,10 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.TheatreScript, 0)
 		end
 	elseif MsgContains(message, "test") then
-		if player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission04) == 5 then
+		-- FAMILY: a new kit when the first was used up before the deal with Nurik (ours; lib/others/family_thieves_guild.lua)
+		if Family and Family.thievesGuild and FamilyThieves and FamilyThieves.newKit(player) then
+			npcHandler:say(FamilyThieves.newKitLine, npc, creature)
+		elseif player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission04) == 5 then
 			npcHandler:say("I hope you learnt your role! I'll tell you a line from the script and you'll have to answer with the corresponding line! Ready?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		end
@@ -94,6 +97,10 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("Ah well, I think you passed the test! Here is your disguise kit! Now get lost, fate awaits me!", npc, creature)
 			player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission04, 6)
 			player:addItem(7865, 1)
+			-- FAMILY: Amateur Actor for passing the test (TibiaWiki BR; EN: Mission 4)
+			if Family and Family.thievesGuild and FamilyThieves then
+				FamilyThieves.addAchievement(player, "Amateur Actor")
+			end
 			npcHandler:setTopic(playerId, 0)
 		end
 	elseif npcHandler:getTopic(playerId) == 2 then

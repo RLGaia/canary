@@ -49,7 +49,7 @@ local quest = {
 				[2] = "Snake Eye told you to visit Ahmet in Ankrahmun.",
 				[3] = "Ahmet told you that he will only help a friend and asked you to kill at least one Nomad.",
 				[4] = "You have killed a Nomad, go back to Ahmet!",
-				[5] = "You have received the forged documents from Ahmet, next is to get a disguise from Percybald in Venore!",
+				[5] = "You have received the forged documents from Ahmet, next is to get a disguise from Percybald in Carlin!", -- FAMILY: Percybald is in Carlin (upstream: Venore)
 				[6] = "You have received the dwarf disguise from Percybald. Now go do the deal with Nurik.",
 				[7] = "You have traded the forged documents for the painting, report back to Dorian.",
 				[8] = "You have delivered the painting to Dorian, ask him for a new mission!",
@@ -62,7 +62,7 @@ local quest = {
 			startValue = 1,
 			endValue = 2,
 			states = {
-				[1] = "Your mission is to travel to Tiquanda. Fina a hidden smuggler cave to the north of Port Hope \z
+				[1] = "Your mission is to travel to Tiquanda. Find a hidden smuggler cave to the north of Port Hope \z
 				and try to retrieve the valuable goblet which Dorian is looking for. Once you got it, bring it to him.",
 				[2] = "You have delivered the golden goblet to Dorian, ask him for a new mission!",
 			},

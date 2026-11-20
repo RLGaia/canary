@@ -24,3 +24,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_white_raven.lua") -- FAMILY: Isle o
 dofile(DATA_DIRECTORY .. "/lib/others/family_shattered_isles.lua") -- FAMILY: The Shattered Isles Quest (Meriana) fixes: Nargor plans and nests, Marina's turtle, Sebastian, mushroom portal, NPC dead ends
 dofile(DATA_DIRECTORY .. "/lib/others/family_meriana_rebels.lua") -- FAMILY: Meriana Rebels and Pirate Outfits (sealed hideout door, Swashbuckler)
 dofile(DATA_DIRECTORY .. "/lib/others/family_cults_of_tibia.lua") -- FAMILY: Cults of Tibia Quest review (Gerimor, cults, Denominator, rubbish amulet, ice death)
+dofile(DATA_DIRECTORY .. "/lib/others/family_thieves_guild.lua") -- FAMILY: The Thieves Guild Quest review (Theodore's door, items, dialogues, Dark Cathedral levers, Black Bert)

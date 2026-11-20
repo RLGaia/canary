@@ -161,7 +161,8 @@ local function creatureSayCallback(npc, creature, type, message)
 				npcHandler:setTopic(playerId, 0)
 			end
 		elseif npcHandler:getTopic(playerId) == 3 then
-			if player:removeItem(227, 1) then
+			-- FAMILY: the valuable vase (7932); also the fine vase upstream gave (lib/others/family_thieves_guild.lua)
+			if (FamilyThieves and Family.thievesGuild and FamilyThieves.takeVase(player)) or (not (FamilyThieves and Family.thievesGuild) and player:removeItem(227, 1)) then
 				player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission02, 3)
 				player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Questline, 3)
 				npcHandler:say("What an ugly vase. But who am I to question the taste of our customers? Anyway, I might have another mission in store for you.", npc, creature)
@@ -185,7 +186,8 @@ local function creatureSayCallback(npc, creature, type, message)
 				npcHandler:setTopic(playerId, 0)
 			end
 		elseif npcHandler:getTopic(playerId) == 6 then
-			if player:removeItem(7369, 1) then
+			-- FAMILY: the stolen golden goblet (7870); also the golden goblet upstream gave
+			if (FamilyThieves and Family.thievesGuild and FamilyThieves.takeGoblet(player)) or (not (FamilyThieves and Family.thievesGuild) and player:removeItem(7369, 1)) then
 				player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission05, 2)
 				player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Questline, 6)
 				npcHandler:say("That goblet is hardly worth all this trouble but we had to insist on our payment. However, I assume you are eager for more missions, so just ask.", npc, creature)
@@ -212,6 +214,10 @@ local function creatureSayCallback(npc, creature, type, message)
 			player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission08, 3)
 			player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Questline, 9)
 			player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Door, 1)
+			-- FAMILY: Master Thief for finishing the quest (TibiaWiki BR and EN)
+			if FamilyThieves and Family.thievesGuild then
+				FamilyThieves.addAchievement(player, "Master Thief")
+			end
 			npcHandler:say({
 				"Once again you've finished your job, and I'll keep my promise. From now on, you can trade with old Black Bert somewhere upstairs to get access to certain items that mightbe of value to someone like you. ...",
 				"If you like, you can also enter the room to the left and pick one item of your choice.",

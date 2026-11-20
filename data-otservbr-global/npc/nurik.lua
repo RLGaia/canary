@@ -70,6 +70,14 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: the NPC library keeps a refused greeting as a conversation, so without the disguise (or
+	-- before the documents) the deal went through anyway; he talks only to the dwarven ambassador
+	if Family and Family.thievesGuild and (player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission04) ~= 6 or player:getOutfit().lookType ~= 66) then
+		npcHandler:say("Excuse me, but I'm waiting for someone important!", npc, creature)
+		npcHandler:removeInteraction(npc, creature)
+		return false
+	end
+
 	if MsgContains(message, "dwarven bridge") then
 		npcHandler:say("Wait a minute! Do I get that right? You're the owner of the dwarven bridge and you are willing to sell it to me??", npc, creature)
 		npcHandler:setTopic(playerId, 1)

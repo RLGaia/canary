@@ -59,9 +59,14 @@ local function creatureSayCallback(npc, creature, type, message)
 	end
 
 	if MsgContains(message, "key") then
-		if player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission06) == 1 and player:getSex() == PLAYERSEX_FEMALE then
-			local headItem = player:getSlotItem(CONST_SLOT_HEAD)
-			if headItem and headItem.itemid == 3576 and player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Rank) == 5 then
+		-- FAMILY: archpostwoman or higher (Rank 5+); otherwise his refusal from TibiaWiki BR
+		local familyRefuse = Family and Family.thievesGuild and player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission06) == 1
+		local headItem = player:getSlotItem(CONST_SLOT_HEAD)
+		local uniform = headItem and headItem.itemid == 3576 and player:getStorageValue(Storage.Quest.U7_24.ThePostmanMissions.Rank) >= 5
+		if familyRefuse and not (uniform and player:getSex() == PLAYERSEX_FEMALE) then
+			npcHandler:say("Are you insane?! I'd never misuse the trust place upon me and hand you Master Loveless's key! I'm not as bribable as Herbert, he is such a bad example of a postman!", npc, creature)
+		elseif player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission06) == 1 and player:getSex() == PLAYERSEX_FEMALE then
+			if uniform then
 				player:addItem(7934, 1)
 				player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission06, 2)
 				npcHandler:say(
@@ -77,6 +82,10 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
+-- FAMILY: greeting from TibiaWiki BR
+if Family and Family.thievesGuild then
+	npcHandler:setMessage(MESSAGE_GREET, "Hello. Please don't interrupt me for too long!")
+end
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)

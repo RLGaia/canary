@@ -495,7 +495,10 @@ QuestDoorAction = {
 		},
 	},
 	-- The thieves guild door
-	[Storage.Quest.U8_2.TheThievesGuildQuest.Mission04] = {
+	-- FAMILY: Theodore Loveless' door (Liberty Bay) needs action id 51394 for the key, lock pick and
+	-- door scripts; upstream gave it the Mission 4 storage, so the key said "You cannot use this
+	-- object." (lib/others/family_thieves_guild.lua)
+	[51394] = {
 		itemId = false,
 		itemPos = { { x = 32359, y = 32787, z = 6 } },
 	},

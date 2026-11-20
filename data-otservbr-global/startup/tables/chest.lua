@@ -2361,8 +2361,9 @@ ChestUnique = {
 	[6273] = {
 		itemId = 2469,
 		itemPos = { x = 32551, y = 32652, z = 10 },
-		reward = { { 7369, 1 } },
-		weight = 5.00,
+		-- FAMILY: the stolen golden goblet (7870, TibiaWiki EN), not a golden goblet (7369)
+		reward = { { 7870, 1 } },
+		weight = 15.00,
 		storage = Storage.Quest.U8_2.TheThievesGuildQuest.GoldenGoblet,
 	},
 	[6274] = {

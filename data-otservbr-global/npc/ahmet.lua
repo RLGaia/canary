@@ -111,7 +111,8 @@ local function creatureSayCallback(npc, creature, type, message)
 				"You need some forged documents? But I will only forge something for a friend. ...",
 				"The nomads at the northern oasis killed someone dear to me. Go and kill at least one of them, then we talk about your document.",
 			}, npc, creature)
-		elseif player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.RewardOasis) == 1 then
+		-- FAMILY: after killing a nomad (Mission 4 state 4, both wikis); upstream waited for his stolen bag
+		elseif (Family and Family.thievesGuild and player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.Mission04) == 4) or (not (Family and Family.thievesGuild) and player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.RewardOasis) == 1) then
 			npcHandler:say("The slayer of my enemies is my friend! For a mere 1000 gold I will create the documents you need. Are you interested?", npc, creature)
 			npcHandler:setTopic(playerId, 1)
 		end
@@ -145,6 +146,10 @@ local function creatureSayCallback(npc, creature, type, message)
 				" I saw them running out of town and then to the north. Maybe they hide at the oasis.",
 			}, npc, creature)
 			npcHandler:setTopic(playerId, 0)
+			-- FAMILY: 100 experience for taking the job (TibiaWiki BR); only once
+			if Family and Family.thievesGuild and player:getStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.StealFromThieves) < 1 then
+				player:addExperience(100, true)
+			end
 			player:setStorageValue(Storage.Quest.U8_2.TheThievesGuildQuest.StealFromThieves, 1)
 		elseif npcHandler:getTopic(playerId) == 3 then
 			if player:removeItem(235, 1) then

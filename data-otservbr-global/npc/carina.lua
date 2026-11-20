@@ -60,7 +60,12 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	if MsgContains(message, "precious necklace") then
 		if player:getItemCount(7940) > 0 then
-			npcHandler:say("Would you like to buy my precious necklace for 5000 gold?", npc, creature)
+			-- FAMILY: TibiaWiki EN transcript lines
+			if Family and Family.thievesGuild then
+				npcHandler:say("Oh, so you want to buy that rare and precious necklace for 5000 gold?", npc, creature)
+			else
+				npcHandler:say("Would you like to buy my precious necklace for 5000 gold?", npc, creature)
+			end
 			npcHandler:setTopic(playerId, 1)
 		end
 	elseif MsgContains(message, "mouse") then
@@ -71,7 +76,14 @@ local function creatureSayCallback(npc, creature, type, message)
 			if player:removeMoneyBank(5000) then
 				player:removeItem(7940, 1)
 				player:addItem(7939, 1)
-				npcHandler:say("Here you go kind sir.", npc, creature)
+				if Family and Family.thievesGuild then
+					npcHandler:say("Here it is. A friend of mine will be quite sad about that sale but business is business.", npc, creature)
+				else
+					npcHandler:say("Here you go kind sir.", npc, creature)
+				end
+				npcHandler:setTopic(playerId, 0)
+			elseif Family and Family.thievesGuild then
+				npcHandler:say("You don't have enough money.", npc, creature) -- ours
 				npcHandler:setTopic(playerId, 0)
 			end
 		elseif npcHandler:getTopic(playerId) == 2 then
@@ -94,7 +106,8 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Welcome, |PLAYERNAME|. I am looking forward to trade with you.")
+-- FAMILY: greeting as in the TibiaWiki EN transcript ("I'm")
+npcHandler:setMessage(MESSAGE_GREET, "Welcome, |PLAYERNAME|. I'm looking forward to trade with you.")
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
@@ -102,7 +115,7 @@ npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 npcConfig.shop = {
 	{ itemName = "golden amulet", clientId = 3013, buy = 6600 },
-	{ itemName = "precious necklace", clientId = 7939, buy = 5000 },
+	-- FAMILY: no precious necklace in her trade window (TibiaWiki BR list); she sells it in the quest dialogue
 	{ itemName = "ruby necklace", clientId = 3016, buy = 3560 },
 	{ itemName = "wedding ring", clientId = 3004, buy = 990, sell = 100 },
 }

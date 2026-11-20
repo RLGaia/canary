@@ -158,3 +158,10 @@ behaviour and Rodrigo asked to follow the wikis: Venore Daily Tasks (20 hours pe
 old reported tasks free), Pilgrimage of Ashes (gold only when started below level 25, the BR offer line from
 level 25) and Dalbrect's `family`. `ice_islands.lua` now also checks Buddel (Tyrsung after Siflind, name game),
 Lurik (join, rank) and Dankwart, and replays their EN transcripts with the transcripts folder.
+
+`thieves_guild.lua` is The Thieves Guild Quest check (2026-11-20, 63 checks): one character plays
+the NPC side of all eight missions with Dorian, Oswald, Snake Eye, Ahmet, Percybald, Nurik,
+Chantalle, Herbert, Carina and Bertram (TibiaWiki EN transcripts and BR lines), the uniform ways
+to the key, Nurik without the disguise, the replacement disguise kit, the old vase and goblet,
+the two achievements and Black Bert's trade before and after the quest:
+`luajit tools/family/npc_talk/thieves_guild.lua`.

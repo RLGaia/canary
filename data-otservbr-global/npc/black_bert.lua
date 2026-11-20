@@ -196,6 +196,17 @@ end
 npcHandler:setMessage(MESSAGE_GREET, "Hi there, |PLAYERNAME|! You look like you are eager to {trade}!")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Bye, |PLAYERNAME|")
 
+-- FAMILY: Black Bert trades only with those who finished The Thieves Guild Quest (TibiaWiki BR and EN);
+-- upstream traded with anyone (lib/others/family_thieves_guild.lua)
+npcHandler:setCallback(CALLBACK_ON_TRADE_REQUEST, function(npc, creature)
+	local player = Player(creature)
+	if player and Family and Family.thievesGuild and FamilyThieves and not FamilyThieves.finished(player) then
+		npcHandler:say(FamilyThieves.blackBertRefusal, npc, creature)
+		return false
+	end
+	return true
+end)
+
 -- Dialogue keywords the NPC answers on the official server
 keywordHandler:addKeyword({ "first dragon" }, StdModule.say, { npcHandler = npcHandler, text = "It's told that some hero killed him and absorbed his power." })
 keywordHandler:addKeyword({ "eclesius" }, StdModule.say, { npcHandler = npcHandler, text = "I know no Eclesius." })
