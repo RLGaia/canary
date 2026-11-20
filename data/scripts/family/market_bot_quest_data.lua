@@ -12,6 +12,8 @@ return {
 	[140] = true, -- parcel
 	[141] = true, -- cigar
 	[142] = true, -- bale of white cloth
+	[170] = true, -- fake dwarven beard
+	[172] = true, -- blank poetry parchment
 	[236] = true, -- strong health potion
 	[237] = true, -- strong mana potion
 	[238] = true, -- great mana potion
@@ -39,6 +41,7 @@ return {
 	[875] = true, -- mining helmet
 	[894] = true, -- jester hat
 	[895] = true, -- jester staff
+	[896] = true, -- Firlefanz
 	[942] = true, -- flawless ice crystal
 	[946] = true, -- eternal flames
 	[947] = true, -- mother soil
