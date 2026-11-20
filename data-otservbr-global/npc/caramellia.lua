@@ -50,6 +50,10 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: Kissing a Pig Quest lines first (lib/others/family_kissing_pig.lua)
+	if FamilyKissing and FamilyKissing.onSay("caramellia", npcHandler, npc, creature, message, type) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 
@@ -97,7 +101,8 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Hello, |PLAYERNAME|. Please leave me alone in my {mourning}.")
+-- FAMILY: greeting as on TibiaWiki BR and EN (Kissing a Pig Quest)
+npcHandler:setMessage(MESSAGE_GREET, (Family and Family.kissingPig) and "Hello." or "Hello, |PLAYERNAME|. Please leave me alone in my {mourning}.")
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

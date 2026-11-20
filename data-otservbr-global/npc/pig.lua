@@ -38,6 +38,10 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: Kissing a Pig Quest lines first (lib/others/family_kissing_pig.lua)
+	if FamilyKissing and FamilyKissing.onSay("pig", npcHandler, npc, creature, message, type) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 

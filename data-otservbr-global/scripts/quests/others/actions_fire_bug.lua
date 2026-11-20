@@ -32,6 +32,10 @@ function othersFireBug.onUse(player, item, fromPosition, target, toPosition, isH
 	if FamilyBloodBrothers and FamilyBloodBrothers.onFireBug and FamilyBloodBrothers.onFireBug(player, item, target, toPosition) then
 		return true
 	end
+	-- FAMILY: Kissing a Pig: the dwarven ghost's coal basin always lights, for 2 minutes (lib/others/family_kissing_pig.lua)
+	if FamilyKissing and FamilyKissing.onFireBug(player, target, toPosition) then
+		return true
+	end
 	if target.actionid == 54387 and target.itemid == 22875 then
 		if player:getStorageValue(Storage.Quest.U10_90.FerumbrasAscension.BasinCounter) >= 8 or player:getStorageValue(Storage.Quest.U10_90.FerumbrasAscension.BoneFlute) < 1 then
 			return false

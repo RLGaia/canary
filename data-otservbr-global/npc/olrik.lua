@@ -43,6 +43,10 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: Kissing a Pig Quest lines first (lib/others/family_kissing_pig.lua)
+	if FamilyKissing and FamilyKissing.onSay("olrik", npcHandler, npc, creature, message, type) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 
@@ -95,6 +99,7 @@ npcHandler:setMessage(MESSAGE_SENDTRADE, "Here. Don't forget that you need to bu
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 npcConfig.shop = {
+	{ itemName = "blank poetry parchment", clientId = 172, buy = 60 }, -- FAMILY: Kissing a Pig Quest (TibiaWiki BR/EN: Olrik, 60 gold)
 	{ itemName = "label", clientId = 3507, buy = 1 },
 	{ itemName = "letter", clientId = 3505, buy = 8 },
 	{ itemName = "parcel", clientId = 3503, buy = 15 },

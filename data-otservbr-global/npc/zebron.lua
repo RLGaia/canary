@@ -49,6 +49,10 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: Kissing a Pig Quest lines first (lib/others/family_kissing_pig.lua)
+	if FamilyKissing and FamilyKissing.onSay("zebron", npcHandler, npc, creature, message, type) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 
@@ -133,7 +137,8 @@ end
 
 npcHandler:setMessage(MESSAGE_GREET, "Greetings, high roller. So you care for a game, |PLAYERNAME|?")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Hey, you can't leave. Luck is smiling on you. I can feel it!")
-npcHandler:setMessage(MESSAGE_FAREWELL, "Hey, you can't leave, |PLAYERNAME|. Luck is smiling on you. I can feel it!")
+-- FAMILY: farewell as on TibiaWiki BR and EN (no name)
+npcHandler:setMessage(MESSAGE_FAREWELL, "Hey, you can't leave. Luck is smiling on you. I can feel it!")
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)

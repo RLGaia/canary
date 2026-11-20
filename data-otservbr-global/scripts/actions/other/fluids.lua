@@ -120,6 +120,10 @@ function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		elseif target.uid == player.uid then
 			if table.contains({ 2, 3, 13, 16 }, item.type) then
 				player:addCondition(drunk)
+				-- FAMILY: Kissing a Pig: Toothless Tim understands you after three drinks (lib/others/family_kissing_pig.lua)
+				if FamilyKissing then
+					FamilyKissing.onDrink(player)
+				end
 			elseif item.type == 6 then
 				local town = player:getTown()
 				if town and town:getId() == TOWNS_LIST.DAWNPORT then

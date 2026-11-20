@@ -59,6 +59,7 @@ local questModules = {
 	"058_a_pirates_tail", -- FAMILY: A Pirate's Tail Quest (Eustacio and the Pirat raids)
 	"059_the_scatterbrained_sorcerer", -- FAMILY: The Scatterbrained Sorcerer Quest (Eclesius)
 	"060_war_against_the_hive", -- FAMILY: War Against the Hive Quest (Orockle)
+	"061_kissing_a_pig", -- FAMILY: Kissing a Pig Quest (the pig on the Thais farm)
 }
 
 local catalog = dofile(CORE_DIRECTORY .. "/lib/core/quests/catalog.lua")

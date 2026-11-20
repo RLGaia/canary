@@ -23,7 +23,7 @@
 --     Dorian gives the Master Thief achievement at the end (both wikis).
 --   * Black Bert trades only with characters who finished the quest (both wikis).
 --   * Quest log: Percybald is in Carlin (upstream said Venore).
--- Not done: the Kissing a Pig way to the key (BR fourth method); that quest is not on our server.
+-- The Kissing a Pig way to the key (BR fourth method) is in lib/others/family_kissing_pig.lua (2026-11-20).
 --
 -- Files: this lib; scripts/family/thieves_guild.lua (startup: teleport); FAMILY edits in
 -- startup/tables/door_quest.lua and chest.lua, scripts/actions/tools/lock_pick.lua,

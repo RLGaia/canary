@@ -42,12 +42,21 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: Kissing a Pig Quest lines first (lib/others/family_kissing_pig.lua)
+	if FamilyKissing and FamilyKissing.onSay("ghost", npcHandler, npc, creature, message, type) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 
 npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
+
+-- FAMILY: Kissing a Pig Quest greeting and farewell (TibiaWiki BR and EN); his lines are in lib/others/family_kissing_pig.lua
+npcHandler:setMessage(MESSAGE_GREET, "Do not disturb the dead for nothing, mortal.")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Death will find you, too.")
+npcHandler:setMessage(MESSAGE_WALKAWAY, "Death will find you, too.")
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

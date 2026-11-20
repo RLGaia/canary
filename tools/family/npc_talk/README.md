@@ -165,3 +165,9 @@ Chantalle, Herbert, Carina and Bertram (TibiaWiki EN transcripts and BR lines), 
 to the key, Nurik without the disguise, the replacement disguise kit, the old vase and goblet,
 the two achievements and Black Bert's trade before and after the quest:
 `luajit tools/family/npc_talk/thieves_guild.lua`.
+
+`kissing_pig.lua` is the Kissing a Pig Quest check (2026-11-20, 65 checks): one character learns the
+seven lessons (Hoggle and Caramellia, Elvith with Olrik's parchment, Lynda, Zebron's dice, Budrik and
+the dwarven ghost, Toothless Tim sober and drunk, the Queen's kiss), kisses the pig after each one
+(BR/EN lines), finishes the quest, and gets Theodore Loveless' key for a kiss from Bertram and
+Chantalle: `luajit tools/family/npc_talk/kissing_pig.lua`.

@@ -857,6 +857,11 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUseMachete(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: Kissing a Pig: the Femor Hills tower grass needs Hoggle's lawn mowing, his garden square
+	-- teaches it, and 100 cuts give Nothing Can Stop Me (lib/others/family_kissing_pig.lua)
+	if FamilyKissing and FamilyKissing.onMachete(player, target, toPosition) then
+		return true
+	end
 	if table.contains(jungleGrass, target.itemid) then
 		target:transform(target.itemid == 17153 and 17151 or target.itemid - 1)
 		target:decay()

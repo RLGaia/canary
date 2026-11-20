@@ -864,7 +864,20 @@ Storage = {
 			},
 		},
 		U8_1 = { -- update 8.1 - Reserved Storages 41351 - 41650
-			KissingAPig = {},
+			-- FAMILY: Kissing a Pig Quest (lib/others/family_kissing_pig.lua; upstream empty). Keys from the free U8_5 block 42232-42550
+			KissingAPig = {
+				Questline = 42232, -- 1 first kiss to the pig, 2 finished
+				Hoggle = 42233, -- 1 garden job taken (gate opens), 2 lawn mowing learnt, 3 paid
+				Caramellia = 42234, -- 1 reminded of "true love never dies"
+				Elvith = 42235, -- 1 asked for a poem, 2 poem given
+				Lynda = 42236, -- 1 ice cream given
+				Zebron = 42237, -- 1 three dice games won in a row
+				Grothmok = 42238, -- 1 Budrik's permission (sealed door)
+				DwarvenGhost = 42239, -- 1 favour asked, 2 beard burnt, 3 secrets told
+				ToothlessTim = 42240, -- 1 kissed
+				FirlefanzDoor = 42241, -- 1 the farm basement door opens
+				FirlefanzChest = 42242, -- 1 Firlefanz taken
+			},
 			KosheiTheDeathless = {
 				RewardDoor = 41351,
 				KosheiTheDeathlessLegs = 41352,
