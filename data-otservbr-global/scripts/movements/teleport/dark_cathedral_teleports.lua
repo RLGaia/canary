@@ -20,8 +20,10 @@ function lever.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		player:say("It doesn't move.", TALKTYPE_MONSTER_SAY)
 		return true
 	end
-	-- FAMILY: the levers go back after about 1 minute (TibiaWiki EN, Thieves Guild Mission 8; upstream 10)
-	addEvent(revertLever, ((Family and Family.thievesGuild) and 60 or 10 * 60) * 1000, toPosition)
+	-- FAMILY: the levers go back after FamilyThieves.cathedralLeverSeconds (Rodrigo, 2026-11-20: 5 minutes;
+	-- TibiaWiki EN: about 1 minute; upstream 10 minutes)
+	local seconds = (Family and Family.thievesGuild and FamilyThieves and FamilyThieves.cathedralLeverSeconds) or 10 * 60
+	addEvent(revertLever, seconds * 1000, toPosition)
 	return item:transform(2773)
 end
 

@@ -19,7 +19,8 @@
 --     EN: "completing Mission 4"), and a new dwarf disguise kit if yours was used up before the
 --     deal with Nurik (ours: the kit lasts 5 minutes and nothing else gave a new one).
 --   * Mission 8: the Dark Cathedral teleport ignored the six levers (its map destination moved
---     players before the script); levers now go back after about 1 minute (EN; upstream 10).
+--     players before the script); levers go back after 5 minutes (Rodrigo's choice, 2026-11-20;
+--     EN: about 1 minute; upstream 10).
 --     Dorian gives the Master Thief achievement at the end (both wikis).
 --   * Black Bert trades only with characters who finished the quest (both wikis).
 --   * Quest log: Percybald is in Carlin (upstream said Venore).
@@ -46,6 +47,8 @@ FT.INSIDE_POS = Position(32359, 32788, 6)
 FT.OUTSIDE_POS = Position(32359, 32786, 6)
 FT.KEY = 7934
 FT.LOCK_PICK = 7889
+-- Dark Cathedral levers (Mission 8): seconds until each goes back (Rodrigo, 2026-11-20; EN: about 60)
+FT.cathedralLeverSeconds = 5 * 60
 -- percent per lock pick on Theodore's door (ours: TibiaWiki BR advises about 50 lock picks)
 FT.lockPickDoorChance = 2
 
