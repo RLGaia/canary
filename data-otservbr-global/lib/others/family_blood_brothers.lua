@@ -185,9 +185,9 @@ function B.deliveredPages(player)
 	return n
 end
 
--- Castlemania (TibiaWiki EN): the quest, all eight spots, the six pages, the blood goblet and the
--- Vampire Hunter Quest (rank 6). The blood skull is also listed there, but nothing on our server
--- records it, so it is left out (ours).
+-- Castlemania (TibiaWiki EN and BR): the quest, all eight spots, the six pages, the blood goblet,
+-- the Vampire Hunter Quest (rank 6) and the blood skull from the Vengoth chest (storage BloodSkull;
+-- required since 2026-11-20 with Family.vampireHunter, see lib/others/family_vampire_hunter.lua).
 function B.checkCastlemania(player)
 	if player:hasAchievement("Castlemania") then
 		return false
@@ -199,6 +199,9 @@ function B.checkCastlemania(player)
 		return false
 	end
 	if player:getStorageValue(Storage.Quest.U8_2.VampireHunterQuest.Rank) < 6 then
+		return false
+	end
+	if Family.vampireHunter and player:getStorageValue(Storage.Quest.U8_2.VampireHunterQuest.BloodSkull) < 1 then
 		return false
 	end
 	player:addAchievement("Castlemania")

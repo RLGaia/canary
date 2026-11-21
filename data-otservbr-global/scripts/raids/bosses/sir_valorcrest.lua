@@ -16,6 +16,8 @@ raid
 			name = "Sir Valorcrest",
 			amount = 1,
 			position = Position(33264, 31768, 10),
+			-- FAMILY: comes with 0-4 vampires (TibiaWiki EN; BR: many more vampires than usual), lib/others/family_vampire_hunter.lua
+			spawn = FamilyVampire and FamilyVampire.companions("Vampire", 0, 4),
 		},
 	})
 	:autoAdvance("24h")

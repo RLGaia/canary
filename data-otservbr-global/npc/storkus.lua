@@ -57,6 +57,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Vampire Hunter Quest (ranks, refusals, Razing!, job) in lib/others/family_vampire_hunter.lua
+	if FamilyVampire and FamilyVampire.storkus(npcHandler, npc, player, message) then
+		return true
+	end
+
 	if MsgContains(message, "mission") then
 		if player:getStorageValue(Storage.Quest.U8_2.TheInquisitionQuest.Questline) == 6 then
 			if player:getStorageValue(Storage.Quest.U8_2.TheInquisitionQuest.StorkusVampiredust) < 0 then
@@ -195,7 +200,13 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Greetings, |PLAYERNAME|! Good you're showing up.")
+-- FAMILY: greeting and farewell as on both wikis (the upstream greeting added "Good you're showing up.")
+if Family and Family.vampireHunter then
+	npcHandler:setMessage(MESSAGE_GREET, FamilyVampire.greeting)
+	npcHandler:setMessage(MESSAGE_FAREWELL, FamilyVampire.farewell)
+else
+	npcHandler:setMessage(MESSAGE_GREET, "Greetings, |PLAYERNAME|! Good you're showing up.")
+end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)

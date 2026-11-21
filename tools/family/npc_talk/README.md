@@ -171,3 +171,8 @@ seven lessons (Hoggle and Caramellia, Elvith with Olrik's parchment, Lynda, Zebr
 the dwarven ghost, Toothless Tim sober and drunk, the Queen's kiss), kisses the pig after each one
 (BR/EN lines), finishes the quest, and gets Theodore Loveless' key for a kiss from Bertram and
 Chantalle: `luajit tools/family/npc_talk/kissing_pig.lua`.
+
+`vampire_hunter.lua` is the Vampire Hunter Quest check (2026-11-20, 32 checks): Storkus' greeting, farewell and
+`job`, no token talk before The Inquisition Mission 3 is reported, the six ranks with one token too few
+(refusal) and enough (EN transcript lines, experience, doll, Vengoth door, Razing!, Castlemania check), the
+line after the last rank, `no`, and Mission 3 still starting: `luajit tools/family/npc_talk/vampire_hunter.lua`.

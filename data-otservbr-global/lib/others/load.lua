@@ -26,3 +26,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_meriana_rebels.lua") -- FAMILY: Mer
 dofile(DATA_DIRECTORY .. "/lib/others/family_cults_of_tibia.lua") -- FAMILY: Cults of Tibia Quest review (Gerimor, cults, Denominator, rubbish amulet, ice death)
 dofile(DATA_DIRECTORY .. "/lib/others/family_thieves_guild.lua") -- FAMILY: The Thieves Guild Quest review (Theodore's door, items, dialogues, Dark Cathedral levers, Black Bert)
 dofile(DATA_DIRECTORY .. "/lib/others/family_kissing_pig.lua") -- FAMILY: Kissing a Pig Quest (the pig, the seven kissing lessons, Firlefanz)
+dofile(DATA_DIRECTORY .. "/lib/others/family_vampire_hunter.lua") -- FAMILY: Vampire Hunter Quest review (Storkus, Razing!, blood skull, books, vampire lords)

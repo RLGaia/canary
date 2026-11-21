@@ -16,6 +16,8 @@ raid
 			name = "Arachir the Ancient One",
 			amount = 1,
 			position = Position(32964, 32400, 12),
+			-- FAMILY: comes with 3 vampires (TibiaWiki BR; EN "up to 4"), lib/others/family_vampire_hunter.lua
+			spawn = FamilyVampire and FamilyVampire.companions("Vampire", 3, 3),
 		},
 	})
 	:autoAdvance("24h")

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <raid>
-	<!--Announcements-->
-<announce delay="1000" type="event" message="Beware of Zevelon Duskbringer!" />
-	<!--Single Spawns-->
+	<!-- FAMILY (2026-11-20, Vampire Hunter Quest review): no raid message (TibiaQA's list of these bosses: no
+	     server-wide message; neither wiki has one; upstream said "Beware of Zevelon Duskbringer!") and he comes
+	     with 1-3 vampires (TibiaWiki BR "1 a 3"; EN "0-3"). The place is the small Hellgate graveyard of both wikis. -->
 	<singlespawn delay="1000" name="Zevelon Duskbringer" x="32754" y="31578" z="11" />
+	<areaspawn delay="1000" fromx="32752" fromy="31576" fromz="11" tox="32756" toy="31580" toz="11">
+		<monster name="Vampire" minamount="1" maxamount="3" />
+	</areaspawn>
 </raid>

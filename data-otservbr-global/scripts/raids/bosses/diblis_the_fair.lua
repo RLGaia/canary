@@ -16,6 +16,8 @@ raid
 			name = "Diblis The Fair",
 			amount = 1,
 			position = Position(32009, 32795, 10),
+			-- FAMILY: may come with 0-3 banshees (TibiaWiki EN), lib/others/family_vampire_hunter.lua
+			spawn = FamilyVampire and FamilyVampire.companions("Banshee", 0, 3),
 		},
 	})
 	:autoAdvance("24h")

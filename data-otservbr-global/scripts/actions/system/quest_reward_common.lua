@@ -274,6 +274,10 @@ function questReward.onUse(player, item, fromPosition, itemEx, toPosition)
 	if familyChoice then
 		Family.markChestTaken(player, item.uid)
 	end
+	-- FAMILY: Castlemania once the blood skull is taken (lib/others/family_vampire_hunter.lua)
+	if FamilyVampire then
+		FamilyVampire.afterChest(player, item.uid)
+	end
 	return true
 end
 

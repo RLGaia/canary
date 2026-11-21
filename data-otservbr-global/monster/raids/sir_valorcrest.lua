@@ -82,7 +82,7 @@ monster.loot = {
 	{ id = 236, chance = 1500 }, -- strong health potion
 	{ id = 3091, chance = 1400 }, -- sword ring
 	{ id = 3114, chance = 15000 }, -- skull
-	{ id = 8192, chance = 100000 }, -- vampire lord token
+	-- FAMILY: a second "vampire lord token" line removed (both wikis: one token, always)
 	{ id = 3035, chance = 50000, maxCount = 5 }, -- platinum coin
 	{ id = 3031, chance = 100000, maxCount = 93 }, -- gold coin
 	{ id = 3434, chance = 6300 }, -- vampire shield
