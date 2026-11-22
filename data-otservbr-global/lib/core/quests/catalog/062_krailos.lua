@@ -9,8 +9,11 @@ local function text(group, storage)
 		if not log then
 			return ""
 		end
-		local value = player:getStorageValue(storage)
-		return log[value] or log.default or ""
+		local entry = log[player:getStorageValue(storage)]
+		if type(entry) == "function" then
+			return entry(player)
+		end
+		return entry or ""
 	end
 end
 
@@ -26,6 +29,22 @@ return {
 			startValue = 1,
 			endValue = 6,
 			description = text("hungry", S.HungryNewWorld),
+		},
+		{
+			name = "The Great Hunger",
+			storageId = S.GreatHunger,
+			missionId = 11276,
+			startValue = 1,
+			endValue = 6,
+			description = text("hunger", S.GreatHunger),
+		},
+		{
+			name = "Quenching the Thirst",
+			storageId = S.Thirst,
+			missionId = 11277,
+			startValue = 1,
+			endValue = 5,
+			description = text("thirst", S.Thirst),
 		},
 	},
 }

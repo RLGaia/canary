@@ -2231,7 +2231,7 @@ Storage = {
 				VampireTeeth = 45272,
 			},
 			-- FAMILY: Krailos Quest (2026-11-22; upstream left this block empty and had no quest).
-			-- Rules: lib/others/family_krailos.lua. Free in this block after these: 45300-45350.
+			-- Rules: lib/others/family_krailos.lua. Free in this block after these: 45302-45350.
 			Krailos = {
 				Questline = 45273, -- quest log (1 = a Krailos mission was taken)
 				HungryNewWorld = 45274, -- Larek: 1 orchid, 2 orchid given, 3 map, 4 map given, 5 amulet, 6 done (depot)
@@ -2259,6 +2259,9 @@ Storage = {
 				FloodTime = 45296, -- os.time when the flooded mines wash you out (Survival of the Strongest)
 				Exile = 45297, -- A Goblin Exile: the password was told (the sealed door opens)
 				WeaponTaken = 45298, -- the holy weapon was taken from its cave (today's round)
+				GourdFill = 45299, -- bit mask: shark teeth (1) and onyx chips (2) in the gourd
+				FlaskWait = 45300, -- os.time when the floating green flask has shark teeth again (00:00)
+				BeerWait = 45301, -- os.time when the barrel has ogre beer again (00:00)
 			},
 		},
 		U10_94 = { -- update 10.94 - Reserved Storages 45351 - 45450

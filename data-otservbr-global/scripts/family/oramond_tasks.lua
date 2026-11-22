@@ -819,6 +819,10 @@ distiller:register()
 
 local hoe = Action()
 function hoe.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- Krailos Quest, Quenching the Thirst: golden quartzes (one hoe action for both; lib/others/family_krailos.lua)
+	if FamilyKrailos and target and FamilyKrailos.useHoe(player, target, toPosition) then
+		return true
+	end
 	if not T.on() or not target or not target.getId or target:getId() ~= T.FUNGUS then
 		return false
 	end

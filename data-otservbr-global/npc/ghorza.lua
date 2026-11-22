@@ -139,6 +139,11 @@ npcHandler:setMessage(MESSAGE_FAREWELL, "Take care of evil spirits.")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Take care of evil spirits.")
 npcHandler:setMessage(MESSAGE_SENDTRADE, "Of course, just browse through my wares. Or do you want to look only at " .. GetFormattedShopCategoryNames(itemsTable) .. ".")
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+-- FAMILY: Krailos Quest, The Great Hunger and Quenching the Thirst, her TibiaWiki EN lines; she trades
+-- (and opens her shop categories) only after The Great Hunger (EN) (lib/others/family_krailos.lua)
+if FamilyKrailos then
+	FamilyKrailos.setupNpc("Ghorza", npcHandler, { fallback = creatureSayCallback })
+end
 
 -- On buy npc shop message
 npcType.onBuyItem = function(npc, player, itemId, subType, amount, ignore, inBackpacks, totalCost)

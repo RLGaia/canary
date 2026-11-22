@@ -113,4 +113,112 @@ T.check("log text for every Hungry New World state", (function()
 	return true
 end)())
 
+-- ------------------------------------------------------------------ Ghorza: The Great Hunger
+local ghorza = T.load("data-otservbr-global/npc/ghorza.lua")
+K.lakeOverride = { state = K.LAKE_DRY }
+local g = player()
+T.check("Ghorza greeting (EN)", ghorza:say(g, "hi") == "Hello, scraggy human.")
+local tr = ghorza:say(g, "trade")
+T.check("Ghorza no trade before The Great Hunger (EN)", has(tr, "No, Ghorza no trading with humans."), tr)
+local po = ghorza:say(g, "potions")
+T.check("no potions category before (ours)", has(po, "No, Ghorza no trading with humans."), po)
+q = ghorza:say(g, "mission")
+T.check("Great Hunger offer (EN)", has(q, "Ghorza feels that spirits restless.") and has(q, "You helping?"), q)
+y = ghorza:say(g, "yes")
+T.check("gourd (EN)", has(y, "Taking this gourd.") and has(y, "Fill teeth and splinters into gourd. Then come back.") and given(g, K.GOURD) == 1 and g.storage[S.GreatHunger] == 1 and g.storage[S.Questline] == 1, y)
+q = ghorza:say(g, "mission")
+T.check("gourd not rattling yet (ours)", has(q, "Gourd not rattling yet"), q)
+g.items[K.GOURD] = 0
+g.items[K.RATTLING_GOURD] = 1 -- teeth and chips filled in (server test)
+q = ghorza:say(g, "mission")
+T.check("painting the gourd (EN)", has(q, "Ah, you made gourd rattle!") and has(q, "Painting on gourd runes you see in front of Ghorza's tent.") and given(g, K.RED_OIL) == 1 and g.storage[S.GreatHunger] == 2, q)
+q = ghorza:say(g, "mission")
+T.check("rattle not painted yet (ours)", has(q, "Rattle not painted yet"), q)
+g.items[K.RATTLING_GOURD] = 0
+g.items[K.RED_OIL] = 0
+g.items[K.PAINTED_RATTLE] = 1 -- painted (server test)
+q = ghorza:say(g, "mission")
+T.check("ritual sites (EN)", has(q, "You paint rattle. Very good, tasty human.") and has(q, "If rattle is used at other place than ritual site, spirits might be upset. Be careful.") and g.storage[S.GreatHunger] == 3, q)
+g.storage[S.GreatHungerSites] = 3
+q = ghorza:say(g, "mission")
+T.check("two of three sites (ours)", has(q, "Spirits still upset"), q)
+g.storage[S.GreatHungerSites] = 7
+q = ghorza:say(g, "mission")
+T.check("hyaena (EN)", has(q, "Yes, you purge defiled ritual sites!") and has(q, "But use this net, hyaena savage.") and given(g, K.HYAENA_TRAP) == 1 and g.storage[S.GreatHunger] == 4, q)
+q = ghorza:say(g, "mission")
+T.check("no hyaena yet (ours)", has(q, "No hyaena with you"), q)
+g.items[K.HYAENA_TRAP] = 0
+g.items[K.TRAPPED_HYAENA] = 1
+q = ghorza:say(g, "mission")
+local sets = 0
+for _, r in ipairs(K.RUNES) do sets = sets + given(g, r.set) end
+T.check("runes (EN)", has(q, "Little human bringing back hyaena! Ghorza happy!") and has(q, "Here, take stones.") and sets == 5 and g.items[K.TRAPPED_HYAENA] == 0 and g.storage[S.GreatHunger] == 5, q)
+g.items[K.RUNES[1].set] = 0
+g.storage[S.GreatHungerRunes] = 2 -- the east one placed, the north one lost
+g.items[K.RUNES[2].set] = 0
+local lr = ghorza:say(g, "lost runes")
+T.check("lost runes (BR keyword, line ours)", has(lr, "take stones again") and g.items[K.RUNES[1].set] == 1 and g.items[K.RUNES[2].set] == 0, lr)
+q = ghorza:say(g, "mission")
+T.check("runes still broken (ours)", has(q, "Runes still broken"), q)
+g.storage[S.GreatHungerRunes] = K.RUNES_ALL
+q = ghorza:say(g, "mission")
+T.check("onyx pendant (EN)", has(q, "Protection Runes fixed, Ghorza feels!") and has(q, "Ghorza can sell.") and given(g, K.ONYX_PENDANT) == 1 and g.storage[S.GreatHunger] == 6, q)
+tr = ghorza:say(g, "trade")
+T.check("Ghorza trades after The Great Hunger (EN)", not has(tr, "No, Ghorza no trading"), tr)
+ghorza:say(g, "bye")
+
+-- ------------------------------------------------------------------ Quenching the Thirst
+local w = player()
+ghorza:say(w, "hi")
+K.lakeOverride = { state = K.LAKE_DIRTY }
+q = ghorza:say(w, "water")
+T.check("no start while the lake has water (BR/EN, line ours)", has(q, "Salt sea not dry now") and w.storage[S.Thirst] == nil, q)
+K.lakeOverride = { state = K.LAKE_DRY }
+q = ghorza:say(w, "water")
+T.check("Thirst offer (EN)", has(q, "Water great problem in Krailos.") and has(q, "Ogres needing more water. You helping?"), q)
+y = ghorza:say(w, "yes")
+T.check("enchanted jar (EN)", has(y, "Ghorza having idea how to solve problem.") and has(y, "Here, take enchanted jar.") and given(w, K.CARAFE) == 1 and w.storage[S.Thirst] == 1, y)
+q = ghorza:say(w, "water")
+T.check("lake still dry (ours)", has(q, "Salt sea still dry"), q)
+w.storage[S.ThirstPours] = 6 -- six carafes poured today (server test)
+K.lakeOverride = { state = K.LAKE_DIRTY }
+q = ghorza:say(w, "water")
+T.check("lake filled, ask Larek (EN)", has(q, "Salt sea filled with water now.") and has(q, "Ghorza taking back.") and w.items[K.CARAFE] == 0 and w.storage[S.Thirst] == 2, q)
+q = ghorza:say(w, "water")
+T.check("ask Larek reminder (ours)", has(q, "Ask human merchant Larek"), q)
+ghorza:say(w, "bye")
+larek:say(w, "hi")
+q = larek:say(w, "water")
+T.check("Larek's golden quartzes (EN)", has(q, "I noticed that the salt sea near the village is filled with water again.") and has(q, "Then scatter it into the poisonous water.") and w.storage[S.Thirst] == 3, q)
+q = larek:say(w, "water")
+T.check("Larek repeats the hint (ours)", has(q, "golden shimmering quartzes"), q)
+larek:say(w, "bye")
+-- the lake dried at 06:00 before the water was clean: catch the spirits again (EN note; lines ours)
+K.lakeOverride = { state = K.LAKE_DRY }
+w.storage[S.ThirstPowder] = 4
+ghorza:say(w, "hi")
+q = ghorza:say(w, "water")
+T.check("lake dried again: carafe again (ours)", has(q, "Salt sea dried up again!") and w.storage[S.Thirst] == 1 and w.items[K.CARAFE] == 1, q)
+w.storage[S.ThirstPours] = 6
+K.lakeOverride = { state = K.LAKE_DIRTY }
+ghorza:say(w, "water")
+w.storage[S.Thirst] = 4 -- 30 powders scattered (server test)
+K.lakeOverride = { state = K.LAKE_CLEAN }
+q = ghorza:say(w, "water")
+T.check("shaggy ogre bag (EN)", has(q, "Sea filled with fresh water now!") and has(q, "Take this, perhaps something of use inside.") and given(w, K.SHAGGY_BAG) == 1 and w.storage[S.Thirst] == 5, q)
+q = ghorza:say(w, "water")
+T.check("after the mission (ours)", has(q, "Ogres having fresh water now"), q)
+ghorza:say(w, "bye")
+T.check("Ghorza farewell (EN)", (function()
+	local p3 = player()
+	ghorza:say(p3, "hi")
+	return ghorza:say(p3, "bye") == "Take care of evil spirits."
+end)())
+checkLore("Ghorza", ghorza, player)
+T.check("log texts for The Great Hunger and Quenching the Thirst", (function()
+	for i = 1, 6 do if not K.log.hunger[i] then return false end end
+	for i = 1, 5 do if not K.log.thirst[i] then return false end end
+	return type(K.log.thirst[1](w)) == "string" and type(K.log.hunger[5](g)) == "string"
+end)())
+
 T.finish()
