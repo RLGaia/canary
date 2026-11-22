@@ -47,6 +47,11 @@ npcType.onThink = function(npc, interval)
 end
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+-- FAMILY: Krailos Quest, The Chieftain's Menu, The Thunder Tusk Clan, and the TibiaWiki EN lines (lib/others/family_krailos.lua);
+-- upstream only greeted
+if FamilyKrailos then
+	FamilyKrailos.setupNpc("Vuzrog", npcHandler)
+end
 
 -- npcType registering the npcConfig table
 npcType:register(npcConfig)

@@ -122,6 +122,10 @@ function skinning.onUse(player, item, fromPosition, target, toPosition, isHotkey
 	if FamilyAncientFeud and FamilyAncientFeud.onChop and FamilyAncientFeud.onChop(player, item, target) then
 		return true
 	end
+	-- FAMILY: Krailos Quest, Revolt of the Goblins: the obsidian knife on a living holy bog frog (lib/others/family_krailos.lua)
+	if FamilyKrailos and FamilyKrailos.knifeFrog(player, item, target) then
+		return true
+	end
 	-- FAMILY: Blood Brothers: the stake on a vampire lord brother's remains gives his dust (scripts/family/blood_brothers.lua)
 	if FamilyBloodBrothers and FamilyBloodBrothers.onStake and FamilyBloodBrothers.onStake(player, item, target) then
 		return true

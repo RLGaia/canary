@@ -91,6 +91,13 @@ ASKED_FOR = {
     170: "fake dwarven beard (Kissing a Pig; family_kissing_pig.lua names it in a variable, 2026-11-20)",
     172: "blank poetry parchment (Kissing a Pig, Olrik; 2026-11-20)",
     896: "Firlefanz (Kissing a Pig reward chest; 2026-11-20)",
+    22704: "botanist's container with a skull orchid (Krailos Quest; family_krailos.lua names it in a constant, 2026-11-22)",
+    22746: "ancient amulet (Krailos Quest; family_krailos.lua names it in a constant, 2026-11-22)",
+    22195: "onyx pendant (Krailos Quest; family_krailos.lua names it in a constant, 2026-11-22)",
+    22763: "shaggy ogre bag (Krailos Quest; family_krailos.lua names it in a constant, 2026-11-22)",
+    8908: "slightly rusted helmet (Krailos Quest; family_krailos.lua names it in a constant, 2026-11-22)",
+    8902: "slightly rusted shield (Krailos Quest; family_krailos.lua names it in a constant, 2026-11-22)",
+    9016: "flask of rust remover (Krailos Quest; family_krailos.lua names it in a constant, 2026-11-22)",
 }
 
 

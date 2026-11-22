@@ -1,6 +1,6 @@
 -- FAMILY: Krailos Quest (ours, 2026-11-22): upstream had no quest. TibiaWiki EN says the quest has a
 -- log with the seven missions; the texts are ours (lib/others/family_krailos.lua, FamilyKrailos.log,
--- which loads after this file). Mission ids from 11275.
+-- which loads after this file). Mission ids 11275-11281.
 local S = Storage.Quest.U10_90.Krailos
 
 local function text(group, storage)
@@ -45,6 +45,39 @@ return {
 			startValue = 1,
 			endValue = 5,
 			description = text("thirst", S.Thirst),
+		},
+		{
+			name = "Survival of the Strongest",
+			storageId = S.Survival,
+			missionId = 11278,
+			startValue = 1,
+			endValue = 5,
+			description = text("survival", S.Survival),
+		},
+		{
+			name = "Revolt of the Goblins",
+			storageId = S.Revolt,
+			missionId = 11279,
+			startValue = 1,
+			endValue = 6,
+			description = text("revolt", S.Revolt),
+		},
+		{
+			name = "The Chieftain's Menu",
+			storageId = S.Menu,
+			missionId = 11280,
+			startValue = 1,
+			endValue = 2,
+			ignoreendvalue = true,
+			description = text("menu", S.Menu),
+		},
+		{
+			name = "The Thunder Tusk Clan",
+			storageId = S.ThunderTusk,
+			missionId = 11281,
+			startValue = 1,
+			endValue = 2,
+			description = text("tusk", S.ThunderTusk),
 		},
 	},
 }

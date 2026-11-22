@@ -42,6 +42,11 @@ npcType.onThink = function(npc, interval)
 end
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+-- FAMILY: Krailos Quest, trades only after The Thunder Tusk Clan (EN), and the TibiaWiki EN lines (lib/others/family_krailos.lua);
+-- upstream only greeted or traded
+if FamilyKrailos then
+	FamilyKrailos.setupNpc("Mugruu", npcHandler)
+end
 
 npcConfig.shop = {
 	{ itemName = "arrow", clientId = 3447, buy = 3 },

@@ -2231,7 +2231,7 @@ Storage = {
 				VampireTeeth = 45272,
 			},
 			-- FAMILY: Krailos Quest (2026-11-22; upstream left this block empty and had no quest).
-			-- Rules: lib/others/family_krailos.lua. Free in this block after these: 45302-45350.
+			-- Rules: lib/others/family_krailos.lua. Free in this block after these: 45304-45350.
 			Krailos = {
 				Questline = 45273, -- quest log (1 = a Krailos mission was taken)
 				HungryNewWorld = 45274, -- Larek: 1 orchid, 2 orchid given, 3 map, 4 map given, 5 amulet, 6 done (depot)
@@ -2245,23 +2245,25 @@ Storage = {
 				ThirstDay = 45282, -- game day (06:00) of the three counters above
 				Survival = 45283, -- Grubokk: 1 sabotage, 2 poison, 3 flood, 4 flooded, 5 done
 				SurvivalWheels = 45284, -- water wheels sabotaged (10)
-				SurvivalSalt = 45285, -- bit mask: salt crystals hit (1, 2), wells poisoned (4, 8)
+				SurvivalSalt = 45285, -- bit mask: salt crystals hit (1, 2, 4), wells poisoned (8, 16)
 				SurvivalTreadmills = 45286, -- bit mask of the treadmills cut
-				Revolt = 45287, -- goblins: 1 frogs, 2 weapon, 3 weapon given, 4 wheels, 5 done
+				Revolt = 45287, -- goblins: 1 frogs, 2 frogs given, 3 weapon, 4 weapon given, 5 wheels, 6 done
 				RevoltPassword = 45288, -- 1 Swordfish, 2 Sugatrap, 3 Hopgoblin
 				RevoltWheels = 45289, -- water wheels fixed (10)
 				GoblinsWait = 45290, -- os.time when Grubokk or the goblins give work again (00:00)
-				Menu = 45291, -- Vuzrog: 1 taken, 2 delivered
+				Menu = 45291, -- Vuzrog: 1 taken, 2 delivered (wait for 00:00), 3 food given, reward not yet
 				MenuTimes = 45292, -- meals delivered (Ogre Chef at 3)
 				MenuWait = 45293, -- os.time when Vuzrog is hungry again (00:00)
 				ThunderTusk = 45294, -- Vuzrog: 1 taken, 2 done (Mugruu trades)
 				ThunderTuskKills = 45295, -- Thunder Tusk ogres killed (200)
 				FloodTime = 45296, -- os.time when the flooded mines wash you out (Survival of the Strongest)
-				Exile = 45297, -- A Goblin Exile: the password was told (the sealed door opens)
+				DoorSugatrap = 45297, -- A Goblin Exile's northern door (quest door action id; 1 = open for you)
 				WeaponTaken = 45298, -- the holy weapon was taken from its cave (today's round)
 				GourdFill = 45299, -- bit mask: shark teeth (1) and onyx chips (2) in the gourd
 				FlaskWait = 45300, -- os.time when the floating green flask has shark teeth again (00:00)
 				BeerWait = 45301, -- os.time when the barrel has ogre beer again (00:00)
+				DoorSwordfish = 45302, -- A Goblin Exile's eastern door
+				DoorHopgoblin = 45303, -- A Goblin Exile's southern door
 			},
 		},
 		U10_94 = { -- update 10.94 - Reserved Storages 45351 - 45450

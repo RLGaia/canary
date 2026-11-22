@@ -1,2 +1,6 @@
 <?xml version="1.0"?>
-<npcs />
+<npcs>
+	<npc centerx="33526" centery="31671" centerz="8" radius="1">
+		<npc name="A Runaway Goblin" x="0" y="0" z="8" spawntime="60" />
+	</npc>
+</npcs>

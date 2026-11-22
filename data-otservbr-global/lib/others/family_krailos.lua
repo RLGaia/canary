@@ -23,6 +23,25 @@
 --   progress; Rodrigo 2026-11-22 "until 06:00", Tibia: a few days). Ours, so two players are not
 --   blocked: when the lake already holds water (the other player filled it today), carafes and
 --   powder still count for you.
+--   Survival of the Strongest (Grubokk, "mission", "no help goblin"): sabotage 10 water wheels with
+--   the heavy stone hammer, two poison salt crystals into the two goblin city wells, cut the three
+--   treadmills with large pliers and get out of the mines before they flood (2 minutes, ours: EN "a
+--   few minutes"; inside = start the flooding over). Reward: 5 opals, 2 flasks of rust remover.
+--   Revolt of the Goblins (Nibble, An Imprisoned Goblin, A Goblin Exile, A Runaway Goblin):
+--   20 holy bog frogs (greasy stones, obsidian knife on the living frog), a password (Swordfish,
+--   Sugatrap or Hopgoblin) for the exile, whose matching sealed door leads to the weapon, to the
+--   runaway goblin; fix 10 water wheels with pliers. Reward: 5 onyx chips, slightly rusted helmet and
+--   shield (EN; BR: rusted). Only one of the two at a time; Grubokk's clears the goblins' (BR, EN);
+--   both again after 00:00 (Rodrigo; Tibia 20 h). The goblin bone key (well next to Grubokk) opens
+--   the two goblin gates, which are open doors on our map and are locked at startup (BR, EN); from
+--   the inside they always open (ours). Hammer and pliers: from dead goblins, for those who need one.
+--   The Chieftain's Menu (Vuzrog): 10 roasted meat, 1 ogre beer (barrel south-east of the village,
+--   once a day, back at 00:00), 12 cookies, 1 decorated cake, 5 vials of fruit juice; 5 opals; again
+--   after 00:00 (Rodrigo; Tibia 20 h) but only after The Thunder Tusk Clan (BR); Ogre Chef at 3.
+--   The Thunder Tusk Clan (Vuzrog, once, after the first meal): 200 ogre brutes and savages, every
+--   kill counts for every player on the task (Rodrigo: shared by the two players); 10 great potions
+--   for the vocation (EN; BR names only the trade), Mugruu trades ("Mugruu not trading with human..."
+--   before, EN). The Call of the Wild with all seven done (EN: at the same time in the log).
 --
 -- Player storages: Storage.Quest.U10_90.Krailos (45273-45298, the update's own block).
 -- World objects: scripts/family/krailos.lua; the empty botanist's container is the Explorer
@@ -168,6 +187,14 @@ function K.setupNpc(name, npcHandler, opts)
 		end
 		return K.talk(name, npc, creature, message, npcHandler, opts.fallback)
 	end)
+	if K.greetings[name] then
+		-- a greeting that depends on the player (set just before the NPC says it)
+		npcHandler:setCallback(CALLBACK_GREET, function(npc, creature)
+			local player = Player(creature)
+			npcHandler:setMessage(MESSAGE_GREET, player and K.greetings[name](player) or info.greet)
+			return true
+		end)
+	end
 	if K.tradeRule[name] then
 		npcHandler:setCallback(CALLBACK_ON_TRADE_REQUEST, function(npc, creature)
 			local player = Player(creature)
@@ -183,6 +210,16 @@ end
 
 -- name -> function(player) returning the refusal line, or nil when the NPC trades.
 K.tradeRule = {}
+
+-- name -> function(player) returning the greeting for this player.
+K.greetings = {
+	["A Goblin Exile"] = function(player)
+		if K.get(player, S.Revolt) == 3 then
+			return K.exileGreetQuest -- EN quest transcript
+		end
+		return K.npcs["A Goblin Exile"].greet
+	end,
+}
 
 -- ---------------------------------------------------------------------------
 -- Hungry New World (Larek)
@@ -1104,6 +1141,1018 @@ function K.usePowder(player, item, toPosition)
 end
 
 -- ---------------------------------------------------------------------------
+-- Survival of the Strongest (Grubokk) and Revolt of the Goblins (Nibble, An Imprisoned Goblin,
+-- A Goblin Exile, A Runaway Goblin). Only one of the two at a time (EN); taking Grubokk's task
+-- clears the goblins' (BR, EN). Both again after 00:00 (Rodrigo 2026-11-22; Tibia: 20 hours).
+-- ---------------------------------------------------------------------------
+
+local SV, RV = S.Survival, S.Revolt
+K.BONE_KEY = 22682
+K.BONE_KEY_NUMBER = 555 -- EN: Key 0555
+K.HAMMER = 22681
+K.PLIERS = 22680
+K.POISON_SALT = 22694
+K.CRYSTALLIZED_SALT = 22695
+K.CONVEYOR = 22696 -- crude water conveyor (jammed)
+K.CONVEYOR_TURNED = 22697 -- for 3 minutes (EN)
+K.TREADMILL = 22683
+K.TREADMILL_CUT = 22689 -- wooden treadmill
+K.DEAD_GOBLINS = { [22687] = 22691, [22686] = 22685 } -- fresh/decaying -> filched (EN: rotten)
+K.GREASY_STONE = 22684
+K.GREASY_STONE_EMPTY = 22690 -- 5 minutes (EN)
+K.DEAD_FROG = 22693
+K.OBSIDIAN_KNIFE = 5908
+K.OPAL = 22194
+K.RUST_REMOVER = 9016
+K.RUSTED_HELMET = 8908 -- slightly rusted helmet (EN)
+K.RUSTED_SHIELD = 8902 -- slightly rusted shield (EN)
+K.GOBLIN_WELL = Position(33684, 31794, 6) -- the draw well next to Grubokk (its other half: x + 1)
+K.SALT_CRYSTALS = { Position(33709, 31662, 7), Position(33713, 31661, 7), Position(33717, 31664, 7) } -- bits 1, 2, 4
+K.WELLS = { { bit = 8, pos = Position(33672, 31800, 5) }, { bit = 16, pos = Position(33628, 31795, 6) } } -- goblin city (EN, BR)
+K.TREADMILLS = { Position(33598, 31790, 8), Position(33597, 31752, 9), Position(33606, 31720, 10) } -- EN
+K.GATES = { Position(33625, 31796, 6), Position(33638, 31791, 7) } -- EN 33626,31797,6 and 33671,31795,7; BR 33637,31791,7
+K.MINES = { from = Position(33585, 31700, 7), to = Position(33660, 31810, 10) } -- flooded with the treadmills
+K.MINES_EXIT = Position(33676, 31795, 6) -- next to Grubokk (EN: the entrance)
+K.FLOOD_DELAY = 2 * 60 -- ours (EN: "a few minutes")
+K.WHEELS, K.FROGS = 10, 20
+
+-- password -> the weapon, its cave (door and greasy stone) and the door storage
+K.PASSWORDS = {
+	{ word = "swordfish", name = "Swordfish", weapon = 22711, door = Position(33740, 31729, 8), stone = Position(33745, 31729, 8), storage = S.DoorSwordfish,
+		found = "You found Swordfish's crossbow. It looks sleek.", -- EN
+		exile = "You come in name of resourceful city protector. I trust you. You may take sacred crossbow from eastern cave to bring home for great goblin revolt. May golden eyes look kindly on our steps.", -- EN
+		runaway = "Hah, it is famous crossbow from goblin city protector! Fast weapon of fast goblin! I take, human. Will bring freedom to goblins!" }, -- EN
+	{ word = "sugatrap", name = "Sugatrap", weapon = 22713, door = Position(33736, 31726, 8), stone = Position(33737, 31724, 8), storage = S.DoorSugatrap,
+		found = "You found Sugatrap's obsidian lance. Slightly sticky to the touch.", -- EN
+		exile = "You come in name of great forefather of goblin city. I trust you. You may take sacred lance from northern cave to bring home for great goblin revolt. May golden eyes look kindly on our steps.", -- ours (like the EN Swordfish line)
+		runaway = "Hah, it is lance of great forefather Sugatrap! Weapon of wise goblin who led us to holy mountain! I take, human. Will bring freedom to goblins!" }, -- ours
+	{ word = "hopgoblin", name = "Hopgoblin", weapon = 22712, door = Position(33736, 31739, 8), stone = Position(33735, 31743, 8), storage = S.DoorHopgoblin,
+		found = "You found Hopgoblin's staff, splintered and broken as it is.", -- EN
+		exile = "You come in name of wisest goblin of past times. I trust you. You may take broken staff from southern cave to bring home for great goblin revolt. May golden eyes look kindly on our steps.", -- ours (like the EN Swordfish line)
+		runaway = "Hah, it is broken staff of wise Hopgoblin! Will be made whole when goblins free again! I take, human. Will bring freedom to goblins!" }, -- ours
+}
+
+function K.survivalActive(player)
+	local v = K.get(player, SV)
+	return v >= 1 and v <= 4
+end
+
+function K.survivalDone(player)
+	return K.get(player, SV) >= 5
+end
+
+function K.revoltActive(player)
+	local v = K.get(player, RV)
+	return v >= 1 and v <= 5
+end
+
+function K.revoltDone(player)
+	return K.get(player, RV) >= 6
+end
+
+local function goblinsWaiting(player)
+	return K.get(player, S.GoblinsWait) > os.time()
+end
+
+local function closeExileDoors(player)
+	for _, pw in ipairs(K.PASSWORDS) do
+		player:setStorageValue(pw.storage, -1)
+	end
+	player:setStorageValue(S.WeaponTaken, -1)
+end
+
+local function inArea(pos, area)
+	return pos.z >= area.from.z and pos.z <= area.to.z and pos.x >= area.from.x and pos.x <= area.to.x and pos.y >= area.from.y and pos.y <= area.to.y
+end
+
+-- Grubokk ---------------------------------------------------------------------
+
+local grubokk = {
+	offer = "Arr harr! Pesky goblins up to no good? You wanna teach lesson? Me reward you!",
+	promise = "Good! But first, you promise on life you {no help goblin}! You SURE no help goblin?? Say it!",
+	accept = {
+		"That will show uppity goblins! Will take away water. Then they not feel so thirsty for revolt, harr! ...",
+		"Three things to make them sorry. Cut off water supplies in mines first. Then poison wells in their wormy city tunnels. Then flood them out of mines with sea water! ...",
+		"Will be nicely marinated and seasoned when they wash up here! HAHAHAH!",
+	},
+	ask = "Yes? You finished task? What you do? {Sabotage} water wheels, {poison} wells or {flood} tunnels?",
+	sabotage = {
+		"Ah! Ten wheels damaged, good, good. That will occupy goblins for a while! ...",
+		"Now to next thing. Find salt crystals in lakes! Dump crystals in all wells in goblin tunnels. All's well, harrharr! Good joke!",
+	},
+	poison = {
+		"Hah! Only two wells! Puny goblins with puny wells! Hur hur! No big job for even puny human like you! ...",
+		"Now last thing - you flood tunnels! One time goblin washed up just like this! Chattered about three treadmills not holding off sea water! Kicked him back in to stop leakage. HAHAH! ...",
+		"Now go! Use pliers at leaky treadmills! Flood goblin tunnels! And be quick or be drowned, human!",
+	},
+	flood = {
+		"Good job, have eaten well! Now will have quiet for a while from goblin, har har. You get reward, human. ...",
+		"Here, take this. Tasty sauce. Took it off goblin, you keep!",
+	},
+	-- ours (not on the wikis)
+	notDone = "Har! You not done that yet! Go and do!",
+	wait = "Goblins quiet now, har har! Come back tomorrow, human!",
+	declined = "Pah! Puny human!",
+	noPromise = "No promise, no task! Say {no help goblin}!",
+}
+K.grubokkLines = grubokk
+local GR_OFFER, GR_PROMISE, GR_ASK = 31, 32, 33
+
+K.handlers["Grubokk"] = function(npc, player, message, npcHandler)
+	local id = player:getId()
+	local topic = npcHandler:getTopic(id)
+	local state = K.get(player, SV)
+	if topic == GR_PROMISE then
+		npcHandler:setTopic(id, 0)
+		if MsgContains(message, "no help goblin") then
+			K.set(player, SV, 1)
+			K.set(player, S.SurvivalWheels, 0)
+			K.set(player, S.SurvivalSalt, 0)
+			K.set(player, S.SurvivalTreadmills, 0)
+			K.set(player, S.FloodTime, 0)
+			if K.get(player, RV) > 0 then
+				K.set(player, RV, 0) -- the goblins' mission leaves the quest log (BR, EN)
+				closeExileDoors(player)
+			end
+			K.startLog(player)
+			npcHandler:say(grubokk.accept, npc, player)
+		else
+			npcHandler:say(grubokk.noPromise, npc, player)
+		end
+		return true
+	end
+	if K.contains(message, { "quest", "mission" }) then
+		npcHandler:setTopic(id, 0)
+		if state >= 1 and state <= 4 then
+			npcHandler:say(grubokk.ask, npc, player)
+			npcHandler:setTopic(id, GR_ASK)
+		elseif goblinsWaiting(player) then
+			npcHandler:say(grubokk.wait, npc, player)
+		else
+			npcHandler:say(grubokk.offer, npc, player)
+			npcHandler:setTopic(id, GR_OFFER)
+		end
+		return true
+	end
+	if topic == GR_OFFER and MsgContains(message, "yes") then
+		npcHandler:say(grubokk.promise, npc, player)
+		npcHandler:setTopic(id, GR_PROMISE)
+		return true
+	end
+	if topic == GR_OFFER and MsgContains(message, "no") then
+		npcHandler:setTopic(id, 0)
+		npcHandler:say(grubokk.declined, npc, player)
+		return true
+	end
+	if state >= 1 and state <= 4 and K.contains(message, { "sabotage", "poison", "flood" }) then
+		npcHandler:setTopic(id, 0)
+		if MsgContains(message, "sabotage") and state == 1 and K.get(player, S.SurvivalWheels) >= K.WHEELS then
+			K.set(player, SV, 2)
+			K.set(player, S.SurvivalSalt, 0)
+			npcHandler:say(grubokk.sabotage, npc, player)
+		elseif MsgContains(message, "poison") and state == 2 and bitSet(K.get(player, S.SurvivalSalt), 8) and bitSet(K.get(player, S.SurvivalSalt), 16) then
+			K.set(player, SV, 3)
+			K.set(player, S.SurvivalTreadmills, 0)
+			npcHandler:say(grubokk.poison, npc, player)
+		elseif MsgContains(message, "flood") and (state == 4 or (state == 3 and K.get(player, S.SurvivalTreadmills) == 7 and K.get(player, S.FloodTime) > 0 and K.get(player, S.FloodTime) <= os.time())) then
+			K.set(player, SV, 5)
+			K.set(player, S.GoblinsWait, K.nextMidnight())
+			player:addItem(K.OPAL, 5)
+			player:addItem(K.RUST_REMOVER, 2)
+			npcHandler:say(grubokk.flood, npc, player)
+			K.checkCallOfTheWild(player)
+		else
+			npcHandler:say(grubokk.notDone, npc, player)
+		end
+		return true
+	end
+	return false
+end
+
+-- Nibble ------------------------------------------------------------------------
+
+local nibble = {
+	offer = "Shshsh! Not so loud! ... You help? Be goblin champion?",
+	accept = {
+		"Need three things. Food, water, weapons. Food most urgent! ...",
+		"Find holy bog frogs in mountains! Use obsidian knife to frog god and keep holy power in frog flesh! Need lots! ...",
+		"Bring twenty to poor imprisoned goblins before they dead!",
+	},
+	-- ours (not on the wikis)
+	grubokk = "<sniff> You smell of Grubokk! You working for ogre! Go away, hu-man!",
+	wait = "Shshsh! Ogres watching! Come back tomorrow, hu-man!",
+	busy = "Shshsh! Help poor goblins in mines! They tell you what to do!",
+	declined = "<sigh> Poor goblin always left behind.",
+}
+K.nibbleLines = nibble
+local NB_OFFER = 41
+
+K.handlers["Nibble"] = function(npc, player, message, npcHandler)
+	local id = player:getId()
+	local topic = npcHandler:getTopic(id)
+	if K.contains(message, { "quest", "mission" }) then
+		npcHandler:setTopic(id, 0)
+		if K.revoltActive(player) then
+			npcHandler:say(nibble.busy, npc, player)
+		elseif K.survivalActive(player) then
+			npcHandler:say(nibble.grubokk, npc, player)
+		elseif goblinsWaiting(player) then
+			npcHandler:say(nibble.wait, npc, player)
+		else
+			npcHandler:say(nibble.offer, npc, player)
+			npcHandler:setTopic(id, NB_OFFER)
+		end
+		return true
+	end
+	if topic == NB_OFFER and MsgContains(message, "yes") then
+		npcHandler:setTopic(id, 0)
+		if not K.revoltActive(player) and not K.survivalActive(player) then
+			K.set(player, RV, 1)
+			K.set(player, S.RevoltWheels, 0)
+			closeExileDoors(player)
+			K.startLog(player)
+			npcHandler:say(nibble.accept, npc, player)
+		end
+		return true
+	end
+	if topic == NB_OFFER and MsgContains(message, "no") then
+		npcHandler:setTopic(id, 0)
+		npcHandler:say(nibble.declined, npc, player)
+		return true
+	end
+	return false
+end
+
+-- An Imprisoned Goblin -------------------------------------------------------------
+
+local imprisoned = {
+	askFrogs = "You help? You come from Golozo Taku Narkat Kash Bartak Har-Alhad?",
+	frogs = {
+		"You bring holy food to starved goblins! You truly help! ...",
+		"I bring quickly to other goblins! Good human! Will be right back.",
+	},
+	weapon = {
+		"You want to help goblin cause? You good hu-man. Listen. ...",
+		"Some goblins never came back from digging. I think they hiding, biding time. But not know. Maybe found places to stay with water or swamp! You look for signs. ...",
+		"You will need to know password so they know you champion for us. You will do that? You will help? You will remember password if I tell?",
+	},
+	password = "I will tell you. Password for you to make goblins trust is '%s'. You not forget that! No further hint!",
+	newPassword = "You forgot password! Oh no! Me give you new one, yes?",
+	wheels = {
+		"You found holy weapon, you say? Goblin will bring? Champion hu-man! Now only drinking water problem left! For us, biiiiig issue. For you, easy-peasy! ...",
+		"You fix water wheels in cistern and salt rivers in mines! Need to get unclogged! Ten wheels must function if goblins to survive!",
+	},
+	reward = "I hear sound of water wheels turning! Good job, hu-man! Here, take reward from me! Belonged to trusted friend, may be of use to you now he dead!",
+	-- ours (not on the wikis)
+	noFrogs = "You no have twenty holy frogs! Goblins starving!",
+	notSent = "Who you? Talk to Golozo Taku Narkat Kash Bartak Har-Alhad in ogre camp first!",
+	weaponWait = "Bring holy weapon to goblins in hiding! You remember password, yes?",
+	wheelsWait = "Wheels still clogged! Fix ten water wheels with pliers!",
+	done = "Water wheels turning! Thank you, champion hu-man!",
+	declined = "All go away.",
+}
+K.imprisonedLines = imprisoned
+local IG_FROGS, IG_WEAPON, IG_NEWPW = 51, 52, 53
+
+local function newPassword(player, npc, npcHandler)
+	local current = K.get(player, S.RevoltPassword)
+	local pick
+	repeat
+		pick = math.random(1, #K.PASSWORDS)
+	until pick ~= current or #K.PASSWORDS == 1
+	K.set(player, S.RevoltPassword, pick)
+	closeExileDoors(player)
+	npcHandler:say(string.format(imprisoned.password, K.PASSWORDS[pick].name), npc, player)
+end
+
+K.handlers["An Imprisoned Goblin"] = function(npc, player, message, npcHandler)
+	local id = player:getId()
+	local topic = npcHandler:getTopic(id)
+	local state = K.get(player, RV)
+	if MsgContains(message, "new password") then
+		npcHandler:setTopic(id, 0)
+		if state == 3 then
+			npcHandler:say(imprisoned.newPassword, npc, player)
+			npcHandler:setTopic(id, IG_NEWPW)
+			return true
+		end
+		return false
+	end
+	if K.contains(message, { "quest", "mission", "frog god" }) then
+		npcHandler:setTopic(id, 0)
+		if state == 1 then
+			npcHandler:say(imprisoned.askFrogs, npc, player)
+			npcHandler:setTopic(id, IG_FROGS)
+		elseif state == 2 then
+			npcHandler:say(imprisoned.weapon, npc, player)
+			npcHandler:setTopic(id, IG_WEAPON)
+		elseif state == 3 then
+			npcHandler:say(imprisoned.weaponWait, npc, player)
+		elseif state == 4 then
+			K.set(player, RV, 5)
+			K.set(player, S.RevoltWheels, 0)
+			npcHandler:say(imprisoned.wheels, npc, player)
+		elseif state == 5 then
+			if K.get(player, S.RevoltWheels) >= K.WHEELS then
+				K.set(player, RV, 6)
+				K.set(player, S.GoblinsWait, K.nextMidnight())
+				player:addItem(K.ONYX_CHIP, 5)
+				player:addItem(K.RUSTED_HELMET, 1)
+				player:addItem(K.RUSTED_SHIELD, 1)
+				npcHandler:say(imprisoned.reward, npc, player)
+				K.checkCallOfTheWild(player)
+			else
+				npcHandler:say(imprisoned.wheelsWait, npc, player)
+			end
+		elseif state >= 6 then
+			npcHandler:say(imprisoned.done, npc, player)
+		else
+			npcHandler:say(imprisoned.notSent, npc, player)
+		end
+		return true
+	end
+	if topic ~= 0 and MsgContains(message, "yes") then
+		npcHandler:setTopic(id, 0)
+		if topic == IG_FROGS and state == 1 then
+			if player:getItemCount(K.DEAD_FROG) < K.FROGS then
+				npcHandler:say(imprisoned.noFrogs, npc, player)
+				return true
+			end
+			player:removeItem(K.DEAD_FROG, K.FROGS)
+			K.set(player, RV, 2)
+			npcHandler:say(imprisoned.frogs, npc, player)
+		elseif topic == IG_WEAPON and state == 2 then
+			K.set(player, RV, 3)
+			newPassword(player, npc, npcHandler)
+		elseif topic == IG_NEWPW and state == 3 then
+			newPassword(player, npc, npcHandler)
+		end
+		return true
+	end
+	if topic ~= 0 and MsgContains(message, "no") then
+		npcHandler:setTopic(id, 0)
+		npcHandler:say(imprisoned.declined, npc, player)
+		return true
+	end
+	return false
+end
+
+-- A Goblin Exile and A Runaway Goblin ----------------------------------------------
+
+local function passwordSaid(message)
+	for index, pw in ipairs(K.PASSWORDS) do
+		if MsgContains(message, pw.word) then
+			return index, pw
+		end
+	end
+	return nil
+end
+
+K.exileGreetQuest = "A hu-man! Golden eyes brought strange guest! Who sent you?" -- EN
+K.exileLie = "No! You lie! That not true. Golden eyes averted from you!" -- EN
+
+K.handlers["A Goblin Exile"] = function(npc, player, message, npcHandler)
+	if K.get(player, RV) ~= 3 then
+		return false
+	end
+	local index, pw = passwordSaid(message)
+	if not index then
+		return false
+	end
+	npcHandler:setTopic(player:getId(), 0)
+	if index ~= K.get(player, S.RevoltPassword) then
+		npcHandler:say(K.exileLie, npc, player)
+		return true
+	end
+	player:setStorageValue(pw.storage, 1)
+	npcHandler:say(pw.exile, npc, player)
+	return true
+end
+
+local runaway = {
+	correct = {
+		"Correct! You friend from friends in mines! This means they still alive! ...",
+		"I know secret passage, but have no holy weapon to guide my people! Bring weapons from him who no name, hiding holy stuff, and bring to me! You have holy weapon?",
+	},
+	wrong = "No talk! Get new password from friend in mines! Then we talk!", -- EN
+	hush = "<puts finger to his lips>", -- EN
+	nothing = "Me not know anything!", -- EN
+	noWeapon = "No holy weapon with you! Go, bring!", -- ours
+}
+K.runawayLines = runaway
+local RG_WEAPON = 61
+
+K.handlers["A Runaway Goblin"] = function(npc, player, message, npcHandler)
+	local id = player:getId()
+	local topic = npcHandler:getTopic(id)
+	local state = K.get(player, RV)
+	if topic == RG_WEAPON and MsgContains(message, "yes") then
+		npcHandler:setTopic(id, 0)
+		local pw = K.PASSWORDS[K.get(player, S.RevoltPassword)]
+		if state == 3 and pw and player:removeItem(pw.weapon, 1) then
+			K.set(player, RV, 4)
+			closeExileDoors(player)
+			npcHandler:say(pw.runaway, npc, player)
+		else
+			npcHandler:say(runaway.noWeapon, npc, player)
+		end
+		return true
+	end
+	if state == 3 then
+		local index = passwordSaid(message)
+		if index then
+			npcHandler:setTopic(id, 0)
+			if index == K.get(player, S.RevoltPassword) then
+				npcHandler:say(runaway.correct, npc, player)
+				npcHandler:setTopic(id, RG_WEAPON)
+			else
+				npcHandler:say(runaway.wrong, npc, player)
+			end
+			return true
+		end
+	end
+	if K.contains(message, { "quest", "mission", "weapon" }) then
+		npcHandler:say(runaway.hush, npc, player)
+		npcHandler:setTopic(id, 0)
+		return true
+	end
+	if K.contains(message, { "crossbow", "lance", "staff" }) then
+		npcHandler:say(runaway.nothing, npc, player)
+		npcHandler:setTopic(id, 0)
+		return true
+	end
+	return false
+end
+
+-- World objects of the two goblin missions. Each returns true when handled.
+
+function K.useGoblinWell(player)
+	if not K.enabled() or has(player, K.BONE_KEY) then
+		return false
+	end
+	local key = player:addItem(K.BONE_KEY, 1)
+	if key and type(key) == "userdata" then
+		key:setActionId(K.BONE_KEY_NUMBER)
+	end
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You found a key made out of a goblin bone.") -- EN
+	return true
+end
+
+-- The two goblin gates: locked (closed door, action id 1001 = "It is locked."); the bone key
+-- opens them, and from the inside (west) they always open, so nobody is shut in (ours).
+K.GATE_OPEN, K.GATE_CLOSED, K.GATE_LOCKED_AID = 5737, 5736, 1001
+
+local function gateAt(pos)
+	for _, g in ipairs(K.GATES) do
+		if g.x == pos.x and g.y == pos.y and g.z == pos.z then
+			return g
+		end
+	end
+	return nil
+end
+
+function K.useGate(player, door)
+	if not K.enabled() then
+		return false
+	end
+	local pos = door:getPosition()
+	local gate = gateAt(pos)
+	if not gate or door:getId() ~= K.GATE_CLOSED then
+		return false
+	end
+	local inside = player:getPosition().x < gate.x
+	if inside or has(player, K.BONE_KEY) then
+		door:transform(K.GATE_OPEN)
+		door:setActionId(0)
+		return true
+	end
+	player:sendTextMessage(MESSAGE_LOOK, "It is locked.")
+	return true
+end
+
+function K.closeGate(door)
+	if door and door:getId() == K.GATE_OPEN then
+		door:transform(K.GATE_CLOSED)
+		door:setActionId(K.GATE_LOCKED_AID)
+	end
+end
+
+-- dead goblins: a heavy stone hammer or large pliers for those who need one (ours: half the time)
+function K.searchDeadGoblin(player, corpse)
+	if not K.enabled() then
+		return false
+	end
+	local filched = K.DEAD_GOBLINS[corpse:getId()]
+	if not filched then
+		return false
+	end
+	local sv, rv = K.get(player, SV), K.get(player, RV)
+	local found
+	if (sv == 1 or sv == 2) and not has(player, K.HAMMER) and math.random(1, 2) == 1 then
+		found = K.HAMMER
+	elseif (sv == 3 or rv == 5) and not has(player, K.PLIERS) and math.random(1, 2) == 1 then
+		found = K.PLIERS
+	end
+	local original = corpse:getId()
+	local pos = corpse:getPosition()
+	corpse:transform(filched)
+	if filched ~= 22685 then -- 22685 decays back by itself (items.xml)
+		addEvent(function()
+			local tile = Tile(pos)
+			local item = tile and tile:getItemById(filched)
+			if item then
+				item:transform(original)
+			end
+		end, 60 * 1000)
+	end
+	if found == K.HAMMER then
+		player:addItem(K.HAMMER, 1)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You found a heavy ogre hammer. This might come in handy.") -- EN
+	elseif found == K.PLIERS then
+		player:addItem(K.PLIERS, 1)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You found a pair of ogre pliers. This might come in handy.") -- EN
+	else
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This goblin hasn't got anything useful on him.") -- BR screenshot
+	end
+	return true
+end
+
+local function revertLater(pos, fromId, toId, seconds)
+	addEvent(function()
+		local tile = Tile(pos)
+		local item = tile and tile:getItemById(fromId)
+		if item then
+			item:transform(toId)
+		end
+	end, seconds * 1000)
+end
+
+-- the hammer (sabotage) or the pliers (fix) on a water wheel; turns for 3 minutes (EN)
+function K.useOnWheel(player, tool, wheel)
+	if not K.enabled() then
+		return false
+	end
+	local id = wheel:getId()
+	if id ~= K.CONVEYOR and id ~= K.CONVEYOR_TURNED then
+		return false
+	end
+	if tool:getId() == K.HAMMER and K.get(player, SV) == 1 then
+		if id == K.CONVEYOR_TURNED then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This wheel is already dented as if sabotaged.") -- EN
+			return true
+		end
+		local n = K.get(player, S.SurvivalWheels)
+		if n >= K.WHEELS then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "That's all the wheels you needed to sabotage.") -- EN
+			return true
+		end
+		wheel:transform(K.CONVEYOR_TURNED)
+		revertLater(wheel:getPosition(), K.CONVEYOR_TURNED, K.CONVEYOR, 180)
+		K.set(player, S.SurvivalWheels, n + 1)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, n + 1 >= K.WHEELS and "That's all the wheels you needed to sabotage." or "You sabotage the wheel. It stops turning.") -- EN
+		return true
+	end
+	if tool:getId() == K.PLIERS and K.get(player, RV) == 5 then
+		if id == K.CONVEYOR_TURNED then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This wheel is already turning.") -- ours
+			return true
+		end
+		local n = K.get(player, S.RevoltWheels) + 1
+		wheel:transform(K.CONVEYOR_TURNED)
+		revertLater(wheel:getPosition(), K.CONVEYOR_TURNED, K.CONVEYOR, 180)
+		K.set(player, S.RevoltWheels, n)
+		if n >= K.WHEELS then
+			tool:remove(1)
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You fixed enough ten wheels just as the pliers break. The goblins should have enough drinking water for a while at least.") -- EN
+		else
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You fixed the conveyor wheel. It should pump water now.") -- EN
+		end
+		return true
+	end
+	return false
+end
+
+-- the hammer on crystallized salt (two different ones, then the hammer breaks; EN)
+function K.hitSalt(player, hammer, salt)
+	if not K.enabled() or salt:getId() ~= K.CRYSTALLIZED_SALT or K.get(player, SV) ~= 2 then
+		return false
+	end
+	local pos = salt:getPosition()
+	local bit
+	for i, p in ipairs(K.SALT_CRYSTALS) do
+		if p.x == pos.x and p.y == pos.y and p.z == pos.z then
+			bit = 2 ^ (i - 1)
+		end
+	end
+	if not bit then
+		return false
+	end
+	local done = K.get(player, S.SurvivalSalt)
+	if bitSet(done, bit) then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You already took all the useful crystal splinters from this one. Try another.") -- EN
+		return true
+	end
+	if math.random(1, 2) == 1 then -- ours: half the blows work
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "That was a weak blow. Try harder.") -- EN, BR screenshot
+		return true
+	end
+	local crystals = (bitSet(done, 1) and 1 or 0) + (bitSet(done, 2) and 1 or 0) + (bitSet(done, 4) and 1 or 0)
+	K.set(player, S.SurvivalSalt, done + bit)
+	player:addItem(K.POISON_SALT, 1)
+	pos:sendMagicEffect(CONST_ME_BLOCKHIT)
+	if crystals + 1 >= 2 then
+		hammer:remove(1)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The hammer breaks with the blow. You gather some salt crystal. This should be enough.") -- EN
+	else
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You pound a piece of salt crystal from the solid ground.") -- EN, BR screenshot
+	end
+	return true
+end
+
+-- poison salt crystal into the two wells of the goblin city (EN)
+function K.poisonWell(player, crystal, well)
+	if not K.enabled() or K.get(player, SV) ~= 2 then
+		return false
+	end
+	local pos = well:getPosition()
+	for _, w in ipairs(K.WELLS) do
+		if pos.z == w.pos.z and pos.y == w.pos.y and (pos.x == w.pos.x or pos.x == w.pos.x + 1) then
+			local done = K.get(player, S.SurvivalSalt)
+			if bitSet(done, w.bit) then
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This well is already poisoned.") -- ours
+				return true
+			end
+			crystal:remove(1)
+			done = done + w.bit
+			K.set(player, S.SurvivalSalt, done)
+			pos:sendMagicEffect(CONST_ME_GREEN_RINGS)
+			if bitSet(done, 8) and bitSet(done, 16) then
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You dump the poison salt into the water well. Acrid fumes waft up. Seems your job is done here.") -- EN
+			else
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You dump the poison salt into the water well.") -- EN
+			end
+			return true
+		end
+	end
+	return false
+end
+
+local treadmillTexts = {
+	"You sabotaged the treadmill. The water will flood the mines speedily. Get out in time!",
+	"You sabotaged this treadmill. The water will flood the mines soon. Sabotage the remaining quickly to get out in time!",
+	"With the last desperate twist, the pliers break and water floods the tunnels. Now get out quick before you drown, too!",
+} -- EN
+
+function K.floodCheck(playerId)
+	local player = Player(playerId)
+	if not player or K.get(player, SV) ~= 3 or K.get(player, S.SurvivalTreadmills) ~= 7 then
+		return
+	end
+	if inArea(player:getPosition(), K.MINES) then
+		-- still inside: the water washes you out and the work is lost (BR)
+		K.set(player, S.SurvivalTreadmills, 0)
+		K.set(player, S.FloodTime, 0)
+		player:teleportTo(K.MINES_EXIT)
+		K.MINES_EXIT:sendMagicEffect(CONST_ME_WATERSPLASH)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The water floods the tunnels and washes you out of the mines. The goblins have mended the treadmills again. You have to start over.") -- ours
+		return
+	end
+	K.set(player, SV, 4)
+	player:teleportTo(K.MINES_EXIT)
+	K.MINES_EXIT:sendMagicEffect(CONST_ME_WATERSPLASH)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "That was fast. You got out just in time before the water flooded everything.") -- BR, EN
+end
+
+function K.cutTreadmill(player, pliers, treadmill)
+	if not K.enabled() or treadmill:getId() ~= K.TREADMILL or K.get(player, SV) ~= 3 then
+		return false
+	end
+	local pos = treadmill:getPosition()
+	local bit
+	for i, p in ipairs(K.TREADMILLS) do
+		if p.x == pos.x and p.y == pos.y and p.z == pos.z then
+			bit = 2 ^ (i - 1)
+		end
+	end
+	if not bit then
+		return false
+	end
+	local done = K.get(player, S.SurvivalTreadmills)
+	if bitSet(done, bit) then
+		return false
+	end
+	done = done + bit
+	K.set(player, S.SurvivalTreadmills, done)
+	treadmill:transform(K.TREADMILL_CUT)
+	revertLater(pos, K.TREADMILL_CUT, K.TREADMILL, 5 * 60)
+	local n = (bitSet(done, 1) and 1 or 0) + (bitSet(done, 2) and 1 or 0) + (bitSet(done, 4) and 1 or 0)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, treadmillTexts[n])
+	if n >= 3 then
+		pliers:remove(1)
+		K.set(player, S.FloodTime, os.time() + K.FLOOD_DELAY)
+		addEvent(K.floodCheck, K.FLOOD_DELAY * 1000, player:getId())
+	end
+	return true
+end
+
+-- greasy stones: in the exile's three caves the holy weapons, elsewhere bugs, centipedes and
+-- holy bog frogs (EN; chances ours); empty for 5 minutes (EN)
+K.spawnedFrogs = {}
+
+function K.useGreasyStone(player, stone)
+	if not K.enabled() or stone:getId() ~= K.GREASY_STONE then
+		return false
+	end
+	local pos = stone:getPosition()
+	for index, pw in ipairs(K.PASSWORDS) do
+		if pw.stone.x == pos.x and pw.stone.y == pos.y and pw.stone.z == pos.z then
+			if K.get(player, RV) == 3 and K.get(player, S.RevoltPassword) == index and K.get(player, S.WeaponTaken) < 1 and not has(player, pw.weapon) then
+				player:addItem(pw.weapon, 1)
+				K.set(player, S.WeaponTaken, 1)
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, pw.found)
+				return true
+			end
+			return false
+		end
+	end
+	stone:transform(K.GREASY_STONE_EMPTY)
+	revertLater(pos, K.GREASY_STONE_EMPTY, K.GREASY_STONE, 5 * 60)
+	local roll = math.random(1, 10)
+	local name, text
+	if roll <= 4 then
+		name, text = "Bog Frog", "You found a holy bog frog." -- BR screenshot, EN
+	elseif roll <= 7 then
+		name, text = "Bug", "A light snack for a goblin, but not what you are looking for." -- EN
+	else
+		name, text = "Centipede", "Probably tasty and full of protein, but not what you were looking for." -- EN
+	end
+	local monster = Game.createMonster(name, pos, true, true)
+	if monster and name == "Bog Frog" then
+		K.spawnedFrogs[monster:getId()] = true
+	end
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, text)
+	return true
+end
+
+-- the obsidian knife on a living holy bog frog (scripts/actions/tools/skinning.lua)
+function K.knifeFrog(player, knife, target)
+	if not K.enabled() or not target or type(target) ~= "userdata" or not target.isMonster or not target:isMonster() then
+		return false
+	end
+	if not K.spawnedFrogs[target:getId()] or K.get(player, RV) ~= 1 then
+		return false
+	end
+	K.spawnedFrogs[target:getId()] = nil
+	local pos = target:getPosition()
+	target:remove()
+	pos:sendMagicEffect(CONST_ME_MAGIC_GREEN)
+	player:addItem(K.DEAD_FROG, 1)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You use the obsidian knife on the holy bog frog and keep the holy power in its flesh.") -- ours (Nibble's words)
+	return true
+end
+
+-- ---------------------------------------------------------------------------
+-- The Chieftain's Menu and The Thunder Tusk Clan (Vuzrog), Mugruu's trade
+-- ---------------------------------------------------------------------------
+
+local MENU = S.Menu
+local TT = S.ThunderTusk
+K.OGRE_BEER = 22710
+K.BEER_BARREL = Position(33683, 31722, 7) -- the barrel south-east of the village (BR 33681,31722)
+K.TT_KILLS = 200 -- EN, BR (ogre brutes and savages; no shamans)
+K.FOOD = {
+	{ id = 22187, count = 10, name = "roasted meat" },
+	{ id = 22710, count = 1, name = "ogre beer" },
+	{ id = 3598, count = 12, name = "cookies" },
+	{ id = 6278, count = 1, name = "decorated cake" },
+	{ id = 2874, count = 5, subType = 14, name = "vials of fruit juice" }, -- any fruit juice (EN)
+}
+
+local vuzrog = {
+	offer = {
+		"Vuzrog hungry! Vuzrog needs food, very much food! You looking tasty, small human. But Vuzrog having deal with {shaman}: Not eating {human} visitors. Not know why that so important for {Ghorza}. ...",
+		"But deal is deal - as long as Vuzrog not too hungry. You find food for Vuzrog, yummy titch?",
+	},
+	accept = {
+		"Vuzrog glad hearing that! Listen what Vuzrog wants to scoff: meat! Very much meat. Not raw but roasted. Also bring beer! Last beer was stolen by mean nomadic ogres. Get it back. ...",
+		"After roast Vuzrog wants tasty sweets. Human merchant sometimes had cookies for Vuzrog. Bring cookies! And bring soft thing that small tiddlers call cake! Sounds yummy. ...",
+		"Don't forget prickly pear juice. Not know how juice is made but is tasty! Bring some bottles for dessert.",
+	},
+	askFirst = "You bringing food for Vuzrog?",
+	mealFirst = "Yum! That great meal! Vuzrog very pleased. Hmmmmmrrr, perhaps {Ghorza} right, shrimpy humans perhaps useful. You want little reward?",
+	rewardFirst = "You taking this. Pretty stones. Goblins find in mountains together with black stones. Black stones good against evil spirits. Shimmering stones just nice to look. Perhaps humans like. You want do other thing for Vuzrog?",
+	offerAgain = "You will bring more food for Vuzrog?",
+	acceptAgain = "Very good! Bring roasted meat, beer, cookies, cake and prickly pear juice!",
+	askAgain = "You bringing food for Vuzrog again?",
+	mealAgain = "Yum! That great meal! Vuzrog very pleased. Want more pretty stones?",
+	rewardAgain = "Here, taking pretty shimmering stones. Bring more food tomorrow!",
+	ttOffer = "You want do other thing for Vuzrog?", -- the end of the EN line
+	ttAccept = {
+		"Hrrr, very good! Listen: Other tribe is breaking into ogre village more and more often. Other tribe is {Thunder Tusk} Clan. Need help to beat off stupid riffraff. Go and kill many {Thunder Tusk} ogres. ...",
+		"Kill ten times as many as fingers on your hands are. No, kill twice as much. But no shamans, that bad luck. No reward for killing shamans. Then come back and Vuzrog be grateful!",
+	},
+	ttAsk = "You killed stupid riffraff?",
+	ttReward = {
+		"Done well! Hrrrmmm, {Ghorza} right. Humans a little more than tasty snacks. Sometimes are useful, killing enemies and bringing food. Taking this: shamanic brew. And if human wants buy things, ask {Mugruu}. Chieftain now allows Mugruu trade with human. ...",
+		"Hmmm, if Vuzrog tomorrow hungry again, you can bring more food, useful titch.",
+	},
+	-- ours (not on the wikis)
+	missing = "Not enough food! Vuzrog wants %s!",
+	wait = "Vuzrog not hungry now. Come back tomorrow, tasty little snack!",
+	ttNotYet = "Not enough! Kill more Thunder Tusk ogres! Brutes and savages, no shamans!",
+	noReward = "Hrmpf. Vuzrog keeps pretty stones then.",
+	declined = "Push off!",
+}
+K.vuzrogLines = vuzrog
+local VZ_OFFER, VZ_OFFER_AGAIN, VZ_ASK, VZ_REWARD, VZ_TT_OFFER, VZ_TT_ASK = 71, 72, 73, 74, 75, 76
+
+function K.menuDone(player)
+	return K.get(player, MENU) == 2
+end
+
+function K.thunderTuskDone(player)
+	return K.get(player, TT) >= 2
+end
+
+local function missingFood(player)
+	local missing = {}
+	for _, f in ipairs(K.FOOD) do
+		local n = f.subType and player:getItemCount(f.id, f.subType) or player:getItemCount(f.id)
+		if n < f.count then
+			missing[#missing + 1] = f.count .. " " .. f.name
+		end
+	end
+	return missing
+end
+
+local function vuzrogReward(npc, player, npcHandler)
+	local first = K.get(player, S.MenuTimes) == 0
+	player:addItem(K.OPAL, 5)
+	local times = K.get(player, S.MenuTimes) + 1
+	K.set(player, S.MenuTimes, times)
+	K.set(player, MENU, 2)
+	K.set(player, S.MenuWait, K.nextMidnight())
+	if times >= 3 then
+		player:addAchievement("Ogre Chef")
+	end
+	if first and K.get(player, TT) == 0 then
+		npcHandler:say(vuzrog.rewardFirst, npc, player)
+		npcHandler:setTopic(player:getId(), VZ_TT_OFFER)
+	else
+		npcHandler:say(first and vuzrog.rewardFirst or vuzrog.rewardAgain, npc, player)
+	end
+	K.checkCallOfTheWild(player)
+end
+
+local function thunderTuskReward(player)
+	local voc = player:getVocation():getBaseId()
+	local potion = 7642 -- great spirit potion: paladins (EN); monks too (ours)
+	if voc == VOCATION.BASE_ID.KNIGHT then
+		potion = 239 -- great health potion
+	elseif voc == VOCATION.BASE_ID.SORCERER or voc == VOCATION.BASE_ID.DRUID then
+		potion = 238 -- great mana potion
+	end
+	player:addItem(potion, 10)
+end
+
+K.handlers["Vuzrog"] = function(npc, player, message, npcHandler)
+	local id = player:getId()
+	local topic = npcHandler:getTopic(id)
+	local menu, tt = K.get(player, MENU), K.get(player, TT)
+	if K.contains(message, { "quest", "mission" }) then
+		npcHandler:setTopic(id, 0)
+		if tt == 1 then
+			npcHandler:say(vuzrog.ttAsk, npc, player)
+			npcHandler:setTopic(id, VZ_TT_ASK)
+		elseif menu == 1 then
+			npcHandler:say(K.get(player, S.MenuTimes) == 0 and vuzrog.askFirst or vuzrog.askAgain, npc, player)
+			npcHandler:setTopic(id, VZ_ASK)
+		elseif menu == 3 then
+			npcHandler:say(K.get(player, S.MenuTimes) == 0 and "You want little reward?" or "Want more pretty stones?", npc, player) -- the ends of the EN lines
+			npcHandler:setTopic(id, VZ_REWARD)
+		elseif K.get(player, S.MenuTimes) >= 1 and tt == 0 then
+			npcHandler:say(vuzrog.ttOffer, npc, player)
+			npcHandler:setTopic(id, VZ_TT_OFFER)
+		elseif K.get(player, S.MenuWait) > os.time() then
+			npcHandler:say(vuzrog.wait, npc, player)
+		elseif K.get(player, S.MenuTimes) == 0 then
+			npcHandler:say(vuzrog.offer, npc, player)
+			npcHandler:setTopic(id, VZ_OFFER)
+		else
+			npcHandler:say(vuzrog.offerAgain, npc, player)
+			npcHandler:setTopic(id, VZ_OFFER_AGAIN)
+		end
+		return true
+	end
+	if topic ~= 0 and MsgContains(message, "yes") then
+		npcHandler:setTopic(id, 0)
+		if topic == VZ_OFFER and menu ~= 1 then
+			K.set(player, MENU, 1)
+			K.startLog(player)
+			npcHandler:say(vuzrog.accept, npc, player)
+		elseif topic == VZ_OFFER_AGAIN and menu ~= 1 then
+			K.set(player, MENU, 1)
+			npcHandler:say(vuzrog.acceptAgain, npc, player)
+		elseif topic == VZ_ASK and menu == 1 then
+			local missing = missingFood(player)
+			if #missing > 0 then
+				npcHandler:say(string.format(vuzrog.missing, table.concat(missing, ", ")), npc, player)
+				return true
+			end
+			for _, f in ipairs(K.FOOD) do
+				player:removeItem(f.id, f.count, f.subType or -1)
+			end
+			K.set(player, MENU, 3)
+			npcHandler:say(K.get(player, S.MenuTimes) == 0 and vuzrog.mealFirst or vuzrog.mealAgain, npc, player)
+			npcHandler:setTopic(id, VZ_REWARD)
+		elseif topic == VZ_REWARD and menu == 3 then
+			vuzrogReward(npc, player, npcHandler)
+		elseif topic == VZ_TT_OFFER and tt == 0 then
+			K.set(player, TT, 1)
+			K.set(player, S.ThunderTuskKills, 0)
+			npcHandler:say(vuzrog.ttAccept, npc, player)
+		elseif topic == VZ_TT_ASK and tt == 1 then
+			if K.get(player, S.ThunderTuskKills) < K.TT_KILLS then
+				npcHandler:say(vuzrog.ttNotYet, npc, player)
+				return true
+			end
+			K.set(player, TT, 2)
+			thunderTuskReward(player)
+			npcHandler:say(vuzrog.ttReward, npc, player)
+			K.checkCallOfTheWild(player)
+		end
+		return true
+	end
+	if topic ~= 0 and MsgContains(message, "no") then
+		npcHandler:setTopic(id, 0)
+		if topic == VZ_REWARD and menu == 3 then
+			-- ours: the meal is eaten, no stones
+			K.set(player, MENU, 2)
+			K.set(player, S.MenuTimes, K.get(player, S.MenuTimes) + 1)
+			K.set(player, S.MenuWait, K.nextMidnight())
+			npcHandler:say(vuzrog.noReward, npc, player)
+			K.checkCallOfTheWild(player)
+		else
+			npcHandler:say(vuzrog.declined, npc, player)
+		end
+		return true
+	end
+	return false
+end
+
+-- a Thunder Tusk ogre (brute or savage) died: it counts for every player on the task (Rodrigo
+-- 2026-11-22: the 200 kills shared by both players)
+function K.thunderTuskKill()
+	if not K.enabled() then
+		return
+	end
+	for _, player in ipairs(Game.getPlayers()) do
+		if K.get(player, TT) == 1 then
+			local n = K.get(player, S.ThunderTuskKills)
+			if n < K.TT_KILLS then
+				n = n + 1
+				K.set(player, S.ThunderTuskKills, n)
+				if n == K.TT_KILLS then
+					player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have killed enough Thunder Tusk ogres. Report to Vuzrog.") -- ours
+				elseif n % 50 == 0 then
+					player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("Thunder Tusk ogres killed: %d of %d.", n, K.TT_KILLS)) -- ours
+				end
+			end
+		end
+	end
+end
+
+function K.useBeerBarrel(player)
+	if not K.enabled() then
+		return false
+	end
+	if K.get(player, S.BeerWait) > os.time() then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The barrel is empty.") -- ours
+		return true
+	end
+	player:addItem(K.OGRE_BEER, 1)
+	K.set(player, S.BeerWait, K.nextMidnight())
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have found ogre beer.") -- BR screenshot
+	return true
+end
+
+K.tradeRule["Mugruu"] = function(player)
+	if K.enabled() and not K.thunderTuskDone(player) then
+		return "Mugruu not trading with human. Only if {chieftain} says yes. Back off!" -- EN
+	end
+	return nil
+end
+
+K.handlers["Mugruu"] = function(npc, player, message, npcHandler)
+	if K.contains(message, { "quest", "mission", "task" }) then
+		npcHandler:say("Ask {Ghorza} or {Vuzrog}. Or perhaps ask {Grubokk}, too.", npc, player) -- EN
+		npcHandler:setTopic(player:getId(), 0)
+		return true
+	end
+	return false
+end
+
+-- ---------------------------------------------------------------------------
 -- The Call of the Wild: all seven missions done (EN: at the same time in the quest log).
 -- ---------------------------------------------------------------------------
 
@@ -1117,12 +2166,21 @@ K.finishedChecks = {
 	function(player)
 		return K.thirstDone(player)
 	end,
+	function(player)
+		return K.survivalDone(player)
+	end,
+	function(player)
+		return K.revoltDone(player)
+	end,
+	function(player)
+		return K.menuDone(player)
+	end,
+	function(player)
+		return K.thunderTuskDone(player)
+	end,
 }
 
 function K.checkCallOfTheWild(player)
-	if #K.finishedChecks < 7 then
-		return -- the other missions are added by the later parts of the quest
-	end
 	for _, done in ipairs(K.finishedChecks) do
 		if not done(player) then
 			return
@@ -1175,5 +2233,38 @@ K.log = {
 		end,
 		[4] = "The water of the salt sea is fresh and clean. Tell Ghorza.",
 		[5] = "The ogres have fresh water again. Ghorza gave you a shaggy ogre bag.",
+	},
+	survival = {
+		[1] = function(player)
+			return string.format("Grubokk, the ogre who guards the goblin slaves in the southern mountains, wants to punish the goblins. First cut off their water: sabotage the water wheels in the mines with a heavy stone hammer (%d of 10). The goblin bone key from the well next to Grubokk opens the gates; dead goblins sometimes carry tools.", math.min(K.get(player, S.SurvivalWheels), 10))
+		end,
+		[2] = "Knock two poison salt crystals out of the crystallized salt in the big dry lake east of the village with the hammer and dump them into the two wells of the goblin city. Then tell Grubokk you poisoned them.",
+		[3] = "Cut the three leaky treadmills in the mines with large pliers to flood the tunnels, then get out of the mines quickly and wait outside. Then tell Grubokk you flooded them.",
+		[4] = "The mines are flooded. Tell Grubokk.",
+		[5] = "You helped Grubokk to punish the goblins. He gave you opals and flasks of rust remover. You may help him again the next day.",
+	},
+	revolt = {
+		[1] = "Nibble, the goblin slave in the ogre village, wants to free his people. Bring twenty holy bog frogs to the goblins imprisoned in the mines: use the greasy stones in the goblin tunnels and use an obsidian knife on the holy bog frogs that come out of them.",
+		[2] = "The imprisoned goblin has food now. Ask him for his next mission.",
+		[3] = "Find the goblins hiding in Krailos and tell them the imprisoned goblin's password. A goblin exile keeps the holy weapons; bring the right one to the runaway goblin. If you forgot the password, ask the imprisoned goblin for a new one.",
+		[4] = "The runaway goblin has the holy weapon. Go back to the imprisoned goblin.",
+		[5] = function(player)
+			return string.format("The goblins need drinking water: fix ten water wheels in the mines with large pliers (%d of 10), then go back to the imprisoned goblin.", math.min(K.get(player, S.RevoltWheels), 10))
+		end,
+		[6] = "You helped the goblins. The imprisoned goblin gave you onyx chips and his dead friend's rusted helmet and shield. You may help them again the next day.",
+	},
+	menu = {
+		[1] = "Vuzrog, the chieftain of the Bloody Skulls, is hungry. Bring him 10 roasted meat, 1 ogre beer, 12 cookies, 1 decorated cake and 5 vials of fruit juice.",
+		[2] = function(player)
+			local times = K.get(player, S.MenuTimes)
+			return string.format("You brought Vuzrog a meal %d time%s. He is hungry again every day.", times, times == 1 and "" or "s")
+		end,
+		[3] = "Vuzrog ate your meal. Ask him for your reward.",
+	},
+	tusk = {
+		[1] = function(player)
+			return string.format("Vuzrog wants you to kill 200 ogres of the Thunder Tusk clan, brutes and savages but no shamans (%d of 200, also those your companion kills).", math.min(K.get(player, S.ThunderTuskKills), K.TT_KILLS))
+		end,
+		[2] = "You beat off the Thunder Tusk clan for Vuzrog. Mugruu may now trade with you.",
 	},
 }

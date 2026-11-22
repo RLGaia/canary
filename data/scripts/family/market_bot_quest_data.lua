@@ -456,6 +456,9 @@ return {
 	[8863] = true, -- yalahari leg piece
 	[8864] = true, -- yalahari mask
 	[8895] = true, -- rusted armor
+	[8902] = true, -- slightly rusted shield
+	[8908] = true, -- slightly rusted helmet
+	[9016] = true, -- flask of rust remover
 	[9019] = true, -- firewalker boots
 	[9027] = true, -- crystal of focus
 	[9057] = true, -- small topaz
@@ -645,11 +648,16 @@ return {
 	[21982] = true, -- nightmare teddy
 	[22007] = true, -- gloom wolf fur
 	[22053] = true, -- wereboar hooves
+	[22187] = true, -- roasted meat
 	[22189] = true, -- ogre nose ring
+	[22195] = true, -- onyx pendant
+	[22704] = true, -- botanist's container
 	[22728] = true, -- vexclaw talon
 	[22730] = true, -- some grimeleech wings
 	[22731] = true, -- rift tapestry
 	[22737] = true, -- folded rift carpet
+	[22746] = true, -- ancient amulet
+	[22763] = true, -- shaggy ogre bag
 	[22775] = true, -- Ferumbras' teddy
 	[22879] = true, -- ferumbras' teddy santa
 	[23507] = true, -- crystallized anger

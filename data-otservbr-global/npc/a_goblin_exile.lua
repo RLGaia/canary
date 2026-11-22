@@ -47,6 +47,11 @@ npcType.onThink = function(npc, interval)
 end
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+-- FAMILY: Krailos Quest, Revolt of the Goblins, the password and his sealed doors, and the TibiaWiki EN lines (lib/others/family_krailos.lua);
+-- upstream only greeted
+if FamilyKrailos then
+	FamilyKrailos.setupNpc("A Goblin Exile", npcHandler)
+end
 
 -- npcType registering the npcConfig table
 npcType:register(npcConfig)

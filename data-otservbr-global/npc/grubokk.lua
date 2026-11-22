@@ -42,6 +42,11 @@ npcType.onThink = function(npc, interval)
 end
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+-- FAMILY: Krailos Quest, Survival of the Strongest, and the TibiaWiki EN lines (lib/others/family_krailos.lua);
+-- upstream only greeted
+if FamilyKrailos then
+	FamilyKrailos.setupNpc("Grubokk", npcHandler)
+end
 
 -- npcType registering the npcConfig table
 npcType:register(npcConfig)

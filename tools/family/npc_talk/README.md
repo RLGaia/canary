@@ -176,3 +176,11 @@ Chantalle: `luajit tools/family/npc_talk/kissing_pig.lua`.
 `job`, no token talk before The Inquisition Mission 3 is reported, the six ranks with one token too few
 (refusal) and enough (EN transcript lines, experience, doll, Vengoth door, Razing!, Castlemania check), the
 line after the last rank, `no`, and Mission 3 still starting: `luajit tools/family/npc_talk/vampire_hunter.lua`.
+
+`krailos.lua` is the Krailos Quest check (2026-11-22, 271 checks): one character per mission plays
+Hungry New World (Larek), The Great Hunger and Quenching the Thirst (Ghorza and Larek, with the salt
+sea's state set by hand), Survival of the Strongest (Grubokk, also clearing the goblins' mission),
+Revolt of the Goblins (Nibble, An Imprisoned Goblin, A Goblin Exile, A Runaway Goblin, passwords),
+The Chieftain's Menu three times and The Thunder Tusk Clan (Vuzrog, potions by vocation), Mugruu's
+and Ghorza's trade rules, The Call of the Wild, the quest log texts and every lore word of the nine
+EN NPC transcripts: `luajit tools/family/npc_talk/krailos.lua`.

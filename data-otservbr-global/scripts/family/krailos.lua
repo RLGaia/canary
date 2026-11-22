@@ -99,3 +99,118 @@ function lakeDries.onTime(interval)
 end
 lakeDries:time("06:00:00")
 lakeDries:register()
+
+-- Survival of the Strongest and Revolt of the Goblins -------------------------
+
+-- the draw well next to Grubokk: the goblin bone key
+local well = Action()
+function well.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	return K.useGoblinWell(player)
+end
+well:position(K.GOBLIN_WELL)
+well:position(Position(K.GOBLIN_WELL.x + 1, K.GOBLIN_WELL.y, K.GOBLIN_WELL.z))
+well:register()
+
+-- the two goblin gates (a position action wins over the key door action)
+local gate = Action()
+function gate.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if item:getId() == K.GATE_OPEN then
+		local tile = Tile(item:getPosition())
+		if tile and tile:getCreatureCount() > 0 then
+			return true
+		end
+		K.closeGate(item)
+		return true
+	end
+	return K.useGate(player, item)
+end
+for _, pos in ipairs(K.GATES) do
+	gate:position(pos)
+end
+gate:register()
+
+-- the goblin bone key used on a gate
+itemAction({ K.BONE_KEY }, function(player, item, target)
+	if not target or type(target) ~= "userdata" or not target.isItem or not target:isItem() then
+		return false
+	end
+	return K.useGate(player, target)
+end)
+
+itemAction({ 22686, 22687 }, function(player, item)
+	return K.searchDeadGoblin(player, item)
+end)
+itemAction({ K.HAMMER }, function(player, item, target)
+	if not target or type(target) ~= "userdata" or not target.isItem or not target:isItem() then
+		return false
+	end
+	return K.useOnWheel(player, item, target) or K.hitSalt(player, item, target)
+end)
+itemAction({ K.PLIERS }, function(player, item, target)
+	if not target or type(target) ~= "userdata" or not target.isItem or not target:isItem() then
+		return false
+	end
+	return K.useOnWheel(player, item, target) or K.cutTreadmill(player, item, target)
+end)
+itemAction({ K.POISON_SALT }, function(player, item, target)
+	if not target or type(target) ~= "userdata" or not target.isItem or not target:isItem() then
+		return false
+	end
+	return K.poisonWell(player, item, target)
+end)
+itemAction({ K.GREASY_STONE }, function(player, item)
+	return K.useGreasyStone(player, item)
+end)
+
+-- The Chieftain's Menu and The Thunder Tusk Clan --------------------------------
+
+local barrel = Action()
+function barrel.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	return K.useBeerBarrel(player)
+end
+barrel:position(K.BEER_BARREL)
+barrel:register()
+
+local tuskDeath = CreatureEvent("FamilyKrailosThunderTusk")
+function tuskDeath.onDeath(creature, corpse, lastHitKiller, mostDamageKiller)
+	K.thunderTuskKill()
+	return true
+end
+tuskDeath:register()
+
+local partThreeStartup = GlobalEvent("FamilyKrailosStartup")
+function partThreeStartup.onStartup()
+	if not K.enabled() then
+		return true
+	end
+	for _, name in ipairs({ "Ogre Brute", "Ogre Savage" }) do
+		local mType = MonsterType(name)
+		if mType then
+			mType:registerEvent("FamilyKrailosThunderTusk")
+		else
+			logger.error("[Family] Krailos Quest: monster type {} not found", name)
+		end
+	end
+	-- A Goblin Exile's sealed doors open with the storage of the password told (quest doors)
+	for _, pw in ipairs(K.PASSWORDS) do
+		local tile = Tile(pw.door)
+		local door = tile and (tile:getItemById(5122) or tile:getItemById(5131))
+		if door then
+			door:setActionId(pw.storage)
+		else
+			logger.warn("[Family] Krailos Quest: exile door not found at {}", pw.door:toString())
+		end
+	end
+	-- the goblin gates are locked (BR, EN: the goblin bone key opens them)
+	for _, pos in ipairs(K.GATES) do
+		local tile = Tile(pos)
+		local door = tile and tile:getItemById(K.GATE_OPEN)
+		if door then
+			K.closeGate(door)
+		else
+			logger.warn("[Family] Krailos Quest: goblin gate not found at {}", pos:toString())
+		end
+	end
+	return true
+end
+partThreeStartup:register()
