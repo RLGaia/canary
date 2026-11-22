@@ -2230,7 +2230,36 @@ Storage = {
 				StoneCoffinsBones = 45271,
 				VampireTeeth = 45272,
 			},
-			Krailos = {},
+			-- FAMILY: Krailos Quest (2026-11-22; upstream left this block empty and had no quest).
+			-- Rules: lib/others/family_krailos.lua. Free in this block after these: 45300-45350.
+			Krailos = {
+				Questline = 45273, -- quest log (1 = a Krailos mission was taken)
+				HungryNewWorld = 45274, -- Larek: 1 orchid, 2 orchid given, 3 map, 4 map given, 5 amulet, 6 done (depot)
+				GreatHunger = 45275, -- Ghorza: 1 gourd, 2 paint, 3 sites, 4 hyaena, 5 runes, 6 done (trade)
+				GreatHungerSites = 45276, -- bit mask of the blessed ritual sites
+				GreatHungerRunes = 45277, -- bit mask of the repaired rune spots
+				Thirst = 45278, -- Ghorza/Larek: 1 spirits, 2 lake filled, 3 detoxify, 4 lake clean, 5 done
+				ThirstSouls = 45279, -- water spirits in the carafe (0-5)
+				ThirstPours = 45280, -- carafes poured into the salt lake (6)
+				ThirstPowder = 45281, -- golden quartz powder scattered into the lake (30)
+				ThirstDay = 45282, -- game day (06:00) of the three counters above
+				Survival = 45283, -- Grubokk: 1 sabotage, 2 poison, 3 flood, 4 flooded, 5 done
+				SurvivalWheels = 45284, -- water wheels sabotaged (10)
+				SurvivalSalt = 45285, -- bit mask: salt crystals hit (1, 2), wells poisoned (4, 8)
+				SurvivalTreadmills = 45286, -- bit mask of the treadmills cut
+				Revolt = 45287, -- goblins: 1 frogs, 2 weapon, 3 weapon given, 4 wheels, 5 done
+				RevoltPassword = 45288, -- 1 Swordfish, 2 Sugatrap, 3 Hopgoblin
+				RevoltWheels = 45289, -- water wheels fixed (10)
+				GoblinsWait = 45290, -- os.time when Grubokk or the goblins give work again (00:00)
+				Menu = 45291, -- Vuzrog: 1 taken, 2 delivered
+				MenuTimes = 45292, -- meals delivered (Ogre Chef at 3)
+				MenuWait = 45293, -- os.time when Vuzrog is hungry again (00:00)
+				ThunderTusk = 45294, -- Vuzrog: 1 taken, 2 done (Mugruu trades)
+				ThunderTuskKills = 45295, -- Thunder Tusk ogres killed (200)
+				FloodTime = 45296, -- os.time when the flooded mines wash you out (Survival of the Strongest)
+				Exile = 45297, -- A Goblin Exile: the password was told (the sealed door opens)
+				WeaponTaken = 45298, -- the holy weapon was taken from its cave (today's round)
+			},
 		},
 		U10_94 = { -- update 10.94 - Reserved Storages 45351 - 45450
 			HeartOfDestruction = {},

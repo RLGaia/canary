@@ -50,6 +50,11 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+-- FAMILY: Krailos Quest, Hungry New World and his TibiaWiki EN lines (lib/others/family_krailos.lua);
+-- upstream only traded
+if FamilyKrailos then
+	FamilyKrailos.setupNpc("Larek", npcHandler)
+end
 
 npcConfig.shop = {
 	{ itemName = "black pearl", clientId = 3027, sell = 280 },

@@ -60,6 +60,7 @@ local questModules = {
 	"059_the_scatterbrained_sorcerer", -- FAMILY: The Scatterbrained Sorcerer Quest (Eclesius)
 	"060_war_against_the_hive", -- FAMILY: War Against the Hive Quest (Orockle)
 	"061_kissing_a_pig", -- FAMILY: Kissing a Pig Quest (the pig on the Thais farm)
+	"062_krailos", -- FAMILY: Krailos Quest (Larek, Ghorza, Vuzrog, Grubokk, the goblins)
 }
 
 local catalog = dofile(CORE_DIRECTORY .. "/lib/core/quests/catalog.lua")

@@ -10,6 +10,19 @@ function accessDepot.onStepIn(creature, item, position, fromPosition)
 		return true
 	end
 
+	-- FAMILY: only after Larek's Hungry New World (TibiaWiki BR and EN); upstream let everybody down
+	-- (lib/others/family_krailos.lua)
+	local refusal = FamilyKrailos and FamilyKrailos.grilleRefusal(player)
+	if refusal then
+		local back = fromPosition
+		if back == position or back.z ~= position.z then
+			back = FamilyKrailos.GRILLE_BACK
+		end
+		player:teleportTo(back, true)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, refusal)
+		return true
+	end
+
 	local portal = setting[item.actionid]
 	if portal then
 		player:teleportTo(portal.position)

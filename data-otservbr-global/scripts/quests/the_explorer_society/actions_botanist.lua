@@ -25,6 +25,9 @@ function explorerSocietyBotanist.onUse(player, item, fromPosition, target, toPos
 		target:transform(5687)
 		player:setStorageValue(Storage.Quest.U7_8.DruidOutfits.GriffinclawFlower, 1)
 		player:say("You successfully took a sample of the rare griffinclaw flower.", TALKTYPE_MONSTER_SAY)
+	elseif target.itemid == 22645 and FamilyKrailos then
+		-- FAMILY: Krailos Quest, Hungry New World: Larek's container on a skull orchid (lib/others/family_krailos.lua)
+		return FamilyKrailos.useOrchid(player, item, toPosition)
 	end
 
 	return true
