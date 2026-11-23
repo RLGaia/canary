@@ -34,7 +34,8 @@ function kroazurRoom.onStepIn(creature, item, position, fromPosition)
 		return true
 	end
 
-	if player:getStorageValue(room.access) < 1 then
+	-- FAMILY (2026-11-22): Kroazur's lair is free access (TibiaWiki EN); upstream wanted Maelyrra's mission
+	if player:getStorageValue(room.access) < 1 and not (FamilyThreatenedDreams and FamilyThreatenedDreams.enabled()) then
 		position:sendMagicEffect(CONST_ME_TELEPORT)
 		player:teleportTo(fromPosition, true)
 		player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)

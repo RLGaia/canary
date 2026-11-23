@@ -143,6 +143,7 @@ npcConfig.shop = {
 	{ itemName = "icicle rune", clientId = 3158, buy = 30 },
 	{ itemName = "intense healing rune", clientId = 3152, buy = 95 },
 	{ itemName = "leaf star", clientId = 25735, sell = 50 },
+	{ itemName = "lemon", clientId = 8013, buy = 3 }, -- FAMILY: TibiaWiki BR (Threatened Dreams, Sweet Dreams sirups)
 	{ itemName = "lesser guardian gem", clientId = 44602, sell = 1000 },
 	{ itemName = "lesser marksman gem", clientId = 44605, sell = 1000 },
 	{ itemName = "lesser mystic gem", clientId = 44611, sell = 1000 },
@@ -166,6 +167,7 @@ npcConfig.shop = {
 	{ itemName = "powder herb", clientId = 3739, sell = 10 },
 	{ itemName = "prismatic quartz", clientId = 24962, sell = 450 },
 	{ itemName = "rainbow quartz", clientId = 25737, sell = 500 },
+	{ itemName = "raspberry", clientId = 8012, buy = 1 }, -- FAMILY: TibiaWiki BR
 	{ itemName = "red crystal fragment", clientId = 16126, sell = 800 },
 	{ itemName = "red rose", clientId = 3658, sell = 10 },
 	{ itemName = "ruby necklace", clientId = 3016, buy = 3560 },
@@ -225,5 +227,11 @@ npcType.onSellItem = function(npc, player, itemId, subtype, amount, ignore, name
 end
 -- On check npc shop message (look item)
 npcType.onCheckItem = function(npc, player, clientId, subType) end
+
+-- FAMILY: Threatened Dreams Quest review (2026-11-22): quest words, greeting and lore of both wikis
+-- (lib/others/family_threatened_dreams.lua); Family.threatenedDreams = false keeps the code above.
+if FamilyThreatenedDreams then
+	FamilyThreatenedDreams.setupNpc("Valindara", npcHandler)
+end
 
 npcType:register(npcConfig)

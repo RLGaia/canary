@@ -98,6 +98,9 @@ ASKED_FOR = {
     8908: "slightly rusted helmet (Krailos Quest; family_krailos.lua names it in a constant, 2026-11-22)",
     8902: "slightly rusted shield (Krailos Quest; family_krailos.lua names it in a constant, 2026-11-22)",
     9016: "flask of rust remover (Krailos Quest; family_krailos.lua names it in a constant, 2026-11-22)",
+    26181: "swan feather (Threatened Dreams, The Swan Feather Cloak; family_threatened_dreams.lua names it in a constant, 2026-11-22)",
+    25779: "swan feather cloak (Threatened Dreams, Valindara; family_threatened_dreams.lua names it in a constant, 2026-11-22)",
+    26074: "blessed acorn (Threatened Dreams, the happy sentient oaks; family_threatened_dreams.lua names it in a constant, 2026-11-22)",
 }
 
 

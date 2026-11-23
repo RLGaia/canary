@@ -331,6 +331,7 @@ return {
 	[5889] = true, -- piece of draconian steel
 	[5891] = true, -- enchanted chicken wing
 	[5892] = true, -- huge chunk of crude iron
+	[5893] = true, -- perfect behemoth fang
 	[5894] = true, -- bat wing
 	[5895] = true, -- fish fin
 	[5897] = true, -- wolf paw
@@ -512,6 +513,7 @@ return {
 	[10198] = true, -- tribal crest
 	[10199] = true, -- serpent crest
 	[10217] = true, -- Tome of Knowledge
+	[10275] = true, -- carrion worm fang
 	[10295] = true, -- winter wolf fur
 	[10296] = true, -- acorn
 	[10298] = true, -- metal spike
@@ -647,6 +649,7 @@ return {
 	[21975] = true, -- peacock feather fan
 	[21982] = true, -- nightmare teddy
 	[22007] = true, -- gloom wolf fur
+	[22052] = true, -- werewolf fangs
 	[22053] = true, -- wereboar hooves
 	[22187] = true, -- roasted meat
 	[22189] = true, -- ogre nose ring
@@ -668,14 +671,20 @@ return {
 	[23536] = true, -- folded void carpet
 	[23538] = true, -- vibrant egg
 	[23986] = true, -- heavy old tome
+	[24390] = true, -- ancient coin
 	[24960] = true, -- astral shaper rune
 	[25088] = true, -- porcelain mask
 	[25089] = true, -- colourful feathers
 	[25244] = true, -- tattered swan feather
 	[25689] = true, -- golden brush
 	[25694] = true, -- fairy wings
+	[25698] = true, -- butterfly ring
 	[25702] = true, -- little bowl of myrrh
+	[25737] = true, -- rainbow quartz
+	[25779] = true, -- swan feather cloak
 	[25780] = true, -- blossom bag
+	[26074] = true, -- blessed acorn
+	[26181] = true, -- swan feather
 	[26187] = true, -- leaf crown
 	[26188] = true, -- iron crown
 	[26189] = true, -- incandescent crown

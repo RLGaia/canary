@@ -22,7 +22,7 @@ local config = {
 			"As soon as you're pouring out the vial over the dreambird tree the plant is infused with starlight. This was the last tree.",
 		},
 		storageCounter = ThreatenedDreams.Mission02.ChargedStarlightVial,
-		storagePos = {
+		storagePos = { -- FAMILY (2026-11-22): its own storages; upstream used the moon mirror's
 			ThreatenedDreams.Mission02.StarlightPos01,
 			ThreatenedDreams.Mission02.StarlightPos02,
 			ThreatenedDreams.Mission02.StarlightPos03,
@@ -31,6 +31,26 @@ local config = {
 		},
 	},
 }
+
+-- FAMILY (2026-11-22): any part of the sculpture, tree or mosaic within 3 squares counts (the wikis give
+-- positions a few squares apart); upstream wanted the exact square.
+local TARGET_IDS = { [25491] = true, [25492] = true, [25493] = true, [25494] = true } -- dream bird trees
+local function isTarget(target, toPosition, pos)
+	if not (FamilyThreatenedDreams and FamilyThreatenedDreams.enabled()) then
+		return toPosition == pos
+	end
+	if not target or type(target) ~= "userdata" or not target.getId or toPosition.z ~= pos.z then
+		return false
+	end
+	if math.abs(toPosition.x - pos.x) > 3 or math.abs(toPosition.y - pos.y) > 3 then
+		return false
+	end
+	if TARGET_IDS == "stones" then
+		local id = target:getId()
+		return id >= 25368 and id <= 25380 -- the small stones of a sun mosaic
+	end
+	return TARGET_IDS[target:getId()] == true
+end
 
 local starlightVial = Action()
 function starlightVial.onUse(player, item, fromPosition, target, toPosition, isHotkey)
@@ -76,7 +96,7 @@ function starlightVial.onUse(player, item, fromPosition, target, toPosition, isH
 		if player:getStorageValue(ThreatenedDreams.Mission02[1]) == 7 then
 			local counter = player:getStorageValue(tool.storageCounter)
 			for i = 1, 5 do
-				if toPosition == tool.targetPos[i] and player:getStorageValue(tool.storagePos[i]) < 1 then
+				if isTarget(target, toPosition, tool.targetPos[i]) and player:getStorageValue(tool.storagePos[i]) < 1 then
 					player:setStorageValue(tool.storagePos[i], 1)
 					player:setStorageValue(tool.storageCounter, counter - 1)
 					player:getPosition():sendMagicEffect(CONST_ME_HITAREA)

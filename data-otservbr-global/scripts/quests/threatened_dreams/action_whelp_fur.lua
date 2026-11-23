@@ -2,7 +2,8 @@ local ThreatenedDreams = Storage.Quest.U11_40.ThreatenedDreams
 
 local wolfFur = Action()
 function wolfFur.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if target.itemid ~= 25237 then
+	-- FAMILY (2026-11-22): no Lua error when used on nothing or a creature
+	if not target or type(target) ~= "userdata" or not target.getId or target.itemid ~= 25237 then
 		return false
 	end
 

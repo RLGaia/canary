@@ -102,5 +102,11 @@ npcHandler:setMessage(MESSAGE_GREET, "You are speaking the language of animals? 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
+-- FAMILY: Threatened Dreams Quest review (2026-11-22): quest words, greeting and lore of both wikis
+-- (lib/others/family_threatened_dreams.lua); Family.threatenedDreams = false keeps the code above.
+if FamilyThreatenedDreams then
+	FamilyThreatenedDreams.setupNpc("Ghostly Wolf", npcHandler)
+end
+
 -- npcType registering the npcConfig table
 npcType:register(npcConfig)

@@ -5,6 +5,14 @@ function rake.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if FamilyOramondTasks and FamilyOramondTasks.rakeTube(player, target, toPosition) then
 		return true
 	end
+	-- FAMILY: Threatened Dreams, The Fairy Treasure: scratch the sentient stones' backs (lib/others/family_threatened_dreams.lua)
+	if FamilyThreatenedDreams and FamilyThreatenedDreams.rakeStone(player, target, toPosition) then
+		return true
+	end
+	-- FAMILY: no Lua error when the rake is used on nothing or a creature
+	if not target or type(target) ~= "userdata" or not target.getId then
+		return false
+	end
 	-- Wrath of the Emperor Mission02
 	if target.itemid == 11366 then
 		player:addItem(11329, 1)

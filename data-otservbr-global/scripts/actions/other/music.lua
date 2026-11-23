@@ -52,7 +52,10 @@ function music.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			end
 		end
 	elseif item.itemid == 2953 then
-		if player:getPosition():isInRange(Position(33540, 32245, 7), Position(33542, 32247, 7)) then
+		if player:getPosition():isInRange(Position(33540, 32245, 7), Position(33542, 32247, 7)) and FamilyThreatenedDreams and FamilyThreatenedDreams.enabled() then
+			-- FAMILY (2026-11-22): upstream set An Unlikely Couple back to its 2nd step at every play
+			FamilyThreatenedDreams.playPanpipes(player)
+		elseif player:getPosition():isInRange(Position(33540, 32245, 7), Position(33542, 32247, 7)) then
 			local ThreatenedDreams = Storage.Quest.U11_40.ThreatenedDreams
 			local UnlikelyCouple = player:getStorageValue(ThreatenedDreams.Mission03.UnlikelyCouple)
 			local PanpipesTimer = player:getStorageValue(ThreatenedDreams.Mission03.PanpipesTimer)

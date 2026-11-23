@@ -91,6 +91,41 @@ local quest = {
 				You may also ask Aurita for the starlight vial now.",
 			},
 		},
+		-- FAMILY: The Fairy Treasure and The Swan Feather Cloak (2026-11-22; texts ours, the wikis show no log:
+		-- lib/others/family_threatened_dreams.lua). Mission ids 11282-11283.
+		[4] = {
+			name = "The Fairy Treasure",
+			storageId = 45800,
+			missionId = 11282,
+			startValue = 1,
+			endValue = 2,
+			states = {
+				[1] = function(player)
+					return FamilyThreatenedDreams and FamilyThreatenedDreams.fairyTreasureLog(player) or ""
+				end,
+				[2] = function(player)
+					return FamilyThreatenedDreams and FamilyThreatenedDreams.fairyTreasureLog(player) or ""
+				end,
+			},
+		},
+		[5] = {
+			name = "The Swan Feather Cloak",
+			storageId = 45824,
+			missionId = 11283,
+			startValue = 1,
+			endValue = 3,
+			states = {
+				[1] = function()
+					return FamilyThreatenedDreams and FamilyThreatenedDreams.swanCloakLog[1] or ""
+				end,
+				[2] = function()
+					return FamilyThreatenedDreams and FamilyThreatenedDreams.swanCloakLog[2] or ""
+				end,
+				[3] = function()
+					return FamilyThreatenedDreams and FamilyThreatenedDreams.swanCloakLog[3] or ""
+				end,
+			},
+		},
 	},
 }
 

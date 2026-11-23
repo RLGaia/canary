@@ -27,8 +27,12 @@ local swanFeathers = MoveEvent()
 function swanFeathers.onStepIn(creature, item, position, fromPosition)
 	local feathersFound = config[item.actionid]
 	local player = creature:getPlayer()
-	if not player then
-		return false
+	if not player or not feathersFound then
+		return true
+	end
+	-- FAMILY (2026-11-22): the TibiaWiki EN server message of each spot (upstream had two others)
+	if FamilyThreatenedDreams and FamilyThreatenedDreams.enabled() then
+		feathersFound = { storage = feathersFound.storage, message = FamilyThreatenedDreams.featherMessages[item.actionid] or feathersFound.message }
 	end
 	if player:getStorageValue(ThreatenedDreams.Mission01[1]) ~= 13 then
 		return true
@@ -48,6 +52,7 @@ function swanFeathers.onStepIn(creature, item, position, fromPosition)
 		end
 		return true
 	end
+	return true
 end
 
 swanFeathers:aid(25024, 25025, 25026, 25027, 25028)

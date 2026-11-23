@@ -2462,6 +2462,8 @@ Storage = {
 					45798,
 				},
 				Mission05 = 45799,
+				-- FAMILY: 45800-45835 are The Fairy Treasure, The Swan Feather Cloak and the blessed acorns
+				-- (lib/others/family_threatened_dreams.lua, FamilyThreatenedDreams.S)
 			},
 		},
 		U11_50 = { -- update 11.50 - Reserved Storages 45851 - 46000

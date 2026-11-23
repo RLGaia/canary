@@ -83,9 +83,18 @@ keywordHandler:addKeyword({ "edron" }, StdModule.say, { npcHandler = npcHandler,
 keywordHandler:addKeyword({ "thais" }, StdModule.say, { npcHandler = npcHandler, text = "It's a place full of stone buildings and people. Very odd surrounding, if you ask me." })
 keywordHandler:addKeyword({ "venore" }, StdModule.say, { npcHandler = npcHandler, text = "It's a place full of stone buildings and people. Very odd surrounding, if you ask me." })
 keywordHandler:addKeyword({ "darama" }, StdModule.say, { npcHandler = npcHandler, text = "I have never heard of this place." })
-keywordHandler:addKeyword({ "map" }, StdModule.say, { npcHandler = npcHandler, text = "I have a part of a certain map, yes. I would consider giving it to you if you do me a small favour. Would you do that?" })
+-- FAMILY: "map" starts The Fairy Treasure part (lib/others/family_threatened_dreams.lua)
+if not (Family and Family.threatenedDreams) then
+	keywordHandler:addKeyword({ "map" }, StdModule.say, { npcHandler = npcHandler, text = "I have a part of a certain map, yes. I would consider giving it to you if you do me a small favour. Would you do that?" })
+end
 
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
+
+-- FAMILY: Threatened Dreams Quest review (2026-11-22): quest words, greeting and lore of both wikis
+-- (lib/others/family_threatened_dreams.lua); Family.threatenedDreams = false keeps the code above.
+if FamilyThreatenedDreams then
+	FamilyThreatenedDreams.setupNpc("Tired Tree", npcHandler)
+end
 
 -- npcType registering the npcConfig table
 npcType:register(npcConfig)

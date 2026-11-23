@@ -118,5 +118,11 @@ npcHandler:setMessage(MESSAGE_WALKAWAY, "May your path always be even.")
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
+-- FAMILY: Threatened Dreams Quest review (2026-11-22): quest words, greeting and lore of both wikis
+-- (lib/others/family_threatened_dreams.lua); Family.threatenedDreams = false keeps the code above.
+if FamilyThreatenedDreams then
+	FamilyThreatenedDreams.setupNpc("Aurita", npcHandler)
+end
+
 -- npcType registering the npcConfig table
 npcType:register(npcConfig)

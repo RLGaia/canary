@@ -127,7 +127,11 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:say("Did you find my stuff?", npc, creature)
 			npcHandler:setTopic(playerId, 3)
 		end
-	elseif MsgContains(message, "book") then
+	-- FAMILY: Threatened Dreams (2026-11-22): "book" only on the mission, the book becomes the doctored one
+	-- (lib/others/family_threatened_dreams.lua); upstream answered everybody and kept the original book
+	elseif FamilyThreatenedDreams and FamilyThreatenedDreams.ahmetBook(npc, player, message, npcHandler, false) then
+		return true
+	elseif MsgContains(message, "book") and not (FamilyThreatenedDreams and FamilyThreatenedDreams.enabled()) then
 		npcHandler:say("I see: You want me to add an additional story to this book. A legend about how it brings ill luck to kill a white deer. I could do that, yes. It costs 5000 gold, however. Are you still interested?", npc, creature)
 		npcHandler:setTopic(playerId, 5)
 	elseif MsgContains(message, "yes") then
@@ -162,6 +166,9 @@ local function creatureSayCallback(npc, creature, type, message)
 				npcHandler:say("Come back when you find my stuff.", npc, creature)
 				npcHandler:setTopic(playerId, 0)
 			end
+		elseif npcHandler:getTopic(playerId) == 5 and FamilyThreatenedDreams and FamilyThreatenedDreams.enabled() then
+			npcHandler:setTopic(playerId, 0)
+			return FamilyThreatenedDreams.ahmetBook(npc, player, message, npcHandler, true)
 		elseif npcHandler:getTopic(playerId) == 5 then
 			if player:getStorageValue(ThreatenedDreams.Mission01[1]) == 1 and player:getStorageValue(ThreatenedDreams.Mission01.PoacherChest) == 1 then
 				if player:getItemCount(25235) >= 1 and player:getMoney() >= 5000 then
