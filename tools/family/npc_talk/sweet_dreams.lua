@@ -225,4 +225,87 @@ local toffee = T.load("data-otservbr-global/npc/toffee.lua")
 a = toffee:say(stranger, "hi")
 T.check("Toffee gestures (BR)", has(a, "The globose cook greets you"), a)
 
+-- ------------------------------------------------------------- the leftovers (2026-11-22)
+-- Coco: gestures before the lipstick, closed before the Candy Carnival, one list per coin
+local coco = T.load("data-otservbr-global/npc/coco.lua")
+coco.npc.currency = 0
+function coco.npc:setCurrency(c) self.currency = c end
+function coco.npc:getCurrency() return self.currency end
+function coco.npc:openShopWindowTable(pl, list) rawset(pl, "shopOpened", true) rawset(pl, "shopList", list) end
+function coco.npc:sellItem(pl, id, amount) pl:removeItem(self.currency, SD.cocoPrice or 0) pl:addItem(id, amount) rawset(pl, "sold", (rawget(pl, "sold") or 0) + 1) return true end
+a = coco:say(stranger, "hi")
+T.check("Coco gestures before the lipstick (ours, as Toffee BR)", has(a, "The little fae greets you"), a)
+coco:say(stranger, "bye")
+local early = player()
+early.storage[S.Lipstick] = 2
+early.storage[S.Main] = 7
+coco:say(early, "hi")
+a = coco:say(early, "milk chocolate coins")
+T.check("Coco closed before the Candy Carnival", has(a, "Candy Carnival isn't open yet") and not rawget(early, "shopOpened"), a)
+coco:say(early, "bye")
+a = coco:say(p, "hi")
+T.check("Coco greets after the carnival opened", a == SD.npcs["Coco"].greet, a)
+a = coco:say(p, "trade")
+T.check("Coco 'trade' names both coins", has(a, "{milk chocolate coins} and {dark chocolate coins}") and not rawget(p, "shopOpened"), a)
+a = coco:say(p, "milk chocolate coins")
+local function listHas(list, id, price)
+	for _, e in ipairs(list or {}) do
+		if e.clientId == id and e.buy == price then return true end
+	end
+	return false
+end
+T.check("milk list (BR): 9 goods, candy necklace 5000", rawget(p, "shopOpened") and #p.shopList == 9 and listHas(p.shopList, 45641, 5000) and coco.npc.currency == 48249, a)
+rawset(p, "shopOpened", nil)
+a = coco:say(p, "dark")
+T.check("dark list (BR): 8 goods, ring of temptation 250", rawget(p, "shopOpened") and #p.shopList == 8 and listHas(p.shopList, 45642, 250) and coco.npc.currency == 48250, a)
+p.items[48250] = 100
+SD.cocoBuy(coco.npc, p, 45643, 1, 1, false, false)
+T.check("not enough dark chocolate coins for the biscuit barrier", (rawget(p, "sold") or 0) == 0 and has(p.log[#p.log], "You do not have enough dark chocolate coins."), p.log[#p.log])
+p.items[48250] = 300
+coco.npc.currency = 48249 -- the other player opened the milk list meanwhile
+SD.cocoBuy(coco.npc, p, 45642, 1, 1, false, false)
+T.check("ring of temptation bought with dark coins although the milk list was opened later", rawget(p, "sold") == 1 and coco.npc.currency == 48250 and p.items[45642] == 1)
+coco:say(p, "bye")
+
+-- roleplay NPCs (BR)
+local ball = T.load("data-otservbr-global/npc/a_floating_sugar_ball.lua")
+T.check("A Floating Sugar Ball (BR)", ball:say(stranger, "hi") == "*This floating ball appears to be made of glowing red sugar. It moves gently up and down and emits a soft humming sound.*")
+local worker = T.load("data-otservbr-global/npc/a_stressed_sugar_cube_worker.lua")
+T.check("A Stressed Sugar Cube Worker (BR)", worker:say(stranger, "hi") == "*The sugar cube worker does not give the impression of understanding you. And it seems to be rather busy.*")
+local jelly = T.load("data-otservbr-global/npc/jelly.lua")
+T.check("Jelly greets (ours)", has(jelly:say(stranger, "hi"), "The tiny fairy giggles"))
+
+-- sand toys: carrots on the trough, the surface bunny, the treasure
+local bunny2 = T.load("data-otservbr-global/npc/a_taffy_bunny_surface.lua")
+T.check("surface bunny shows the wiki name", bunny2.npc.name == "A Taffy Bunny")
+T.check("surface bunny only sniffs at first", bunny2:say(p, "hi") == "*sniff* *sniff*")
+bunny2:say(p, "bye")
+local trough = ud(SD.TROUGH_ID)
+local pos0 = { x = 1, y = 1, z = 7, sendMagicEffect = function() end }
+T.check("no treasure without the tip", not SD.digTreasure(p, SD.TREASURE[2]))
+p.items[48586] = 10
+p.items[48582] = 5
+for _ = 1, 10 do SD.feedTrough(p, item(p, 48586), trough, pos0) end
+for _ = 1, 4 do SD.feedTrough(p, item(p, 48582), trough, pos0) end
+T.check("14 carrots are not enough", bunny2:say(p, "hi") == "*sniff* *sniff*")
+bunny2:say(p, "bye")
+SD.feedTrough(p, item(p, 48582), trough, pos0)
+T.check("carrots used up", p.items[48586] == 0 and p.items[48582] == 0 and SD.kvGet(p, "carrots") == 15)
+a = bunny2:say(p, "hi")
+T.check("the bunny's treasure tip (BR)", has(a, "You brought me a LOT of marzipan carrots, friend.") and has(a, "Right up north, right by the water, yes."), a)
+bunny2:say(p, "bye")
+T.check("the shovel elsewhere does nothing special", not SD.digTreasure(p, { x = 1, y = 2, z = 7 }))
+local spot = { x = SD.TREASURE[2].x, y = SD.TREASURE[2].y, z = 7, sendMagicEffect = function() end }
+T.check("sand toys dug up (BR)", SD.digTreasure(p, spot) and p.items[SD.SAND_TOYS] == 1 and p.log[#p.log] == "You are digging up a set of sand toys. Perhaps you could build a sand castle with them. Or a vanilla sugar castle.")
+T.check("only once", SD.digTreasure(p, spot) and p.items[SD.SAND_TOYS] == 1)
+
+-- recipes: only after Sweet Dreams (EN), once each
+local fresh = player()
+fresh.storage[S.Main] = 12
+T.check("no recipe before the end", not SD.takeRecipe(fresh, 1) and (fresh.items[48481] or 0) == 0)
+T.check("matcha turtle recipe (EN: Sugar Daddy's room)", SD.takeRecipe(p, 1) and p.items[48481] == 1 and p.log[#p.log] == "You have found a matcha turtle recipe.")
+T.check("recipe once per character", not SD.takeRecipe(p, 1) and p.items[48481] == 1)
+for i = 2, 4 do SD.takeRecipe(p, i) end
+T.check("all four recipes", p.items[48480] == 1 and p.items[48482] == 1 and p.items[48483] == 1)
+
 T.finish()

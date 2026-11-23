@@ -33,12 +33,17 @@
 --     I Wanna Fly Away); 13 Dulcineo thanks you.
 --   Put the Cherry in the Cage (S.Bunny): Sugar Plum Fairy `taffy bunny`, A Taffy Bunny in the
 --   Dessert Dungeons, report.
--- Not built: Sugar Daddy's summon phases (powerless, hex), Coco's chocolate coin shop, the sand toys
--- and the four real-life recipes (side content outside the quest log).
+-- Added later the same day (Rodrigo: "Is it possible to proceed with these?"): Sugar Daddy's sugar rush
+-- (summons, Powerless, Hex, the spoon on his body), Coco's two chocolate coin shops, the sand toys
+-- (marzipan carrots, the trough, the surface taffy bunny's tip, the treasure, sand and vanilla sugar
+-- castles), the four real-life recipes and the roleplay NPCs Jelly, A Floating Sugar Ball and A Stressed
+-- Sugar Cube Worker. Sections below; their sources are in each section's header.
 --
 -- Player storages: 45836-45850 of the Threatened Dreams block; player KV "family-sweet-dreams".
 -- World objects: scripts/family/sweet_dreams.lua. NPCs: sugar_plum_fairy, candis, dulcineo,
--- tooth_fairy_candia, a_captive_forest_fury, a_taffy_bunny, toffee (ours) and maelyrra, charlotta.
+-- tooth_fairy_candia, a_captive_forest_fury, a_taffy_bunny, a_taffy_bunny_surface, toffee, coco, jelly,
+-- a_floating_sugar_ball, a_stressed_sugar_cube_worker (ours) and maelyrra, charlotta. Monsters (ours):
+-- cheeky_sugar_cube, mint_drop, truffle_worker.
 -- Switch: Family.sweetDreams (false = none of this).
 
 Family = Family or {}
@@ -207,6 +212,9 @@ function SD.greeting(name, player)
 	if name == "A Taffy Bunny" then
 		return SD.bunnyGreeting(player)
 	end
+	if name == "A Taffy Bunny (Surface)" then
+		return SD.surfaceBunnyGreeting(player)
+	end
 	return SD.npcs[name].greet
 end
 
@@ -262,6 +270,9 @@ function SD.setupNpc(name, npcHandler, opts)
 			if SD.main(player) < 9 then
 				npcHandler:say("Sorry, the Candy Carnival isn't open yet. There is trouble in the Chocolate Mines.", npc, creature) -- ours
 				return false
+			end
+			if opts.onTrade then
+				return opts.onTrade(npc, player)
 			end
 			return true
 		end)
@@ -851,6 +862,7 @@ function SD.enterSugarDaddy(player, fromPosition)
 		player:teleportTo(fromPosition, true)
 		return true
 	end
+	SD.newSugarDaddy(boss)
 	player:teleportTo(r.entry)
 	r.entry:sendMagicEffect(CONST_ME_TELEPORT)
 	player:setBossCooldown("Sugar Daddy", os.time() + r.cooldown)
@@ -1035,6 +1047,465 @@ function SD.dungeonStep(player)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, SD.TUFT)
 	end
 end
+
+-- ----------------------------------------------------------- Sugar Daddy's sugar rush (added 2026-11-22)
+-- EN (Sugar Daddy): at about 3/4, 1/2 and 1/4 health he spawns 5 summons; meanwhile you are Powerless
+-- (no attack spells or runes); if they are not all dead within 15 seconds you are Hexed for 1 minute and he
+-- heals some life. The summons are the Cheeky Sugar Cube, the Mint Drop and the Truffle Worker (EN), one kind
+-- per phase in the order of his three yells (order ours). Lesser Hex (EN's plain "Hexed" icon), the heal of
+-- 1,600 (EN: his healing goes up to 1,600) and every message are ours.
+SD.SUGAR_RUSH = {
+	phases = {
+		{ at = 0.75, monster = "Cheeky Sugar Cube", yell = "SUGAR!!!" },
+		{ at = 0.50, monster = "Mint Drop", yell = "YOU HAVE BAD BREATH, TAKE A MINT!!!" },
+		{ at = 0.25, monster = "Truffle Worker", yell = "I LOOOOOOVE CHOCOLATE TRUFFLES!!!" },
+	},
+	count = 5,
+	seconds = 15,
+	hexSeconds = 60,
+	heal = 1600,
+	start = "Sugar Daddy calls his sweet little helpers! Defeat them quickly!", -- ours
+	failed = "Too slow! Sugar Daddy gets a sugar rush and you are hexed.", -- ours
+	done = "You defeated Sugar Daddy's helpers.", -- ours
+}
+SD.rush = SD.rush or {} -- boss id -> { done = phases started, active = phase running, minions = { id = true } }
+SD.minionBoss = SD.minionBoss or {} -- minion id -> boss id
+SD.spoonHeal = SD.spoonHeal or {} -- player guid -> true: may use a spoon on Sugar Daddy's body once
+
+function SD.inSugarDaddyRoom(pos)
+	local r = SD.SUGAR_DADDY
+	return pos.z == r.from.z and pos.x >= r.from.x and pos.x <= r.to.x and pos.y >= r.from.y and pos.y <= r.to.y
+end
+
+function SD.sugarDaddyPlayers()
+	local list = {}
+	for _, p in ipairs(Game.getPlayers()) do
+		if SD.inSugarDaddyRoom(p:getPosition()) then
+			list[#list + 1] = p
+		end
+	end
+	return list
+end
+
+function SD.newSugarDaddy(boss)
+	SD.rush[boss:getId()] = { done = 0, active = false, minions = {} }
+	boss:registerEvent("FamilySugarDaddyRush")
+end
+
+local function powerless(seconds)
+	local c = Condition(CONDITION_POWERLESS)
+	c:setParameter(CONDITION_PARAM_TICKS, seconds * 1000)
+	return c
+end
+local function lesserHex(seconds)
+	local c = Condition(CONDITION_LESSERHEX)
+	c:setParameter(CONDITION_PARAM_BUFF_HEALINGRECEIVED, 50)
+	c:setParameter(CONDITION_PARAM_TICKS, seconds * 1000)
+	return c
+end
+
+-- onHealthChange of Sugar Daddy: start the next phase when his health falls to its mark.
+function SD.sugarRushCheck(boss, damage)
+	local st = SD.rush[boss:getId()]
+	if not st or st.active or damage <= 0 then
+		return
+	end
+	local n = st.done + 1
+	local phase = SD.SUGAR_RUSH.phases[n]
+	if phase and boss:getHealth() - damage <= boss:getMaxHealth() * phase.at and boss:getHealth() - damage > 0 then
+		SD.startSugarRush(boss, n)
+	end
+end
+
+function SD.startSugarRush(boss, n)
+	local R = SD.SUGAR_RUSH
+	local st = SD.rush[boss:getId()]
+	local phase = R.phases[n]
+	st.done, st.active, st.minions = n, true, {}
+	boss:say(phase.yell, TALKTYPE_MONSTER_YELL)
+	local pos = boss:getPosition()
+	for _ = 1, R.count do
+		local m = Game.createMonster(phase.monster, pos, true, true)
+		if m then
+			st.minions[m:getId()] = true
+			SD.minionBoss[m:getId()] = boss:getId()
+			m:registerEvent("FamilySugarDaddyMinion")
+		end
+	end
+	for _, p in ipairs(SD.sugarDaddyPlayers()) do
+		p:addCondition(powerless(R.seconds))
+		p:sendTextMessage(MESSAGE_EVENT_ADVANCE, R.start)
+	end
+	addEvent(SD.endSugarRush, R.seconds * 1000, boss:getId(), n)
+end
+
+-- After 15 seconds, or when the last helper dies.
+function SD.endSugarRush(bossId, n)
+	local R = SD.SUGAR_RUSH
+	local st = SD.rush[bossId]
+	if not st or not st.active or st.done ~= n then
+		return
+	end
+	st.active = false
+	local left = 0
+	for id in pairs(st.minions) do
+		local m = Creature(id)
+		if m then
+			left = left + 1
+			m:getPosition():sendMagicEffect(CONST_ME_POFF)
+			m:remove()
+		end
+		SD.minionBoss[id] = nil
+	end
+	st.minions = {}
+	local boss = Creature(bossId)
+	for _, p in ipairs(SD.sugarDaddyPlayers()) do
+		p:removeCondition(CONDITION_POWERLESS)
+		if left > 0 then
+			p:addCondition(lesserHex(R.hexSeconds))
+			p:sendTextMessage(MESSAGE_EVENT_ADVANCE, R.failed)
+		else
+			p:sendTextMessage(MESSAGE_EVENT_ADVANCE, R.done)
+		end
+	end
+	if left > 0 and boss then
+		boss:addHealth(R.heal)
+		boss:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+	end
+end
+
+function SD.minionDied(creature)
+	local bossId = SD.minionBoss[creature:getId()]
+	SD.minionBoss[creature:getId()] = nil
+	local st = bossId and SD.rush[bossId]
+	if not st or not st.active then
+		return
+	end
+	st.minions[creature:getId()] = nil
+	if next(st.minions) == nil then
+		SD.endSugarRush(bossId, st.done)
+	end
+end
+
+-- Sugar Daddy died: his helpers go, Powerless ends; each fighter may use a spoon on his body once (EN).
+function SD.sugarDaddyGone(monster)
+	local st = SD.rush[monster:getId()]
+	SD.rush[monster:getId()] = nil
+	if st then
+		for id in pairs(st.minions) do
+			local m = Creature(id)
+			if m then
+				m:remove()
+			end
+			SD.minionBoss[id] = nil
+		end
+	end
+	for _, p in ipairs(SD.sugarDaddyPlayers()) do
+		p:removeCondition(CONDITION_POWERLESS)
+	end
+	for cid, _ in pairs(monster:getDamageMap() or {}) do
+		local p = Player(cid)
+		if p then
+			SD.spoonHeal[p:getGuid()] = true
+		end
+	end
+end
+
+SD.SUGAR_DADDY_CORPSE = 48416
+-- A spoon (or tool gear) on Sugar Daddy's body: full health and mana (EN). Called by onUseSpoon.
+function SD.spoonCorpse(player, target, toPosition)
+	if not SD.enabled() or not target or not target.getId or target:getId() ~= SD.SUGAR_DADDY_CORPSE then
+		return false
+	end
+	if not SD.spoonHeal[player:getGuid()] then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "There is nothing left to scrape off.") -- ours
+		return true
+	end
+	SD.spoonHeal[player:getGuid()] = nil
+	player:addHealth(player:getMaxHealth())
+	player:addMana(player:getMaxMana())
+	player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You scrape some sugar off Sugar Daddy. You feel completely refreshed.") -- ours
+	return true
+end
+
+-- ----------------------------------------------------------- Coco (added 2026-11-22)
+-- Two shops, one per coin (BR Coco: keyword "Milk Chocolate Coin" / "Dark Chocolate Coin", items and prices).
+-- An NPC has one currency in our engine, so Coco switches it when a list is opened and checks it again
+-- before each purchase (SD.cocoBuy).
+SD.COCO = {
+	milk = {
+		coin = 48249,
+		word = "milk chocolate coins",
+		items = {
+			{ itemName = "candy bed (headboard)", clientId = 48449, buy = 1500 }, -- which part is which: ours
+			{ itemName = "candy bed (footboard)", clientId = 48450, buy = 1500 },
+			{ itemName = "candy cone chair", clientId = 48427, buy = 1500 },
+			{ itemName = "candy cushion", clientId = 48433, buy = 1500 },
+			{ itemName = "candy-coated quiver", clientId = 45644, buy = 8000 },
+			{ itemName = "candy necklace", clientId = 45641, buy = 5000 },
+			{ itemName = "chocolate table", clientId = 48430, buy = 1500 },
+			{ itemName = "creamy grimoire", clientId = 45640, buy = 8000 },
+			{ itemName = "small gingerbread house", clientId = 49166, buy = 3000 },
+		},
+	},
+	dark = {
+		coin = 48250,
+		word = "dark chocolate coins",
+		items = {
+			{ itemName = "biscuit barrier", clientId = 45643, buy = 8000 },
+			{ itemName = "blue ice cream lamp", clientId = 48435, buy = 1125 },
+			{ itemName = "chocolate fountain", clientId = 48432, buy = 1500 },
+			{ itemName = "cocoa grimoire", clientId = 45639, buy = 8000 },
+			{ itemName = "green ice cream lamp", clientId = 48439, buy = 1125 },
+			{ itemName = "pink ice cream lamp", clientId = 48437, buy = 1125 },
+			{ itemName = "pop tart painting", clientId = 48434, buy = 1500 },
+			{ itemName = "ring of temptation", clientId = 45642, buy = 250 },
+		},
+	},
+	trade = "I sell furniture and sweet gear. I take {milk chocolate coins} and {dark chocolate coins}. Which do you want to pay with?", -- ours
+	opened = "Here are my offers for %s.", -- ours
+}
+SD.cocoShop = SD.cocoShop or {} -- player id -> "milk" or "dark"
+
+function SD.cocoOpen(npc, player, kind, npcHandler)
+	local shop = SD.COCO[kind]
+	SD.cocoShop[player:getId()] = kind
+	npc:setCurrency(shop.coin)
+	npc:openShopWindowTable(player, shop.items)
+	return say(npcHandler, npc, player, string.format(SD.COCO.opened, shop.word))
+end
+
+function SD.cocoBuy(npc, player, itemId, subType, amount, ignore, inBackpacks)
+	local shop = SD.COCO[SD.cocoShop[player:getId()] or ""]
+	if not shop then
+		return
+	end
+	local price
+	for _, it in ipairs(shop.items) do
+		if it.clientId == itemId then
+			price = it.buy
+		end
+	end
+	if not price then
+		return
+	end
+	if npc:getCurrency() ~= shop.coin then
+		npc:setCurrency(shop.coin) -- the other player opened the other list meanwhile
+	end
+	if player:getItemCount(shop.coin) < price * amount then
+		player:sendTextMessage(MESSAGE_TRADE, "You do not have enough " .. shop.word .. ".") -- ours
+		return
+	end
+	npc:sellItem(player, itemId, amount, subType, 0, ignore, inBackpacks)
+end
+
+SD.handlers["Coco"] = function(npc, player, message, npcHandler)
+	local kind = (MsgContains(message, "milk") and "milk") or (MsgContains(message, "dark") and "dark") or nil
+	if not kind then
+		return false
+	end
+	if SD.main(player) < 9 then
+		return say(npcHandler, npc, player, "Sorry, the Candy Carnival isn't open yet. There is trouble in the Chocolate Mines.") -- ours, as Toffee
+	end
+	return SD.cocoOpen(npc, player, kind, npcHandler)
+end
+
+-- ----------------------------------------------------------- Sand toys (added 2026-11-22)
+-- BR Threatened Dreams Quest, Sand Toys (not in the quest log): marzipan carrots grow around Candia (one
+-- every 30 seconds); feed 15 or more into the trough and the taffy bunny on the surface tells you about a
+-- treasure; dig it up with a shovel on the northern headland: sand toys. Used on the sand of a town they
+-- build a sand castle (1 hour), on Candia's vanilla sand a vanilla sugar castle (3 hours).
+SD.CARROT_PLANT = { [48581] = 48586, [48580] = 48582 } -- plant -> what you pull (our map; single and handful)
+SD.CARROT_TEXT = {
+	[48586] = "You are pulling a marzipan carrot out of the pastry soil.", -- BR
+	[48582] = "You are pulling some marzipan carrots out of the pastry soil.", -- BR
+}
+SD.CARROT_SECONDS = 30 -- BR, EN
+SD.carrotTimes = SD.carrotTimes or {} -- "x,y,z" -> os.time() of the last pull
+SD.TROUGH = Position(33425, 32151, 7) -- BR 33426,32151: our trough is one square west
+SD.TROUGH_ID = 48583
+SD.CARROTS_NEEDED = 15 -- BR "a partir de 15"; a handful counts as one (ours)
+SD.TREASURE = { Position(33388, 32099, 7), Position(33389, 32099, 7) } -- BR 33389,32099; 33388 is the odd sand square there
+SD.SAND_TOYS = 49156
+SD.CASTLE = {
+	-- ids: the two unnamed client objects next to the sand toys (49154, 49155: 64x64 pictures of update 13.40);
+	-- 49155 stands around the treasure spot on Candia's beach, so it is the vanilla sugar castle (ours, not on a wiki)
+	sand = { id = 49154, name = "sand castle", cooldown = 3600, text = "You are building a sand castle." }, -- BR
+	vanilla = { id = 49155, name = "vanilla sugar castle", cooldown = 3 * 3600, text = "You are building a vanilla sugar castle." }, -- BR
+	lifetime = 3600, -- ours: a castle outside a house crumbles after an hour
+}
+SD.VANILLA_SAND = { [45316] = true, [49101] = true } -- Candia's beach (our map)
+
+local function posKey(pos)
+	return pos.x .. "," .. pos.y .. "," .. pos.z
+end
+
+function SD.pullCarrot(player, item)
+	local gives = SD.CARROT_PLANT[item:getId()]
+	if not SD.enabled() or not gives then
+		return false
+	end
+	local pos = item:getPosition()
+	local key = posKey(pos)
+	if os.time() - (SD.carrotTimes[key] or 0) < SD.CARROT_SECONDS then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "These marzipan carrots have not grown back yet.") -- ours
+		return true
+	end
+	if not player:addItem(gives, 1) then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You cannot carry that.") -- ours
+		return true
+	end
+	SD.carrotTimes[key] = os.time()
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, SD.CARROT_TEXT[gives])
+	pos:sendMagicEffect(CONST_ME_POFF)
+	return true
+end
+
+function SD.feedTrough(player, item, target, toPosition)
+	if not SD.enabled() or not target or type(target) ~= "userdata" or not target.getId or target:getId() ~= SD.TROUGH_ID then
+		return false
+	end
+	local fed = (SD.kvGet(player, "carrots") or 0) + 1
+	SD.kvSet(player, "carrots", fed)
+	item:remove(1)
+	toPosition:sendMagicEffect(CONST_ME_HEARTS)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You put the marzipan carrots into the trough. Somewhere nearby, a bunny sniffs eagerly.") -- ours
+	return true
+end
+
+SD.BUNNY_TIP = {
+	"*Surprisingly, this time the bunny doesn't just sniff, but talks to you.* You brought me a LOT of marzipan carrots, friend. Really nice of you. ...",
+	"Let me tell you a little secret in return: I know where a treasure is hidden. If you dig around the northern headlands of the island, you'll find it. Right up north, right by the water, yes.",
+} -- BR
+function SD.surfaceBunnyGreeting(player)
+	if (SD.kvGet(player, "carrots") or 0) >= SD.CARROTS_NEEDED then
+		SD.kvSet(player, "treasure-tip", true)
+		return table.concat(SD.BUNNY_TIP, " ")
+	end
+	return SD.npcs["A Taffy Bunny"].greet
+end
+
+-- Called by onUseShovel.
+function SD.digTreasure(player, toPosition)
+	if not SD.enabled() then
+		return false
+	end
+	local here = false
+	for _, pos in ipairs(SD.TREASURE) do
+		if toPosition.x == pos.x and toPosition.y == pos.y and toPosition.z == pos.z then
+			here = true
+		end
+	end
+	if not here or not SD.kvGet(player, "treasure-tip") then
+		return false
+	end
+	if SD.kvGet(player, "sand-toys") then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You dig, but there is nothing else hidden here.") -- ours
+		toPosition:sendMagicEffect(CONST_ME_POFF)
+		return true
+	end
+	if not player:addItem(SD.SAND_TOYS, 1) then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You cannot carry that.") -- ours
+		return true
+	end
+	SD.kvSet(player, "sand-toys", true)
+	toPosition:sendMagicEffect(CONST_ME_POFF)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You are digging up a set of sand toys. Perhaps you could build a sand castle with them. Or a vanilla sugar castle.") -- BR
+	return true
+end
+
+function SD.castleKind(tile)
+	local ground = tile and tile:getGround()
+	if not ground then
+		return nil
+	end
+	if SD.VANILLA_SAND[ground:getId()] then
+		return "vanilla"
+	end
+	if ItemType(ground:getId()):getName() == "sand" then
+		return "sand"
+	end
+	return nil
+end
+
+function SD.useSandToys(player, item, toPosition)
+	if not SD.enabled() then
+		return false
+	end
+	local tile = Tile(toPosition)
+	local kind = SD.castleKind(tile)
+	if not kind then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You need sand to build a castle.") -- ours
+		return true
+	end
+	if tile:getTopCreature() or tile:getTopDownItem() or tile:hasFlag(TILESTATE_BLOCKSOLID) then
+		player:sendCancelMessage(RETURNVALUE_NOTENOUGHROOM)
+		return true
+	end
+	local castle = SD.CASTLE[kind]
+	local key = kind .. "-castle"
+	local waitUntil = (SD.kvGet(player, key) or 0) + castle.cooldown
+	if os.time() < waitUntil then
+		local minutes = math.ceil((waitUntil - os.time()) / 60)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You can build your next %s in %d minute%s.", castle.name, minutes, minutes == 1 and "" or "s")) -- ours
+		return true
+	end
+	local built = Game.createItem(castle.id, 1, toPosition)
+	if not built then
+		return true
+	end
+	SD.kvSet(player, key, os.time())
+	toPosition:sendMagicEffect(CONST_ME_POFF)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, castle.text)
+	if not tile:getHouse() then
+		local pos = Position(toPosition.x, toPosition.y, toPosition.z)
+		addEvent(function()
+			local t = Tile(pos)
+			local c = t and t:getItemById(castle.id)
+			if c then
+				c:remove()
+				pos:sendMagicEffect(CONST_ME_POFF)
+			end
+		end, SD.CASTLE.lifetime * 1000)
+	end
+	return true
+end
+
+-- ----------------------------------------------------------- the four real-life recipes (added 2026-11-22)
+-- Decorations, one of each per character, only after the whole of Sweet Dreams (EN item pages). Places: EN
+-- item pages, matched with our map. BR's quest page swaps the matcha turtle (BR: the bottle) and the rainbow
+-- waffles (BR: Sugar Daddy's room); we follow EN's item pages, the more specific source.
+SD.RECIPES = {
+	{ key = "matcha", id = 48481, name = "matcha turtle recipe", pos = Position(33362, 32222, 9) }, -- EN 33364,32223,9: chest in Sugar Daddy's room
+	{ key = "rose", id = 48480, name = "rose milk cake recipe", pos = Position(33453, 32131, 9) }, -- EN 33454,32132,9 (BR 33454,32131): chest
+	{ key = "nightsky", id = 48482, name = "nightsky cupcake recipe", pos = Position(33410, 32124, 5) }, -- EN 33412,32126,5: ice cream snowman
+	{ key = "waffles", id = 48483, name = "rainbow waffles recipe", pos = Position(33357, 32122, 7) }, -- EN 33359,32123,7 (BR 33358,32123): bottle
+}
+
+function SD.takeRecipe(player, index)
+	local r = SD.RECIPES[index]
+	if not SD.enabled() or not r or SD.main(player) < 13 or SD.kvGet(player, "recipe-" .. r.key) then
+		return false -- opens as usual (empty)
+	end
+	if not player:addItem(r.id, 1) then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You cannot carry that.") -- ours
+		return true
+	end
+	SD.kvSet(player, "recipe-" .. r.key, true)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have found a " .. r.name .. ".")
+	return true
+end
+
+-- ----------------------------------------------------------- roleplay NPCs (added 2026-11-22)
+-- BR NPC pages: A Floating Sugar Ball and A Stressed Sugar Cube Worker (greeting and sounds). Jelly has no
+-- line on either wiki: hers are ours.
+SD.npcs["Coco"] = { greet = "Sweet greetings! Candy furniture and sweet gear for your chocolate coins!", farewell = "Sweet greetings!" } -- ours
+SD.gestures["Coco"] = "*The little fae greets you but you don't understand her. She makes a gesture as if to apply some lipstick. Then she is pointing to the east. But what does that mean?*" -- ours, as Toffee's (BR)
+SD.npcs["Jelly"] = { greet = "*The tiny fairy giggles, flutters once around your head and hums a sweet little tune.*", farewell = "*The tiny fairy waves at you.*" } -- ours
+SD.npcs["A Floating Sugar Ball"] = { greet = "*This floating ball appears to be made of glowing red sugar. It moves gently up and down and emits a soft humming sound.*", farewell = "*hummmm*" } -- BR (farewell: its BR sound)
+SD.npcs["A Stressed Sugar Cube Worker"] = { greet = "*The sugar cube worker does not give the impression of understanding you. And it seems to be rather busy.*", farewell = "This has to work ... somehow." } -- BR (farewell: its BR sound)
+SD.npcs["A Taffy Bunny (Surface)"] = SD.npcs["A Taffy Bunny"]
 
 -- ----------------------------------------------------------- quest log (texts ours)
 SD.LOG = {

@@ -3143,4 +3143,20 @@
 	<npc centerx="33379" centery="32179" centerz="7" radius="1">
 		<npc name="Toffee" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	<!-- FAMILY (2026-11-22): Sweet Dreams leftovers, places from TibiaWiki BR (surface bunny one square from 33423,32146, which is blocked on our map) -->
+	<npc centerx="33372" centery="32179" centerz="7" radius="1">
+		<npc name="Coco" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="33422" centery="32147" centerz="7" radius="1">
+		<npc name="A Taffy Bunny (Surface)" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="33367" centery="32131" centerz="7" radius="1">
+		<npc name="Jelly" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="33351" centery="32167" centerz="7" radius="1">
+		<npc name="A Floating Sugar Ball" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="33355" centery="32170" centerz="7" radius="1">
+		<npc name="A Stressed Sugar Cube Worker" x="0" y="0" z="7" spawntime="60" />
+	</npc>
 </npcs>

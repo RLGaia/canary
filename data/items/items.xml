@@ -80501,6 +80501,39 @@ Granted by TibiaGoals.com"/>
 		<attribute key="primarytype" value="keys"/>
 		<attribute key="weight" value="100"/>
 	</item>
+	<!-- FAMILY: Sweet Dreams sand toys and recipes (2026-11-22): names from the client and the wikis, weights from TibiaWiki EN -->
+	<item id="48480" article="a" name="rose milk cake recipe">
+		<attribute key="primarytype" value="decorations"/>
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="48481" article="a" name="matcha turtle recipe">
+		<attribute key="primarytype" value="decorations"/>
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="48482" article="a" name="nightsky cupcake recipe">
+		<attribute key="primarytype" value="decorations"/>
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="48483" article="a" name="rainbow waffles recipe">
+		<attribute key="primarytype" value="decorations"/>
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="48582" article="a" name="handful of marzipan carrots" plural="handfuls of marzipan carrots">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="160"/>
+	</item>
+	<item id="48586" article="a" name="marzipan carrot" plural="marzipan carrots">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="160"/>
+	</item>
+	<item id="49154" article="a" name="sand castle">
+	</item>
+	<item id="49155" article="a" name="vanilla sugar castle">
+	</item>
+	<item id="49156" name="sand toys">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="200"/>
+	</item>
 	<!-- FAMILY: Sweet Dreams quest items (2026-11-22): names from the client, weights from TibiaWiki EN -->
 	<item id="48102" article="a" name="gingerbread key recipe">
 		<attribute key="primarytype" value="quest items"/>

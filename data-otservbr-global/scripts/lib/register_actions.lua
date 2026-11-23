@@ -359,6 +359,10 @@ end
 
 function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
 	addFerumbrasAscendantReward(player, target, toPosition)
+	-- FAMILY: Sweet Dreams sand toys (lib/others/family_sweet_dreams.lua): the treasure on Candia's northern headland
+	if FamilySweetDreams and FamilySweetDreams.digTreasure and FamilySweetDreams.digTreasure(player, toPosition) then
+		return true
+	end
 	--Dawnport quest (Morris amulet task)
 	local sandPosition = Position(32099, 31933, 7)
 	if toPosition == sandPosition then
@@ -971,6 +975,11 @@ end
 function onUseSpoon(player, item, fromPosition, target, toPosition, isHotkey)
 	if not target or not target.getId then
 		return false
+	end
+
+	-- FAMILY: Sweet Dreams (lib/others/family_sweet_dreams.lua): a spoon on Sugar Daddy's body restores health and mana (TibiaWiki EN)
+	if FamilySweetDreams and FamilySweetDreams.spoonCorpse and FamilySweetDreams.spoonCorpse(player, target, toPosition) then
+		return true
 	end
 
 	-- FAMILY: The Ice Islands Quest, Cure the Dogs: spores and fine sulphur while Nilsor needs them

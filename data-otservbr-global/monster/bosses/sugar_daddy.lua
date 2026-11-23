@@ -76,7 +76,7 @@ monster.voices = {
 monster.loot = {
 	{ name = "gold coin", chance = 100000, maxCount = 95 },
 	{ name = "platinum coin", chance = 100000, maxCount = 11 },
-	{ name = "small enchanted sapphire", chance = 8900 },
+	{ name = "small sapphire", chance = 8900 }, -- FAMILY: Small Sapphire (both wikis); upstream: small enchanted sapphire
 	{ id = 3039, chance = 94465, maxCount = 1 }, -- red gem
 	{ name = "white gem", chance = 5600, maxCount = 1 },
 	{ id = 48114, chance = 1000 }, -- peppermint backpack
@@ -87,10 +87,12 @@ monster.loot = {
 	{ id = 45641, chance = 2300 }, -- candy necklace
 	{ id = 45642, chance = 7650 }, -- ring of temptation
 	{ id = 48254, chance = 11655, maxCount = 1 }, -- churro heart
-	{ id = 48250, chance = 46555, maxCount = 1 }, -- dark chocolate coin
-	{ id = 48252, chance = 15300, maxCount = 1 }, -- beijinho
-	{ id = 45642, chance = 14650, maxCount = 1 }, -- brigadeiro
-	{ id = 48249, chance = 54465, maxCount = 1 }, -- milk chocolate coin
+	{ id = 48250, chance = 46555, maxCount = 20 }, -- dark chocolate coin (FAMILY: 1-20, both wikis; upstream 1)
+	{ id = 48253, chance = 15300, maxCount = 1 }, -- beijinho (FAMILY: id 48253; upstream gave 48252, a brigadeiro)
+	{ id = 48252, chance = 14650, maxCount = 1 }, -- brigadeiro (FAMILY: id 48252; upstream gave 45642, a second ring of temptation)
+	{ id = 48249, chance = 54465, maxCount = 20 }, -- milk chocolate coin (FAMILY: 1-20, both wikis; upstream 1)
+	{ id = 48251, chance = 11655, maxCount = 1 }, -- FAMILY: wafer paper flower (both wikis; chance ours, as the churro heart)
+	{ id = 48255, chance = 11655, maxCount = 1 }, -- FAMILY: lime tart (both wikis; chance ours, as the churro heart)
 	{ id = 48256, chance = 2367, maxCount = 1 }, -- pastry dragon
 }
 

@@ -203,6 +203,7 @@ function loot.monsterOnDropLoot(monster, corpse)
 	SD.bossLoot(monster, corpse)
 	if monster:getName():lower() == "sugar daddy" then
 		SD.sugarDaddyKilled(monster)
+		SD.sugarDaddyGone(monster)
 	end
 end
 loot:register()
@@ -222,3 +223,60 @@ function escape.onThink(interval)
 end
 escape:interval(2000)
 escape:register()
+
+-- Sugar Daddy's sugar rush (lib: SD.sugarRushCheck); his helpers report their death.
+local rush = CreatureEvent("FamilySugarDaddyRush")
+function rush.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
+	if SD.enabled() and primaryType ~= COMBAT_HEALING then
+		SD.sugarRushCheck(creature, math.abs(primaryDamage or 0) + math.abs(secondaryDamage or 0)) -- values are negative here
+	end
+	return primaryDamage, primaryType, secondaryDamage, secondaryType
+end
+rush:register()
+
+local minion = CreatureEvent("FamilySugarDaddyMinion")
+function minion.onDeath(creature, corpse, killer, mostDamageKiller, unjustified, mostDamageUnjustified)
+	SD.minionDied(creature)
+	return true
+end
+minion:register()
+
+-- Coco's shops are opened by talk (lib); here nothing else.
+
+-- Sand toys: the carrot plants, carrots on the trough, the sand toys themselves. The treasure is dug
+-- in onUseShovel (scripts/lib/register_actions.lua calls SD.digTreasure).
+local carrotPlant = Action()
+function carrotPlant.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	return SD.pullCarrot(player, item)
+end
+for id in pairs(SD.CARROT_PLANT) do
+	carrotPlant:id(id)
+end
+carrotPlant:register()
+
+local carrot = Action()
+function carrot.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	return SD.feedTrough(player, item, target, toPosition)
+end
+carrot:id(48586, 48582)
+carrot:register()
+
+local sandToys = Action()
+function sandToys.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not toPosition or toPosition.x == CONTAINER_POSITION then
+		return false
+	end
+	return SD.useSandToys(player, item, toPosition)
+end
+sandToys:id(SD.SAND_TOYS)
+sandToys:register()
+
+-- The four real-life recipes in their containers (return false: the container opens as usual).
+for i, r in ipairs(SD.RECIPES) do
+	local recipe = Action()
+	function recipe.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+		return SD.takeRecipe(player, i)
+	end
+	recipe:position(r.pos)
+	recipe:register()
+end
