@@ -126,7 +126,36 @@ local quest = {
 				end,
 			},
 		},
+		-- FAMILY: Sweet Dreams (2026-11-22; texts ours: lib/others/family_sweet_dreams.lua). Mission ids 11284-11285.
+		[6] = {
+			name = "Sweet Dreams",
+			storageId = 45836,
+			missionId = 11284,
+			startValue = 1,
+			endValue = 13,
+			states = {},
+		},
+		[7] = {
+			name = "Put the Cherry in the Cage",
+			storageId = 45837,
+			missionId = 11285,
+			startValue = 1,
+			endValue = 3,
+			states = {},
+		},
 	},
 }
+
+-- FAMILY: the Sweet Dreams states read the lib's texts when the log is shown
+for i = 1, 13 do
+	quest.missions[6].states[i] = function(player)
+		return FamilySweetDreams and FamilySweetDreams.mainLog(player) or ""
+	end
+end
+for i = 1, 3 do
+	quest.missions[7].states[i] = function()
+		return FamilySweetDreams and FamilySweetDreams.BUNNY_LOG[i] or ""
+	end
+end
 
 return quest

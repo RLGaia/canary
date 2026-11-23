@@ -81,6 +81,7 @@ NOT_QUEST = {
     17858: "leech (dug up; mount taming item)",
     21507: "pinch of crystal dust (grinder crafting)",
     5905: "vampire dust (from vampire corpses, only asked for by an NPC)",
+    2472: "chest (the Sweet Dreams key chest placed by family_sweet_dreams.lua, not a reward)",
 }
 
 # Quest ingredients with no other source on this server: they get sell offers too (reviewed by hand).
@@ -101,6 +102,8 @@ ASKED_FOR = {
     26181: "swan feather (Threatened Dreams, The Swan Feather Cloak; family_threatened_dreams.lua names it in a constant, 2026-11-22)",
     25779: "swan feather cloak (Threatened Dreams, Valindara; family_threatened_dreams.lua names it in a constant, 2026-11-22)",
     26074: "blessed acorn (Threatened Dreams, the happy sentient oaks; family_threatened_dreams.lua names it in a constant, 2026-11-22)",
+    48197: "moon melon (Sweet Dreams sirup; family_sweet_dreams.lua names it in a constant, 2026-11-22)",
+    48424: "pegasus feather (Sweet Dreams reward; family_sweet_dreams.lua names it in a constant, 2026-11-22)",
 }
 
 

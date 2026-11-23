@@ -14,6 +14,10 @@ function candia.onStepIn(creature, item, position, fromPosition)
 
 	for value in pairs(config) do
 		if Position(config[value].position) == player:getPosition() then
+			-- FAMILY: Sweet Dreams, the donut gate needs the gingerbread key once (lib/others/family_sweet_dreams.lua)
+			if config[value].position.x > 33500 and FamilySweetDreams and not FamilySweetDreams.gateOpen(player) then
+				return true
+			end
 			player:teleportTo(Position(config[value].destination), true)
 			player:getPosition():sendMagicEffect(CONST_ME_CANDY_FLOSS)
 			return true

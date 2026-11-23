@@ -741,6 +741,8 @@ return {
 	[35609] = true, -- amethyst necklace
 	[44179] = true, -- bottled dragon breath
 	[48115] = true, -- taiyaki
+	[48197] = true, -- moon melon
+	[48424] = true, -- pegasus feather
 	[49271] = true, -- transcendence potion
 	[50263] = true, -- merudri scale mail
 	[50267] = true, -- boots of enlightenment

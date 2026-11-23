@@ -58,6 +58,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Sweet Dreams, the forest fury mirror image scroll (lib/others/family_sweet_dreams.lua)
+	if FamilySweetDreams and FamilySweetDreams.charlottaSay(npc, player, message, npcHandler) then
+		return true
+	end
+
 	if MsgContains(message, "errand") or MsgContains(message, "gold") then
 		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.TheErrand) == 1 then
 			npcHandler:say("Oh, so you brought some gold from Eleonore to me?", npc, creature)

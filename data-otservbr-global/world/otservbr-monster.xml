@@ -88612,9 +88612,10 @@
 	<monster centerx="32724" centery="32231" centerz="9" radius="1">
 		<monster name="Ripper Spectre" x="0" y="0" z="9" spawntime="60" />
 	</monster>
+	<!-- FAMILY: Sweet Dreams (2026-11-22): Sugar Daddy is a boss with a 2 h cooldown behind the portal (BR); scripts/family/sweet_dreams.lua summons him (was a spawn every 60 s)
 	<monster centerx="33365" centery="32231" centerz="9" radius="3">
 		<monster name="Sugar Daddy" x="1" y="-1" z="9" spawntime="60" />
-	</monster>
+	</monster> -->
 	<monster centerx="32729" centery="32233" centerz="9" radius="1">
 		<monster name="Arachnophobica" x="-1" y="0" z="9" spawntime="60" />
 	</monster>
@@ -187272,5 +187273,9 @@
 	</monster>
 	<monster centerx="32179" centery="31930" centerz="4" radius="2">
 		<monster name="Monk" x="0" y="0" z="4" spawntime="90" />
+	</monster>
+	<!-- FAMILY: Sweet Dreams (2026-11-22): Gorga on the top floor of the Medusa Tower (EN 32867,32829,1; respawn 5-10 min) -->
+	<monster centerx="32867" centery="32829" centerz="1" radius="2">
+		<monster name="Gorga" x="0" y="0" z="1" spawntime="450" />
 	</monster>
 </monsters>

@@ -3121,4 +3121,26 @@
 	<npc centerx="32364" centery="32119" centerz="7" radius="1">
 		<npc name="A Frog" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	<!-- FAMILY: Threatened Dreams, Sweet Dreams (2026-11-22): the Candia NPCs and the caged forest fury were not placed upstream; TibiaWiki BR positions -->
+	<npc centerx="33432" centery="32143" centerz="5" radius="1">
+		<npc name="Sugar Plum Fairy" x="0" y="0" z="5" spawntime="60" />
+	</npc>
+	<npc centerx="33363" centery="32138" centerz="8" radius="1">
+		<npc name="Candis" x="0" y="0" z="8" spawntime="60" />
+	</npc>
+	<npc centerx="33350" centery="32164" centerz="7" radius="1">
+		<npc name="Dulcineo" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="33514" centery="32252" centerz="7" radius="1">
+		<npc name="Tooth Fairy (Candia)" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="32296" centery="32837" centerz="11" radius="1">
+		<npc name="A Captive Forest Fury" x="0" y="0" z="11" spawntime="60" />
+	</npc>
+	<npc centerx="33413" centery="32188" centerz="8" radius="2">
+		<npc name="A Taffy Bunny" x="0" y="0" z="8" spawntime="60" />
+	</npc>
+	<npc centerx="33379" centery="32179" centerz="7" radius="1">
+		<npc name="Toffee" x="0" y="0" z="7" spawntime="60" />
+	</npc>
 </npcs>

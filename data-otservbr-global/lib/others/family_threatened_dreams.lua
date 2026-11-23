@@ -557,6 +557,10 @@ local function hasAny(player, ids)
 end
 
 D.handlers["Maelyrra"] = function(npc, player, message, npcHandler)
+	-- Sweet Dreams: the donut gate (lib/others/family_sweet_dreams.lua)
+	if FamilySweetDreams and FamilySweetDreams.maelyrra(npc, player, message, npcHandler) then
+		return true
+	end
 	local state = D.get(player, M2)
 	local t = topic(npcHandler, player)
 	if MsgContains(message, "mission") then

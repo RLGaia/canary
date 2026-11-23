@@ -5,6 +5,14 @@ local oven = { 2535, 2537, 2539, 2541 }
 local baking = Action()
 
 function baking.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: Sweet Dreams, the gingerbread key in the oven of Feyrist (lib/others/family_sweet_dreams.lua)
+	if item.itemid == 8018 and FamilySweetDreams and FamilySweetDreams.bakeKey(player, item, target, toPosition) then
+		return true
+	end
+	-- FAMILY: no Lua error when the dough is used on nothing or a creature
+	if not target or type(target) ~= "userdata" or not target.getId then
+		return false
+	end
 	if item.itemid == 3603 and table.contains(liquidContainers, target.itemid) then -- flour
 		if target.type == 1 then -- water / holy water
 			if target.itemid == 133 then

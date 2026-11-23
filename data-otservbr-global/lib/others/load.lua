@@ -31,3 +31,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_krailos_lore.lua") -- FAMILY: Krail
 dofile(DATA_DIRECTORY .. "/lib/others/family_krailos.lua") -- FAMILY: Krailos Quest (Larek, Ghorza, Vuzrog, Grubokk, the goblins, Mugruu)
 dofile(DATA_DIRECTORY .. "/lib/others/family_threatened_dreams_lore.lua") -- FAMILY: Threatened Dreams Quest, NPC lore words (EN transcripts)
 dofile(DATA_DIRECTORY .. "/lib/others/family_threatened_dreams.lua") -- FAMILY: Threatened Dreams Quest review (fixes, The Fairy Treasure, The Swan Feather Cloak)
+dofile(DATA_DIRECTORY .. "/lib/others/family_sweet_dreams.lua") -- FAMILY: Threatened Dreams Quest, Sweet Dreams (Candia)

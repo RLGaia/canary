@@ -80501,6 +80501,87 @@ Granted by TibiaGoals.com"/>
 		<attribute key="primarytype" value="keys"/>
 		<attribute key="weight" value="100"/>
 	</item>
+	<!-- FAMILY: Sweet Dreams quest items (2026-11-22): names from the client, weights from TibiaWiki EN -->
+	<item id="48102" article="a" name="gingerbread key recipe">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="20"/>
+	</item>
+	<item id="48178" article="a" name="gingerbread key">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="90"/>
+	</item>
+	<item id="48192" article="a" name="mirror image spell">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="48194" article="a" name="flask with moon melon sirup">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="48195" article="a" name="flask with raspberry sirup">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="48196" article="a" name="flask with lemon sirup">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="48197" article="a" name="moon melon" plural="moon melons">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="950"/>
+	</item>
+	<item id="48198" article="a" name="gingerbread key">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="40"/>
+	</item>
+	<item id="48199" article="a" name="gingerbread key">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="60"/>
+	</item>
+	<item id="48200" article="a" name="gingerbread key">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="48201" article="a" name="sugar">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="20"/>
+	</item>
+	<item id="48238" article="a" name="rose milk cake">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="50"/>
+	</item>
+	<item id="48239" article="a" name="matcha turtle">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="40"/>
+	</item>
+	<item id="48240" article="a" name="nightsky cupcake">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="30"/>
+	</item>
+	<item id="48241" article="a" name="candy lipstick">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="48248" article="some" name="rainbow waffles">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="50"/>
+	</item>
+	<item id="48278" article="a" name="tattered piece of paper">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="10"/>
+	</item>
+	<item id="48280" article="a" name="full honey glass" plural="full honey glasses">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="1500"/>
+	</item>
+	<item id="48359" article="a" name="candy cane beam" plural="candy cane beams">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="800"/>
+	</item>
+	<item id="48423" article="a" name="toothbrush" plural="toothbrushes">
+		<attribute key="primarytype" value="quest items"/>
+		<attribute key="weight" value="30"/>
+	</item>
 	<item id="48249" article="a" name="milk chocolate coin">
 		<attribute key="weight" value="10"/>
 		<attribute key="loottype" value="creature products" />
