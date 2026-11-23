@@ -54,6 +54,9 @@ D.S = {
 	WinterWins = 46376,
 	SarcophagusTime = 46377, -- next time this player may open a sarcophagus
 	MaskTime = 46378, -- next time this player may use a dream catcher on someone
+	GraveTime = 46379, -- next time this player may search the cathedral graves (Key 3200)
+	RewardChest = 46380, -- next time the cathedral reward chest gives something
+	Vibrancy = 46381, -- powerful Vibrancy imbuement unlocked (imbuements.xml storage)
 }
 
 -- Items
@@ -428,6 +431,7 @@ function D.courtSay(npcHandler, npc, creature, message, court)
 			end
 			player:addAchievement("Dream Catcher") -- EN: after reporting to Undal or Vanys
 			player:setStorageValue(DC.WardStones.Questline, 4)
+			D.unlockVibrancy(player) -- BR, EN: powerful Vibrancy
 		else
 			say(npcHandler, npc, creature, "The Courts of Summer and Winter will be forever grateful.") -- ours
 		end
@@ -1131,6 +1135,157 @@ function D.useMask(player, item, target)
 	D.cursePlayer(player, true)
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You take the dreamcurse on yourself!")
 	return true
+end
+
+-- ---------------------------------------------------------------- the Haunted Nexus portals
+-- EN: the three haunted places are joined by portals; once both sides are restored, the ectoplasm of the
+-- place you start from (cellar green, temple red, tomb blue) carries you and is used up. BR: the
+-- ectoplasm is needed to enter the teleports between the Haunted Houses. Each place has one dimensional
+-- portal on our map; it leads to the next restored place in the order the Stricken Soul names them
+-- (cellar, Tiquanda temple, Darama tomb: ours, the wikis do not say which one).
+D.NEXUS = {
+	{ name = "cellar", colour = "green", pos = Position(32697, 32234, 8), done = DC.HauntedHouse.Cellar, ecto = { 30083, 30204 } },
+	{ name = "temple", colour = "red", pos = Position(32623, 32625, 8), done = DC.HauntedHouse.Temple, ecto = { 30084, 30205 } },
+	{ name = "tomb", colour = "blue", pos = Position(33088, 32297, 8), done = DC.HauntedHouse.Tomb, ecto = { 30082, 30203 } },
+}
+D.nexusArrival = D.nexusArrival or {}
+
+local function walkable(pos)
+	local tile = Tile(pos)
+	return tile and tile:getGround() and not tile:hasProperty(CONST_PROP_BLOCKSOLID) and not tile:hasFlag(TILESTATE_FLOORCHANGE) and not tile:hasFlag(TILESTATE_TELEPORT) and true or false
+end
+
+-- The first free square next to a portal (the arrival square).
+function D.findArrival(pos)
+	for _, d in ipairs({ { 0, 1 }, { 1, 0 }, { -1, 0 }, { 0, -1 }, { 1, 1 }, { -1, 1 }, { 1, -1 }, { -1, -1 } }) do
+		local p = Position(pos.x + d[1], pos.y + d[2], pos.z)
+		if walkable(p) then
+			return p
+		end
+	end
+end
+
+function D.nexusIndex(position)
+	for i, n in ipairs(D.NEXUS) do
+		if n.pos == position then
+			return i
+		end
+	end
+end
+
+-- Returns the destination index, or nil and the refusal text.
+function D.nexusTravel(player, position)
+	local i = D.nexusIndex(position)
+	if not i then
+		return nil
+	end
+	local here = D.NEXUS[i]
+	if storage(player, here.done) < 1 then
+		return nil, "The portal is dark. Its connection to the nexus has not been restored yet." -- ours
+	end
+	local dest
+	for k = 1, #D.NEXUS - 1 do
+		local j = (i + k - 1) % #D.NEXUS + 1
+		if storage(player, D.NEXUS[j].done) >= 1 then
+			dest = j
+			break
+		end
+	end
+	if not dest then
+		return nil, "The portal flickers, but no other passage of the nexus answers yet." -- ours
+	end
+	local ecto
+	for _, id in ipairs(here.ecto) do
+		if player:getItemCount(id) > 0 then
+			ecto = id
+			break
+		end
+	end
+	if not ecto then
+		return nil, "The portal only carries those who bring " .. here.colour .. " ectoplasm." -- ours (EN: the colour of this place)
+	end
+	player:removeItem(ecto, 1)
+	return dest
+end
+
+function D.nexusStep(player, position, fromPosition)
+	local dest, refusal = D.nexusTravel(player, position)
+	if not dest then
+		if refusal then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, refusal)
+		end
+		player:teleportTo(fromPosition, true)
+		return
+	end
+	local to = D.nexusArrival[dest] or D.findArrival(D.NEXUS[dest].pos)
+	position:sendMagicEffect(CONST_ME_TELEPORT)
+	player:teleportTo(to)
+	to:sendMagicEffect(CONST_ME_TELEPORT)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The ectoplasm dissolves and the nexus carries you to the " .. D.NEXUS[dest].name .. ".") -- ours
+end
+
+-- ---------------------------------------------------------------- Key 3200 and the cathedral reward chest
+-- BR: a small chance to find Key 3200 in one of the graves of the buried cathedral (33555,32540,15), again
+-- after 10 minutes; it opens the door of a room with a chest (BR 33661,32547,14; the door stands at
+-- 33659,32547,14 on our map and had no key number). EN: a daily reward chest, contents unknown (ours).
+D.KEY_ID, D.KEY_AID = 2968, 3200 -- wooden key
+D.GRAVE_CHANCE = 10 -- % (ours: "a small chance")
+D.GRAVE_TIME = 10 * 60 -- BR
+D.GRAVES = {
+	Position(33550, 32540, 15), Position(33553, 32540, 15), Position(33556, 32540, 15), Position(33559, 32540, 15),
+	Position(33550, 32544, 15), Position(33553, 32544, 15), Position(33559, 32544, 15),
+}
+D.REWARD_DOOR = Position(33659, 32547, 14)
+D.REWARD_CHEST = Position(33664, 32547, 14)
+D.REWARD_TIME = 20 * 60 * 60 -- ours (EN: "daily")
+D.REWARD_ITEMS = { { "gold ingot", 2 }, { "blue gem", 1 }, { "green gem", 1 }, { "red gem", 1 }, { "violet gem", 1 }, { "yellow gem", 1 } } -- ours
+
+function D.searchGrave(player)
+	if storage(player, D.S.GraveTime) > os.time() then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You searched these graves only a short while ago.") -- ours
+		return true
+	end
+	player:setStorageValue(D.S.GraveTime, os.time() + D.GRAVE_TIME)
+	if math.random(1, 100) <= D.GRAVE_CHANCE then
+		local key = player:addItem(D.KEY_ID, 1)
+		if key then
+			key:setActionId(D.KEY_AID)
+		end
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Between the old bones you find a wooden key.") -- ours
+	else
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You find nothing but old bones.") -- ours
+	end
+	return true
+end
+
+function D.useRewardChest(player)
+	if storage(player, D.S.RewardChest) > os.time() then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The chest is empty.")
+		return true
+	end
+	local pick = D.REWARD_ITEMS[math.random(1, #D.REWARD_ITEMS)]
+	local itemType = ItemType(pick[1])
+	player:addItem(itemType:getId(), pick[2])
+	player:setStorageValue(D.S.RewardChest, os.time() + D.REWARD_TIME)
+	local name = pick[2] > 1 and (pick[2] .. " " .. itemType:getPluralName()) or (itemType:getArticle() .. " " .. itemType:getName())
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have found " .. name .. ".")
+	return true
+end
+
+-- ---------------------------------------------------------------- powerful Vibrancy
+-- BR, EN: finishing the quest unlocks the Vibrancy imbuement at the powerful level. In imbuements.xml
+-- only that entry has a storage (D.S.Vibrancy) and toggleImbuementShrineStorage is on
+-- (family/config.family.lua). v3.6.1 checks the storage wrongly: it reads the player's storage key 0 for
+-- every storage-gated imbuement (0 = shown, anything else = hidden). So key 0 is set to 0 too; if a later
+-- Canary fixes the check, D.S.Vibrancy alone decides.
+function D.questDone(player)
+	local stones = storage(player, DC.WardStones.Questline)
+	return stones >= 4 or (stones == 3 and hasDreamOutfit(player))
+end
+
+function D.unlockVibrancy(player)
+	player:setStorageValue(D.S.Vibrancy, 1)
+	player:setStorageValue(0, 0)
 end
 
 -- ---------------------------------------------------------------- the Faceless Bane

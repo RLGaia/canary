@@ -191,3 +191,13 @@ coinImagesURL = "https://raw.githubusercontent.com/RLGaia/canary/family/family/s
 -- nothing (not our scheduler, not GOD's /raid) can start them.
 -- ===========================================================================
 disableLegacyRaids = false
+
+-- ===========================================================================
+-- Imbuements (2026-11-23). The Dream Courts unlocks the powerful Vibrancy
+-- imbuement (TibiaWiki BR/EN). Only that entry has a storage in
+-- data/XML/imbuements.xml; every other imbuement stays open to all, as before.
+-- v3.6.1 reads the player's storage key 0 for the gate (a bug): our quest
+-- script sets it to 0 for those who finished the quest
+-- (data-otservbr-global/lib/others/family_dream_courts.lua).
+-- ===========================================================================
+toggleImbuementShrineStorage = true
