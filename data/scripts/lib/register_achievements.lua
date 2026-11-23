@@ -550,6 +550,8 @@ ACHIEVEMENTS = {
 	[547] = { name = "Museum Goer", grade = 1, points = 2, description = "You unveiled the secret plot of the Mitmah who stole away an entire civilisation for their own entertainment. Let the death of their outpost vanguard be an eternal lesson to them." },
 	[548] = { name = "Mystic Predator", grade = 1, points = 3, description = "Proving your true worth to a mystic creature like the jaguar, king of the hunt, granted you not only respect but also its heart." },
 	[549] = { name = "The Rule of Raccool", grade = 1, points = 2, description = "You almost feel as cool as a raccoon. Now, where's the trash?" },
+	-- FAMILY: missing upstream; Sweet Dreams gives it (TibiaWiki EN "A Friend in Need": id 550, grade 1, 2 points, secret).
+	[550] = { name = "A Friend in Need", grade = 1, points = 2, secret = true, description = "You freed the captive forest fury from the Corym Black Market. A friend in need is a friend indeed!" },
 	[552] = { name = "I Wanna Fly Away", grade = 1, points = 3, description = "... on a pegasus, to a land of honey and milk. With this beautiful flying steed you certainly can." },
 	[553] = { name = "The Rootwalker", grade = 1, points = 2, description = "Traversing the entrances to Podzilla is an achievement in itself, thanks to Two Lips you are now one with the plant biosphere as you walk its many intertwined trails." },
 	[554] = { name = "Soul Crusher", grade = 1, points = 2, description = "The Soulpit resonates as the spirit of your final foe shatters under your might." },

@@ -9,7 +9,7 @@ Registry: `data/scripts/lib/register_achievements.lua` (541 Tibia achievements +
 - All 349 public achievements of the client are registered, with the same ids and names.
 - Secret achievements are not in the client (the server sends their name and text).
   Against TibiaWiki BR's 205 secret achievements, the ones that existed by 15.11 and are
-  not registered: Smart Thinking (195, 8.7, how to get it is unknown), A Friend in Need
+  not registered: Smart Thinking (195, 8.7, how to get it is unknown); A Friend in Need registered 2026-11-23 (id 550)
   (550, 13.40, Threatened Dreams), Holzkopf (551, 13.40, eat 100 demon roots), The
   Forbidden Build (567, 15.10, weapon proficiency mastery), and ID 563 (unknown,
   unconfirmed). No script gives them and the English texts are not on the wiki, so they
