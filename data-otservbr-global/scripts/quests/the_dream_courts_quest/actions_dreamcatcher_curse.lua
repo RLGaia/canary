@@ -36,6 +36,15 @@ function actions_dreamcatcher_curse.onUse(player, item, fromPosition, target, to
 		return true
 	end
 
+	-- FAMILY: the pole and the dream catcher of the wikis (lib/others/family_dream_courts.lua); upstream registered
+	-- the curse event by a storage number, so a moved curse never worked
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		if item.itemid == FamilyDreamCourts.DREAM_CATCHER then
+			return FamilyDreamCourts.useMask(player, item, target) or true
+		end
+		return FamilyDreamCourts.usePole(player, item)
+	end
+
 	if item.itemid == 29274 then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You can rip off a dream catcher!")
 		item:transform(29275)

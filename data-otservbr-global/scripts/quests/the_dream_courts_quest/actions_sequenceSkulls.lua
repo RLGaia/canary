@@ -20,7 +20,7 @@ local sequence = {
 		id = 29990,
 		number = 2,
 		position = Position(32077, 31977, 14),
-		msg = "You put the minotaur skull into the coffin within the minotaur skeleton. One of the door's locks clicks.",
+		msg = "You put the troll skull into the coffin within the troll skeleton. One of the door's locks clicks.", -- FAMILY: said "minotaur"
 	},
 }
 

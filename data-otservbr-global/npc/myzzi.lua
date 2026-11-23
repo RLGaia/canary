@@ -26,7 +26,7 @@ npcConfig.flags = {
 npcConfig.voices = {
 	interval = 15000,
 	chance = 50,
-	{ text = "You need to find some heroes. Find, find, find!!" },
+	{ text = "I have to find some heroes. Find, find, find!!" }, -- FAMILY: BR/EN sound
 }
 
 local keywordHandler = KeywordHandler:new()
@@ -64,6 +64,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: her words in any order, "no" (BR) and the later greeting (lib/others/family_dream_courts.lua)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		return FamilyDreamCourts.myzziSay(npcHandler, npc, creature, message)
+	end
+
 	if player:getStorageValue(Storage.Quest.U12_00.TheDreamCourts.Main.Questline) < 1 then
 		if MsgContains(message, "good") then
 			npcHandler:say("I'm just a mere messenger and I'm here to find brave adventurers that might {help} my friends in this time of need.", npc, creature)
@@ -98,7 +103,19 @@ local function creatureSayCallback(npc, creature, type, message)
 end
 
 npcHandler:setMessage(MESSAGE_GREET, "Hello adventurer. It is {good} to see you.")
-npcHandler:setMessage(MESSAGE_FAREWELL, "Well, bye then.")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Goodbye, |PLAYERNAME|.") -- FAMILY: EN, BR (was "Well, bye then.")
+
+-- FAMILY: greeting after she sent you to the Courts (EN, BR)
+local function greetCallback(npc, creature)
+	local player = Player(creature)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() and player:getStorageValue(Storage.Quest.U12_00.TheDreamCourts.Main.Questline) >= 1 then
+		npcHandler:setMessage(MESSAGE_GREET, FamilyDreamCourts.MYZZI_GREET_AFTER)
+	else
+		npcHandler:setMessage(MESSAGE_GREET, "Hello adventurer. It is {good} to see you.")
+	end
+	return true
+end
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Well, bye then.")
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)

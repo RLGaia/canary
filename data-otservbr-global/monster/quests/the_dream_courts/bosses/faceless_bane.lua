@@ -23,6 +23,7 @@ monster.manaCost = 0
 monster.events = {
 	"dreamCourtsDeath",
 	"facelessThink",
+	"facelessHealth", -- FAMILY: damage only counts after the iron floors (lib/others/family_dream_courts.lua)
 }
 
 monster.changeTarget = {
@@ -151,7 +152,17 @@ monster.immunities = {
 }
 
 mType.onSpawn = function(monster, spawnPosition)
-	if monster:getType():isRewardBoss() then
+	-- FAMILY: the rounds of the wikis (lib/others/family_dream_courts.lua); upstream below indexed the missing
+	-- GlobalStorage.TheDreamCourts and stopped with a Lua error
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		FamilyDreamCourts.facelessReset()
+		monster:registerEvent("facelessHealth")
+		if monster:getType():isRewardBoss() then
+			monster:setReward(true)
+		end
+		return
+	end
+	if monster:getType():isRewardBoss() and GlobalStorage.TheDreamCourts then
 		-- reset global storage state to default / ensure sqm's reset for the next team
 		Game.setStorageValue(GlobalStorage.TheDreamCourts.FacelessBane.Deaths, -1)
 		Game.setStorageValue(GlobalStorage.TheDreamCourts.FacelessBane.StepsOn, -1)

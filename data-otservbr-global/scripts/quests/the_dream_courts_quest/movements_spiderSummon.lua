@@ -17,7 +17,12 @@ function movements_spiderSummon.onStepIn(creature, item, position, fromPosition)
 		return true
 	end
 
-	if player:getStorageValue(Storage.Quest.U12_00.TheDreamCourts.UnsafeRelease.HasBait) == 1 then
+	-- FAMILY: the bait lasts 10 minutes, also across a logout (lib/others/family_dream_courts.lua)
+	local baited = player:getStorageValue(Storage.Quest.U12_00.TheDreamCourts.UnsafeRelease.HasBait) == 1
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		baited = FamilyDreamCourts.baitActive(player)
+	end
+	if baited then
 		local r = math.random(1, 10)
 		Game.createMonster(spiderName, position)
 		item:setActionId(0)

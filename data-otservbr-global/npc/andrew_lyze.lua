@@ -97,6 +97,12 @@ local function greetCallback(npc, creature)
 	local player = Player(creature)
 	local playerId = player:getId()
 
+	-- FAMILY: greetings per step and the report with 50,000 experience (BR) (lib/others/family_dream_courts.lua)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		npcHandler:setMessage(MESSAGE_GREET, FamilyDreamCourts.andrewGreet(npcHandler, npc, player))
+		return true
+	end
+
 	if player:getStorageValue(Storage.Quest.U12_00.TheDreamCourts.UnsafeRelease.Questline) < 1 then
 		npcHandler:setMessage(MESSAGE_GREET, "Hello, I am the warden of this {monument}. The {sarcophagus} in front of you was established to prevent people from going {down} there. But I doubt that this step is sufficient.")
 	elseif player:getStorageValue(Storage.Quest.U12_00.TheDreamCourts.UnsafeRelease.Questline) == 1 then
@@ -116,6 +122,12 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	if not npcHandler:checkInteraction(npc, creature) then
 		return false
+	end
+
+	-- FAMILY: lore words in any order, the repair asks for every material, axe with the bait (10 min, again for
+	-- 5,000 gold), "charge" blue/green/violet (EN, BR) (lib/others/family_dream_courts.lua)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		return FamilyDreamCourts.andrewSay(npcHandler, npc, creature, message)
 	end
 
 	if MsgContains(message, "monument") and player:getStorageValue(Storage.Quest.U12_00.TheDreamCourts.UnsafeRelease.Questline) < 1 then

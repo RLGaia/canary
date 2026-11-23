@@ -55283,6 +55283,7 @@ hands of its owner. Granted by TibiaRoyal.com"/>
 		<attribute key="showduration" value="1"/>
 		<attribute key="showAttributes" value="1"/>
 		<attribute key="duration" value="600"/>
+		<attribute key="decayTo" value="29344"/> <!-- FAMILY: The Dream Courts, becomes a red ectoplasmic residue (EN) -->
 		<attribute key="weight" value="2000"/>
 	</item>
 	<item id="29300" article="a" name="golden idol of Tukh that is brand-new">
@@ -55302,16 +55303,19 @@ hands of its owner. Granted by TibiaRoyal.com"/>
 	<item id="29307" article="a" name="bucket with some ectoplasm">
 		<attribute key="description" value="This bucket contains some samples of ectoplasm. It is very leaky"/>
 		<attribute key="duration" value="180"/>
+		<attribute key="decayTo" value="29310"/> <!-- FAMILY: The Dream Courts, the ectoplasm leaks out (EN); upstream removed the bucket -->
 		<attribute key="weight" value="2200"/>
 	</item>
 	<item id="29308" article="a" name="bucket with ectoplasm">
 		<attribute key="description" value="This bucket contains a lot of ectoplasm. It is very leaky"/>
 		<attribute key="duration" value="120"/>
+		<attribute key="decayTo" value="29310"/> <!-- FAMILY: The Dream Courts, the ectoplasm leaks out (EN); upstream removed the bucket -->
 		<attribute key="weight" value="2400"/>
 	</item>
 	<item id="29309" article="a" name="bucket full of ectoplasm">
 		<attribute key="description" value="This bucket is filled to the brim with ectoplasm. It is very leaky"/>
 		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="29310"/> <!-- FAMILY: The Dream Courts, the ectoplasm leaks out (EN); upstream removed the bucket -->
 		<attribute key="weight" value="2600"/>
 	</item>
 	<item id="29310" article="a" name="strange empty bucket">

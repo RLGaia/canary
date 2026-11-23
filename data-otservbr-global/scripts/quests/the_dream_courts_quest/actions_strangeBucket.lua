@@ -29,6 +29,10 @@ function actions_strangeBucket.onUse(player, item, fromPosition, target, toPosit
 	addOutfitCondition(slimeCondition, { lookType = 19 })
 
 	if isInQuest >= 1 then
+		-- FAMILY: the right messages, the bucket leaks back to empty, the egg recovers (lib/others/family_dream_courts.lua)
+		if FamilyDreamCourts and FamilyDreamCourts.enabled() and (tId == mutatedEgg or tId == mutatedEgg + 1) then
+			return FamilyDreamCourts.fillBucket(player, item, target)
+		end
 		if tId == mutatedEgg then
 			if item.itemid == emptyBucket then
 				if r >= 5 then

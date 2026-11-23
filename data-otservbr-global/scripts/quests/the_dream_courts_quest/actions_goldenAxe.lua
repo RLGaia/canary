@@ -36,6 +36,12 @@ local function tryCrystal(player, itemid, position, actionid, message, rewardid)
 		if crystal then
 			if crystal:getActionId() == actionid then
 				if r == 1 then
+					-- FAMILY: every column can give every crystal (EN, BR)
+					if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+						local colour = FamilyDreamCourts.crystalFor(itemid)
+						message = FamilyDreamCourts.CRYSTAL_MESSAGE[colour]
+						rewardid = FamilyDreamCourts.CRYSTAL[colour]
+					end
 					player:say(message, TALKTYPE_MONSTER_SAY)
 					player:addItem(rewardid, 1)
 					crystal:setActionId(0)

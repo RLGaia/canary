@@ -29,6 +29,12 @@ function movements_facelessTiles.onStepIn(creature, item, position, fromPosition
 		return true
 	end
 
+	-- FAMILY: all 13 iron floors within 15 seconds open a 60 second window (lib/others/family_dream_courts.lua)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		FamilyDreamCourts.facelessStep(player, position)
+		return true
+	end
+
 	local isImmortal = Game.getStorageValue(storage)
 
 	if isImmortal == 5 then

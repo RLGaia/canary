@@ -103,7 +103,19 @@ function movements_acessTeleports.onStepIn(creature, item, position, fromPositio
 		end
 	end
 
-	if iPos == dreamScarTeleport then
+	if iPos == dreamScarTeleport and FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		-- FAMILY: the boss of the day of lib/others/family_dream_courts.lua (also the arena map and the lever)
+		local boss = FamilyDreamCourts.bossOfTheDay()
+		if player:getStorageValue(permission) < 1 then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Talk to Shirtalis or Farhilorn first to fight in the arena.") -- ours
+			player:teleportTo(fromPosition)
+		elseif player:getStorageValue(boss.timer) > os.time() then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have to wait to challenge " .. boss.name .. " again!")
+			player:teleportTo(fromPosition)
+		else
+			player:teleportTo(Position(32208, 32026, 13))
+		end
+	elseif iPos == dreamScarTeleport then
 		if player:getStorageValue(permission) >= 1 then
 			for i = 1, #dreamScar do
 				if os.date("%A") == dreamScar[i].day then

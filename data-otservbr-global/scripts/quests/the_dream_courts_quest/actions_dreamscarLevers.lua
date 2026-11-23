@@ -80,9 +80,24 @@ local function configureLever()
 		["Sunday"] = "Alptramun",
 	}
 	local bossName = bossDate[os.date("%A")]
+	-- FAMILY: one boss of the day for the arena map, this lever and the teleport, in the order of both wikis
+	-- (lib/others/family_dream_courts.lua); upstream used three different weekday tables
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		bossName = FamilyDreamCourts.bossOfTheDay().name
+		for name, list in pairs(config.monsters) do
+			if name:lower() == bossName:lower() then
+				config.monsters[bossName] = list
+			end
+		end
+	end
 	config.boss.name = bossName
 	config.monsters = config.monsters[bossName]
-	if bossName == "Maxxenius" then
+	if bossName == "Alptramun" and FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		-- FAMILY: the dream summons grow stronger from the first kill on (upstream reset it for Maxxenius)
+		config.onUseExtra = function()
+			Game.setStorageValue(Storage.Quest.U12_00.TheDreamCourts.DreamScarGlobal.AlptramunSummonsKilled, 0)
+		end
+	elseif bossName == "Maxxenius" then
 		config.onUseExtra = function()
 			Game.setStorageValue(Storage.Quest.U12_00.TheDreamCourts.DreamScarGlobal.AlptramunSummonsKilled, 0)
 		end

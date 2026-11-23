@@ -49,7 +49,13 @@ function globalevents_dreamCourts.onThink(interval)
 			position:sendMagicEffect(CONST_ME_SMALLPLANTS)
 			creature = Tile(position):getTopCreature()
 			if creature and creature:isPlayer() then
-				doTargetCombatHealth(0, creature, COMBAT_EARTHDAMAGE, -(creature:getHealth() * 0.2), -(creature:getHealth() * 0.5), CONST_ME_SMALLPLANTS)
+				-- FAMILY: EN "exactly half of the character's total HP" (was 20-50% of the current health)
+				if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+					local half = math.floor(creature:getMaxHealth() / 2)
+					doTargetCombatHealth(0, creature, COMBAT_EARTHDAMAGE, -half, -half, CONST_ME_SMALLPLANTS)
+				else
+					doTargetCombatHealth(0, creature, COMBAT_EARTHDAMAGE, -(creature:getHealth() * 0.2), -(creature:getHealth() * 0.5), CONST_ME_SMALLPLANTS)
+				end
 			end
 		end
 	end

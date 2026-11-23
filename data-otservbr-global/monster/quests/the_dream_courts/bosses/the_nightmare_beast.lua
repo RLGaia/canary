@@ -22,6 +22,8 @@ monster.manaCost = 0
 
 monster.events = {
 	"dreamCourtsDeath",
+	"familyNightmareThink", -- FAMILY: the curse and the dream catcher pole (scripts/family/dream_courts.lua)
+	"familyNightmareDeath", -- FAMILY: ends the curse when the beast dies
 }
 
 monster.changeTarget = {

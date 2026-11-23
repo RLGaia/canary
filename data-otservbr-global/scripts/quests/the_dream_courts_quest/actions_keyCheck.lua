@@ -23,7 +23,7 @@ function actions_keyCheck.onUse(player, item, fromPosition, target, toPosition, 
 				return true
 			end
 		elseif iPos == pillar[3] then
-			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You reach for the onyx and trigger and enormous discharge of raw energy. It is now possible to traverse the portal in this tomb.")
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You reach for the onyx and trigger an enormous discharge of raw energy. It is now possible to traverse the portal in this tomb.")
 			player:teleportTo(Position(33068, 32320, 8))
 			player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 			player:setStorageValue(Storage.Quest.U12_00.TheDreamCourts.HauntedHouse.Tomb, 1)

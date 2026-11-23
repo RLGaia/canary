@@ -123,7 +123,11 @@ function actions_containerRewards.onUse(player, item, fromPosition, target, toPo
 			if player:getStorageValue(k.storage) < k.value then
 				if k.defaultItem then
 					player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have found a " .. ItemType(k.reward):getName() .. ".")
-					player:addItem(k.reward, 1)
+					local given = player:addItem(k.reward, 1)
+					-- FAMILY: the parchment carries the verses of the seven doors (BR "Elven Parchment (Book)")
+					if given and FamilyDreamCourts and FamilyDreamCourts.enabled() and k.reward == FamilyDreamCourts.ELVEN_PARCHMENT then
+						given:setAttribute(ITEM_ATTRIBUTE_TEXT, FamilyDreamCourts.ELVEN_PARCHMENT_TEXT)
+					end
 				else
 					player:sendTextMessage(MESSAGE_EVENT_ADVANCE, k.text)
 					if player:getStorageValue(Storage.Quest.U12_00.TheDreamCourts.BurriedCatedral.WordCount) < 0 then

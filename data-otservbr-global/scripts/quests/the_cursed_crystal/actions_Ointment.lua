@@ -1,5 +1,9 @@
 local theCursedOintment = Action()
 function theCursedOintment.onUse(player, item, frompos, item2, topos)
+	-- FAMILY: The Dream Courts, the Stone Door in the Dream Labyrinth (lib/others/family_dream_courts.lua)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() and FamilyDreamCourts.useOintment(player, topos) then
+		return true
+	end
 	if (item.itemid == 21506) and (item2.itemid == 10420) then
 		if player:getStorageValue(Storage.Quest.U10_70.TheCursedCrystal.Oneeyedjoe) == 2 then
 			if not (((Player(player):getPosition().x - TCC_PILLARPETRIFIED.x) < 5) and ((Player(player):getPosition().x - TCC_PILLARPETRIFIED.x) > -5) and ((Player(player):getPosition().y - TCC_PILLARPETRIFIED.y) < 5) and ((Player(player):getPosition().y - TCC_PILLARPETRIFIED.y) > -5) and (Player(player):getPosition().z == TCC_PILLARPETRIFIED.z)) then

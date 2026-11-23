@@ -15,7 +15,7 @@ local sequence = {
 	[3] = {
 		number = 2,
 		position = Position(33616, 32520, 15),
-		msg = "The chants in this book often contain the word 'O'kteth.'.",
+		msg = "The chants in this book often contain the word 'O'kteth'.", -- FAMILY: typo
 	},
 	[4] = {
 		number = 3,

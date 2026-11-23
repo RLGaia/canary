@@ -67,6 +67,10 @@ function actions_sacrophagusUse.onUse(player, item, fromPosition, target, toPosi
 	if player:getStorageValue(storage) == 1 and isInQuest < 1 then
 		for _, k in pairs(sacrophagus) do
 			if tPos == k.hisPosition then
+				-- FAMILY: the three outcomes and messages of TibiaWiki EN, 30 s per player (lib/others/family_dream_courts.lua)
+				if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+					return FamilyDreamCourts.openSarcophagus(player, tPos)
+				end
 				resetActionId(player:getId(), tId, tPos, 23104, "You got a " .. ItemType(rewardId):getName() .. "!", rewardId)
 			end
 		end

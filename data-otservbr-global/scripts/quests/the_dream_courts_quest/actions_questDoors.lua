@@ -107,6 +107,10 @@ function actions_questDoors.onUse(player, item, fromPosition, target, toPosition
 				else
 					player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The door seems to be sealed against unwanted intruders.")
 				end
+			elseif p.help == "Medusa" and FamilyDreamCourts and FamilyDreamCourts.enabled() and player:getStorageValue(p.storage) < 1 then
+				-- FAMILY: the stone door needs the Medusa's Ointment first (EN, BR) (lib/others/family_dream_courts.lua)
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This door has been petrified for centuries.") -- ours
+				return true
 			elseif p.help == "Medusa" then
 				if player:getStorageValue(p.storage) < 1 then
 					player:setStorageValue(p.storage, 1)

@@ -66,6 +66,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: name, job, scholar (BR) and "not your name" (EN) (lib/others/family_dream_courts.lua)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		return FamilyDreamCourts.strickenSay(npcHandler, npc, creature, message)
+	end
+
 	local playerName = player:getName()
 
 	if MsgContains(message, "yes") then
@@ -99,6 +104,8 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
+npcHandler:setMessage(MESSAGE_FAREWELL, "Faaaaare thee well.") -- FAMILY: BR
+npcHandler:setMessage(MESSAGE_WALKAWAY, "Faaaaare thee well.") -- FAMILY: BR
 npcHandler:setCallback(CALLBACK_GREET, greetCallback)
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 

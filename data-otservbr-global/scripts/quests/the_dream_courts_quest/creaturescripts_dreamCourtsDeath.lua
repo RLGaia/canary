@@ -90,6 +90,17 @@ local alptramunSummons = {
 local creaturescripts_dreamCourtsDeath = CreatureEvent("dreamCourtsDeath")
 
 function creaturescripts_dreamCourtsDeath.onDeath(creature, corpse, killer, mostDamageKiller, lastHitUnjustified)
+	-- FAMILY: Alptramun's dreams are his summons, so they are counted before the master check (upstream
+	-- never counted them and the stronger dreams never came)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() and creature:isMonster() and creature:getMaster() then
+		local summonsKilled = Game.getStorageValue(Storage.Quest.U12_00.TheDreamCourts.DreamScarGlobal.AlptramunSummonsKilled)
+		for _, k in pairs(alptramunSummons) do
+			if creature:getName():lower() == k.name and summonsKilled >= 0 then
+				Game.setStorageValue(Storage.Quest.U12_00.TheDreamCourts.DreamScarGlobal.AlptramunSummonsKilled, summonsKilled + 1)
+			end
+		end
+		return true
+	end
 	if not creature:isMonster() or creature:getMaster() then
 		return true
 	end
@@ -111,6 +122,10 @@ function creaturescripts_dreamCourtsDeath.onDeath(creature, corpse, killer, most
 						attackerPlayer:setStorageValue(k.storageQuestline, attackerPlayer:getStorageValue(k.storageQuestline) + 1)
 					end
 					attackerPlayer:setStorageValue(k.storageTimer, os.time() + 20 * 60 * 60)
+					-- FAMILY: arena wins for Champion of Summer / Champion of Winter (EN: 20 wins)
+					if FamilyDreamCourts and FamilyDreamCourts.enabled() and FamilyDreamCourts.ARENA_BOSS_NAMES[cName:lower()] then
+						FamilyDreamCourts.arenaWin(attackerPlayer)
+					end
 				end
 			end
 

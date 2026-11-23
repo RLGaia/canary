@@ -17,6 +17,12 @@ function actions_chargedCompass.onUse(player, item, fromPosition, target, toPosi
 		return true
 	end
 
+	-- FAMILY: the magic portal and its chest room, the blue and green charges, the Port Hope ward stone
+	-- (lib/others/family_dream_courts.lua)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		return FamilyDreamCourts.useCompass(player, item, target, toPosition)
+	end
+
 	local tPos = target:getPosition()
 	local isInQuest = player:getStorageValue(Storage.Quest.U12_00.TheDreamCourts.UnsafeRelease.Questline)
 
@@ -35,5 +41,5 @@ function actions_chargedCompass.onUse(player, item, fromPosition, target, toPosi
 	return true
 end
 
-actions_chargedCompass:id(29294)
+actions_chargedCompass:id(29292, 29293, 29294) -- FAMILY: also the blue and green charge
 actions_chargedCompass:register()

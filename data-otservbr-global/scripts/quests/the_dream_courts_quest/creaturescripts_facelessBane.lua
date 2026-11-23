@@ -8,6 +8,12 @@ function creaturescripts_facelessBane.onThink(creature, interval)
 		return true
 	end
 
+	-- FAMILY: the Faceless Bane rounds of the wikis (lib/others/family_dream_courts.lua)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		FamilyDreamCourts.facelessThink(creature)
+		return true
+	end
+
 	local lifes = creature:getStorageValue(storage)
 	local percentageHealth = (creature:getHealth() / creature:getMaxHealth()) * 100
 
@@ -51,6 +57,18 @@ function creaturescripts_facelessBane.onHealthChange(creature, attacker, primary
 			primaryDamage = 0
 		end
 	elseif creature:getName():lower() == "faceless bane" then
+		-- FAMILY: damage only counts in the 60 seconds after the iron floors (lib/others/family_dream_courts.lua)
+		if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+			if primaryType == COMBAT_HEALING then
+				return primaryDamage, primaryType, secondaryDamage, secondaryType
+			end
+			local total = math.abs(primaryDamage) + math.abs(secondaryDamage)
+			local taken = FamilyDreamCourts.facelessDamage(creature, total)
+			if taken <= 0 then
+				return 0, primaryType, 0, secondaryType
+			end
+			return primaryDamage, primaryType, secondaryDamage, secondaryType
+		end
 		primaryDamage = 0
 	elseif creature:getName():lower() == "plagueroot" then
 		if primaryType == COMBAT_EARTHDAMAGE then

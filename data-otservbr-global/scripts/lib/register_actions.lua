@@ -555,7 +555,8 @@ function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
 	local tPos = toPosition
 
 	-- The Dream Courts Quest
-	for i = 1, #oldTable do
+	-- FAMILY: the old lock comes out with a crowbar or a tool (EN), not a pick: see onUseCrowbar
+	for i = 1, (FamilyDreamCourts and FamilyDreamCourts.enabled()) and 0 or #oldTable do
 		if tPos == oldTable[i] then
 			if player:getStorageValue(storage) < 1 then
 				for j = 1, #foundItems do
@@ -886,6 +887,10 @@ function onUseMachete(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUseCrowbar(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: The Dream Courts, the old lock in the old table (EN: crowbar or Secret Agent tool)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() and FamilyDreamCourts.leverOldLock(player, toPosition) then
+		return true
+	end
 	if not table.contains({ 3304, 9598 }, item.itemid) then
 		return false
 	end

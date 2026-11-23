@@ -27,7 +27,7 @@ function actions_magicalPaint.onUse(player, item, fromPosition, target, toPositi
 		end
 	elseif item.actionid == 23109 and (item.itemid == 29997 or item.itemid == 29996) then
 		if player:getStorageValue(Storage.Quest.U12_00.TheDreamCourts.TheSevenKeys.Painting) == 2 then
-			if item.getPosition() == Position(32104, 31921, 13) or item:getPosition() == Position(32103, 31921, 13) then
+			if item:getPosition() == Position(32104, 31921, 13) or item:getPosition() == Position(32103, 31921, 13) then
 				player:teleportTo(Position(32114, 32014, 13))
 			else
 				player:teleportTo(Position(32103, 31922, 13))

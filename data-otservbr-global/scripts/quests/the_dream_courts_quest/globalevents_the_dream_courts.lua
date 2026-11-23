@@ -13,6 +13,11 @@ local dreamCourtsEvent = GlobalEvent("DreamCourts")
 function dreamCourtsEvent.onStartup()
 	local currentDay = os.date("%A")
 	local dayConfig = dreamCourtsConfig[currentDay]
+	-- FAMILY: the same boss of the day as the lever and the teleport (lib/others/family_dream_courts.lua)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		local boss = FamilyDreamCourts.bossOfTheDay()
+		dayConfig = { map = boss.map, bossName = boss.name }
+	end
 	if not dayConfig then
 		logger.warn("[World Change] The Dream Courts map not defined for the current day: {}", currentDay)
 		return false

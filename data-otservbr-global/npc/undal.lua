@@ -61,6 +61,12 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: "task" straight away, the long story, "lost", either court reports, the addons as on both wikis
+	-- and the Dream Catcher achievement (lib/others/family_dream_courts.lua)
+	if FamilyDreamCourts and FamilyDreamCourts.enabled() then
+		return FamilyDreamCourts.courtSay(npcHandler, npc, creature, message, "winter")
+	end
+
 	local dreamTalisman = 30132
 
 	if MsgContains(message, "talk") then

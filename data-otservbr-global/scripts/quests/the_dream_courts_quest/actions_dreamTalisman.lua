@@ -25,21 +25,21 @@ local config = {
 		off = 29334,
 		hisPosition = Position(33555, 32220, 7),
 		hisStorage = Storage.Quest.U12_00.TheDreamCourts.WardStones.FeyristStone,
-		hisMessage = "You charge the summer ward stone and the engraved sun crystal glows in a golden light.",
+		hisMessage = "You charge the summer ward stone and the engraved sun glows in a golden light.", -- FAMILY: EN (was "sun crystal")
 	},
 	[5] = {
 		on = 29335,
 		off = 29334,
 		hisPosition = Position(32383, 32610, 7),
 		hisStorage = Storage.Quest.U12_00.TheDreamCourts.WardStones.MerianaStone,
-		hisMessage = "You charge the summer ward stone and the engraved sun crystal glows in a golden light.",
+		hisMessage = "You charge the summer ward stone and the engraved sun glows in a golden light.", -- FAMILY: EN
 	},
 	[6] = {
 		on = 29335,
 		off = 29334,
 		hisPosition = Position(33273, 31997, 7),
 		hisStorage = Storage.Quest.U12_00.TheDreamCourts.WardStones.CormayaStone,
-		hisMessage = "You charge the summer ward stone and the engraved sun crystal glows in a golden light.",
+		hisMessage = "You charge the summer ward stone and the engraved sun glows in a golden light.", -- FAMILY: EN
 	},
 	[7] = {
 		on = 29335,
@@ -71,6 +71,10 @@ function actions_dreamTalisman.onUse(player, item, fromPosition, target, toPosit
 	for _, k in pairs(config) do
 		if tPos == k.hisPosition and target:getId() == k.off then
 			if player:getStorageValue(k.hisStorage) < 1 then
+				-- FAMILY: the eighth stone works by hand too (scripts/family/dream_courts.lua)
+				if k.lastStone and FamilyDreamCourts and FamilyDreamCourts.enabled() then
+					return FamilyDreamCourts.useCathedralStone(player, target) or true
+				end
 				if k.lastStone then
 					if player:getStorageValue(Storage.Quest.U12_00.TheDreamCourts.HauntedHouse.Questline) ~= 5 then
 						return true
