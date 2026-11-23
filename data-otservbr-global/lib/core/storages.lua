@@ -1876,6 +1876,21 @@ Storage = {
 			VenoreDailyTasks = {},
 		},
 		U10_10 = { -- update 10.10 - Reserved Storages 44101 - 44300
+			-- FAMILY: The Repenters Quest (2026-11-23; upstream had no tasks). Rules:
+			-- lib/others/family_repenters.lua. Tasks -1/0 free, 1 taken, 2 done, 3 reported (free
+			-- again 20 h later). Free after these: 44111-44199.
+			TheRepenters = {
+				Questline = 44101, -- quest log (1 = a task was taken)
+				Watering = 44102,
+				Magic = 44103,
+				Fire = 44104,
+				Mushroom = 44105,
+				MagicStage = 44106, -- wild magic colours caught in order (0-4)
+				Flames = 44107, -- flames caught in the firecatcher urn (0-5)
+				Mushrooms = 44108, -- mushrooms sterilised (0-5)
+				Passages = 44109, -- shortcut passages left (Ashari's bonus gives 5)
+				Bonus = 44110, -- 1 = a bonus was paid once
+			},
 			FuryGatesMiniWorldChange = {},
 			HuntingForTokens = {},
 			OpticordingSphere = {},
@@ -1969,7 +1984,7 @@ Storage = {
 				SmallDragonTears2 = 44287,
 				SmallDragonTears3 = 44288,
 			},
-			TheRepenters = {},
+			-- FAMILY: TheRepenters = {} was here (empty); now filled at the top of this block
 		},
 		U10_20 = { -- update 10.20 - Reserved Storages 44301 - 44400
 			SpikeTaskQuest = {

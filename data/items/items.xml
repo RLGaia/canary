@@ -38753,10 +38753,13 @@
 		<attribute key="description" value="This vial is currently empty, there are no traces of any liquid"/>
 		<attribute key="weight" value="100"/>
 	</item>
+	<!-- FAMILY: The Repenters, the tears pour out of the vial after 20 minutes (TibiaWiki BR; EN "15(?)") -->
 	<item id="18992" article="a" name="filled elven vial">
 		<attribute key="primarytype" value="quest items"/>
 		<attribute key="description" value="The water in this vial is sacred to some. It will not stay in this vessel forever, however"/>
 		<attribute key="weight" value="100"/>
+		<attribute key="duration" value="1200"/>
+		<attribute key="decayTo" value="18991"/>
 	</item>
 	<item id="18993" article="a" name="rorc feather">
 		<attribute key="primarytype" value="creature products"/>

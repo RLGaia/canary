@@ -165594,8 +165594,13 @@
 	<monster centerx="32672" centery="31538" centerz="14" radius="3">
 		<monster name="Fire Elemental" x="-1" y="-3" z="14" spawntime="90" />
 	</monster>
-	<monster centerx="32644" centery="31559" centerz="14" radius="3">
-		<monster name="Fire Elemental" x="-3" y="2" z="14" spawntime="90" />
+	<!-- FAMILY: The Repenters, Catching Fire (2026-11-23): Hellgate's fire cave has Furious Fire Elementals (TibiaWiki EN; upstream: one Fire Elemental), five, back after 60 s (ours) -->
+	<monster centerx="32639" centery="31563" centerz="14" radius="5">
+		<monster name="Furious Fire Elemental" x="-3" y="-3" z="14" spawntime="60" />
+		<monster name="Furious Fire Elemental" x="3" y="-3" z="14" spawntime="60" />
+		<monster name="Furious Fire Elemental" x="-2" y="0" z="14" spawntime="60" />
+		<monster name="Furious Fire Elemental" x="4" y="-1" z="14" spawntime="60" />
+		<monster name="Furious Fire Elemental" x="-2" y="3" z="14" spawntime="60" />
 	</monster>
 	<monster centerx="32665" centery="31559" centerz="14" radius="3">
 		<monster name="Spider" x="2" y="2" z="14" spawntime="90" />

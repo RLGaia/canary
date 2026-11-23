@@ -49,9 +49,8 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Hello, stranger! These caves must seem strange to you. I wonder what brings you here... maybe you are interested in some work? There are several tasks I could need a hand with.")
-npcHandler:setMessage(MESSAGE_FAREWELL, "Bye!")
-npcHandler:setMessage(MESSAGE_WALKAWAY, "Bye!")
+-- FAMILY: The Repenters Quest, tasks, greeting and lore words (data-otservbr-global/lib/others/family_repenters.lua)
+FamilyRepenters.setupAshari(keywordHandler, npcHandler)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

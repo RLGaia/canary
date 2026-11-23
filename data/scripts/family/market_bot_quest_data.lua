@@ -632,6 +632,7 @@ return {
 	[18993] = true, -- rorc feather
 	[18994] = true, -- elven hoof
 	[19136] = true, -- nail case
+	[19159] = true, -- pannier backpack
 	[20062] = true, -- cluster of solace
 	[20199] = true, -- frazzle skin
 	[20200] = true, -- silencer claws

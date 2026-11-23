@@ -49,6 +49,8 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: The Repenters Quest, tasks, greeting and lore words (data-otservbr-global/lib/others/family_repenters.lua)
+FamilyRepenters.setupLarfion(keywordHandler, npcHandler)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

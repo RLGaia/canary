@@ -62,6 +62,7 @@ local questModules = {
 	"061_kissing_a_pig", -- FAMILY: Kissing a Pig Quest (the pig on the Thais farm)
 	"062_krailos", -- FAMILY: Krailos Quest (Larek, Ghorza, Vuzrog, Grubokk, the goblins)
 	"063_goblin_merchant", -- FAMILY: Goblin Merchant Quest (Rafzan's six tasks)
+	"064_the_repenters", -- FAMILY: The Repenters Quest (Ashari's four daily tasks, Hellgate)
 }
 
 local catalog = dofile(CORE_DIRECTORY .. "/lib/core/quests/catalog.lua")
