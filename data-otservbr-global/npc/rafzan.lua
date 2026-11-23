@@ -45,6 +45,10 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: Goblin Merchant Quest, the six tasks and his greeting (data-otservbr-global/lib/others/family_goblin_merchant.lua).
+-- Added before the lore words below, so its "task" and "help" answer first.
+FamilyGoblinMerchant.setupRafzan(keywordHandler, npcHandler)
+
 keywordHandler:addKeyword({ "task" }, StdModule.say, { npcHandler = npcHandler, text = "Are you here to get a task or to report you finished task?" })
 keywordHandler:addKeyword({ "name" }, StdModule.say, { npcHandler = npcHandler, text = "Me humble name is Rafzan. Good old goblin name meaning honest, generous and nice person, I swear!" })
 keywordHandler:addKeyword({ "goblin" }, StdModule.say, { npcHandler = npcHandler, text = "Most goblins so afraid of everything, that they fight everything. Me different. Me just want trade." })

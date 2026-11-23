@@ -33,3 +33,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_threatened_dreams_lore.lua") -- FAM
 dofile(DATA_DIRECTORY .. "/lib/others/family_threatened_dreams.lua") -- FAMILY: Threatened Dreams Quest review (fixes, The Fairy Treasure, The Swan Feather Cloak)
 dofile(DATA_DIRECTORY .. "/lib/others/family_sweet_dreams.lua") -- FAMILY: Threatened Dreams Quest, Sweet Dreams (Candia)
 dofile(DATA_DIRECTORY .. "/lib/others/family_dream_courts.lua") -- FAMILY: The Dream Courts Quest review (NPCs, compass chest, curse, Faceless Bane, boss of the day)
+dofile(DATA_DIRECTORY .. "/lib/others/family_goblin_merchant.lua") -- FAMILY: Goblin Merchant Quest (Rafzan's six tasks)

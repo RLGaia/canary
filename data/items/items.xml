@@ -35718,15 +35718,28 @@
 		<attribute key="primarytype" value="quest items"/>
 		<attribute key="weight" value="800"/>
 	</item>
+	<!-- FAMILY: perfume gatherer look texts per stage as on TibiaWiki EN (Goblin Merchant Quest; upstream gave every filled stage "filled with smelly goo") -->
 	<item id="17670" article="a" name="perfume gatherer">
-		<attribute key="description" value="It is empty. The first odour you're looking for is special snail slime"/>
+		<attribute key="description" value="It is empty. The first odour you're looking for is special snail slime."/>
 		<attribute key="weight" value="350"/>
 	</item>
 	<item id="17671" article="a" name="bottle with rat urine">
 		<attribute key="weight" value="100"/>
 	</item>
-	<item fromid="17672" toid="17675" article="a" name="perfume gatherer">
-		<attribute key="description" value="It is filled with smelly goo"/>
+	<item id="17672" article="a" name="perfume gatherer">
+		<attribute key="description" value="It is partly filled. The second odour you need is black swamp gas."/>
+		<attribute key="weight" value="350"/>
+	</item>
+	<item id="17673" article="a" name="perfume gatherer">
+		<attribute key="description" value="It is partly filled. The third odour you need is a rotworm fart."/>
+		<attribute key="weight" value="350"/>
+	</item>
+	<item id="17674" article="a" name="perfume gatherer">
+		<attribute key="description" value="It is partly filled. The final odour you need is that of mouldy cheese."/>
+		<attribute key="weight" value="350"/>
+	</item>
+	<item id="17675" article="a" name="perfume gatherer">
+		<attribute key="description" value="It is filled with smelly goo."/>
 		<attribute key="weight" value="350"/>
 	</item>
 	<item id="17676" article="a" name="trunkhammer">

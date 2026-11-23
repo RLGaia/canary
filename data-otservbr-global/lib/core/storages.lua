@@ -1856,7 +1856,23 @@ Storage = {
 				QuestLine = 52148,
 			},
 			ChildOfDestiny = {},
-			GoblinMerchant = {},
+			-- FAMILY: Goblin Merchant Quest (2026-11-23; upstream left it empty and had no tasks).
+			-- Rules: lib/others/family_goblin_merchant.lua. Tasks -1/0 free, 1 taken, 2 done,
+			-- 3 reported (free again 20 h later); counts are task progress. Free after these: 44013-44100.
+			GoblinMerchant = {
+				Questline = 44001, -- quest log (1 = a task was taken)
+				Advertising = 44002,
+				Perfume = 44003,
+				Guards = 44004,
+				Busy = 44005,
+				Destroy = 44006,
+				Kill = 44007,
+				AdvertisingCount = 44008,
+				GuardsCount = 44009,
+				DestroyCount = 44010,
+				KillCount = 44011,
+				Reports = 44012, -- tasks reported in all (Task Manager at 500)
+			},
 			VenoreDailyTasks = {},
 		},
 		U10_10 = { -- update 10.10 - Reserved Storages 44101 - 44300
