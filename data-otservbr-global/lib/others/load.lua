@@ -35,3 +35,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_sweet_dreams.lua") -- FAMILY: Threa
 dofile(DATA_DIRECTORY .. "/lib/others/family_dream_courts.lua") -- FAMILY: The Dream Courts Quest review (NPCs, compass chest, curse, Faceless Bane, boss of the day)
 dofile(DATA_DIRECTORY .. "/lib/others/family_goblin_merchant.lua") -- FAMILY: Goblin Merchant Quest (Rafzan's six tasks)
 dofile(DATA_DIRECTORY .. "/lib/others/family_repenters.lua") -- FAMILY: The Repenters Quest (Ashari, Larfion)
+dofile(DATA_DIRECTORY .. "/lib/others/family_galthen.lua") -- FAMILY: Adventures of Galthen, Galthen and the Lost Queen (Kesar, Lesh, Alphonse, John, Yselda)

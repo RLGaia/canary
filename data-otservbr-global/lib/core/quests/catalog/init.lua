@@ -63,6 +63,7 @@ local questModules = {
 	"062_krailos", -- FAMILY: Krailos Quest (Larek, Ghorza, Vuzrog, Grubokk, the goblins)
 	"063_goblin_merchant", -- FAMILY: Goblin Merchant Quest (Rafzan's six tasks)
 	"064_the_repenters", -- FAMILY: The Repenters Quest (Ashari's four daily tasks, Hellgate)
+	"065_adventures_of_galthen", -- FAMILY: Adventures of Galthen, Galthen and the Lost Queen (Kesar, Yselda)
 }
 
 local catalog = dofile(CORE_DIRECTORY .. "/lib/core/quests/catalog.lua")

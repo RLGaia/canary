@@ -56,7 +56,9 @@ end
 
 local function greetCallback(npc, creature)
 	local player = Player(creature)
-	local text = player and FamilyLion and FamilyLion.greeting("kesar", player)
+	-- FAMILY: the Hero of Bounac greeting of Adventures of Galthen (lib/others/family_galthen.lua)
+	local text = player and FamilyGalthen and FamilyGalthen.kesarGreeting(player)
+	text = text or (player and FamilyLion and FamilyLion.greeting("kesar", player))
 	npcHandler:setMessage(MESSAGE_GREET, text or "Hello, |PLAYERNAME|.")
 	return true
 end
@@ -65,6 +67,10 @@ local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	if not npcHandler:checkInteraction(npc, creature) then
 		return false
+	end
+	-- FAMILY: Kesar's Yselda talk (Galthen and the Lost Queen) before The Order of the Lion
+	if FamilyGalthen and FamilyGalthen.kesarSay(npc, creature, player, message, npcHandler) then
+		return true
 	end
 	if FamilyLion then
 		FamilyLion.onSay("kesar", npc, creature, player, message, npcHandler)

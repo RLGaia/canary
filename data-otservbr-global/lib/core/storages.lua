@@ -3042,6 +3042,18 @@ Storage = {
 		U12_70 = { -- update 12.70 - Reserved Storages 47601 - 47800
 			AdventuresOfGalthen = {
 				AccessDoor = 47601,
+				-- FAMILY: Galthen and the Lost Queen (2026-11-23; lib/others/family_galthen.lua).
+				-- Free in this block after these: 47612-47800.
+				LostQueen = 47602, -- story: 1 Kesar, 2 Lesh, 3 Spectulus, 4 Alphonse, 5 Lion access, 6 kettle, 7 Yselda killed, 8 reported, 9 tulip delivered
+				Fingers = 47603, -- carnisylvan fingers put into the soup kettle (20)
+				Barks = 47604, -- carnisylvan barks (10)
+				Teeth = 47605, -- human teeth (2)
+				Outcome = 47606, -- best Yselda kill: 1 saplings died, 2 saplings alive
+				Tulip = 47607, -- 1 Kesar gave the violet tulip, 2 delivered
+				JohnPermission = 47608, -- 1 Kesar sent you to John
+				JohnAddon = 47609, -- 1 John gave the first addon
+				Questline = 47610, -- quest log
+				Outfit = 47611, -- 1 Kesar gave the outfit
 			},
 			CitizenOfIssaviOutfits = {},
 			RoyalBounaceanAdvisorOutfits = {},

@@ -9,7 +9,9 @@ function entranceYselda.onUse(creature, item, position, fromPosition)
 	if not player then
 		return false
 	end
-	if not player:canFightBoss("Megasylvan Yselda") then
+	-- FAMILY: the shortcut opens after Megasylvan Yselda was defeated (TibiaWiki EN, BR); upstream asked for
+	-- her boss cooldown instead
+	if FamilyGalthen and FamilyGalthen.get(player, "Outcome") < 1 then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This root seems to thicken and wreathe the moment you try to grab it.")
 		player:teleportTo(fromPosition, true)
 		player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)

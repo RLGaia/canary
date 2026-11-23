@@ -129,4 +129,14 @@ monster.immunities = {
 	{ type = "bleed", condition = false },
 }
 
+-- FAMILY: Galthen and the Lost Queen (lib/others/family_galthen.lua, scripts/family/galthen.lua): she takes
+-- no damage until the ritual words are said in her room; her death gives the kill to everyone in the room.
+monster.events = { "FamilyGalthenYseldaHealth", "FamilyGalthenYseldaDeath" }
+
+mType.onSpawn = function(monster, spawnPosition)
+	if FamilyGalthen then
+		FamilyGalthen.startFight()
+	end
+end
+
 mType:register(monster)

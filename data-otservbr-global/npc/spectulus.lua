@@ -81,6 +81,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Adventures of Galthen, his Yselda talk (lib/others/family_galthen.lua; upstream had none)
+	if FamilyGalthen and FamilyGalthen.spectulusSay(npc, creature, player, message, npcHandler) then
+		return true
+	end
+
 	if MsgContains(message, "research") and player:getStorageValue(Storage.Quest.U8_7.JackFutureQuest.QuestLine) == 11 then
 		local qStorage = player:getStorageValue(Storage.Quest.U8_7.SpiritHunters.Mission01)
 		local tombsStorage = player:getStorageValue(Storage.Quest.U8_7.SpiritHunters.TombUse)

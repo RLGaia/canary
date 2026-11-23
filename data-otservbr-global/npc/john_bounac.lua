@@ -50,6 +50,30 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: Adventures of Galthen (lib/others/family_galthen.lua): his greeting by day and night, `yselda`
+-- for the first Royal Bounacean Advisor addon (Kesar's permission), and the carpets only after it
+-- (`fragments`; BR). Upstream sold them to anyone and had no talk.
+npcHandler:setCallback(CALLBACK_GREET, function(npc, creature)
+	npcHandler:setMessage(MESSAGE_GREET, FamilyGalthen and FamilyGalthen.johnGreeting() or "Hello.")
+	return true
+end)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, function(npc, creature, type, message)
+	local player = Player(creature)
+	if not player or not npcHandler:checkInteraction(npc, creature) then
+		return false
+	end
+	return FamilyGalthen and FamilyGalthen.johnSay(npc, creature, player, message, npcHandler) or false
+end)
+npcHandler:setCallback(CALLBACK_ON_TRADE_REQUEST, function(npc, creature)
+	local player = Player(creature)
+	if player and FamilyGalthen and not FamilyGalthen.canTradeJohn(player) then
+		npcHandler:say("I'm on vacation, I'm not selling anything right now.", npc, creature) -- ours
+		return false
+	end
+	return true
+end)
+npcHandler:setMessage(MESSAGE_FAREWELL, "Good night.") -- ours
+npcHandler:setMessage(MESSAGE_WALKAWAY, "Good night.") -- ours
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 npcConfig.shop = {
