@@ -891,6 +891,10 @@ function onUseMachete(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUseCrowbar(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: Treasure Hunt Quest: the locked western door of Mac Noodles (lib/others/family_treasure_hunt.lua)
+	if FamilyTreasureHunt and FamilyTreasureHunt.onCrowbar(player, toPosition) then
+		return true
+	end
 	-- FAMILY: The Dream Courts, the old lock in the old table (EN: crowbar or Secret Agent tool)
 	if FamilyDreamCourts and FamilyDreamCourts.enabled() and FamilyDreamCourts.leverOldLock(player, toPosition) then
 		return true

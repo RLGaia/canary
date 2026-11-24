@@ -5,7 +5,9 @@
 -- * The dworc cave below the dig spot (world/custom/family-treasure-hunt.otbm): the 4 levers roll
 --   their dice, the teleporter lets through only who carries the voodoo doll whose number the dice
 --   show (else back one square), the way out, the remains of a pirate.
--- * Startup: the 3 giant tree carvings, the sealed door's action id, the chest made immovable.
+-- * Klaus' logbook chest (the rock of the alcove north of him removed, the chest placed), the
+--   bottom of Captain Nathaniel's boat, the floor under Mac Noodles' trough.
+-- * Startup: the 3 giant tree carvings, the sealed door's action id, the chests made immovable.
 -- The fire bug, the shovel and the voodoo doll call FamilyTreasureHunt from their own scripts.
 --
 -- Switch: Family.treasureHunt (false = none of the above; Wyrdin and the items act as upstream).
@@ -50,6 +52,42 @@ end
 
 remains:position(T.remains)
 remains:register()
+
+local logbook = Action()
+
+function logbook.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not Family.treasureHunt then
+		return false
+	end
+	return T.useLogbookChest(player)
+end
+
+logbook:position(T.logbookChest)
+logbook:register()
+
+local boat = Action()
+
+function boat.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not Family.treasureHunt or item.itemid ~= 1759 then
+		return false
+	end
+	return T.useBoat(player)
+end
+
+boat:position(T.boat)
+boat:register()
+
+local noodles = Action()
+
+function noodles.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	if not Family.treasureHunt then
+		return false
+	end
+	return T.useNoodlesFloor(player)
+end
+
+noodles:position(T.noodlesFloor)
+noodles:register()
 
 local gate = MoveEvent()
 

@@ -57,6 +57,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Treasure Hunt Quest, "treasure map", "logbook", the pirates, "map" (lib/others/family_treasure_hunt.lua)
+	if FamilyTreasureHunt and FamilyTreasureHunt.klaus(npc, creature, message, npcHandler) then
+		return true
+	end
+
 	if MsgContains(message, "mission") then
 		if player:getStorageValue(Storage.Quest.U7_8.TheShatteredIsles.RaysMission4) == 1 then
 			npcHandler:say("Hmm, you look like a seasoned seadog. Kill Captain Ray Striker, bring me his lucky pillow as a proof and you are our hero!", npc, creature)
@@ -82,7 +87,7 @@ local function creatureSayCallback(npc, creature, type, message)
 	return true
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Ho matey.")
+npcHandler:setMessage(MESSAGE_GREET, "Ho matey!") -- FAMILY: TibiaWiki EN transcript (upstream "Ho matey.")
 npcHandler:setMessage(MESSAGE_FAREWELL, "Whenever your throat is dry, you know where to find my tavern.")
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)

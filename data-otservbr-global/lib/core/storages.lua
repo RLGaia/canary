@@ -1453,6 +1453,10 @@ Storage = {
 				Decrypt = 42522, -- time Wyrdin took the encrypted text (0 = none or done)
 				PoemDoor = 42523, -- the sealed door next to Wyrdin carries this number as action id
 				Poem = 42524, -- 1 = poem taken from the chest
+				Logbook = 42525, -- 1 = Klaus' logbook taken
+				Pirates = 42526, -- bits: Klaus asked about Nutty Jack 1, Rapp Scallion 2, Captain Nathaniel 4
+				BoatPart = 42527, -- 1 = lower left part taken from the boat
+				NoodlesPart = 42528, -- 1 = lower right part taken at Mac Noodles
 			},
 		},
 		U8_54 = { -- update 8.54 - Reserved Storages 42551 - 42950
