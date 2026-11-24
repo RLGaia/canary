@@ -50,6 +50,10 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: Machinery of War Quest, "orc war", "mission", "orc land", "war plans", "achievement" (lib/others/family_machinery_of_war.lua)
+	if FamilyMachineryOfWar and npcHandler:checkInteraction(npc, creature) and FamilyMachineryOfWar.baxter(npc, creature, message, npcHandler) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 
@@ -115,6 +119,11 @@ npcConfig.shop = {
 }
 -- On buy npc shop message
 npcType.onBuyItem = function(npc, player, itemId, subType, amount, ignore, inBackpacks, totalCost)
+	-- FAMILY: kits only after "orc war" (TibiaWiki EN, Bricklayers' Kit)
+	if FamilyMachineryOfWar and not FamilyMachineryOfWar.mayBuy(player, itemId) then
+		player:sendTextMessage(MESSAGE_FAILURE, "Ask Baxter about the orc war first.") -- ours
+		return
+	end
 	npc:sellItem(player, itemId, amount, subType, 0, ignore, inBackpacks)
 end
 -- On sell npc shop message

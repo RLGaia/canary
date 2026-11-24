@@ -1041,7 +1041,16 @@ Storage = {
 				Machine3 = 41661,
 				Machine4 = 41662,
 			},
-			MachineryOfWar = {},
+			-- FAMILY: Machinery of War Quest (2026-11-24; lib/others/family_machinery_of_war.lua). Upstream left it
+			-- empty; 41663-41669 are free numbers of this 8.2 block.
+			MachineryOfWar = {
+				Rank = 41663, -- quest log "Orc War Rank": 1 started, 2 henchman, 3 mercenary, 4 orc butcher, 5 war hero
+				Achievements = 41664, -- achievements reported to Baxter
+				Pending = 41665, -- achievements done, not yet reported
+				Repairs = 41666, -- outpost rounds repaired towards the next achievement (two = one)
+				Plans = 41667, -- 1 asked for the war plans, 2 read them
+				PlansTime = 41668, -- time the last war plans were reported
+			},
 			TheBeginningQuest = {
 				TutorialHintsStorage = 41670,
 				SantiagoNpcGreetStorage = 41671,

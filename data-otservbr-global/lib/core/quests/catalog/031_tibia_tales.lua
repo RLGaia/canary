@@ -360,6 +360,22 @@ local quest = {
 				[13] = "You found the treasure of the four pirates.",
 			},
 		},
+		-- FAMILY: Machinery of War Quest (2026-11-24; lib/others/family_machinery_of_war.lua). BR names the entry
+		-- "Orc War Rank"; the texts are ours.
+		[21] = {
+			name = "Orc War Rank",
+			storageId = Storage.Quest.U8_2.MachineryOfWar.Rank,
+			missionId = 11298,
+			startValue = 1,
+			endValue = 5,
+			states = {
+				[1] = "Baxter in Thais told you about the orc war: repair the outposts around Ulderek's Rock with bricklayers' kits, burn the orcs' war machines with a fire bug and find their war plans. Ask him about your achievements.",
+				[2] = "You are a henchman of war. Keep repairing the outposts and burning the orcs' machines.",
+				[3] = "You are a mercenary of war. Keep repairing the outposts and burning the orcs' machines.",
+				[4] = "You are an orc butcher. Keep repairing the outposts and burning the orcs' machines.",
+				[5] = "You are a war hero, the highest rank of the orc war. Each achievement now brings 2,000 experience.",
+			},
+		},
 		-- [17] = {
 		-- name = "Nomads Land",
 		-- storageId = PLACEHOLDER,
