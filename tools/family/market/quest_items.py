@@ -86,6 +86,17 @@ NOT_QUEST = {
 
 # Quest ingredients with no other source on this server: they get sell offers too (reviewed by hand).
 ASKED_FOR = {
+    9185: "very old piece of paper (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
+    9186: "old encrypted text (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
+    9204: "old pirate poem (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
+    9181: "top right part of a map (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
+    9182: "top left part of a map (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
+    9183: "lower right part of a map (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
+    9184: "lower left part of a map (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
+    9205: "pirate treasure map (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
+    9177: "voodoo doll 3613 (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
+    9178: "voodoo doll 2543 (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
+    9179: "voodoo doll 5261 (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
     48115: "taiyaki (Jean Pierre's Zaoan Sauce; the Candia lakes are not fished here, 2026-11-16)",
     6125: "tortoise egg from Nargor (Duncan; the nests script names it in a variable, 2026-11-17)",
     6100: "the Lethal Lissy's shirt (Ariella's pirate hat; its three sibling items are listed through the Nargor boss room chest, 2026-11-17)",

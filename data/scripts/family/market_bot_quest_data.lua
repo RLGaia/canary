@@ -478,6 +478,8 @@ return {
 	[9114] = true, -- wooden ties
 	[9128] = true, -- hat for Eclesius
 	[9172] = true, -- prison cell key
+	[9185] = true, -- very old piece of paper
+	[9205] = true, -- pirate treasure map
 	[9308] = true, -- nautical map
 	[9389] = true, -- fan doll of King Tibianus
 	[9605] = true, -- crown backpack
