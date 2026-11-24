@@ -89,6 +89,10 @@ end
 local fluid = Action()
 
 function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: Treasure Hunt Quest: rum on the snake head's coal basin (lib/others/family_treasure_hunt.lua)
+	if FamilyTreasureHunt and FamilyTreasureHunt.onRum(player, item, target, toPosition) then
+		return true
+	end
 	local targetType = ItemType(target.itemid)
 	if targetType:isFluidContainer() then
 		if target.type == 0 and item.type ~= 0 then

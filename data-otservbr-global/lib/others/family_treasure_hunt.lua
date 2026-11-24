@@ -32,6 +32,34 @@
 --     right part at Mac Noodles: a crowbar opens the locked western door (32620,32004,7; it locks
 --     again 2 minutes later), move the trough and use the floor below it (32621,32003,7). Message
 --     "You have found a part of a map." (BR screenshot), also for the remains.
+-- Part 3 (mission 4, Treasure Hunt Island):
+--   * Captain Waverider on Treasure Island: "map" with the pirate treasure map, "yes": to the island
+--     (EN/BR lines); after the treasure: "Your timing is really bad! ..." (EN).
+--   * Our map has every island teleporter but none has a destination, and no wiki gives them:
+--     the network below is ours (Rodrigo 2026-11-24), built from the map's layout and EN's route
+--     ("go up the ramp, walk east, levitate down, go through the teleporter and then run east").
+--   * First seal: rum (a container with rum, or a rum flask) on the empty coal basin of the snake
+--     head (32033,32993,12): "The rum runs fast through my vein, ..." (BR screenshot); the bridge
+--     teleporter between the pirate statues (32053,32970,8) lets you through within 25 s (EN),
+--     "Your questlog has been updated." (BR). The statues' text from the BR screenshot.
+--   * Second seal: the ship deck (32075-32085,32968-32973,11). The traps are upstream's
+--     (data/scripts/movements/trap.lua: slits and spikes hurt); the spikes now go up and down. Who
+--     gets hurt is thrown back to the gangway, "Get off my deck you bleeding meatbag!!", and
+--     nobody may step on the deck while fresh blood lies there: "You have to wait until the worst
+--     blood pools are gone." (BR screenshots).
+--   * Third seal: the hall of the sleeping dead pirates (32101-32111,32969-32973,11). Only the
+--     floorboards with coins in the BR screenshot are safe (one square we added to join them);
+--     any other wakes a Ghostly Apparition ("KRAAAAAAK", BR screenshot). Who woke one is sent back
+--     by the far teleporter; the near teleporter puts them to sleep again (EN).
+--   * Fourth seal: Polly and Skip, a cookie each to start, then 1, 2, 3, 4, 1, 7 (EN transcript; a
+--     wrong number ends the talk). The Skeleton Guard: "47" (EN); then the teleporter by him lets
+--     you in, the stairs lead to the treasure room.
+--   * The treasure room (floor 13): the bejeweled ship's telescope and 3 gold ingots in the
+--     chests under the rubble (EN; which chest holds which is ours), and each day (the server
+--     starts each morning) 3 small emeralds, 2 small amethysts, 1 small topaz and 162 gold coins
+--     on the floor (EN; BR's Tibia Tales table says 108 gold, 2 amethysts, 3 emeralds, no topaz).
+--     The teleporter by the guard takes you back to the island's dock and the treasure room is
+--     closed to you after that (EN).
 -- Ours where the wikis say nothing: Wyrdin's line while he is still busy, the chest's messages,
 -- Klaus' lines for missing gold or parts, the quest log texts, the doll's message in the pot (none:
 -- only the fire effect).
@@ -63,6 +91,10 @@ FamilyTreasureHunt = {
 	BOUGHT = 5, -- Klaus sold his part
 	NAMES = 6, -- Klaus told about the other pirates
 	MAP = 7, -- the pirate treasure map
+	ISLAND = 8, -- Waverider brought you to the island
+	rumTime = 25, -- EN
+	rumText = "The rum runs fast through my vein, hurry up or you need to feed me again!", -- BR screenshot
+	statueText = "Feed some rum to the snake or you'll never pass the lake.", -- BR screenshot
 	TOPIC_KLAUS = 4801,
 }
 
@@ -89,6 +121,67 @@ T.boat = Position(32964, 32642, 8)
 T.noodlesDoor = Position(32620, 32004, 7)
 T.noodlesFloor = Position(32621, 32003, 7)
 T.relockTime = 120
+-- island
+T.islandDock = Position(32043, 32933, 7)
+T.basin = Position(32033, 32993, 12)
+T.bridgeGate = Position(32053, 32970, 8)
+T.bridgeStatues = { Position(32053, 32969, 8), Position(32053, 32971, 8) }
+T.bridgeEast = Position(32058, 32970, 8)
+T.bridgeWest = Position(32051, 32970, 8)
+T.deck = { x1 = 32075, x2 = 32085, y1 = 32968, y2 = 32973, z = 11 }
+T.gangway = Position(32073, 32970, 11)
+T.hall = { x1 = 32102, x2 = 32110, y1 = 32969, y2 = 32973, z = 11 }
+T.hallSafe = {} -- BR screenshot Treasurehunt16 (coins); 32108,32972 ours
+for _, xy in ipairs({ { 32102, 32971 }, { 32103, 32971 }, { 32104, 32971 }, { 32105, 32970 }, { 32106, 32969 }, { 32106, 32972 }, { 32107, 32970 }, { 32107, 32971 }, { 32108, 32972 }, { 32108, 32973 }, { 32109, 32972 }, { 32109, 32971 }, { 32110, 32970 } }) do
+	T.hallSafe[xy[1] .. "," .. xy[2]] = true
+end
+T.hallStart = Position(32102, 32971, 11)
+T.hallBack = Position(32097, 32971, 11)
+T.parrotRoom = Position(32114, 32971, 11)
+T.guardGateBack = Position(32127, 32971, 11)
+T.guardRoom = Position(32132, 32972, 11)
+T.telescopeChest = Position(32139, 32978, 13)
+T.ingotChest = Position(32144, 32968, 13)
+T.dailyLoot = { -- EN
+	{ 3032, 3, Position(32141, 32972, 13) }, -- small emeralds
+	{ 3033, 2, Position(32138, 32974, 13) }, -- small amethysts
+	{ 9057, 1, Position(32143, 32975, 13) }, -- small topaz
+	{ 3031, 100, Position(32140, 32970, 13) }, -- gold coins
+	{ 3031, 62, Position(32142, 32977, 13) },
+}
+-- teleporters: map position -> where it goes (ours); the gates have their own rules
+T.teleports = {
+	{ from = Position(32050, 32977, 13), to = Position(32047, 32970, 8) }, -- the fast way back up, EN
+	{ from = Position(32040, 32986, 10), to = Position(32030, 32990, 10) }, -- the "teleporter" way down
+	{ from = Position(32028, 32991, 10), to = Position(32029, 32984, 10) },
+	{ from = Position(32028, 32983, 10), to = Position(32028, 32995, 12) }, -- next to the snake head
+	{ from = Position(32022, 32973, 11), to = Position(32031, 32968, 11) },
+	{ from = Position(32032, 32968, 11), to = Position(32021, 32993, 12) },
+	{ from = Position(32055, 33007, 11), to = Position(32028, 33012, 11) },
+	{ from = Position(32027, 33013, 11), to = Position(32030, 33002, 12) },
+	{ from = Position(32086, 32970, 11), to = Position(32090, 32970, 11), log = 10 }, -- end of the deck
+	{ from = Position(32088, 32968, 11), to = Position(32058, 32970, 8) }, -- back to the bridge (EN)
+	{ from = Position(32099, 32971, 11), to = Position(32102, 32971, 11), hall = "enter" },
+	{ from = Position(32101, 32971, 11), to = Position(32097, 32971, 11), hall = "reset" },
+	{ from = Position(32111, 32971, 11), to = Position(32114, 32971, 11), hall = "exit", log = 11 },
+	{ from = Position(32113, 32971, 11), to = Position(32097, 32971, 11), hall = "reset" },
+	{ from = Position(32129, 32971, 11), to = Position(32132, 32972, 11), guard = true },
+	{ from = Position(32131, 32971, 11), to = Position(32043, 32933, 7), leave = true },
+}
+T.firstTeleportAid = 48792 -- 48792-48807, one per teleporter above
+T.bridgeAid = 48808
+T.ghosts = {}
+T.woke = {}
+T.parrots = {}
+T.ages = { "1", "2", "3", "4", "1", "7" }
+T.parrotLines = { -- EN transcript, in order: { who, text }
+	{ { "polly", "Ish shree." }, { "skip", "..." }, { "skip", "too few!" } },
+	{ { "skip", "..." }, { "polly", "Ish two." }, { "skip", "...and shame." } },
+	{ { "polly", "Ish one." }, { "skip", "..." }, { "skip", "...and three." } },
+	{ { "polly", "Ish number." }, { "skip", "..." }, { "skip", "...ONE!" } },
+	{ { "polly", "Ish shix." }, { "skip", "..." }, { "skip", "...and one." } },
+	{ { "skip", "..." }, { "polly", "Ish number. ..." }, { "skip", "...TWO! ..." }, { "polly", "Now get losht! CAAAW!" }, { "skip", "Get lofft! CAAAW!" } },
+}
 
 local function S()
 	return Storage.Quest.U8_5.TreasureHunt
@@ -491,5 +584,318 @@ function T.setup()
 				box:setActionId(T.chestAid)
 			end
 		end
+	end
+	T.setupIsland()
+end
+
+-- ---------------------------------------------------------------------------
+-- Part 3: Treasure Hunt Island
+-- ---------------------------------------------------------------------------
+
+-- Captain Waverider on Treasure Island; called from npc/captain_waverider_island.lua before his words
+function T.setupWaverider(keywordHandler, npcHandler)
+	local function hasQuest(player)
+		return Family.treasureHunt and (player:getItemCount(it.map) > 0 or T.get(player, "Left") > 0) and T.get(player, "State") >= T.MAP
+	end
+	local node = keywordHandler:addKeyword({ "map" }, function(npc, creature, message, keywords, parameters, node)
+		local player = Player(creature)
+		if T.get(player, "Left") > 0 then
+			npcHandler:say("Your timing is really bad! I have to stay here because I have been paid good money to wait for a passenger. Sorry.", npc, creature) -- EN
+			npcHandler:resetNpc(creature)
+			return true
+		end
+		npcHandler:say("This map seems to be very old, not like those fake maps that are all the rage nowadays. I know the spot on the map. It's not far from here. Do you want me to take you there?", npc, creature)
+		return true
+	end, nil, hasQuest)
+	node:addChildKeyword({ "yes" }, function(npc, creature, message, keywords, parameters, node)
+		local player = Player(creature)
+		npcHandler:say("And there we go.", npc, creature) -- BR
+		npcHandler:resetNpc(creature)
+		if T.get(player, "State") < T.ISLAND then
+			T.set(player, "State", T.ISLAND)
+		end
+		T.log(player, 8)
+		player:teleportTo(T.islandDock)
+		T.islandDock:sendMagicEffect(CONST_ME_TELEPORT)
+		return true
+	end)
+	node:addChildKeyword({ "" }, StdModule.say, { npcHandler = npcHandler, text = "As you wish.", reset = true }) -- ours
+end
+
+-- rum on the snake head's empty coal basin; called from scripts/actions/other/fluids.lua and for rum flasks
+function T.onRum(player, item, target, toPosition)
+	if not Family.treasureHunt or toPosition ~= T.basin then
+		return false
+	end
+	if item.type ~= FLUID_RUM then
+		return false
+	end
+	local tile = Tile(T.basin)
+	local basin = tile and (tile:getItemById(2114) or tile:getItemById(2113))
+	if not basin then
+		return false
+	end
+	item:transform(item.itemid, 0)
+	if basin.itemid == 2114 then
+		basin:transform(2113)
+		addEvent(function()
+			local t = Tile(T.basin)
+			local b = t and t:getItemById(2113)
+			if b then
+				b:transform(2114)
+			end
+		end, T.rumTime * 1000)
+	end
+	T.basin:sendMagicEffect(CONST_ME_HITBYFIRE)
+	T.set(player, "RumTime", os.time())
+	player:say(T.rumText, TALKTYPE_MONSTER_SAY, false, player, T.basin)
+	return true
+end
+
+function T.rumFresh(player)
+	return os.time() - T.get(player, "RumTime") <= T.rumTime
+end
+
+-- the bridge teleporter between the pirate statues
+function T.crossBridge(player)
+	if not T.rumFresh(player) and not player:getGroup():getAccess() then
+		player:teleportTo(T.bridgeWest, true)
+		T.bridgeWest:sendMagicEffect(CONST_ME_POFF)
+		return false
+	end
+	T.set(player, "RumTime", 0)
+	player:teleportTo(T.bridgeEast)
+	T.bridgeEast:sendMagicEffect(CONST_ME_TELEPORT)
+	if T.get(player, "Questline") < 9 then
+		T.log(player, 9)
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your questlog has been updated.") -- BR screenshot
+	end
+	return true
+end
+
+local function inBox(pos, box)
+	return pos.z == box.z and pos.x >= box.x1 and pos.x <= box.x2 and pos.y >= box.y1 and pos.y <= box.y2
+end
+T.inBox = inBox
+
+function T.freshBlood()
+	for x = T.deck.x1, T.deck.x2 do
+		for y = T.deck.y1, T.deck.y2 do
+			local tile = Tile(Position(x, y, T.deck.z))
+			if tile and tile:getItemById(2886) then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- a step on the deck; called from a position MoveEvent on every deck square
+function T.onDeck(player, position, fromPosition)
+	if not inBox(fromPosition, T.deck) and T.freshBlood() then
+		player:teleportTo(fromPosition, true)
+		player:say("You have to wait until the worst blood pools are gone.", TALKTYPE_MONSTER_SAY) -- BR screenshot
+		return
+	end
+	local tile = Tile(position)
+	if not tile or not (tile:getItemById(2145) or tile:getItemById(2146) or tile:getItemById(2148)) then
+		return
+	end
+	-- upstream's trap.lua does the damage; we add the blood and throw them off
+	local pool = Game.createItem(2886, FLUID_BLOOD, position)
+	if pool then
+		pool:decay()
+	end
+	addEvent(function(id)
+		local p = Player(id)
+		if p then
+			p:teleportTo(T.gangway)
+			p:say("Get off my deck you bleeding meatbag!!", TALKTYPE_MONSTER_SAY) -- BR screenshot
+		end
+	end, 100, player:getId())
+end
+
+function T.removeGhosts()
+	for _, id in ipairs(T.ghosts) do
+		local ghost = Creature(id)
+		if ghost then
+			ghost:getPosition():sendMagicEffect(CONST_ME_POFF)
+			ghost:remove()
+		end
+	end
+	T.ghosts = {}
+end
+
+-- a step in the hall of the sleeping dead pirates
+function T.onHall(player, position)
+	if T.hallSafe[position.x .. "," .. position.y] then
+		return
+	end
+	T.woke[player:getId()] = true
+	player:say("KRAAAAAAK", TALKTYPE_MONSTER_SAY) -- BR screenshot
+	local spot = Position(position.x, position.y < 32971 and T.hall.y1 or T.hall.y2, position.z)
+	local ghost = Game.createMonster("Ghostly Apparition", spot, false, true)
+	if ghost then
+		T.ghosts[#T.ghosts + 1] = ghost:getId()
+		spot:sendMagicEffect(CONST_ME_MORTAREA)
+		addEvent(function(id)
+			local g = Creature(id)
+			if g then
+				g:remove()
+			end
+		end, 2 * 60 * 1000, ghost:getId())
+	end
+end
+
+-- the island's magic forcefields (index into T.teleports)
+function T.useTeleport(player, index)
+	local tp = T.teleports[index]
+	local id = player:getId()
+	local to = tp.to
+	if tp.hall == "reset" or tp.hall == "enter" then
+		T.woke[id] = nil
+		T.removeGhosts()
+	elseif tp.hall == "exit" and T.woke[id] then
+		T.woke[id] = nil
+		T.removeGhosts()
+		to = T.hallBack
+		tp = { to = to }
+	elseif tp.guard then
+		if T.get(player, "Guard") < 1 or T.get(player, "Left") > 0 then
+			player:teleportTo(T.guardGateBack, true)
+			T.guardGateBack:sendMagicEffect(CONST_ME_POFF)
+			return
+		end
+		T.log(player, 12)
+	elseif tp.leave then
+		T.set(player, "Left", 1)
+	end
+	player:teleportTo(to)
+	to:sendMagicEffect(CONST_ME_TELEPORT)
+	if tp.log then
+		T.log(player, tp.log)
+	end
+end
+
+-- Polly and Skip; called first in their npcType.onSay
+function T.parrotSay(npc, creature, msgType, message, who)
+	if not Family.treasureHunt then
+		return false
+	end
+	local player = creature and creature:getPlayer()
+	if not player or npc:getPosition():getDistance(player:getPosition()) > 4 then
+		return false
+	end
+	local id = player:getId()
+	local s = T.parrots[id] or { fed = {}, step = 0 }
+	T.parrots[id] = s
+	local text = message:lower():gsub("^%s+", ""):gsub("%s+$", "")
+	if text == "hi" or text == "hello" then
+		if player:removeItem(3598, 1) then
+			s.fed[who] = true
+			s.step = 0
+			npc:say(who == "polly" and "<CRUNCH> GRAAAAA!" or "<CRUNCH> RAAAAAH!", TALKTYPE_SAY)
+		else
+			npc:say("CAAAW!", TALKTYPE_SAY) -- ours: no cookie, no talk
+		end
+		return true
+	end
+	if who ~= "polly" or not text:match("^%d+$") then
+		return true
+	end
+	if not (s.fed.polly and s.fed.skip) then
+		return true
+	end
+	if text ~= T.ages[s.step + 1] then
+		T.parrots[id] = nil -- a wrong number ends the talk (EN)
+		npc:say("GRAAAAA!", TALKTYPE_SAY) -- ours
+		return true
+	end
+	s.step = s.step + 1
+	local skip
+	for _, c in ipairs(Game.getSpectators(npc:getPosition(), false, false, 8, 8, 4, 4)) do
+		if c:isNpc() and c:getName() == "Skip" then
+			skip = c:getId()
+		end
+	end
+	local pollyId = npc:getId()
+	for i, line in ipairs(T.parrotLines[s.step]) do
+		addEvent(function()
+			local speaker = Creature(line[1] == "polly" and pollyId or skip)
+			if speaker then
+				speaker:say(line[2], TALKTYPE_SAY)
+			end
+		end, (i - 1) * 1000)
+	end
+	if s.step == #T.ages then
+		T.parrots[id] = nil
+		T.set(player, "Parrots", 1)
+	end
+	return true
+end
+
+-- the Skeleton Guard; called from npc/skeleton_guard.lua
+function T.setupGuard(keywordHandler, npcHandler)
+	npcHandler:setMessage(MESSAGE_GREET, "How old is the Captain, mate?") -- EN
+	keywordHandler:addKeyword({ "47" }, function(npc, creature)
+		local player = Player(creature)
+		npcHandler:say({ "Your answer iiiiiiisss ...", "RIGHT! Get in, mate!" }, npc, creature) -- EN
+		if Family.treasureHunt and T.get(player, "State") >= T.ISLAND then
+			T.set(player, "Guard", 1)
+		end
+		return true
+	end)
+end
+
+function T.useTreasureChest(player, key, id, count, text)
+	if T.get(player, key) > 0 then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The chest is empty.")
+		return true
+	end
+	if not player:addItem(id, count) then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have no room to take it.") -- ours
+		return true
+	end
+	T.set(player, key, 1)
+	T.log(player, 13)
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, text) -- BR screenshots
+	return true
+end
+
+function T.setupIsland()
+	for _, pos in ipairs(T.bridgeStatues) do
+		local tile = Tile(pos)
+		local statue = tile and (tile:getItemById(5673) or tile:getItemById(5671))
+		if statue then
+			statue:setAttribute(ITEM_ATTRIBUTE_TEXT, T.statueText)
+		end
+	end
+	local function aid(pos, value)
+		local tile = Tile(pos)
+		local field = tile and tile:getItemById(1949)
+		if field then
+			field:setDestination(Position(0, 0, 0))
+			field:setActionId(value)
+			return true
+		end
+		logger.warn("[FamilyTreasureHunt] no magic forcefield at " .. pos:toString())
+		return false
+	end
+	aid(T.bridgeGate, T.bridgeAid)
+	for i, tp in ipairs(T.teleports) do
+		aid(tp.from, T.firstTeleportAid + i - 1)
+	end
+	-- the spikes on the deck go up and down (items.xml: 4 s each)
+	for x = T.deck.x1, T.deck.x2 do
+		for y = T.deck.y1, T.deck.y2 do
+			local tile = Tile(Position(x, y, T.deck.z))
+			local spikes = tile and (tile:getItemById(2148) or tile:getItemById(2147))
+			if spikes then
+				spikes:decay()
+			end
+		end
+	end
+	for _, loot in ipairs(T.dailyLoot) do
+		Game.createItem(loot[1], loot[2], loot[3])
 	end
 end

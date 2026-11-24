@@ -43,6 +43,10 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: Treasure Hunt Quest, cookies and the captain's age (lib/others/family_treasure_hunt.lua)
+	if FamilyTreasureHunt and FamilyTreasureHunt.parrotSay(npc, creature, type, message, "skip") then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 

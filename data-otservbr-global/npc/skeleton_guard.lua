@@ -50,6 +50,10 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: Treasure Hunt Quest, the captain's age (lib/others/family_treasure_hunt.lua)
+if FamilyTreasureHunt then
+	FamilyTreasureHunt.setupGuard(keywordHandler, npcHandler)
+end
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

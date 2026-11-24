@@ -1457,6 +1457,12 @@ Storage = {
 				Pirates = 42526, -- bits: Klaus asked about Nutty Jack 1, Rapp Scallion 2, Captain Nathaniel 4
 				BoatPart = 42527, -- 1 = lower left part taken from the boat
 				NoodlesPart = 42528, -- 1 = lower right part taken at Mac Noodles
+				RumTime = 42529, -- time the snake head got its rum (the bridge opens for 25 s)
+				Guard = 42530, -- 1 = the Skeleton Guard heard "47"
+				Parrots = 42531, -- 1 = Polly and Skip told the captain's age
+				Telescope = 42532, -- 1 = bejeweled ship's telescope taken
+				Ingots = 42533, -- 1 = gold ingots taken
+				Left = 42534, -- 1 = left the treasure room (no way back, EN)
 			},
 		},
 		U8_54 = { -- update 8.54 - Reserved Storages 42551 - 42950

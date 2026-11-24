@@ -343,7 +343,7 @@ local quest = {
 			storageId = Storage.Quest.U8_5.TreasureHunt.Questline,
 			missionId = 11297,
 			startValue = 1,
-			endValue = 9,
+			endValue = 13,
 			states = {
 				[1] = "You gave the old encrypted text to Wyrdin in the magic academy of Edron. He needs about an hour. Then ask him about the decryption.",
 				[2] = "Wyrdin decrypted the text and put it in the chest behind the door next to him.",
@@ -352,8 +352,12 @@ local quest = {
 				[5] = "Klaus in the tavern of Nargor sold you the top left part of the map. Read his logbook in the chest north of him and ask him about the pirates in it.",
 				[6] = "Klaus told you about the other two parts of the map: one in Captain Nathaniel's boat in the Waterfall Quest cave of Tiquanda, one in Rapp Scallion's hideout, Mac Noodles south of the Dwarven Bridge. Bring all four parts to Klaus.",
 				[7] = "Klaus put the four parts together into a pirate treasure map. Find a captain in Liberty Bay who can read it.",
-				[8] = "Captain Waverider brought you to the island of the treasure. Get past the traps the four pirates left.",
-				[9] = "You found the treasure of the four pirates.",
+				[8] = "Captain Waverider brought you to the island of the treasure. The pirate statues by the bridge say: feed some rum to the snake or you'll never pass the lake.",
+				[9] = "You fed the snake and crossed the bridge in time. Now cross the ship deck without getting hurt.",
+				[10] = "You crossed the ship deck. Now cross the hall of the sleeping dead pirates without waking them.",
+				[11] = "You did not wake the dead pirates. Find out from the parrots Polly and Skip how old the captain is, and tell the Skeleton Guard.",
+				[12] = "The Skeleton Guard let you in. The treasure is below.",
+				[13] = "You found the treasure of the four pirates.",
 			},
 		},
 		-- [17] = {
