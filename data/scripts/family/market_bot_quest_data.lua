@@ -483,6 +483,7 @@ return {
 	[9308] = true, -- nautical map
 	[9389] = true, -- fan doll of King Tibianus
 	[9605] = true, -- crown backpack
+	[9616] = true, -- bejeweled ship's telescope
 	[9633] = true, -- bloody pincers
 	[9634] = true, -- cobra tongue
 	[9635] = true, -- elvish talisman

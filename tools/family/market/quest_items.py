@@ -86,6 +86,7 @@ NOT_QUEST = {
 
 # Quest ingredients with no other source on this server: they get sell offers too (reviewed by hand).
 ASKED_FOR = {
+    9616: "bejeweled ship's telescope (Treasure Hunt Quest reward; family_treasure_hunt.lua passes it through a function, 2026-11-24)",
     9185: "very old piece of paper (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
     9186: "old encrypted text (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
     9204: "old pirate poem (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
