@@ -336,6 +336,26 @@ local quest = {
 				[4] = "You brought Iriana's chest back and received 10 heaven blossoms.",
 			},
 		},
+		-- FAMILY: Treasure Hunt Quest (2026-11-24; lib/others/family_treasure_hunt.lua). The wikis list it under
+		-- Tibia Tales but give no quest log texts: these are ours.
+		[20] = {
+			name = "Treasure Hunt",
+			storageId = Storage.Quest.U8_5.TreasureHunt.Questline,
+			missionId = 11297,
+			startValue = 1,
+			endValue = 9,
+			states = {
+				[1] = "You gave the old encrypted text to Wyrdin in the magic academy of Edron. He needs about an hour. Then ask him about the decryption.",
+				[2] = "Wyrdin decrypted the text and put it in the chest behind the door next to him.",
+				[3] = "You have the old pirate poem. Find the place it speaks of.",
+				[4] = "Below the jungle of Tiquanda you found the top right part of a map beside the remains of a pirate. Someone had written 'KL...' in the dirt.",
+				[5] = "Klaus in the tavern of Nargor sold you the top left part of the map. Read his logbook in the chest north of him and ask him about the pirates in it.",
+				[6] = "Klaus told you about the other two parts of the map: one in Captain Nathaniel's boat in the Waterfall Quest cave of Tiquanda, one in Rapp Scallion's hideout, Mac Noodles south of the Dwarven Bridge. Bring all four parts to Klaus.",
+				[7] = "Klaus put the four parts together into a pirate treasure map. Find a captain in Liberty Bay who can read it.",
+				[8] = "Captain Waverider brought you to the island of the treasure. Get past the traps the four pirates left.",
+				[9] = "You found the treasure of the four pirates.",
+			},
+		},
 		-- [17] = {
 		-- name = "Nomads Land",
 		-- storageId = PLACEHOLDER,

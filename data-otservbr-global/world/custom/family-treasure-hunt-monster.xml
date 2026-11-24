@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<monsters>
+	<monster centerx="32853" centery="32775" centerz="8" radius="3">
+		<monster name="Dworc Voodoomaster" x="-2" y="-3" z="0" spawntime="90" />
+		<monster name="Dworc Voodoomaster" x="2" y="3" z="0" spawntime="90" />
+		<monster name="Dworc Fleshhunter" x="2" y="-3" z="0" spawntime="90" />
+		<monster name="Dworc Fleshhunter" x="-2" y="3" z="0" spawntime="90" />
+		<monster name="Dworc Venomsniper" x="0" y="0" z="0" spawntime="90" />
+	</monster>
+	<monster centerx="32843" centery="32775" centerz="8" radius="1">
+		<monster name="Dworc Fleshhunter" x="1" y="1" z="0" spawntime="90" />
+	</monster>
+</monsters>

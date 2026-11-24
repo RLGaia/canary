@@ -1,6 +1,10 @@
 local voodooDoll = Action()
 
 function voodooDoll.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: Treasure Hunt Quest: the doll in the dworc cave's pot gets its number (data-otservbr-global/lib/others/family_treasure_hunt.lua)
+	if FamilyTreasureHunt and FamilyTreasureHunt.onVoodooDoll(player, item, target, toPosition) then
+		return true
+	end
 	if target.itemid ~= 1 or not target:isPlayer() then
 		return false
 	end

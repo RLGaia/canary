@@ -359,6 +359,10 @@ end
 
 function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
 	addFerumbrasAscendantReward(player, target, toPosition)
+	-- FAMILY: Treasure Hunt Quest: the dig spot west of the carved giant tree opens the dworc cave (lib/others/family_treasure_hunt.lua)
+	if FamilyTreasureHunt and FamilyTreasureHunt.onDig(player, toPosition) then
+		return true
+	end
 	-- FAMILY: Sweet Dreams sand toys (lib/others/family_sweet_dreams.lua): the treasure on Candia's northern headland
 	if FamilySweetDreams and FamilySweetDreams.digTreasure and FamilySweetDreams.digTreasure(player, toPosition) then
 		return true

@@ -70,6 +70,7 @@ monster.loot = {
 	{ id = 3370, chance = 25000 }, -- knight armor
 	{ id = 3577, chance = 25000 }, -- meat
 	{ id = 3357, chance = 25000 }, -- plate armor
+	{ id = 9185, chance = 14000 }, -- very old piece of paper (FAMILY: Treasure Hunt Quest; both wikis list it, chance from EN loot statistics)
 }
 
 monster.attacks = {

@@ -72,6 +72,7 @@ monster.loot = {
 	{ id = 239, chance = 18000 }, -- great health potion
 	{ id = 3370, chance = 18000 }, -- knight armor
 	{ id = 3577, chance = 18000 }, -- meat
+	{ id = 9185, chance = 24000 }, -- very old piece of paper (FAMILY: Treasure Hunt Quest; both wikis list it, chance from EN loot statistics)
 	{ id = 5926, chance = 18000 }, -- pirate backpack
 	{ id = 3028, chance = 9000 }, -- small diamond
 }

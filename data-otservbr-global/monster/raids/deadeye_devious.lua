@@ -78,6 +78,7 @@ monster.loot = {
 	{ id = 3028, chance = 14000 }, -- small diamond
 	{ id = 3275, chance = 7000 }, -- double axe
 	{ id = 5926, chance = 7000 }, -- pirate backpack
+	{ id = 9185, chance = 5000 }, -- very old piece of paper (FAMILY: Treasure Hunt Quest; both wikis list it, chance from EN loot statistics)
 }
 
 monster.attacks = {

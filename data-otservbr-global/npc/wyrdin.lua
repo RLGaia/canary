@@ -76,6 +76,11 @@ local function creatureSayCallback(npc, creature, type, message)
 		return false
 	end
 
+	-- FAMILY: Treasure Hunt Quest, "encrypted text" and "decryption" (lib/others/family_treasure_hunt.lua)
+	if FamilyTreasureHunt and FamilyTreasureHunt.wyrdin(npc, creature, message, npcHandler) then
+		return true
+	end
+
 	-- FAMILY: The New Frontier mission 5 talk (data-otservbr-global/lib/others/family_new_frontier.lua, 2026-11-09);
 	-- upstream failed the talk on any other word ("Wrong Word.") and had no line for wrong words
 	if FamilyNewFrontier and FamilyNewFrontier.negotiate(npc, creature, message, npcHandler, "wyrdin") then

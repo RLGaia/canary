@@ -36,3 +36,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_dream_courts.lua") -- FAMILY: The D
 dofile(DATA_DIRECTORY .. "/lib/others/family_goblin_merchant.lua") -- FAMILY: Goblin Merchant Quest (Rafzan's six tasks)
 dofile(DATA_DIRECTORY .. "/lib/others/family_repenters.lua") -- FAMILY: The Repenters Quest (Ashari, Larfion)
 dofile(DATA_DIRECTORY .. "/lib/others/family_galthen.lua") -- FAMILY: Adventures of Galthen, Galthen and the Lost Queen (Kesar, Lesh, Alphonse, John, Yselda)
+dofile(DATA_DIRECTORY .. "/lib/others/family_treasure_hunt.lua") -- FAMILY: Treasure Hunt Quest (Wyrdin, the dworc cave, Klaus, the island)

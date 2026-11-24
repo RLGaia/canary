@@ -32,6 +32,10 @@ function othersFireBug.onUse(player, item, fromPosition, target, toPosition, isH
 	if FamilyBloodBrothers and FamilyBloodBrothers.onFireBug and FamilyBloodBrothers.onFireBug(player, item, target, toPosition) then
 		return true
 	end
+	-- FAMILY: Treasure Hunt Quest: the very old piece of paper becomes the old encrypted text (lib/others/family_treasure_hunt.lua)
+	if FamilyTreasureHunt and FamilyTreasureHunt.onFireBug(player, target) then
+		return true
+	end
 	-- FAMILY: Kissing a Pig: the dwarven ghost's coal basin always lights, for 2 minutes (lib/others/family_kissing_pig.lua)
 	if FamilyKissing and FamilyKissing.onFireBug(player, target, toPosition) then
 		return true

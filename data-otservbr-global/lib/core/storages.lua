@@ -1445,7 +1445,15 @@ Storage = {
 				Exterminate = 42515,
 				Prevent = 42516,
 			},
-			TreasureHunt = {},
+			-- FAMILY: Treasure Hunt Quest (2026-11-24; lib/others/family_treasure_hunt.lua). Upstream left it empty;
+			-- 42520-42550 are free numbers of this 8.5 block (42517 is a Scatterbrained Sorcerer action id).
+			TreasureHunt = {
+				Questline = 42520, -- quest log (Tibia Tales, "Treasure Hunt")
+				State = 42521, -- main line: 4 top right part found (the dig spot closes), see FamilyTreasureHunt
+				Decrypt = 42522, -- time Wyrdin took the encrypted text (0 = none or done)
+				PoemDoor = 42523, -- the sealed door next to Wyrdin carries this number as action id
+				Poem = 42524, -- 1 = poem taken from the chest
+			},
 		},
 		U8_54 = { -- update 8.54 - Reserved Storages 42551 - 42950
 			AnUneasyAlliance = {
