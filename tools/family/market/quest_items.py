@@ -86,6 +86,9 @@ NOT_QUEST = {
 
 # Quest ingredients with no other source on this server: they get sell offers too (reviewed by hand).
 ASKED_FOR = {
+    12251: "shapechanger (Last Creep Standing; family_last_creep.lua names it through a constant, 2026-11-25)",
+    907: "shapeshifter ring (Last Creep Standing prize, 2026-11-25)",
+    12057: "reward box (Last Creep Standing, 2026-11-25)",
     9616: "bejeweled ship's telescope (Treasure Hunt Quest reward; family_treasure_hunt.lua passes it through a function, 2026-11-24)",
     9185: "very old piece of paper (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",
     9186: "old encrypted text (Treasure Hunt Quest; family_treasure_hunt.lua names it in a table, 2026-11-24)",

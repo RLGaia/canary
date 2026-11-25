@@ -42,6 +42,7 @@ return {
 	[894] = true, -- jester hat
 	[895] = true, -- jester staff
 	[896] = true, -- Firlefanz
+	[907] = true, -- shapeshifter ring
 	[942] = true, -- flawless ice crystal
 	[946] = true, -- eternal flames
 	[947] = true, -- mother soil
@@ -131,6 +132,7 @@ return {
 	[3147] = true, -- blank rune
 	[3155] = true, -- sudden death rune
 	[3160] = true, -- ultimate healing rune
+	[3178] = true, -- chameleon rune
 	[3205] = true, -- family brooch
 	[3206] = true, -- dragonfetish
 	[3207] = true, -- skull of Ratha
@@ -574,6 +576,7 @@ return {
 	[11702] = true, -- brimstone fangs
 	[11703] = true, -- brimstone shell
 	[12077] = true, -- slime gobbler
+	[12251] = true, -- shapechanger
 	[12260] = true, -- hunting horn
 	[12413] = true, -- belongings of a deceased
 	[12547] = true, -- diapason
