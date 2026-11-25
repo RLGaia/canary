@@ -8,8 +8,14 @@
 -- from the map. They open the same depot as every other locker on our server
 -- (boxes, inbox, stash, market).
 --
+-- In front of each locker lies a glowing switch, as in every depot: stepping on
+-- it turns on the stash and the market menus (upstream
+-- data/scripts/movements/special_tiles.lua, which also says how many items the
+-- depot and stash hold). Stand on it to use the stash and the market
+-- (2026-11-25: without the switches the stash and market did not work).
+--
 -- Switch: Family.guildDepot (false = the lockers stay but do not open: "This
--- locker is closed."). Lua cannot take a map depot locker away (v3.6.1 refuses
+-- locker is closed."; the switches become plain floor again). Lua cannot take a map depot locker away (v3.6.1 refuses
 -- to remove it, even after a transform); to remove them for good, delete
 -- world/custom/family-guild-depot.otbm and its four side files.
 
@@ -22,6 +28,12 @@ local SQUARES = { -- keep in step with tools/family/otbm/guild_depot.py
 	Position(32202, 32306, 6),
 }
 Family.guildDepotSquares = SQUARES
+local SWITCH = 10145
+local SWITCHES = { -- one north of each locker, with the floor the main map has there
+	{ pos = Position(32198, 32305, 6), floor = 8309 },
+	{ pos = Position(32202, 32305, 6), floor = 8308 },
+}
+Family.guildDepotSwitches = SWITCHES
 
 local startup = GlobalEvent("FamilyGuildDepot")
 
@@ -31,6 +43,13 @@ function startup.onStartup()
 		local locker = tile and tile:getItemById(LOCKER)
 		if Family.guildDepot and not locker then
 			logger.warn(string.format("[FamilyGuildDepot] no depot locker at %d,%d,%d (custom map family-guild-depot.otbm missing?)", pos.x, pos.y, pos.z))
+		end
+	end
+	for _, s in ipairs(SWITCHES) do
+		local tile = Tile(s.pos)
+		local ground = tile and tile:getGround()
+		if not Family.guildDepot and ground and ground:getId() == SWITCH then
+			ground:transform(s.floor)
 		end
 	end
 	return true
