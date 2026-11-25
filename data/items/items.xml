@@ -3112,9 +3112,7 @@
 		<attribute key="description" value="It will only work for a few days after the challenge of Kurik has been won"/>
 		<attribute key="duration" value="36000"/>
 		<attribute key="weight" value="80"/>
-		<attribute key="script" value="moveevent">
-			<attribute key="slot" value="ring"/>
-		</attribute>
+		<!-- FAMILY: its equip event is in data-otservbr-global/scripts/family/last_creep.lua (Last Creep Standing) -->
 	</item>
 	<item id="908" article="a" name="shapeshifter ring">
 		<attribute key="primarytype" value="rings"/>

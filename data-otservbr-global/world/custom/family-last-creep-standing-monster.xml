@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<monsters>
+	<monster centerx="33068" centery="32270" centerz="14" radius="0">
+		<monster name="Slime Puddle" x="0" y="0" z="0" spawntime="60" />
+	</monster>
+	<monster centerx="33078" centery="32270" centerz="14" radius="0">
+		<monster name="Slime Puddle" x="0" y="0" z="0" spawntime="60" />
+	</monster>
+	<monster centerx="33068" centery="32276" centerz="14" radius="0">
+		<monster name="Slime Puddle" x="0" y="0" z="0" spawntime="60" />
+	</monster>
+	<monster centerx="33078" centery="32276" centerz="14" radius="0">
+		<monster name="Slime Puddle" x="0" y="0" z="0" spawntime="60" />
+	</monster>
+	<monster centerx="33075" centery="32267" centerz="14" radius="0">
+		<monster name="Slime Puddle" x="0" y="0" z="0" spawntime="60" />
+	</monster>
+	<monster centerx="33071" centery="32279" centerz="14" radius="0">
+		<monster name="Slime Puddle" x="0" y="0" z="0" spawntime="60" />
+	</monster>
+</monsters>

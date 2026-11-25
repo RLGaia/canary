@@ -1683,7 +1683,14 @@ Storage = {
 				Statue = 43308,
 				LastMissionState = 43309,
 			},
-			LastCreepStanding = {},
+			-- FAMILY: Last Creep Standing (2026-11-25; lib/others/family_last_creep.lua). Upstream left it empty;
+			-- 43324-43350 are free numbers of this 8.7 block (43320-43322 belong to its Spirit Hunters storages).
+			LastCreepStanding = {
+				Wand = 43324, -- 1 = Casper gave the shapechanger (only once, EN)
+				Forms = 43325, -- bits: forms that reached their teleporter (all 8 = Master Shapeshifter)
+				Reward = 43326, -- 1 = a reward box waits at Casper (a round with 4+ teleporters)
+				Ring = 43327, -- 1 = a shapeshifter ring waits in the prize chest
+			},
 			ResearchAndDevelopment = {},
 			RottinWoodAndTheMarriedMen = {
 				Questline = 43310,
