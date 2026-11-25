@@ -6,7 +6,8 @@
 # Use from Python:
 #   import tiles
 #   tiles.write(out_path, [{"pos": (x, y, z), "ground": id, "groundAid": aid or None,
-#                           "items": [id, (id, aid), ...], "flags": 0}, ...], "description")
+#                           "items": [id, (id, aid), {"id": id, "aid": aid, "depot": town id}, ...],
+#                           "flags": 0}, ...], "description")
 # or from the shell with a JSON list of the same squares ("pos" as [x, y, z]):
 #   python3 -I tools/family/otbm/tiles.py <out.otbm> <squares.json>
 # Writes <out>.otbm and the empty side files <out>-monster.xml, -npc.xml, -house.xml and
@@ -32,10 +33,12 @@ def attr_str(code, s):
     return bytes([code]) + struct.pack('<H', len(s)) + s
 
 
-def item_node(item_id, aid=None):
+def item_node(item_id, aid=None, depot=None):
     props = struct.pack('<H', item_id)
     if aid:
         props += bytes([4]) + struct.pack('<H', aid)  # OTBM_ATTR_ACTION_ID
+    if depot:
+        props += bytes([10]) + struct.pack('<H', depot)  # OTBM_ATTR_DEPOT_ID (a locker's town)
     return b'\xfe\x06' + escape(props) + b'\xff'
 
 
@@ -63,7 +66,10 @@ def write(out, squares, description='Gaia Family custom map', root_props=ROOT_PR
             elif sq.get('ground'):
                 props += bytes([9]) + struct.pack('<H', sq['ground'])  # OTBM_ATTR_ITEM (inline ground)
             for it in sq.get('items', []):
-                children += item_node(*it) if isinstance(it, (list, tuple)) else item_node(it)
+                if isinstance(it, dict):
+                    children += item_node(it['id'], it.get('aid'), it.get('depot'))
+                else:
+                    children += item_node(*it) if isinstance(it, (list, tuple)) else item_node(it)
             o += b'\xfe\x05' + escape(props) + children + b'\xff'
         o += b'\xff'
     o += b'\xfe\x0c\xff'  # towns (none)
