@@ -57,19 +57,21 @@ end
 
 startup:register()
 
--- Switch off: the lockers refuse to open. Switch on: return false, so the
--- locker opens as every depot locker does.
-local closed = Action()
+-- Switch off: the lockers refuse to open. Registered only when the switch is
+-- off: a position action also catches every item inside the opened locker
+-- (the player's locker hangs on this square), so with it registered the market
+-- and stash items never reached their own actions (2026-11-25, Rodrigo: stash
+-- and market not working).
+if not Family.guildDepot then
+	local closed = Action()
 
-function closed.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	if Family.guildDepot or item:getId() ~= LOCKER then
-		return false
+	function closed.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+		player:sendCancelMessage("This locker is closed.")
+		return true
 	end
-	player:sendCancelMessage("This locker is closed.")
-	return true
-end
 
-for _, pos in ipairs(SQUARES) do
-	closed:position(pos)
+	for _, pos in ipairs(SQUARES) do
+		closed:position(pos)
+	end
+	closed:register()
 end
-closed:register()

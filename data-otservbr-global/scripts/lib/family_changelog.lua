@@ -193,4 +193,5 @@ FamilyChangelog = {
 	{ "2026-11-24", "The Adventurers' Guild now has a depot: two lockers in the reward shrine room, south of the main hall, one on each side of the shrine. They open your usual depot, with the market." },
 	{ "2026-11-25", "Last Creep Standing, at any time: go down the stairs north of Darashia to Casper, ask him for a change (the shapechanger) and say start while you stand on the carpet. In Kurik's arena use the shapechanger in the middle and run to the teleporter of the creature you became before time runs out, eight times, each faster. Winners get a shapeshifter ring from the prize chest, and four teleporters or more earn a reward box from Casper. Mind the slime puddles and the coloured tiles." },
 	{ "2026-11-25", "Adventurers' Guild depot: a glowing switch now lies in front of each locker, as in every depot. Stand on it to use the stash and the market." },
+	{ "2026-11-25", "Adventurers' Guild depot: the market and the stash inside the lockers work now (a script of ours was catching them)." },
 }
