@@ -48,6 +48,10 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: Twenty Miles Beneath the Sea Quest (lib/others/family_twenty_miles.lua)
+	if FamilyTwentyMiles and npcHandler:checkInteraction(npc, creature) and FamilyTwentyMiles.yeo(npc, creature, message, npcHandler) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 

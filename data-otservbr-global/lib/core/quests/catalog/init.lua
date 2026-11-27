@@ -65,6 +65,7 @@ local questModules = {
 	"064_the_repenters", -- FAMILY: The Repenters Quest (Ashari's four daily tasks, Hellgate)
 	"065_adventures_of_galthen", -- FAMILY: Adventures of Galthen, Galthen and the Lost Queen (Kesar, Yselda)
 	"066_the_isle_of_evil", -- FAMILY: The Isle of Evil Quest (Rapanaio, Scutty, the castle)
+	"067_twenty_miles_beneath_the_sea", -- FAMILY: Twenty Miles Beneath the Sea Quest (Mr Brandon, the Guardian)
 }
 
 local catalog = dofile(CORE_DIRECTORY .. "/lib/core/quests/catalog.lua")

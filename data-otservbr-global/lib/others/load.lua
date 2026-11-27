@@ -40,3 +40,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_treasure_hunt.lua") -- FAMILY: Trea
 dofile(DATA_DIRECTORY .. "/lib/others/family_machinery_of_war.lua") -- FAMILY: Machinery of War Quest (Baxter, outposts, war machines, war plans)
 dofile(DATA_DIRECTORY .. "/lib/others/family_last_creep.lua") -- FAMILY: Last Creep Standing (Casper, Kurik's arena)
 dofile(DATA_DIRECTORY .. "/lib/others/family_isle_of_evil.lua") -- FAMILY: The Isle of Evil Quest (Rapanaio, Scutty, the castle)
+dofile(DATA_DIRECTORY .. "/lib/others/family_twenty_miles.lua") -- FAMILY: Twenty Miles Beneath the Sea Quest (Mr Brandon, the Guardian, the Seacrest Grounds)

@@ -2199,7 +2199,17 @@ Storage = {
 				SmallCrystalBell = 44818,
 			},
 			TheFireFeatheredSerpentWorldChange = {},
-			TwentyMilesBeneathTheSea = {},
+			-- FAMILY: Twenty Miles Beneath the Sea Quest (2026-11-27; lib/others/family_twenty_miles.lua); upstream
+			-- left it empty. 44819-44825 are free numbers of this 10.70 block.
+			TwentyMilesBeneathTheSea = {
+				Mission = 44819, -- 1 ... 24 (FamilyTwentyMiles.mission)
+				Bones = 44820, -- bits: the 5 piles of bones searched
+				Laid = 44821, -- skulls laid to rest
+				Slabs = 44822, -- bits: blue (ship chest), yellow (shrine chest) taken
+				Altars = 44823, -- bits: left, centre, right altar repaired
+				Yeo = 44824, -- 1 = Yeo asked for the pearl
+				Song = 44825, -- bits: the five song lines heard
+			},
 		},
 		U10_80 = { -- update 10.80 - Reserved Storages 44951 - 45200
 			AsuraPalace = {},
