@@ -76,6 +76,7 @@ NOT_QUEST_FILES = {
 }
 # Single ids found in quest-ish files that are not quest items (reviewed 2026-10-25).
 NOT_QUEST = {
+    3111: "fishbone (Twenty Miles seashells give one; common rubbish, 2026-11-27)",
     6278: "cake (baked from dough on fruit)",
     16251: "golem wrench (mount taming item)",
     17858: "leech (dug up; mount taming item)",
@@ -86,6 +87,14 @@ NOT_QUEST = {
 
 # Quest ingredients with no other source on this server: they get sell offers too (reviewed by hand).
 ASKED_FOR = {
+    21745: "Brandon's wedding ring (Twenty Miles Beneath the Sea Quest; family_twenty_miles.lua names it in a table, 2026-11-27)",
+    21746: "cursed gold (Twenty Miles Beneath the Sea Quest; family_twenty_miles.lua names it in a table, 2026-11-27)",
+    21753: "nacre slab (blue) (Twenty Miles Beneath the Sea Quest; family_twenty_miles.lua names it in a table, 2026-11-27)",
+    21861: "nacre slab (yellow) (Twenty Miles Beneath the Sea Quest; family_twenty_miles.lua names it in a table, 2026-11-27)",
+    21862: "nacre slab (red) (Twenty Miles Beneath the Sea Quest; family_twenty_miles.lua names it in a table, 2026-11-27)",
+    21754: "sea ear (Twenty Miles Beneath the Sea Quest; family_twenty_miles.lua names it in a table, 2026-11-27)",
+    21770: "drowned seaman's skull (Twenty Miles Beneath the Sea Quest; family_twenty_miles.lua names it in a table, 2026-11-27)",
+    21795: "the time compass (Twenty Miles Beneath the Sea Quest; family_twenty_miles.lua names it in a table, 2026-11-27)",
     9306: "mechanical fishing rod (The Isle of Evil Quest; family_isle_of_evil.lua names it in a table, 2026-11-27)",
     9307: "mechanical fish (The Isle of Evil Quest; family_isle_of_evil.lua names it in a table, 2026-11-27)",
     9234: "worm punisher (The Isle of Evil Quest; family_isle_of_evil.lua names it in a table, 2026-11-27)",
