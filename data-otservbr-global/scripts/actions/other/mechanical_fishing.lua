@@ -11,6 +11,13 @@ function mechanicalFishing.onUse(player, item, fromPosition, target, toPosition,
 	if not table.contains(waterIds, target.itemid) then
 		return false
 	end
+	-- FAMILY: The Isle of Evil Quest: mechanical fish only in the sewers of Yalahar, with the eels' shock (lib/others/family_isle_of_evil.lua)
+	if FamilyIsleOfEvil then
+		local handled = FamilyIsleOfEvil.fishing(player, target, toPosition)
+		if handled ~= nil then
+			return handled
+		end
+	end
 
 	local targetId = target.itemid
 	if targetId == 9582 then
@@ -74,7 +81,10 @@ function mechanicalFishing.onUse(player, item, fromPosition, target, toPosition,
 				return true
 			end
 		end
-		player:addItem("mechanical fish", 1)
+		-- FAMILY: no mechanical fish outside the sewers of Yalahar (both wikis); the nail is still used up
+		if not (FamilyIsleOfEvil and Family.isleOfEvil) then
+			player:addItem("mechanical fish", 1)
+		end
 	end
 	return true
 end

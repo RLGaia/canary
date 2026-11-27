@@ -34,6 +34,10 @@ npcType.onDisappear = function(npc, creature)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: The Isle of Evil Quest (lib/others/family_isle_of_evil.lua)
+	if FamilyIsleOfEvil and npcHandler:checkInteraction(npc, creature) and FamilyIsleOfEvil.rapanaio(npc, creature, message, npcHandler) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 

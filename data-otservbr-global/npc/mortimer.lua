@@ -43,6 +43,10 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: The Isle of Evil Quest (lib/others/family_isle_of_evil.lua)
+	if FamilyIsleOfEvil and npcHandler:checkInteraction(npc, creature) and FamilyIsleOfEvil.mortimer(npc, creature, message, npcHandler) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 

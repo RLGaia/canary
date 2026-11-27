@@ -39,3 +39,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_galthen.lua") -- FAMILY: Adventures
 dofile(DATA_DIRECTORY .. "/lib/others/family_treasure_hunt.lua") -- FAMILY: Treasure Hunt Quest (Wyrdin, the dworc cave, Klaus, the island)
 dofile(DATA_DIRECTORY .. "/lib/others/family_machinery_of_war.lua") -- FAMILY: Machinery of War Quest (Baxter, outposts, war machines, war plans)
 dofile(DATA_DIRECTORY .. "/lib/others/family_last_creep.lua") -- FAMILY: Last Creep Standing (Casper, Kurik's arena)
+dofile(DATA_DIRECTORY .. "/lib/others/family_isle_of_evil.lua") -- FAMILY: The Isle of Evil Quest (Rapanaio, Scutty, the castle)

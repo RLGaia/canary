@@ -1441,7 +1441,17 @@ Storage = {
 			LoneMedusa = 42503,
 			PilgrimageOfAshes = {},
 			ShadowsOfYalahar = {},
-			TheIsleOfEvil = {},
+			-- FAMILY: The Isle of Evil Quest (2026-11-27; lib/others/family_isle_of_evil.lua). Upstream left it empty;
+			-- 42535-42541 are free numbers of this 8.5 block.
+			TheIsleOfEvil = {
+				Mission = 42535, -- 1 started ... 10 done (FamilyIsleOfEvil.advance); also the action id of the door west of Rapanaio
+				Paper = 42536, -- 1 = the paper taken from the box west of Rapanaio
+				Scutty = 42537, -- 1 worm task taken, 2 six carrion worms scared off, 3 machine crate given
+				Worms = 42538, -- carrion worms scared off so far
+				Penalty = 42539, -- 1 = hit a drilling worm, owes Scutty 500 gold
+				Bosses = 42540, -- bits: boss corpses already used (Doctor Perhaps 1 ... Monstor 16)
+				Mastermind = 42541, -- 1 = the Evil Mastermind's corpse used: no more boss items
+			},
 			TheLightbearer = {},
 			-- FAMILY: The Scatterbrained Sorcerer Quest (2026-11-15; lib/others/family_sorcerer.lua). Upstream left it empty;
 			-- 42510-42516 are free numbers of this 8.5 block. Details (swept furniture, bats, questionnaire...) are in player KV family-sorcerer.

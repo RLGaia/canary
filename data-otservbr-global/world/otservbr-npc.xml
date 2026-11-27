@@ -2013,6 +2013,10 @@
 	<npc centerx="32398" centery="32509" centerz="7" radius="1">
 		<npc name="An Idol" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	<!-- FAMILY: The Isle of Evil Quest (2026-11-27): Scutty by his table in the technomancers' workshop (TibiaWiki EN 32576,31916,12, the free square next to it); upstream had none -->
+	<npc centerx="32577" centery="31916" centerz="12" radius="1">
+		<npc name="Scutty" x="0" y="0" z="12" spawntime="60" />
+	</npc>
 	<!-- FAMILY: Last Creep Standing (2026-11-25): Casper in his room under the north entrance of Darashia (TibiaWiki EN 33261,32364,9); upstream had none -->
 	<npc centerx="33261" centery="32364" centerz="9" radius="0">
 		<npc name="Casper" x="0" y="0" z="9" spawntime="60" />
