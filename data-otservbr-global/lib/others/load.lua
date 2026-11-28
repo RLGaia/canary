@@ -41,3 +41,4 @@ dofile(DATA_DIRECTORY .. "/lib/others/family_machinery_of_war.lua") -- FAMILY: M
 dofile(DATA_DIRECTORY .. "/lib/others/family_last_creep.lua") -- FAMILY: Last Creep Standing (Casper, Kurik's arena)
 dofile(DATA_DIRECTORY .. "/lib/others/family_isle_of_evil.lua") -- FAMILY: The Isle of Evil Quest (Rapanaio, Scutty, the castle)
 dofile(DATA_DIRECTORY .. "/lib/others/family_twenty_miles.lua") -- FAMILY: Twenty Miles Beneath the Sea Quest (Mr Brandon, the Guardian, the Seacrest Grounds)
+dofile(DATA_DIRECTORY .. "/lib/others/family_shadows_of_yalahar.lua") -- FAMILY: Shadows of Yalahar Quest (Telas, the Golem Servant)

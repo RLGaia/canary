@@ -1440,7 +1440,36 @@ Storage = {
 			},
 			LoneMedusa = 42503,
 			PilgrimageOfAshes = {},
-			ShadowsOfYalahar = {},
+			-- FAMILY: Shadows of Yalahar Quest (2026-11-27; lib/others/family_shadows_of_yalahar.lua); upstream left it empty.
+			-- 42243-42268 are free numbers of this 8.5 block.
+			ShadowsOfYalahar = {
+				Mission = 42243, -- 2n-1 = mission n given, 2n = mission n reported, 26 = done
+				Notes = 42244, -- bits: research notes (Milos, Cerdras, Boveas, Scutty, Dreadeye)
+				Charges = 42245, -- bits: A, B, C delivered
+				Charge = 42246, -- the charge carried (1 A ... 5 Y)
+				Core = 42247, -- 1 = a cooled core waits in the dispenser
+				Ritual = 42248, -- 1 = the ritual reconstructed
+				Books = 42249, -- bits: books read in a row
+				Headache = 42250, -- os.time() the headache ends
+				Ingredients = 42251, -- bits: mission 10 ingredients delivered
+				Ingredient = 42252, -- the ingredient asked for now
+				Showered = 42253, -- 1 = took the electric shower
+				Servant = 42254, -- Golem Servant repair progress
+				ServantItem = 42255, -- the part he asked for
+				ServantTime = 42256, -- os.time() it must be brought by
+				Lift = 42257, -- 1 = the Fenrock lift repaired
+				Ready = 42258, -- os.time() Telas is ready for mission 13
+				Activated = 42259, -- 1 = pulled the golem lever
+				Got = 42260, -- bits: blueprint, power core, stabilizer, head, wrench taken
+				Door2 = 42261, -- quest doors of the mission rooms: set while open (FamilyShadowsYalahar.setStage)
+				Door5 = 42262,
+				Door6 = 42263,
+				Door7 = 42264,
+				Door8 = 42265,
+				Door9 = 42266,
+				Door10 = 42267,
+				Door11 = 42268,
+			},
 			-- FAMILY: The Isle of Evil Quest (2026-11-27; lib/others/family_isle_of_evil.lua). Upstream left it empty;
 			-- 42535-42541 are free numbers of this 8.5 block.
 			TheIsleOfEvil = {

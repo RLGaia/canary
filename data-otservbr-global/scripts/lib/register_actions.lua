@@ -530,6 +530,10 @@ function onUseShovel(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
+	-- FAMILY: Shadows of Yalahar Quest mission 3 (lib/others/family_shadows_of_yalahar.lua): elemental crystals from slain earth elementals
+	if FamilyShadowsYalahar and FamilyShadowsYalahar.onPick(player, target) then
+		return true
+	end
 	-- FAMILY: The Curse Spreads (scripts/family/curse_spreads.lua): gold and silver nuggets in the Corym mines
 	if FamilyCurseSpreads and FamilyCurseSpreads.onPick and FamilyCurseSpreads.onPick(player, target, toPosition) then
 		return true

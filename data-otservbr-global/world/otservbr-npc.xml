@@ -2013,6 +2013,16 @@
 	<npc centerx="32398" centery="32509" centerz="7" radius="1">
 		<npc name="An Idol" x="0" y="0" z="7" spawntime="60" />
 	</npc>
+	<!-- FAMILY: Shadows of Yalahar Quest (2026-11-27): Boveas (Mintwallin), Dreadeye (Hellgate) and the new Golem Servant (Fenrock), TibiaWiki EN positions; upstream had none -->
+	<npc centerx="32431" centery="32089" centerz="15" radius="1">
+		<npc name="Boveas" x="0" y="0" z="15" spawntime="60" />
+	</npc>
+	<npc centerx="32803" centery="31572" centerz="14" radius="1">
+		<npc name="Dreadeye" x="0" y="0" z="14" spawntime="60" />
+	</npc>
+	<npc centerx="32548" centery="31252" centerz="9" radius="1">
+		<npc name="Golem Servant" x="0" y="0" z="9" spawntime="60" />
+	</npc>
 	<!-- FAMILY: Twenty Miles Beneath the Sea Quest (2026-11-27): Mr Brandon and the Guardian of the Deep Seas (TibiaWiki EN positions); upstream had none -->
 	<npc centerx="33548" centery="31864" centerz="7" radius="1">
 		<npc name="Mr Brandon" x="0" y="0" z="7" spawntime="60" />

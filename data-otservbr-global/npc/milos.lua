@@ -49,6 +49,10 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: Shadows of Yalahar Quest (lib/others/family_shadows_of_yalahar.lua)
+	if FamilyShadowsYalahar and npcHandler:checkInteraction(npc, creature) and FamilyShadowsYalahar.researcher("Milos")(npc, creature, message, npcHandler) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 

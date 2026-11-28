@@ -141,6 +141,10 @@ function food.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if not itemFood then
 		return false
 	end
+	-- FAMILY: Shadows of Yalahar Quest mission 9: a headache pill ends the library headache (lib/others/family_shadows_of_yalahar.lua)
+	if item.itemid == 9537 and FamilyShadowsYalahar then
+		FamilyShadowsYalahar.usePill(player)
+	end
 
 	local condition = player:getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
 	if condition and math.floor(condition:getTicks() / 1000 + (itemFood[1] * 12)) >= 1200 then

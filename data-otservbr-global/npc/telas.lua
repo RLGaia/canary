@@ -43,6 +43,10 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: Shadows of Yalahar Quest (lib/others/family_shadows_of_yalahar.lua)
+	if FamilyShadowsYalahar and npcHandler:checkInteraction(npc, creature) and FamilyShadowsYalahar.telas(npc, creature, message, npcHandler) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 
@@ -68,6 +72,14 @@ local function creatureSayCallback(npc, creature, type, message)
 end
 
 npcHandler:setMessage(MESSAGE_GREET, "Hello!")
+-- FAMILY: Shadows of Yalahar Quest (2026-11-27): the first greeting (TibiaWiki BR/EN)
+npcHandler:setCallback(CALLBACK_GREET, function(npc, creature)
+	local player = Player(creature)
+	if player and FamilyShadowsYalahar then
+		npcHandler:setMessage(MESSAGE_GREET, FamilyShadowsYalahar.greeting(player))
+	end
+	return true
+end)
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 

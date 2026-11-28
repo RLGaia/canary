@@ -38,6 +38,10 @@ npcType.onMove = function(npc, creature, fromPosition, toPosition)
 end
 
 npcType.onSay = function(npc, creature, type, message)
+	-- FAMILY: Shadows of Yalahar Quest (lib/others/family_shadows_of_yalahar.lua)
+	if FamilyShadowsYalahar and npcHandler:checkInteraction(npc, creature) and FamilyShadowsYalahar.researcher("Dreadeye")(npc, creature, message, npcHandler) then
+		return
+	end
 	npcHandler:onSay(npc, creature, type, message)
 end
 
@@ -45,6 +49,8 @@ npcType.onCloseChannel = function(npc, creature)
 	npcHandler:onCloseChannel(npc, creature)
 end
 
+-- FAMILY: Shadows of Yalahar Quest (2026-11-27): greeting (TibiaWiki BR); upstream had none
+npcHandler:setMessage(MESSAGE_GREET, "Ah, a visitor to intimidate. Splendid!")
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 -- npcType registering the npcConfig table

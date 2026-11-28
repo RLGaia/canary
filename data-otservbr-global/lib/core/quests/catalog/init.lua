@@ -66,6 +66,7 @@ local questModules = {
 	"065_adventures_of_galthen", -- FAMILY: Adventures of Galthen, Galthen and the Lost Queen (Kesar, Yselda)
 	"066_the_isle_of_evil", -- FAMILY: The Isle of Evil Quest (Rapanaio, Scutty, the castle)
 	"067_twenty_miles_beneath_the_sea", -- FAMILY: Twenty Miles Beneath the Sea Quest (Mr Brandon, the Guardian)
+	"068_shadows_of_yalahar", -- FAMILY: Shadows of Yalahar Quest (Telas, the Golem Servant)
 }
 
 local catalog = dofile(CORE_DIRECTORY .. "/lib/core/quests/catalog.lua")
